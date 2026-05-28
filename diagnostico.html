@@ -103,16 +103,28 @@ main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidde
   background:var(--card);border:1px solid var(--border);border-radius:3px;
   padding:2rem;position:sticky;top:100px;height:fit-content;
 }
+.heatmap-title{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);
+  margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:2px;
+}
 .matrix-wrapper{
   position:relative;width:100%;aspect-ratio:1/1;
   background:var(--deep);border:1px solid var(--border);
   display:grid;grid-template-columns:repeat(2, 1fr);grid-template-rows:repeat(2, 1fr);
+  margin-bottom:2rem;
 }
 .quadrant{display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;text-transform:uppercase}
 .quad-tl{background:rgba(255,107,107,0.25);color:var(--red)} /* CRÍTICO */
 .quad-tr{background:rgba(255,107,107,0.15);color:var(--red)} /* ALTO */
 .quad-bl{background:rgba(255,217,61,0.15);color:var(--yellow)} /* MEDIO */
 .quad-br{background:rgba(52,211,153,0.15);color:var(--green)} /* BAJO */
+
+.axis-label{
+  position:absolute;font-family:'JetBrains Mono',monospace;font-size:.55rem;
+  color:var(--muted);text-transform:uppercase;letter-spacing:1px;
+}
+.axis-y{transform:rotate(-90deg);left:-45px;top:50%}
+.axis-x{bottom:-25px;left:50%;transform:translateX(-50%)}
 
 .risk-pointer{
   position:absolute;width:16px;height:16px;background:var(--cyan);
@@ -140,7 +152,15 @@ main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidde
   opacity:0;visibility:hidden;transition:all .3s;
 }
 .modal-overlay.active{opacity:1;visibility:visible}
-.modal-content{background:var(--deep2);border:1px solid var(--border);padding:3rem;max-width:500px;width:90%;border-radius:4px}
+.modal-content{background:var(--deep2);border:1px solid var(--border);padding:3rem;max-width:500px;width:90%;border-radius:4px;position:relative}
+
+.finput{
+  background:rgba(3,9,24,0.95);border:1px solid var(--border);
+  color:var(--silver);padding:12px 16px;border-radius:2px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;
+  outline:none;transition:all .2s;width:100%;
+}
+.finput:focus{border-color:var(--cyan);box-shadow:0 0 15px rgba(0,212,255,0.1)}
 
 </style>
 </head>
@@ -167,17 +187,22 @@ main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidde
       </div>
 
       <div class="heatmap-panel">
-        <p style="font-family:'JetBrains Mono'; font-size:.7rem; color:var(--cyan); margin-bottom:1rem">MATRIZ DE RIESGO DINÁMICA</p>
-        <div class="matrix-wrapper">
-          <div class="quadrant quad-tl">Crítico</div>
-          <div class="quadrant quad-tr">Alto</div>
-          <div class="quadrant quad-bl">Medio</div>
-          <div class="quadrant quad-br">Bajo</div>
-          <div class="risk-pointer" id="riskPointer"></div>
+        <p class="heatmap-title">Matriz de Riesgo</p>
+        <div class="risk-matrix-container" style="position:relative">
+          <div class="axis-label axis-y">Impacto Operativo</div>
+          <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
+          <div class="matrix-wrapper">
+            <div class="quadrant quad-tl">Crítico</div>
+            <div class="quadrant quad-tr">Alto</div>
+            <div class="quadrant quad-bl">Medio</div>
+            <div class="quadrant quad-br">Bajo</div>
+            <div class="risk-pointer" id="riskPointer"></div>
+          </div>
         </div>
         
-        <div id="statusBox" style="margin-top:1.5rem; padding:1rem; border-left:3px solid var(--green); background:rgba(52,211,153,0.05)">
+        <div id="statusBox" style="margin-top:2.5rem; padding:1.2rem; border-left:3px solid var(--green); background:rgba(52,211,153,0.05)">
           <p id="statusText" style="font-size:.85rem; font-weight:600">Estado: <span style="color:var(--green)">Pendiente</span></p>
+          <p id="statusHint" style="font-size:.7rem; color:var(--muted); margin-top:.5rem">Complete todas las preguntas para obtener el análisis detallado.</p>
         </div>
       </div>
     </div>
@@ -185,22 +210,30 @@ main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidde
     <div class="results-section" id="resultsSection">
       <h2 class="results-main" id="resultsLevel">Nivel de Riesgo: --</h2>
       <p id="resultsDesc" style="color:var(--muted); margin-bottom:2rem"></p>
-      <button class="btn-submit" style="width:100%; padding:15px; background:var(--cyan); border:none; color:var(--deep); font-weight:800; cursor:pointer" onclick="openModal()">AGENDAR CONSULTA PERSONALIZADA →</button>
+      <button class="btn-submit" style="width:100%; padding:18px; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); border:none; color:var(--deep); font-weight:800; cursor:pointer; border-radius:3px; letter-spacing:1px" onclick="openModal()">AGENDAR CONSULTA PERSONALIZADA →</button>
     </div>
   </div>
 </main>
 
 <div class="modal-overlay" id="contactModal">
   <div class="modal-content">
-    <h3 style="margin-bottom:1rem">Agendar Consulta</h3>
+    <button onclick="closeModal()" style="position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.2rem">✕</button>
+    <h3 style="margin-bottom:0.5rem; font-size:1.4rem">Agendar Consulta</h3>
+    <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1.5rem">Reciba un informe detallado basado en sus respuestas.</p>
+    
     <form action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex; flex-direction:column; gap:12px">
       <input type="hidden" name="_subject" value="Nuevo Lead - Diagnóstico ShellTI">
       <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo">
-      <input style="padding:12px; background:var(--deep); border:1px solid var(--border); color:white" type="text" name="nombre" placeholder="Nombre" required>
-      <input style="padding:12px; background:var(--deep); border:1px solid var(--border); color:white" type="email" name="email" placeholder="Email Corporativo" required>
-      <input style="padding:12px; background:var(--deep); border:1px solid var(--border); color:white" type="text" name="empresa" placeholder="Empresa">
-      <button type="submit" style="padding:15px; background:var(--cyan); border:none; color:var(--deep); font-weight:800; cursor:pointer">ENVIAR SOLICITUD</button>
-      <button type="button" onclick="closeModal()" style="background:none; border:none; color:var(--muted); cursor:pointer">Cerrar</button>
+      <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas">
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+        <input class="finput" type="text" name="nombre" placeholder="Nombre" required>
+        <input class="finput" type="text" name="empresa" placeholder="Empresa" required>
+      </div>
+      <input class="finput" type="email" name="email" placeholder="Email Corporativo" required>
+      <textarea class="finput" name="comentarios" rows="3" placeholder="¿Algún comentario o duda específica?"></textarea>
+      
+      <button type="submit" style="padding:16px; background:var(--cyan); border:none; color:var(--deep); font-weight:800; cursor:pointer; border-radius:2px; margin-top:10px">ENVIAR SOLICITUD</button>
     </form>
   </div>
 </div>
@@ -213,7 +246,10 @@ const questions = [
   { id: 4, text: "¿Existen políticas de retención y eliminación de datos claramente definidas?" },
   { id: 5, text: "¿Tiene un protocolo de notificación de brechas de seguridad (72 horas)?" },
   { id: 6, text: "¿Los contratos con terceros incluyen cláusulas de protección de datos actualizadas?" },
-  { id: 7, text: "¿Utiliza autenticación de doble factor (MFA) para accesos a datos sensibles?" }
+  { id: 7, text: "¿Utiliza autenticación de doble factor (MFA) para accesos a datos sensibles?" },
+  { id: 8, text: "¿Se realizan auditorías de seguridad y pruebas de penetración al menos una vez al año?" },
+  { id: 9, text: "¿Cuenta con un plan de respuesta a incidentes y continuidad del negocio probado?" },
+  { id: 10, text: "¿Existe un programa de capacitación continua en ciberseguridad para todo el personal?" }
 ];
 
 let answers = {};
@@ -248,6 +284,7 @@ function updateRisk() {
   const pointer = document.getElementById('riskPointer');
   const statusBox = document.getElementById('statusBox');
   const statusText = document.getElementById('statusText');
+  const statusHint = document.getElementById('statusHint');
   
   let level = "Bajo";
   let color = "var(--green)";
@@ -271,6 +308,7 @@ function updateRisk() {
   pointer.style.top = posY;
   statusBox.style.borderColor = color;
   statusText.innerHTML = `Estado: <span style="color:${color}">${level}</span>`;
+  statusHint.innerText = `Se han detectado ${noCount} brechas de cumplimiento potenciales.`;
 
   if (totalAnswered === questions.length) {
     showResults(level, noCount);
@@ -281,7 +319,10 @@ function showResults(level, count) {
   const section = document.getElementById('resultsSection');
   const title = document.getElementById('resultsLevel');
   const desc = document.getElementById('resultsDesc');
+  
+  const detalle = questions.map(q => `P${q.id}: ${answers[q.id] === 'yes' ? 'SÍ' : 'NO'}`).join(' | ');
   document.getElementById('hiddenRiesgo').value = level;
+  document.getElementById('hiddenRespuestas').value = detalle;
 
   section.classList.add('show');
   title.className = `results-main ${level.toLowerCase()}-text`;
