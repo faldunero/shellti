@@ -258,6 +258,49 @@ h1.diag-title em{
 .btn-cta:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35)}
 
 /* ══════════════════════════════════════════════
+   MODAL FORM
+══════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(2,6,23,0.85);
+  backdrop-filter:blur(12px);z-index:1000;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.active{display:flex}
+.modal-content{
+  background:var(--card);border:1px solid var(--border);
+  width:100%;max-width:500px;padding:2.5rem;border-radius:4px;
+  position:relative;box-shadow:0 0 60px rgba(0,212,255,0.15);
+}
+.modal-close{
+  position:absolute;top:20px;right:20px;
+  background:transparent;border:none;color:var(--muted);
+  font-size:1.5rem;cursor:pointer;transition:color .2s;
+}
+.modal-close:hover{color:var(--cyan)}
+.modal-title{font-size:1.4rem;margin-bottom:1rem;color:var(--silver)}
+.modal-title span{color:var(--cyan)}
+.contact-form{display:flex;flex-direction:column;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group label{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);text-transform:uppercase;letter-spacing:1px}
+.form-group input, .form-group textarea{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  padding:12px;border-radius:2px;color:var(--silver);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;
+  transition:all .2s;
+}
+.form-group input:focus, .form-group textarea:focus{
+  outline:none;border-color:var(--cyan);background:rgba(0,212,255,0.05);
+  box-shadow:0 0 15px rgba(0,212,255,0.1);
+}
+.btn-submit{
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);border:none;padding:14px;font-weight:800;
+  text-transform:uppercase;letter-spacing:1px;border-radius:2px;
+  cursor:pointer;transition:transform .2s, box-shadow .2s;
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 0 25px rgba(0,212,255,0.4)}
+
+/* ══════════════════════════════════════════════
    FOOTER
 ══════════════════════════════════════════════ */
 footer{
@@ -458,6 +501,41 @@ footer a:hover{color:var(--cyan3)}
   </div>
 </main>
 
+<!-- ════════ MODAL CONTACTO ════════ -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">&times;</button>
+    <h3 class="modal-title">Agendar <span>Consulta</span></h3>
+    <p style="font-size:.85rem; color:var(--muted); margin-bottom:1.5rem;">Un especialista de ShellTI analizará tu diagnóstico y te contactará a la brevedad.</p>
+    
+    <form class="contact-form" action="https://formsubmit.co/contacto@shellti.com" method="POST">
+      <!-- Configuración FormSubmit -->
+      <input type="hidden" name="_subject" value="Nuevo Diagnóstico Ley 21.719 - ShellTI">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://shellti.com/diagnostico.html">
+      <input type="hidden" name="diagnostico_resumen" id="formRiskLevel">
+
+      <div class="form-group">
+        <label>Nombre Completo</label>
+        <input type="text" name="nombre" placeholder="Ej. Juan Pérez" required>
+      </div>
+      <div class="form-group">
+        <label>Correo Corporativo</label>
+        <input type="email" name="email" placeholder="juan@empresa.cl" required>
+      </div>
+      <div class="form-group">
+        <label>Empresa</label>
+        <input type="text" name="empresa" placeholder="Nombre de tu organización" required>
+      </div>
+      <div class="form-group">
+        <label>Mensaje (Opcional)</label>
+        <textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu situación..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Enviar Solicitud</button>
+    </form>
+  </div>
+</div>
+
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <p>&copy; 2026 ShellTI. Especialistas en Arquitectura de Ecosistemas Digitales. <a href="index.html">Volver al inicio</a></p>
@@ -492,9 +570,7 @@ function updateHeatmap() {
   const totalAnswered = Object.keys(answers).length;
   const pointer = document.getElementById('riskPointer');
   
-  const criticalQs = ['2', '5', '7']; // Consentimiento, Protocolo, MFA
-  const mediumQs = ['1', '4', '6'];   // Inventario, Retención, Contratos
-  
+  const criticalQs = ['2', '5', '7']; 
   const noAnswers = Object.keys(answers).filter(q => answers[q] === 'no');
   const noCount = noAnswers.length;
   
@@ -504,17 +580,11 @@ function updateHeatmap() {
   if (totalAnswered > 0) {
     const hasCriticalNo = criticalQs.some(q => answers[q] === 'no');
 
-    // REGLA ACTUALIZADA:
-    // 3 o más No O cualquier No Crítico = Crítico (Rojo)
-    // 2 No = Alto (Rojo/Naranja)
-    // 1 No = Medio (Amarillo)
-    // 0 No = Bajo (Verde)
-    
     if (noCount >= 3 || hasCriticalNo) {
       riskLevel = 'critical';
       statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata de ShellTI requerida';
     } else if (noCount === 2) {
-      riskLevel = 'critical'; // Visualmente Alto pero bajo lógica de alerta fuerte
+      riskLevel = 'critical'; 
       statusText = '⚠️ RIESGO ALTO: Requiere intervención urgente';
     } else if (noCount === 1) {
       riskLevel = 'warning';
@@ -531,28 +601,22 @@ function updateHeatmap() {
   if (totalAnswered === 0) {
     visualX = 50; visualY = 50;
   } else {
-    // Probability (X): more "No" answers -> lower X (more risk)
     visualX = 100 - (noCount * 15); 
-    // Impact (Y): critical "No" answers -> lower Y (higher impact)
     const criticalNoCount = criticalQs.filter(q => answers[q] === 'no').length;
     visualY = 100 - (criticalNoCount * 30) - (noCount * 5);
   }
 
   // Clamp values to quadrants
   if (noCount >= 3 || criticalQs.some(q => answers[q] === 'no')) {
-    // Cuadrante Crítico (Top Left)
     visualX = Math.min(Math.max(visualX, 5), 45);
     visualY = Math.min(Math.max(visualY, 5), 45);
   } else if (noCount === 2) {
-    // Cuadrante Alto (Top Right)
     visualX = Math.min(Math.max(visualX, 55), 95);
     visualY = Math.min(Math.max(visualY, 5), 45);
   } else if (noCount === 1) {
-    // Cuadrante Medio (Bottom Left)
     visualX = Math.min(Math.max(visualX, 5), 45);
     visualY = Math.min(Math.max(visualY, 55), 95);
   } else {
-    // Cuadrante Bajo (Bottom Right)
     visualX = Math.min(Math.max(visualX, 55), 95);
     visualY = Math.min(Math.max(visualY, 55), 95);
   }
@@ -575,47 +639,33 @@ function showResults(noCount, hasCriticalNo) {
   const ctaSection = document.getElementById('ctaSection');
   const resultTitle = document.getElementById('resultTitle');
   const resultDesc = document.getElementById('resultDesc');
+  const formRiskField = document.getElementById('formRiskLevel');
   
   let title = '';
   let desc = '';
   let recommendations = [];
+  let summary = `No Count: ${noCount}, Critical No: ${hasCriticalNo}`;
   
   if(noCount >= 3 || hasCriticalNo) {
     title = 'INCUMPLIMIENTO - RIESGO CRÍTICO';
     desc = `Se han detectado brechas críticas que ponen a la organización en estado de incumplimiento inminente bajo la Ley 21.719. Se requiere la intervención directa de ShellTI.`;
-    recommendations = [
-      'Regularizar el consentimiento explícito y MFA inmediatamente',
-      'Establecer el protocolo de respuesta ante brechas de 72 horas',
-      'Auditoría técnica profunda de bases de datos',
-      'Iniciar plan de remediación con ShellTI'
-    ];
+    recommendations = ['Regularizar el consentimiento explícito y MFA inmediatamente', 'Establecer el protocolo de respuesta ante brechas de 72 horas', 'Auditoría técnica profunda', 'Remediación con ShellTI'];
+    formRiskField.value = "CRÍTICO - " + summary;
   } else if(noCount === 2) {
     title = 'RIESGO ALTO DETECTADO';
     desc = `Su organización presenta múltiples omisiones normativas. El riesgo de sanciones es elevado y requiere acciones correctivas en el corto plazo.`;
-    recommendations = [
-      'Subsanar las brechas de seguridad identificadas',
-      'Actualizar políticas de retención y contratos con terceros',
-      'Realizar un Ethical Hacking preventivo',
-      'Agendar consultoría de revisión normativa'
-    ];
+    recommendations = ['Subsanar brechas de seguridad', 'Actualizar políticas y contratos', 'Ethical Hacking preventivo', 'Consultoría normativa'];
+    formRiskField.value = "ALTO - " + summary;
   } else if(noCount === 1) {
     title = 'RIESGO MEDIO IDENTIFICADO';
     desc = `Se ha identificado una vulnerabilidad puntual. Aunque la postura general es aceptable, este punto debe ser corregido para asegurar el cumplimiento total.`;
-    recommendations = [
-      'Corregir el punto de incumplimiento detectado',
-      'Revisar inventario de datos personales',
-      'Capacitación básica al equipo encargado',
-      'Mantenimiento preventivo de políticas'
-    ];
+    recommendations = ['Corregir punto de incumplimiento', 'Revisar inventario de datos', 'Capacitación básica', 'Mantenimiento preventivo'];
+    formRiskField.value = "MEDIO - " + summary;
   } else {
     title = 'CUMPLIMIENTO SATISFACTORIO';
     desc = `Felicidades. Su organización cumple con los estándares evaluados. El enfoque debe ser la mejora continua y el monitoreo constante.`;
-    recommendations = [
-      'Mantener logs de acceso y auditorías',
-      'Capacitación continua en protección de datos',
-      'Revisión periódica de la postura de seguridad',
-      'Simulacros de respuesta ante incidentes'
-    ];
+    recommendations = ['Mantener logs y auditorías', 'Capacitación continua', 'Revisión periódica', 'Simulacros de respuesta'];
+    formRiskField.value = "BAJO - " + summary;
   }
   
   resultTitle.textContent = title;
@@ -628,18 +678,28 @@ function showResults(noCount, hasCriticalNo) {
   
   resultsSection.classList.add('show');
   ctaSection.style.display = 'block';
-  
   resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ════════ CTA HANDLER ════════
-document.getElementById('contactBtn').addEventListener('click', () => {
-  const email = prompt('¿Cuál es tu correo corporativo?');
-  if(email) {
-    const company = prompt('¿Nombre de tu empresa?');
-    if(company) {
-      alert(`✓ Gracias ${company}. Hemos recibido tu diagnóstico. Un especialista de ShellTI se contactará a ${email} para entregarte el informe detallado.`);
-    }
+// ════════ MODAL LOGIC ════════
+const modal = document.getElementById('contactModal');
+const openBtn = document.getElementById('contactBtn');
+const closeBtn = document.getElementById('closeModal');
+
+openBtn.addEventListener('click', () => {
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+});
+
+modal.addEventListener('click', (e) => {
+  if(e.target === modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
   }
 });
 
