@@ -47,6 +47,17 @@ nav{
   border-bottom:1px solid var(--border);
 }
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{
+  height:42px;width:42px;object-fit:contain;
+  image-rendering:crisp-edges;
+  filter:
+    drop-shadow(0 0 10px rgba(0,212,255,0.85))
+    drop-shadow(0 0 22px rgba(0,212,255,0.5))
+    drop-shadow(0 0 5px rgba(52,211,153,0.7))
+    brightness(1.25) saturate(1.5) contrast(1.1);
+  transition:filter .3s;
+}
+.nav-logo:hover img{filter:drop-shadow(0 0 16px rgba(0,212,255,1)) drop-shadow(0 0 40px rgba(0,212,255,0.7)) brightness(1.35) saturate(1.6) contrast(1.15)}
 .nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
 .nav-brand-name span{color:var(--cyan)}
 .nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
@@ -204,7 +215,7 @@ h1.hero-title em{
 .btn-cta:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35)}
 
 /* ══════════════════════════════════════════════
-   STAFFING SECTION
+   STAFFING SECTION (New)
 ══════════════════════════════════════════════ */
 #staffing{padding:100px 2.5rem;background:var(--deep3);border-top:1px solid var(--border)}
 .staff-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:25px;margin-top:3rem}
@@ -217,17 +228,10 @@ h1.hero-title em{
 .staff-card h3{font-size:1.2rem;margin-bottom:1rem;color:var(--silver)}
 .staff-card p{font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.7}
 
-.staff-advantages{margin-top:4rem;display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px}
-.adv-item{display:flex;gap:12px;align-items:flex-start;font-size:.85rem;color:var(--muted)}
-.adv-item::before{content:'▸';color:var(--green);font-weight:800}
-
 /* ══════════════════════════════════════════════
-   COMPLIANCE & RESILIENCIA & METODOLOGIA (Restored)
+   RESTORED SECTIONS (Compliance, Resiliencia, Metodologia)
 ══════════════════════════════════════════════ */
-#compliance{background:var(--deep2);border-top:1px solid var(--border)}
-#resiliencia{background:var(--deep3);border-top:1px solid var(--border)}
-#metodologia{background:var(--deep2);border-top:1px solid var(--border)}
-
+#nosotros, #compliance, #resiliencia, #metodologia{padding:100px 2.5rem;border-top:1px solid var(--border)}
 .sec-title{font-size:2.5rem; margin-bottom:1.5rem}
 .sec-desc{color:var(--muted); max-width:700px; margin-bottom:3rem; font-weight:300}
 
@@ -301,6 +305,12 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
           <a href="diagnostico.html" class="btn-cta">Iniciar Assessment →</a>
         </div>
       </div>
+      <div style="display:flex; justify-content:center">
+        <!-- Hero Wolf Visual Placeholder -->
+        <div style="width:300px; height:300px; background:radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%); border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center">
+          <span style="font-size:5rem">🐺</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -309,7 +319,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 <section id="staffing">
   <div class="container">
     <p class="overline">Staffing & Outsourcing</p>
-    <h2 class="sec-title">Soluciones de <span class="tc">Tercerización Tecnológica</span></h2>
+    <h2 class="sec-title">Soluciones de <span style="color:var(--cyan)">Tercerización Tecnológica</span></h2>
     <p class="sec-desc">Impulsamos la evolución de su ecosistema digital mediante la integración de talento especializado y procesos de ingeniería de software de alto rendimiento.</p>
     
     <div class="staff-grid">
@@ -344,44 +354,32 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
         <p>Gestión de proyectos tecnológicos bajo estándares PMI. Consultoría estratégica para la optimización de procesos y aceleración de la transformación digital.</p>
       </div>
     </div>
-
-    <div style="margin-top:4rem; padding:3rem; background:rgba(0,212,255,0.03); border:1px solid var(--border); border-radius:4px">
-      <h3 style="margin-bottom:2rem; text-align:center">Ventajas Competitivas con <span class="tc">ShellTI</span></h3>
-      <div class="staff-advantages">
-        <div class="adv-item"><strong>Eficiencia Operativa:</strong> Optimización de costos de hasta un 40% frente a la contratación tradicional.</div>
-        <div class="adv-item"><strong>Talento de Elite:</strong> Acceso a perfiles especializados en frameworks y tecnologías de vanguardia.</div>
-        <div class="adv-item"><strong>Escalabilidad Bajo Demanda:</strong> Flexibilidad total para ajustar la capacidad técnica según los hitos del proyecto.</div>
-        <div class="adv-item"><strong>Foco Estratégico:</strong> Delegue la operatividad técnica y concentre sus recursos en el core business.</div>
-        <div class="adv-item"><strong>Soporte Especializado:</strong> Atención técnica de alto nivel en español y cobertura horaria total.</div>
-        <div class="adv-item"><strong>Compliance Nativo:</strong> Gestión alineada a normativas de seguridad de la información y protección de datos.</div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- ════════ COMPLIANCE SECTION (Restored) ════════ -->
+<!-- ════════ COMPLIANCE SECTION ════════ -->
 <section id="compliance">
   <div class="container">
     <p class="overline">Marco Normativo</p>
-    <h2 class="sec-title">Estrategia de <span class="tc">Compliance</span></h2>
+    <h2 class="sec-title">Estrategia de <span style="color:var(--cyan)">Compliance</span></h2>
     <p class="sec-desc">Alineamos su infraestructura con las exigencias de la Ley 21.719, garantizando la protección de datos y la integridad de la información.</p>
   </div>
 </section>
 
-<!-- ════════ RESILIENCIA SECTION (Restored) ════════ -->
+<!-- ════════ RESILIENCIA SECTION ════════ -->
 <section id="resiliencia">
   <div class="container">
     <p class="overline">Continuidad Operativa</p>
-    <h2 class="sec-title">Resiliencia <span class="tg">Digital</span></h2>
+    <h2 class="sec-title">Resiliencia <span style="color:var(--green)">Digital</span></h2>
     <p class="sec-desc">Diseñamos arquitecturas redundantes y planes de recuperación ante desastres para asegurar la operatividad ante cualquier contingencia.</p>
   </div>
 </section>
 
-<!-- ════════ METODOLOGIA SECTION (Restored) ════════ -->
+<!-- ════════ METODOLOGIA SECTION ════════ -->
 <section id="metodologia">
   <div class="container">
     <p class="overline">Nuestro Proceso</p>
-    <h2 class="sec-title">Metodología <span class="tc">ShellTI</span></h2>
+    <h2 class="sec-title">Metodología <span style="color:var(--cyan)">ShellTI</span></h2>
     <p class="sec-desc">Un enfoque sistemático basado en el análisis, diseño e implementación de soluciones tecnológicas de alta fidelidad.</p>
   </div>
 </section>
@@ -391,7 +389,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
     <div class="contact-grid">
       <div class="contact-pitch">
         <p class="overline">Contacto</p>
-        <h2 class="sec-title">Diseñemos tu <span class="tc">Ecosistema</span></h2>
+        <h2 class="sec-title">Diseñemos tu <span style="color:var(--cyan)">Ecosistema</span></h2>
         <p>Nuestro equipo está listo para analizar sus desafíos tecnológicos y de cumplimiento.</p>
       </div>
       <div>
