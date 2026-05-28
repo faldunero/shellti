@@ -503,13 +503,20 @@ function updateHeatmap() {
   
   if (totalAnswered > 0) {
     const hasCriticalNo = criticalQs.some(q => answers[q] === 'no');
-    const hasMediumNo = mediumQs.some(q => answers[q] === 'no');
 
-    // REGLA: 3 No = Incumplimiento (Crítico)
-    if (hasCriticalNo || noCount >= 3) {
+    // REGLA ACTUALIZADA:
+    // 3 o más No O cualquier No Crítico = Crítico (Rojo)
+    // 2 No = Alto (Rojo/Naranja)
+    // 1 No = Medio (Amarillo)
+    // 0 No = Bajo (Verde)
+    
+    if (noCount >= 3 || hasCriticalNo) {
       riskLevel = 'critical';
       statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata de ShellTI requerida';
-    } else if (hasMediumNo || noCount >= 1) {
+    } else if (noCount === 2) {
+      riskLevel = 'critical'; // Visualmente Alto pero bajo lógica de alerta fuerte
+      statusText = '⚠️ RIESGO ALTO: Requiere intervención urgente';
+    } else if (noCount === 1) {
       riskLevel = 'warning';
       statusText = '⚠️ RIESGO MEDIO: Requiere atención prioritaria';
     } else {
@@ -518,27 +525,34 @@ function updateHeatmap() {
     }
   }
 
-  // Visual position calculation (0% High Risk/Impact, 100% Low Risk/Impact)
+  // Visual position calculation
   let visualX, visualY;
   
   if (totalAnswered === 0) {
     visualX = 50; visualY = 50;
   } else {
     // Probability (X): more "No" answers -> lower X (more risk)
-    visualX = 100 - (noCount * 10); 
+    visualX = 100 - (noCount * 15); 
     // Impact (Y): critical "No" answers -> lower Y (higher impact)
     const criticalNoCount = criticalQs.filter(q => answers[q] === 'no').length;
-    visualY = 100 - (criticalNoCount * 25) - (noCount * 5);
+    visualY = 100 - (criticalNoCount * 30) - (noCount * 5);
   }
 
-  // Clamp values to ensure they stay in the right quadrants
-  if (riskLevel === 'critical') {
+  // Clamp values to quadrants
+  if (noCount >= 3 || criticalQs.some(q => answers[q] === 'no')) {
+    // Cuadrante Crítico (Top Left)
     visualX = Math.min(Math.max(visualX, 5), 45);
     visualY = Math.min(Math.max(visualY, 5), 45);
-  } else if (riskLevel === 'warning') {
+  } else if (noCount === 2) {
+    // Cuadrante Alto (Top Right)
+    visualX = Math.min(Math.max(visualX, 55), 95);
+    visualY = Math.min(Math.max(visualY, 5), 45);
+  } else if (noCount === 1) {
+    // Cuadrante Medio (Bottom Left)
     visualX = Math.min(Math.max(visualX, 5), 45);
     visualY = Math.min(Math.max(visualY, 55), 95);
-  } else if (riskLevel === 'safe') {
+  } else {
+    // Cuadrante Bajo (Bottom Right)
     visualX = Math.min(Math.max(visualX, 55), 95);
     visualY = Math.min(Math.max(visualY, 55), 95);
   }
@@ -547,16 +561,16 @@ function updateHeatmap() {
   pointer.style.top = visualY + '%';
   
   const statusIndicator = document.getElementById('statusIndicator');
-  statusIndicator.className = 'status-indicator ' + riskLevel;
+  statusIndicator.className = 'status-indicator ' + (noCount >= 2 ? 'critical' : (noCount === 1 ? 'warning' : 'safe'));
   statusIndicator.innerHTML = `<p class="status-text"><strong>${statusText}</strong><br>Progreso: ${totalAnswered}/10 preguntas respondidas</p>`;
 
   if(totalAnswered === 10) {
-    showResults(riskLevel, noCount);
+    showResults(noCount, criticalQs.some(q => answers[q] === 'no'));
   }
 }
 
 // ════════ RESULTS DISPLAY ════════
-function showResults(riskLevel, noCount) {
+function showResults(noCount, hasCriticalNo) {
   const resultsSection = document.getElementById('resultsSection');
   const ctaSection = document.getElementById('ctaSection');
   const resultTitle = document.getElementById('resultTitle');
@@ -566,31 +580,40 @@ function showResults(riskLevel, noCount) {
   let desc = '';
   let recommendations = [];
   
-  if(riskLevel === 'critical') {
+  if(noCount >= 3 || hasCriticalNo) {
     title = 'INCUMPLIMIENTO - RIESGO CRÍTICO';
-    desc = `Se han detectado brechas críticas (o más de 3 omisiones) que ponen a la organización en estado de incumplimiento inmediato. Se requiere la intervención directa de ShellTI para regularizar su situación legal y técnica.`;
+    desc = `Se han detectado brechas críticas que ponen a la organización en estado de incumplimiento inminente bajo la Ley 21.719. Se requiere la intervención directa de ShellTI.`;
     recommendations = [
-      'Regularizar el consentimiento explícito en formularios (Crítico)',
-      'Implementar Autenticación de Doble Factor (MFA) inmediatamente (Crítico)',
-      'Establecer el protocolo de respuesta ante brechas de 72 horas (Crítico)',
-      'Iniciar auditoría de cumplimiento con el equipo de ShellTI'
+      'Regularizar el consentimiento explícito y MFA inmediatamente',
+      'Establecer el protocolo de respuesta ante brechas de 72 horas',
+      'Auditoría técnica profunda de bases de datos',
+      'Iniciar plan de remediación con ShellTI'
     ];
-  } else if(riskLevel === 'warning') {
-    title = 'RIESGO MEDIO IDENTIFICADO';
-    desc = `Existen vulnerabilidades en contratos con terceros o políticas de retención que deben ser subsanadas para evitar sanciones administrativas y multas de la Ley 21.719.`;
+  } else if(noCount === 2) {
+    title = 'RIESGO ALTO DETECTADO';
+    desc = `Su organización presenta múltiples omisiones normativas. El riesgo de sanciones es elevado y requiere acciones correctivas en el corto plazo.`;
     recommendations = [
-      'Actualizar contratos con proveedores y terceros (Medio)',
-      'Revisar y endurecer las políticas de retención de datos (Medio)',
-      'Completar el inventario de activos de datos personales',
-      'Programar una revisión técnica preventiva'
+      'Subsanar las brechas de seguridad identificadas',
+      'Actualizar políticas de retención y contratos con terceros',
+      'Realizar un Ethical Hacking preventivo',
+      'Agendar consultoría de revisión normativa'
+    ];
+  } else if(noCount === 1) {
+    title = 'RIESGO MEDIO IDENTIFICADO';
+    desc = `Se ha identificado una vulnerabilidad puntual. Aunque la postura general es aceptable, este punto debe ser corregido para asegurar el cumplimiento total.`;
+    recommendations = [
+      'Corregir el punto de incumplimiento detectado',
+      'Revisar inventario de datos personales',
+      'Capacitación básica al equipo encargado',
+      'Mantenimiento preventivo de políticas'
     ];
   } else {
     title = 'CUMPLIMIENTO SATISFACTORIO';
-    desc = `Tu organización tiene una base sólida de cumplimiento. El enfoque ahora debe ser el mantenimiento, la capacitación y la mejora continua de los procesos de seguridad.`;
+    desc = `Felicidades. Su organización cumple con los estándares evaluados. El enfoque debe ser la mejora continua y el monitoreo constante.`;
     recommendations = [
-      'Capacitación continua del personal en protección de datos',
-      'Mantener logs de acceso básicos y auditorías periódicas',
-      'Revisión semestral de la postura de seguridad',
+      'Mantener logs de acceso y auditorías',
+      'Capacitación continua en protección de datos',
+      'Revisión periódica de la postura de seguridad',
       'Simulacros de respuesta ante incidentes'
     ];
   }
