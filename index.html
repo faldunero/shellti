@@ -68,40 +68,23 @@ nav{
 .nav-cta:hover{background:rgba(0,212,255,0.1)!important;box-shadow:0 0 28px rgba(0,212,255,0.35)!important}
 
 /* ══════════════════════════════════════════════
-   HERO
+   SECTIONS BASE
 ══════════════════════════════════════════════ */
-#hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:100px 2.5rem 60px;position:relative;overflow:hidden;
+section{padding:100px 2.5rem}
+.container{max-width:1200px;margin:0 auto}
+.sec-label{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  letter-spacing:3px;text-transform:uppercase;color:var(--green);
+  margin-bottom:1rem;display:flex;align-items:center;gap:10px;
 }
-.hero-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),
-    radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.055) 0%,transparent 60%),
-    var(--deep);
-}
-.grid-lines{
-  position:absolute;inset:0;opacity:.028;
-  background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
-  background-size:55px 55px;pointer-events:none;
-}
-.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1}
-.hero-layout{display:grid;grid-template-columns:1fr 500px;gap:60px;align-items:center}
-.hero-visual img{
-  width:100%;max-width:450px;
-  filter: drop-shadow(0 0 30px rgba(0,212,255,0.3));
-  animation: float 6s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
+.sec-label::before{content:'';display:block;width:28px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.6)}
+h2.sec-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:1.5rem}
+.tc{color:var(--cyan);text-shadow:0 0 22px rgba(0,212,255,.4)}
+.tg{color:var(--green);text-shadow:0 0 22px rgba(52,211,153,.4)}
 
 /* ══════════════════════════════════════════════
-   STAFFING SECTION
+   STAFFING CARDS (New)
 ══════════════════════════════════════════════ */
-#staffing{padding:100px 2.5rem;background:var(--deep3);border-top:1px solid var(--border)}
 .staff-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:25px;margin-top:3rem}
 .staff-card{
   background:var(--card);border:1px solid var(--border);padding:2.5rem;border-radius:4px;
@@ -113,45 +96,39 @@ nav{
 .staff-card p{font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.7}
 
 /* ══════════════════════════════════════════════
-   SECTIONS
+   RESTORED HERO & SECTIONS (From Original)
 ══════════════════════════════════════════════ */
-section{padding:100px 2.5rem; border-top:1px solid var(--border)}
-.container{max-width:1200px; margin:0 auto}
-.sec-title{font-size:2.5rem; margin-bottom:1.5rem}
-.sec-desc{color:var(--muted); max-width:700px; margin-bottom:3rem; font-weight:300}
-.photo-box{border:1px solid var(--border); border-radius:4px; overflow:hidden; margin-top:2rem}
-.photo-box img{width:100%; height:auto; display:block; filter: brightness(0.8) saturate(1.2)}
+#hero{min-height:100vh;display:flex;align-items:center;padding:100px 2.5rem 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),radial-gradient(ellipse 700px 600px at 5% 85%, rgba(52,211,153,0.055) 0%,transparent 60%),var(--deep)}
+.grid-lines{position:absolute;inset:0;opacity:.028;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1}
+.hero-layout{display:grid;grid-template-columns:1fr 500px;gap:60px;align-items:center}
+.hero-visual img{width:100%;max-width:450px;filter:drop-shadow(0 0 30px rgba(0,212,255,0.3));animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.photo-vivid{filter:brightness(1.1) saturate(1.45) contrast(1.1);border-radius:4px;width:100%;transition:all .3s ease}
+.photo-vivid:hover{filter:brightness(1.18) saturate(1.6) contrast(1.14);transform:scale(1.01)}
 
 /* ══════════════════════════════════════════════
    CONTACTO
 ══════════════════════════════════════════════ */
-#contacto{background:var(--deep2);padding:100px 2.5rem}
+#contacto{background:var(--deep2);border-top:1px solid var(--border);padding:100px 2.5rem}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1200px;margin:0 auto}
 form.cform{display:flex;flex-direction:column;gap:14px}
-.finput{
-  background:rgba(3,9,24,0.95);border:1px solid var(--border);
-  color:var(--silver);padding:14px 18px;border-radius:2px;
-  font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;
-  outline:none;transition:border-color .2s,box-shadow .2s;width:100%;
-}
+.finput{background:rgba(3,9,24,0.95);border:1px solid var(--border);color:var(--silver);padding:14px 18px;border-radius:2px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;outline:none;transition:all .2s;width:100%}
 .finput:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.14)}
-.btn-submit{
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
-  color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
-  font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;
-  padding:16px;border:none;border-radius:2px;cursor:pointer;
-  transition:transform .2s,box-shadow .2s;margin-top:8px;
-  box-shadow:0 0 24px rgba(0,212,255,.32);
-}
+.btn-submit{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:16px;border:none;border-radius:2px;cursor:pointer;transition:all .2s;box-shadow:0 0 24px rgba(0,212,255,.32)}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 36px rgba(0,212,255,.48)}
 
-footer{padding:2rem 2.5rem; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center}
+footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
 <body>
 
 <nav>
   <a href="#" class="nav-logo">
-    <img src="imagenes/isotipo.png" alt="ShellTI Logo">
+    <img src="imagenes/isotipo.png" alt="ShellTI">
     <div class="nav-brand-name">Shell<span>TI</span></div>
   </a>
   <ul class="nav-links">
@@ -171,6 +148,7 @@ footer{padding:2rem 2.5rem; border-top:1px solid var(--border); display:flex; ju
   <div class="hero-inner">
     <div class="hero-layout">
       <div>
+        <p class="sec-label">Technology Consultancy</p>
         <h1 class="hero-title">Arquitectura de<br><em>Ecosistemas</em><br>Digitales</h1>
         <p class="hero-sub">Diseñamos el tejido lógico que sustenta la operatividad y resiliencia de organizaciones de alta complejidad. Especialistas en <strong>Ley N° 21.719</strong>.</p>
         <a href="diagnostico.html" class="btn-cta">Iniciar Assessment →</a>
@@ -184,48 +162,53 @@ footer{padding:2rem 2.5rem; border-top:1px solid var(--border); display:flex; ju
 
 <section id="nosotros">
   <div class="container">
-    <h2 class="sec-title">Sobre <span style="color:var(--cyan)">Nosotros</span></h2>
-    <p class="sec-desc">Somos expertos en ciberseguridad y cumplimiento normativo, enfocados en proteger el activo más valioso de su empresa: la información.</p>
-    <div class="photo-box">
-      <img src="imagenes/equipo_trabajando.png" alt="Equipo ShellTI">
+    <div class="about-grid">
+      <div>
+        <p class="sec-label">Nuestra Identidad</p>
+        <h2 class="sec-title">Expertos en <span class="tc">Ciberseguridad</span></h2>
+        <p class="sec-desc">Somos una consultora boutique de tecnología enfocada en la protección de activos críticos y el cumplimiento normativo avanzado. Nuestro enfoque combina ingeniería de software de elite con un profundo conocimiento legal de la Ley 21.719.</p>
+      </div>
+      <img src="imagenes/equipo_trabajando.png" class="photo-vivid" alt="Equipo">
     </div>
   </div>
 </section>
 
-<section id="staffing">
+<section id="staffing" style="background:var(--deep3)">
   <div class="container">
-    <h2 class="sec-title">Servicios de <span style="color:var(--cyan)">Outsourcing de TI</span></h2>
-    <p class="sec-desc">Soluciones completas de tercerización tecnológica para impulsar su transformación digital con nuestra fábrica de software.</p>
+    <p class="sec-label">Staffing & Outsourcing</p>
+    <h2 class="sec-title">Soluciones de <span class="tc">Tercerización Tecnológica</span></h2>
+    <p class="sec-desc">Impulsamos la evolución de su ecosistema digital mediante la integración de talento especializado y procesos de ingeniería de software de alto rendimiento.</p>
+    
     <div class="staff-grid">
       <div class="staff-card">
         <span class="staff-icon">💻</span>
         <h3>Outsourcing de Desarrollo</h3>
-        <p>Ingeniería de software a medida. Desplegamos equipos expertos en sistemas web y móviles bajo metodologías ágiles.</p>
+        <p>Ingeniería de software a medida bajo metodologías ágiles. Desplegamos equipos expertos en sistemas web, móviles y arquitecturas distribuidas enfocadas en escalabilidad.</p>
       </div>
       <div class="staff-card">
         <span class="staff-icon">🏭</span>
         <h3>Software Factory</h3>
-        <p>Procesos estandarizados de desarrollo, testing e implementación de soluciones tecnológicas empresariales.</p>
+        <p>Procesos estandarizados de ciclo de vida completo: desde el diseño conceptual y testing automatizado hasta la implementación y mantenimiento evolutivo de soluciones empresariales.</p>
       </div>
       <div class="staff-card">
         <span class="staff-icon">👥</span>
-        <h3>Tercerización de Equipos</h3>
-        <p>Staff augmentation con profesionales IT calificados y certificados para escalar sus proyectos inmediatamente.</p>
+        <h3>Staff Augmentation</h3>
+        <p>Integración inmediata de profesionales IT certificados. Externalice sus necesidades técnicas con expertos alineados a la cultura y objetivos de su organización.</p>
       </div>
       <div class="staff-card">
         <span class="staff-icon">🛠️</span>
-        <h3>Soporte Informático</h3>
-        <p>Outsourcing de soporte técnico y help desk 24/7. Gestión de infraestructura y mantenimiento preventivo.</p>
+        <h3>Soporte e Infraestructura</h3>
+        <p>Gestión proactiva de help desk 24/7 y mantenimiento de infraestructura crítica. Aseguramos la continuidad operativa mediante monitoreo preventivo y correctivo.</p>
       </div>
       <div class="staff-card">
         <span class="staff-icon">☁️</span>
-        <h3>Infraestructura y Cloud</h3>
-        <p>Tercerización de servicios cloud, migración, DevOps y administración de servidores con monitoreo continuo.</p>
+        <h3>Cloud & DevOps</h3>
+        <p>Estrategias de migración hacia nubes híbridas, automatización de despliegues y administración avanzada de servidores con enfoque en seguridad Zero Trust.</p>
       </div>
       <div class="staff-card">
         <span class="staff-icon">📊</span>
-        <h3>Gestión de Proyectos</h3>
-        <p>Asesoría en transformación digital y gestión de proyectos tecnológicos con metodologías certificadas.</p>
+        <h3>Project Management</h3>
+        <p>Gestión de proyectos tecnológicos bajo estándares PMI. Consultoría estratégica para la optimización de procesos y aceleración de la transformación digital.</p>
       </div>
     </div>
   </div>
@@ -233,30 +216,39 @@ footer{padding:2rem 2.5rem; border-top:1px solid var(--border); display:flex; ju
 
 <section id="compliance">
   <div class="container">
-    <h2 class="sec-title">Estrategia de <span style="color:var(--cyan)">Compliance</span></h2>
-    <p class="sec-desc">Alineamos su infraestructura con las exigencias de la Ley 21.719.</p>
-    <div class="photo-box">
-      <img src="imagenes/dashboard.png" alt="Compliance Dashboard">
+    <div class="about-grid">
+      <img src="imagenes/dashboard.png" class="photo-vivid" alt="Compliance">
+      <div>
+        <p class="sec-label">Ley 21.719</p>
+        <h2 class="sec-title">Estrategia de <span class="tc">Compliance</span></h2>
+        <p class="sec-desc">Alineamos su infraestructura tecnológica con las nuevas exigencias legales de protección de datos en Chile. Implementamos controles técnicos y administrativos para garantizar el cumplimiento normativo total.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="resiliencia">
+<section id="resiliencia" style="background:var(--deep3)">
   <div class="container">
-    <h2 class="sec-title">Resiliencia <span style="color:var(--green)">Digital</span></h2>
-    <p class="sec-desc">Continuidad operativa ante cualquier contingencia.</p>
-    <div class="photo-box">
-      <img src="imagenes/equipo_terreno.png" alt="Resiliencia en Terreno">
+    <div class="about-grid">
+      <div>
+        <p class="sec-label">Continuidad Operativa</p>
+        <h2 class="sec-title">Resiliencia <span class="tg">Digital</span></h2>
+        <p class="sec-desc">Diseñamos arquitecturas redundantes y planes de recuperación ante desastres que aseguran que su negocio nunca se detenga. Nuestra prioridad es la integridad y disponibilidad de sus servicios críticos.</p>
+      </div>
+      <img src="imagenes/equipo_terreno.png" class="photo-vivid" alt="Resiliencia">
     </div>
   </div>
 </section>
 
 <section id="metodologia">
   <div class="container">
-    <h2 class="sec-title">Metodología <span style="color:var(--cyan)">ShellTI</span></h2>
-    <p class="sec-desc">Procesos de ingeniería de alta fidelidad.</p>
-    <div class="photo-box">
-      <img src="imagenes/procesador.png" alt="Metodología Técnica">
+    <div class="about-grid">
+      <img src="imagenes/procesador.png" class="photo-vivid" alt="Metodología">
+      <div>
+        <p class="sec-label">Ingeniería de Elite</p>
+        <h2 class="sec-title">Metodología <span class="tc">ShellTI</span></h2>
+        <p class="sec-desc">Un enfoque sistemático basado en el análisis de riesgos, diseño de soluciones a medida e implementación técnica de alta fidelidad. Seguimos estándares internacionales para garantizar resultados de clase mundial.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -265,15 +257,17 @@ footer{padding:2rem 2.5rem; border-top:1px solid var(--border); display:flex; ju
   <div class="container">
     <div class="contact-grid">
       <div>
-        <h2 class="sec-title">Contáctanos</h2>
-        <p>Nuestro equipo está listo para ayudarle.</p>
+        <p class="sec-label">Contacto</p>
+        <h2 class="sec-title">Diseñemos tu <span class="tc">Ecosistema</span></h2>
+        <p class="sec-desc">Nuestro equipo está listo para analizar sus desafíos tecnológicos y de cumplimiento. Agende una consulta inicial hoy mismo.</p>
       </div>
       <form class="cform" action="https://formsubmit.co/contacto@shellti.com" method="POST">
+        <input type="hidden" name="_subject" value="Nuevo contacto desde ShellTI.com">
         <input class="finput" type="text" name="empresa" placeholder="Empresa" required>
         <input class="finput" type="email" name="email" placeholder="Correo Corporativo" required>
         <input class="finput" type="text" name="nombre" placeholder="Nombre">
-        <textarea class="finput" name="mensaje" rows="3" placeholder="Descripción"></textarea>
-        <button class="btn-submit" type="submit">ENVIAR SOLICITUD</button>
+        <textarea class="finput" name="mensaje" rows="3" placeholder="Descripción de la necesidad"></textarea>
+        <button class="btn-submit" type="submit">AGENDAR CONSULTA →</button>
       </form>
     </div>
   </div>
