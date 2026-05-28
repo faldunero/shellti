@@ -299,7 +299,6 @@ footer a:hover{color:var(--cyan3)}
   </ul>
 </nav>
 
-<!-- ════════ MAIN ════════ -->
 <main>
   <div class="main-bg"></div>
   <div class="grid-lines"></div>
@@ -345,7 +344,7 @@ footer a:hover{color:var(--cyan3)}
 
         <div class="question-item" data-question="4">
           <p class="question-num">Pregunta 04</p>
-          <p class="question-text">¿Tienen capacidad técnica para eliminar definitivamente los datos de un cliente (sin que queden en respaldos activos) tras su solicitud?</p>
+          <p class="question-text">¿Tienen políticas de retención claras y la capacidad técnica para eliminar definitivamente los datos tras su vencimiento o solicitud?</p>
           <div class="answer-buttons">
             <button class="btn-answer" data-answer="yes">Sí</button>
             <button class="btn-answer" data-answer="no">No</button>
@@ -363,7 +362,7 @@ footer a:hover{color:var(--cyan3)}
 
         <div class="question-item" data-question="6">
           <p class="question-num">Pregunta 06</p>
-          <p class="question-text">¿Sus proveedores críticos (Amazon, Google, CRM externo) tienen contratos con cláusulas de responsabilidad de datos bajo la ley chilena?</p>
+          <p class="question-text">¿Sus contratos con proveedores críticos están actualizados con cláusulas de responsabilidad de datos bajo la Ley 21.719?</p>
           <div class="answer-buttons">
             <button class="btn-answer" data-answer="yes">Sí</button>
             <button class="btn-answer" data-answer="no">No</button>
@@ -469,22 +468,6 @@ footer a:hover{color:var(--cyan3)}
 const answers = {};
 const questions = document.querySelectorAll('.question-item');
 
-// Definición de pesos para el cálculo dinámico
-// Impacto: Preguntas críticas tienen más peso en el eje Y
-// Probabilidad: Falta de controles básicos aumenta el eje X
-const questionWeights = {
-  '1': { x: 8, y: 5 },  // Inventario (Probabilidad alta de error si no hay)
-  '2': { x: 5, y: 10 }, // Consentimiento (Impacto legal alto)
-  '3': { x: 7, y: 6 },  // Exportación
-  '4': { x: 7, y: 6 },  // Eliminación
-  '5': { x: 4, y: 10 }, // Protocolo brechas (Impacto crítico)
-  '6': { x: 6, y: 7 },  // Contratos
-  '7': { x: 9, y: 9 },  // MFA (Probabilidad de brecha alta + Impacto alto)
-  '8': { x: 5, y: 9 },  // Cifrado
-  '9': { x: 6, y: 7 },  // DPO
-  '10': { x: 8, y: 8 }  // Pentesting
-};
-
 // ════════ EVENT LISTENERS ════════
 questions.forEach(q => {
   const qNum = q.dataset.question;
@@ -509,55 +492,24 @@ function updateHeatmap() {
   const totalAnswered = Object.keys(answers).length;
   const pointer = document.getElementById('riskPointer');
   
-  // Cálculo de coordenadas (0 a 100)
-  let posX = 100; // Probabilidad (empezamos en alto riesgo si todo es NO)
-  let posY = 0;   // Impacto (empezamos en bajo impacto)
+  const criticalQs = ['2', '5', '7']; // Consentimiento, Protocolo, MFA
+  const mediumQs = ['1', '4', '6'];   // Inventario, Retención, Contratos
   
-  let xSum = 0;
-  let ySum = 0;
-  let totalXWeight = 0;
-  let totalYWeight = 0;
-
-  // Calculamos basados en las respuestas "SÍ" que reducen el riesgo
-  Object.keys(questionWeights).forEach(qNum => {
-    totalXWeight += questionWeights[qNum].x;
-    totalYWeight += questionWeights[qNum].y;
-    
-    if (answers[qNum] === 'yes') {
-      // Un SÍ reduce la probabilidad de incumplimiento y el impacto del riesgo
-      xSum += questionWeights[qNum].x;
-      ySum += questionWeights[qNum].y;
-    }
-  });
-
-  // Mapeo a porcentaje (0% es esquina superior izquierda - Crítico, 100% es inferior derecha - Bajo)
-  // En la matriz visual: 
-  // X: 0% (Izquierda - Probabilidad Alta), 100% (Derecha - Probabilidad Baja)
-  // Y: 0% (Arriba - Impacto Alto), 100% (Abajo - Impacto Bajo)
+  const noAnswers = Object.keys(answers).filter(q => answers[q] === 'no');
+  const noCount = noAnswers.length;
   
-  const currentX = (xSum / totalXWeight) * 100;
-  const currentY = (ySum / totalYWeight) * 100;
-
-  // Invertimos Y porque 0 en CSS es arriba (Impacto Alto)
-  const visualX = currentX; 
-  const visualY = 100 - currentY;
-
-  // Actualizar puntero
-  pointer.style.left = visualX + '%';
-  pointer.style.top = visualY + '%';
-  
-  // Determinar nivel de riesgo para el texto
   let riskLevel = 'safe';
   let statusText = '';
   
-  // Lógica de clasificación
-  const noCount = Object.values(answers).filter(a => a === 'no').length;
-  
   if (totalAnswered > 0) {
-    if (visualX < 40 && visualY < 40) {
+    const hasCriticalNo = criticalQs.some(q => answers[q] === 'no');
+    const hasMediumNo = mediumQs.some(q => answers[q] === 'no');
+
+    // REGLA: 3 No = Incumplimiento (Crítico)
+    if (hasCriticalNo || noCount >= 3) {
       riskLevel = 'critical';
-      statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata requerida';
-    } else if (visualX < 70 && visualY < 70) {
+      statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata de ShellTI requerida';
+    } else if (hasMediumNo || noCount >= 1) {
       riskLevel = 'warning';
       statusText = '⚠️ RIESGO MEDIO: Requiere atención prioritaria';
     } else {
@@ -566,18 +518,45 @@ function updateHeatmap() {
     }
   }
 
-  // Actualizar UI
+  // Visual position calculation (0% High Risk/Impact, 100% Low Risk/Impact)
+  let visualX, visualY;
+  
+  if (totalAnswered === 0) {
+    visualX = 50; visualY = 50;
+  } else {
+    // Probability (X): more "No" answers -> lower X (more risk)
+    visualX = 100 - (noCount * 10); 
+    // Impact (Y): critical "No" answers -> lower Y (higher impact)
+    const criticalNoCount = criticalQs.filter(q => answers[q] === 'no').length;
+    visualY = 100 - (criticalNoCount * 25) - (noCount * 5);
+  }
+
+  // Clamp values to ensure they stay in the right quadrants
+  if (riskLevel === 'critical') {
+    visualX = Math.min(Math.max(visualX, 5), 45);
+    visualY = Math.min(Math.max(visualY, 5), 45);
+  } else if (riskLevel === 'warning') {
+    visualX = Math.min(Math.max(visualX, 5), 45);
+    visualY = Math.min(Math.max(visualY, 55), 95);
+  } else if (riskLevel === 'safe') {
+    visualX = Math.min(Math.max(visualX, 55), 95);
+    visualY = Math.min(Math.max(visualY, 55), 95);
+  }
+
+  pointer.style.left = visualX + '%';
+  pointer.style.top = visualY + '%';
+  
   const statusIndicator = document.getElementById('statusIndicator');
   statusIndicator.className = 'status-indicator ' + riskLevel;
   statusIndicator.innerHTML = `<p class="status-text"><strong>${statusText}</strong><br>Progreso: ${totalAnswered}/10 preguntas respondidas</p>`;
 
   if(totalAnswered === 10) {
-    showResults(riskLevel, Math.round(currentX), noCount);
+    showResults(riskLevel, noCount);
   }
 }
 
 // ════════ RESULTS DISPLAY ════════
-function showResults(riskLevel, compliancePercent, noCount) {
+function showResults(riskLevel, noCount) {
   const resultsSection = document.getElementById('resultsSection');
   const ctaSection = document.getElementById('ctaSection');
   const resultTitle = document.getElementById('resultTitle');
@@ -588,30 +567,30 @@ function showResults(riskLevel, compliancePercent, noCount) {
   let recommendations = [];
   
   if(riskLevel === 'critical') {
-    title = 'RIESGO CRÍTICO DETECTADO';
-    desc = `Tu organización presenta brechas críticas en controles de seguridad y cumplimiento legal. El impacto financiero de una multa (20.000 UTM) es inminente bajo la Ley 21.719.`;
+    title = 'INCUMPLIMIENTO - RIESGO CRÍTICO';
+    desc = `Se han detectado brechas críticas (o más de 3 omisiones) que ponen a la organización en estado de incumplimiento inmediato. Se requiere la intervención directa de ShellTI para regularizar su situación legal y técnica.`;
     recommendations = [
-      'Implementar protocolo de consentimiento explícito inmediatamente',
-      'Activar Autenticación de Doble Factor (MFA) en activos críticos',
-      'Establecer el protocolo de respuesta ante brechas de 72 horas',
-      'Auditar contratos con proveedores internacionales'
+      'Regularizar el consentimiento explícito en formularios (Crítico)',
+      'Implementar Autenticación de Doble Factor (MFA) inmediatamente (Crítico)',
+      'Establecer el protocolo de respuesta ante brechas de 72 horas (Crítico)',
+      'Iniciar auditoría de cumplimiento con el equipo de ShellTI'
     ];
   } else if(riskLevel === 'warning') {
     title = 'RIESGO MEDIO IDENTIFICADO';
-    desc = `Existen vulnerabilidades moderadas que aumentan la probabilidad de incidentes de datos. Se recomienda fortalecer la gobernanza antes de la vigencia total de la ley.`;
+    desc = `Existen vulnerabilidades en contratos con terceros o políticas de retención que deben ser subsanadas para evitar sanciones administrativas y multas de la Ley 21.719.`;
     recommendations = [
-      'Actualizar el inventario de datos personales',
-      'Realizar pruebas de penetración (Ethical Hacking)',
-      'Designar formalmente un Oficial de Protección de Datos (DPO)',
-      'Cifrar bases de datos con información sensible'
+      'Actualizar contratos con proveedores y terceros (Medio)',
+      'Revisar y endurecer las políticas de retención de datos (Medio)',
+      'Completar el inventario de activos de datos personales',
+      'Programar una revisión técnica preventiva'
     ];
   } else {
     title = 'CUMPLIMIENTO SATISFACTORIO';
-    desc = `Tu organización tiene una base sólida de cumplimiento. El enfoque ahora debe ser el mantenimiento y la mejora continua de los procesos.`;
+    desc = `Tu organización tiene una base sólida de cumplimiento. El enfoque ahora debe ser el mantenimiento, la capacitación y la mejora continua de los procesos de seguridad.`;
     recommendations = [
-      'Mantener registros de auditoría actualizados',
-      'Capacitación continua al personal sobre nuevas normativas',
-      'Revisión semestral de contratos con terceros',
+      'Capacitación continua del personal en protección de datos',
+      'Mantener logs de acceso básicos y auditorías periódicas',
+      'Revisión semestral de la postura de seguridad',
       'Simulacros de respuesta ante incidentes'
     ];
   }
@@ -627,7 +606,6 @@ function showResults(riskLevel, compliancePercent, noCount) {
   resultsSection.classList.add('show');
   ctaSection.style.display = 'block';
   
-  // Scroll suave a resultados
   resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
