@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Ley 21.719 | ShellTI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   RESET & ROOT
+══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:    #020617;
+  --deep2:   #040d1e;
+  --deep3:   #060f1c;
+  --cyan:    #00D4FF;
+  --cyan2:   #00b8e6;
+  --cyan3:   #7eeeff;
+  --green:   #34D399;
+  --green2:  #22c587;
+  --red:     #FF6B6B;
+  --red2:    #FF5252;
+  --yellow:  #FFD93D;
+  --yellow2: #FFC107;
+  --silver:  #E2E8F0;
+  --muted:   #94A3B8;
+  --border:  rgba(0,212,255,0.13);
+  --bh:      rgba(0,212,255,0.32);
+  --card:    rgba(3,9,24,0.93);
+  --cg:      rgba(0,212,255,0.07);
+}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.4);border-radius:2px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);line-height:1.7;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--silver);line-height:1.1}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;width:100%;z-index:300;
+  height:68px;padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(2,6,23,0.95);
+  backdrop-filter:blur(28px) saturate(200%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{
+  height:42px;width:42px;object-fit:contain;
+  image-rendering:crisp-edges;
+  filter:
+    drop-shadow(0 0 10px rgba(0,212,255,0.85))
+    drop-shadow(0 0 22px rgba(0,212,255,0.5))
+    drop-shadow(0 0 5px rgba(52,211,153,0.7))
+    brightness(1.25) saturate(1.5) contrast(1.1);
+  transition:filter .3s;
+}
+.nav-logo:hover img{filter:drop-shadow(0 0 16px rgba(0,212,255,1)) drop-shadow(0 0 40px rgba(0,212,255,0.7)) brightness(1.35) saturate(1.6) contrast(1.15)}
+.nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
+.nav-brand-name span{color:var(--cyan)}
+.nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+
+/* ══════════════════════════════════════════════
+   MAIN CONTAINER
+══════════════════════════════════════════════ */
+main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidden}
+.main-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),
+    radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.055) 0%,transparent 60%),
+    var(--deep);
+}
+.grid-lines{
+  position:absolute;inset:0;opacity:.028;
+  background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
+  background-size:55px 55px;pointer-events:none;
+}
+.container{max-width:1000px;margin:0 auto;width:100%;position:relative;z-index:1}
+
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+.diag-header{margin-bottom:3rem;text-align:center}
+.overline{
+  font-family:'JetBrains Mono',monospace;color:var(--green);
+  font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.overline::before{content:'';display:block;width:32px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.7)}
+.overline::after{content:'';display:block;width:32px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.7)}
+h1.diag-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.06;margin-bottom:1rem}
+h1.diag-title em{
+  color:var(--cyan);font-style:normal;
+  text-shadow:0 0 28px rgba(0,212,255,.6),0 0 60px rgba(0,212,255,.25),0 0 100px rgba(0,212,255,.1)
+}
+.diag-sub{font-size:.95rem;color:var(--muted);max-width:600px;margin:0 auto 2rem;font-weight:300;line-height:1.85}
+
+/* ══════════════════════════════════════════════
+   SURVEY SECTION
+══════════════════════════════════════════════ */
+.survey-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:3rem}
+.survey-questions{display:flex;flex-direction:column;gap:1.5rem}
+.question-item{
+  background:var(--card);border:1px solid var(--border);border-radius:3px;
+  padding:1.5rem;box-shadow:0 0 32px rgba(0,212,255,0.06),inset 0 0 24px rgba(0,212,255,0.02);
+  transition:all .3s ease;cursor:pointer;position:relative;
+}
+.question-item:hover{
+  border-color:rgba(0,212,255,0.3);
+  box-shadow:0 0 48px rgba(0,212,255,0.12),inset 0 0 24px rgba(0,212,255,0.04);
+}
+.question-item.answered{border-left:3px solid var(--cyan)}
+.question-item.answered.yes{border-left:3px solid var(--green)}
+.question-item.answered.no{border-left:3px solid var(--red)}
+.question-num{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;
+}
+.question-text{font-size:.95rem;color:var(--silver);margin-bottom:1rem;font-weight:500}
+.answer-buttons{display:flex;gap:12px}
+.btn-answer{
+  flex:1;padding:10px 16px;border:1px solid rgba(226,232,240,.28);
+  background:transparent;color:var(--muted);
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.8rem;
+  letter-spacing:1px;text-transform:uppercase;border-radius:2px;
+  cursor:pointer;transition:all .2s ease;
+}
+.btn-answer:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px rgba(0,212,255,.18)}
+.btn-answer.active{
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);border-color:var(--cyan);box-shadow:0 0 28px rgba(0,212,255,.42);
+}
+.btn-answer.active.no{
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  color:var(--silver);border-color:var(--red);box-shadow:0 0 28px rgba(255,107,107,.42);
+}
+
+/* ══════════════════════════════════════════════
+   HEATMAP SECTION
+══════════════════════════════════════════════ */
+.heatmap-panel{
+  background:var(--card);border:1px solid var(--border);border-radius:3px;
+  padding:2rem;box-shadow:0 0 32px rgba(0,212,255,0.06),inset 0 0 24px rgba(0,212,255,0.02);
+  position:sticky;top:100px;height:fit-content;
+}
+.heatmap-title{
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:1.5rem;
+  text-shadow:0 0 12px rgba(0,212,255,.45);
+}
+.heatmap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.heatmap-cell{
+  background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,.22);
+  border-radius:2px;padding:1rem;text-align:center;
+}
+.heatmap-cell.critical{background:rgba(255,107,107,0.12);border-color:rgba(255,107,107,.3)}
+.heatmap-cell.warning{background:rgba(255,217,61,0.12);border-color:rgba(255,217,61,.3)}
+.heatmap-cell.safe{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,.3)}
+.heatmap-value{font-size:1.8rem;font-weight:800;margin-bottom:.5rem}
+.heatmap-cell.critical .heatmap-value{color:var(--red)}
+.heatmap-cell.warning .heatmap-value{color:var(--yellow)}
+.heatmap-cell.safe .heatmap-value{color:var(--green)}
+.heatmap-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
+/* Risk Matrix */
+.risk-matrix{margin-bottom:2rem}
+.risk-matrix-title{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;
+}
+.matrix-visual{
+  width:100%;height:180px;background:linear-gradient(135deg,rgba(255,107,107,0.1) 0%,rgba(255,217,61,0.1) 50%,rgba(52,211,153,0.1) 100%);
+  border:1px solid var(--border);border-radius:2px;position:relative;display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;color:var(--muted);
+}
+.matrix-label{position:absolute;font-size:.65rem;font-weight:600;letter-spacing:.5px}
+.matrix-label.critical{top:10px;left:10px;color:var(--red)}
+.matrix-label.warning{top:50%;left:50%;transform:translate(-50%,-50%);color:var(--yellow)}
+.matrix-label.safe{bottom:10px;right:10px;color:var(--green)}
+
+/* Status Indicator */
+.status-indicator{
+  padding:1rem;border-radius:2px;margin-bottom:1.5rem;
+  border-left:3px solid var(--cyan);background:rgba(0,212,255,0.08);
+}
+.status-indicator.critical{border-left-color:var(--red);background:rgba(255,107,107,0.08)}
+.status-indicator.warning{border-left-color:var(--yellow);background:rgba(255,217,61,0.08)}
+.status-indicator.safe{border-left-color:var(--green);background:rgba(52,211,153,0.08)}
+.status-text{font-size:.85rem;color:var(--silver);font-weight:500}
+.status-text strong{display:block;margin-bottom:.25rem}
+
+/* ══════════════════════════════════════════════
+   RESULTS SECTION
+══════════════════════════════════════════════ */
+.results-section{
+  background:var(--card);border:1px solid var(--border);border-radius:3px;
+  padding:2.5rem;box-shadow:0 0 32px rgba(0,212,255,0.06),inset 0 0 24px rgba(0,212,255,0.02);
+  margin-bottom:2rem;display:none;
+}
+.results-section.show{display:block}
+.results-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.results-title{
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:.5rem;
+  text-shadow:0 0 12px rgba(0,212,255,.45);
+}
+.results-main{font-size:1.8rem;font-weight:800;color:var(--silver);margin-bottom:1rem}
+.results-desc{color:var(--muted);font-size:.9rem;line-height:1.8}
+
+.recommendations{margin-top:2rem}
+.rec-title{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--green);margin-bottom:1rem;
+}
+.rec-list{display:flex;flex-direction:column;gap:.75rem}
+.rec-item{display:flex;gap:12px;align-items:flex-start;font-size:.9rem;color:var(--muted)}
+.rec-item::before{content:'▸';color:var(--cyan);flex-shrink:0;margin-top:2px;text-shadow:0 0 8px rgba(0,212,255,.6)}
+
+/* ══════════════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════════════ */
+.cta-section{
+  background:linear-gradient(135deg,rgba(0,212,255,0.08) 0%,rgba(52,211,153,0.06) 100%);
+  border:1px solid var(--border);border-radius:3px;
+  padding:2.5rem;text-align:center;
+  box-shadow:0 0 32px rgba(0,212,255,0.06),inset 0 0 24px rgba(0,212,255,0.02);
+}
+.cta-title{font-size:1.5rem;font-weight:800;margin-bottom:1rem;color:var(--silver)}
+.cta-title em{color:var(--cyan);font-style:normal;text-shadow:0 0 22px rgba(0,212,255,.4)}
+.cta-desc{color:var(--muted);max-width:500px;margin:0 auto 2rem;font-weight:300;line-height:1.8}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
+  font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;
+  padding:15px 30px;text-decoration:none;border:none;border-radius:3px;
+  box-shadow:0 0 28px rgba(0,212,255,0.42),0 4px 20px rgba(0,212,255,0.25);
+  transition:transform .2s,box-shadow .2s;cursor:pointer;
+}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35)}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{
+  padding:2rem;text-align:center;border-top:1px solid var(--border);
+  color:var(--muted);font-size:.85rem;
+}
+footer a{color:var(--cyan);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--cyan3)}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:900px){
+  .survey-wrapper{grid-template-columns:1fr;gap:20px}
+  .heatmap-panel{position:static;margin-bottom:2rem}
+  nav{padding:0 1.5rem}
+  main{padding:80px 1.5rem 40px}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .heatmap-grid{grid-template-columns:1fr}
+  .question-item{padding:1rem}
+  .btn-answer{font-size:.7rem;padding:8px 12px}
+  .cta-section{padding:1.5rem}
+  .diag-title{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ NAVBAR ════════ -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-brand-name">Shell<span>TI</span></span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ MAIN ════════ -->
+<main>
+  <div class="main-bg"></div>
+  <div class="grid-lines"></div>
+  
+  <div class="container">
+    <!-- HEADER -->
+    <div class="diag-header">
+      <p class="overline">Evaluación Ley 21.719</p>
+      <h1 class="diag-title">Diagnóstico de <em>Cumplimiento</em> de Datos</h1>
+      <p class="diag-sub">Responde las 10 preguntas críticas sobre protección de datos personales. El sistema generará automáticamente tu heatmap de riesgos y recomendaciones personalizadas.</p>
+    </div>
+
+    <!-- SURVEY + HEATMAP -->
+    <div class="survey-wrapper">
+      <!-- QUESTIONS -->
+      <div class="survey-questions">
+        <div class="question-item" data-question="1">
+          <p class="question-num">Pregunta 01</p>
+          <p class="question-text">¿Tienen un inventario actualizado de dónde residen todos los datos personales (Cloud, local, correos, excels)?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="2">
+          <p class="question-num">Pregunta 02</p>
+          <p class="question-text">¿Sus formularios de captación de datos tienen una casilla de aceptación explícita que no venga pre-marcada?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="3">
+          <p class="question-num">Pregunta 03</p>
+          <p class="question-text">¿Pueden exportar todos los datos de un usuario en un formato legible en menos de 10 días si este lo solicita?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="4">
+          <p class="question-num">Pregunta 04</p>
+          <p class="question-text">¿Tienen capacidad técnica para eliminar definitivamente los datos de un cliente (sin que queden en respaldos activos) tras su solicitud?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="5">
+          <p class="question-num">Pregunta 05</p>
+          <p class="question-text">¿Existe un protocolo documentado para reportar una filtración a la Agencia de Protección de Datos en menos de 72 horas?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="6">
+          <p class="question-num">Pregunta 06</p>
+          <p class="question-text">¿Sus proveedores críticos (Amazon, Google, CRM externo) tienen contratos con cláusulas de responsabilidad de datos bajo la ley chilena?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="7">
+          <p class="question-num">Pregunta 07</p>
+          <p class="question-text">¿Se utiliza Autenticación de Doble Factor (MFA) para acceder a las bases de datos de clientes?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="8">
+          <p class="question-num">Pregunta 08</p>
+          <p class="question-text">¿Los datos sensibles (salud, biometría, orientación) están cifrados o anonimizados en su base de datos?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="9">
+          <p class="question-num">Pregunta 09</p>
+          <p class="question-text">¿Existe un Oficial de Protección de Datos (DPO) o un responsable formalmente nombrado ante la empresa?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+
+        <div class="question-item" data-question="10">
+          <p class="question-num">Pregunta 10</p>
+          <p class="question-text">¿Se realizan pruebas de penetración (Ethical Hacking) al menos una vez al año para detectar brechas?</p>
+          <div class="answer-buttons">
+            <button class="btn-answer" data-answer="yes">Sí</button>
+            <button class="btn-answer" data-answer="no">No</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEATMAP PANEL -->
+      <div class="heatmap-panel">
+        <h3 class="heatmap-title">Matriz de Riesgos</h3>
+        
+        <!-- Status Indicator -->
+        <div class="status-indicator" id="statusIndicator">
+          <p class="status-text"><strong>Estado:</strong> Completa el diagnóstico para ver tu evaluación</p>
+        </div>
+
+        <!-- Risk Metrics -->
+        <div class="heatmap-grid">
+          <div class="heatmap-cell safe" id="cellCompliance">
+            <div class="heatmap-value">0</div>
+            <div class="heatmap-label">Cumplimiento</div>
+          </div>
+          <div class="heatmap-cell critical" id="cellRisk">
+            <div class="heatmap-value">0</div>
+            <div class="heatmap-label">Riesgo</div>
+          </div>
+        </div>
+
+        <!-- Risk Matrix Visual -->
+        <div class="risk-matrix">
+          <p class="risk-matrix-title">Probabilidad vs Impacto</p>
+          <div class="matrix-visual">
+            <span class="matrix-label critical">CRÍTICO</span>
+            <span class="matrix-label warning">MEDIO</span>
+            <span class="matrix-label safe">BAJO</span>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations" id="recommendationsPanel" style="display:none">
+          <p class="rec-title">Acciones Prioritarias</p>
+          <ul class="rec-list" id="recList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <div class="results-section" id="resultsSection">
+      <div class="results-header">
+        <p class="results-title">Resultado del Diagnóstico</p>
+        <h2 class="results-main" id="resultTitle">Evaluación Completada</h2>
+        <p class="results-desc" id="resultDesc">Tu organización ha completado la evaluación de cumplimiento. Revisa los detalles a continuación.</p>
+      </div>
+      <div id="resultDetails"></div>
+    </div>
+
+    <!-- CTA SECTION -->
+    <div class="cta-section" id="ctaSection" style="display:none">
+      <h2 class="cta-title">Obtén tu <em>Diagnóstico Completo</em></h2>
+      <p class="cta-desc">Nuestro equipo de especialistas en Ley 21.719 analizará tu situación actual y diseñará un plan de acción personalizado para garantizar tu cumplimiento normativo.</p>
+      <button class="btn-cta" id="contactBtn">Agendar Consulta Gratuita →</button>
+    </div>
+  </div>
+</main>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <p>&copy; 2026 ShellTI. Especialistas en Arquitectura de Ecosistemas Digitales. <a href="index.html">Volver al inicio</a></p>
+</footer>
+
+<script>
+// ════════ STATE MANAGEMENT ════════
+const answers = {};
+const questions = document.querySelectorAll('.question-item');
+const riskLevels = {
+  critical: ['2', '5', '7'],  // Consentimiento, protocolo brechas, MFA
+  warning: ['1', '3', '4', '6'],  // Inventario, exportación, eliminación, contratos
+  safe: ['8', '9', '10']  // Cifrado, DPO, penetration testing
+};
+
+// ════════ EVENT LISTENERS ════════
+questions.forEach(q => {
+  const qNum = q.dataset.question;
+  const buttons = q.querySelectorAll('.btn-answer');
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove previous active state
+      buttons.forEach(b => b.classList.remove('active', 'no'));
+      
+      // Set new active state
+      btn.classList.add('active');
+      if(btn.dataset.answer === 'no') btn.classList.add('no');
+      
+      // Update answer
+      answers[qNum] = btn.dataset.answer;
+      
+      // Update visual state
+      q.classList.add('answered');
+      if(btn.dataset.answer === 'yes') {
+        q.classList.remove('answered');
+        q.classList.add('answered');
+      } else {
+        q.classList.add('answered');
+      }
+      
+      // Recalculate heatmap
+      updateHeatmap();
+    });
+  });
+});
+
+// ════════ HEATMAP CALCULATION ════════
+function updateHeatmap() {
+  const totalAnswered = Object.keys(answers).length;
+  const yesCount = Object.values(answers).filter(a => a === 'yes').length;
+  const noCount = totalAnswered - yesCount;
+  
+  // Update metrics
+  const compliancePercent = totalAnswered > 0 ? Math.round((yesCount / totalAnswered) * 100) : 0;
+  const riskPercent = 100 - compliancePercent;
+  
+  document.getElementById('cellCompliance').querySelector('.heatmap-value').textContent = compliancePercent + '%';
+  document.getElementById('cellRisk').querySelector('.heatmap-value').textContent = riskPercent + '%';
+  
+  // Determine risk level
+  let riskLevel = 'safe';
+  let statusText = '';
+  
+  if(totalAnswered === 10) {
+    // Count critical "No" answers
+    const criticalNos = riskLevels.critical.filter(q => answers[q] === 'no').length;
+    const warningNos = riskLevels.warning.filter(q => answers[q] === 'no').length;
+    
+    if(criticalNos >= 2 || noCount > 5) {
+      riskLevel = 'critical';
+      statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata requerida';
+    } else if(criticalNos === 1 || warningNos >= 2) {
+      riskLevel = 'warning';
+      statusText = '⚠️ RIESGO MEDIO: Requiere atención prioritaria';
+    } else {
+      riskLevel = 'safe';
+      statusText = '✓ RIESGO BAJO: Cumplimiento adecuado';
+    }
+    
+    // Show results and CTA
+    showResults(riskLevel, compliancePercent, noCount);
+  }
+  
+  // Update status indicator
+  const statusIndicator = document.getElementById('statusIndicator');
+  statusIndicator.className = 'status-indicator ' + riskLevel;
+  statusIndicator.innerHTML = `<p class="status-text"><strong>${statusText}</strong><br>Progreso: ${totalAnswered}/10 preguntas respondidas</p>`;
+  
+  // Update heatmap cells
+  updateHeatmapCells(riskLevel);
+}
+
+function updateHeatmapCells(riskLevel) {
+  const complianceCell = document.getElementById('cellCompliance');
+  const riskCell = document.getElementById('cellRisk');
+  
+  complianceCell.className = 'heatmap-cell ' + (riskLevel === 'safe' ? 'safe' : riskLevel === 'warning' ? 'warning' : 'critical');
+  riskCell.className = 'heatmap-cell ' + (riskLevel === 'safe' ? 'safe' : riskLevel === 'warning' ? 'warning' : 'critical');
+}
+
+// ════════ RESULTS DISPLAY ════════
+function showResults(riskLevel, compliancePercent, noCount) {
+  const resultsSection = document.getElementById('resultsSection');
+  const ctaSection = document.getElementById('ctaSection');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultDesc = document.getElementById('resultDesc');
+  
+  let title = '';
+  let desc = '';
+  let recommendations = [];
+  
+  if(riskLevel === 'critical') {
+    title = 'RIESGO CRÍTICO DETECTADO';
+    desc = `Tu organización tiene ${noCount} respuestas negativas a preguntas críticas. El riesgo de multas por incumplimiento de la Ley 21.719 es inminente. Se requiere acción inmediata.`;
+    recommendations = [
+      'Implementar protocolo de consentimiento explícito en formularios',
+      'Establecer procedimiento de notificación de brechas (72 horas)',
+      'Activar MFA en acceso a bases de datos',
+      'Revisar contratos con proveedores críticos',
+      'Designar DPO o responsable de protección de datos'
+    ];
+  } else if(riskLevel === 'warning') {
+    title = 'RIESGO MEDIO IDENTIFICADO';
+    desc = `Tu organización tiene ${noCount} brechas de cumplimiento. Aunque no es crítico, requiere atención prioritaria en los próximos 30 días.`;
+    recommendations = [
+      'Auditar políticas de retención de datos',
+      'Actualizar contratos con terceros',
+      'Implementar cifrado para datos sensibles',
+      'Documentar procedimientos de eliminación de datos',
+      'Realizar capacitación del personal'
+    ];
+  } else {
+    title = 'CUMPLIMIENTO ADECUADO';
+    desc = `Tu organización mantiene un nivel de cumplimiento satisfactorio (${compliancePercent}% de conformidad). Continúa con auditorías periódicas.`;
+    recommendations = [
+      'Mantener auditorías anuales de penetración',
+      'Revisar y actualizar políticas cada 6 meses',
+      'Capacitar al personal en protección de datos',
+      'Monitorear cambios en la legislación',
+      'Documentar todas las acciones de cumplimiento'
+    ];
+  }
+  
+  resultTitle.textContent = title;
+  resultDesc.textContent = desc;
+  
+  // Show recommendations
+  const recPanel = document.getElementById('recommendationsPanel');
+  const recList = document.getElementById('recList');
+  recList.innerHTML = recommendations.map(r => `<li class="rec-item">${r}</li>`).join('');
+  recPanel.style.display = 'block';
+  
+  // Show sections
+  resultsSection.classList.add('show');
+  ctaSection.style.display = 'block';
+}
+
+// ════════ CTA HANDLER ════════
+document.getElementById('contactBtn').addEventListener('click', () => {
+  const email = prompt('¿Cuál es tu correo corporativo?');
+  if(email) {
+    const company = prompt('¿Nombre de tu empresa?');
+    if(company) {
+      // Simulate sending data
+      alert(`✓ Gracias ${company}. Nos contactaremos a ${email} pronto con tu diagnóstico completo.`);
+      // In production, this would send data to a backend
+    }
+  }
+});
+
+// ════════ SCROLL TO TOP ════════
+window.addEventListener('load', () => {
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
