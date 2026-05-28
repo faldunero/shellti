@@ -104,6 +104,25 @@
       gap: 1.75rem;
       list-style: none;
     }
+    .nav-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .nav-home-btn:hover {
+      border-color: var(--cyan);
+      background: rgba(0, 212, 255, 0.05);
+    }
 
     .nav-links a {
       color: var(--muted);
@@ -329,9 +348,11 @@
     }
 
     .axis-x {
-      bottom: -25px;
+      bottom: -40px;
       left: 50%;
       transform: translateX(-50%);
+      width: 100%;
+      text-align: center;
     }
 
     .risk-pointer {
@@ -462,10 +483,9 @@
     </a>
 
     <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-home-btn">← Inicio</a></li>
       <li><a href="index.html#nosotros">Quiénes Somos</a></li>
-      <li><a href="index.html#assessment">Assessment</a></li>
       <li><a href="index.html#compliance">Ley 21.719</a></li>
-      <li><a href="index.html#metodologia">Metodología</a></li>
       <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
     </ul>
 
@@ -540,6 +560,55 @@
       </form>
     </div>
   </div>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <div class="footer-logo">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACUklEQVR4nO2b0W3CMBBG/68AA0SDRp2iA8BIA5oN2g2yQZpG2qBRGqFpkA0iDRoYAAaAAI76QpWc14ntOAnE+T+J5HNx/u9sz7bJvUeIiIiIiIh8hTnH0R5g7eA0kLgB2HlYd4Hl/81xH1g7OM+t0f2+Q1n4Z7271uN3HtbzQGIOtI64d7BeA/t1v7u11+M2kHgG2kXcH1gvO88n116Px0DizEGbifsP61nnec211+MxkLh00Fbi/sN63Hnecu31eAwkrh20iXgw9mE97jzvufZ6PAYSlw4aTTwY+7Aed573XHs9HgOJSwcNIB6MfViPO88Hrr0ej4HEpYMGEL8Xw0Hi0kEDiN+L4SBx6aABxO/FcJC4dNAA4vdiOEhcmgO9tS5rIu5/zD1o2nJpDjwEEmMibl+aAw+BxJiI25fmwEMgMSbi9qU58BBIjIm4fWkOPAQSYyJuX5oDD4HEmIjb1zQHWkvc/6Y50FrivtIcaC1xX2kOtJa4rzQHWkvcV5oDrSXuK82B1hL3leZAa4n7SnOgtcR9pTnQWuK+0hxoLXFfaQ60lrivNAdaS9xXmgOtJe4rzYHWEveV5kAriTtJc6CVxJ2kOdBK4k7SHGglcSdpDrSSuJM0B1pJ3EmaA60k7iTNgVYSd5LmQCuJO0lzoJXEnXTYB1pJ3MmwD7SSuJNhH2glcSfDPtBK4k6GfaCVxJ0M+0Arit9Lh32gFcXvpcM+0Iri99JhH2hF8XvpsA+0ovi9dNgHWlH8XjqMAyIiIiIiIv8oX6mO3gN0aR1sAAAAAElFTkSuQmCC" alt="ShellTI Logo" />
+      <span>ShellTI</span>
+    </div>
+    <p>Av. Apoquindo 4501, Las Condes, Santiago.<br>© 2026 ShellTI. Todos los derechos reservados.</p>
+  </footer>
+
+  <style>
+    footer {
+      padding: 2rem 2.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--deep);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-logo img {
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(0,212,255,.65)) drop-shadow(0 0 22px rgba(0,212,255,.35)) brightness(1.2) saturate(1.4);
+    }
+    .footer-logo span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+    }
+    footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+      text-align: right;
+    }
+    @media (max-width: 960px) {
+      footer { flex-direction: column; align-items: flex-start; }
+      footer p { text-align: left; }
+    }
+  </style>
 
   <script>
     const questions = [
