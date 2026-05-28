@@ -168,15 +168,20 @@ h1.diag-title em{color:var(--cyan);font-style:normal;text-shadow:0 0 28px rgba(0
 }
 
 /* ══════════════════════════════════════════════
-   RESULTS & CTA
+   RESULTS & RECOMMENDATIONS
 ══════════════════════════════════════════════ */
 .results-section{
   background:var(--card);border:1px solid var(--border);border-radius:3px;
-  padding:1.5rem 2rem;margin-top:2rem;display:none;
+  padding:2rem;margin-top:2rem;display:none;
 }
 .results-section.show{display:block}
 .results-main{font-size:1.4rem;font-weight:800;color:var(--silver);margin-bottom:0.5rem}
-.results-desc{color:var(--muted);font-size:.85rem;line-height:1.6}
+.results-desc{color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:1.5rem}
+
+.rec-title{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--green);text-transform:uppercase;margin-bottom:1rem}
+.rec-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.rec-item{display:flex;gap:10px;font-size:.85rem;color:var(--muted)}
+.rec-item::before{content:'▸';color:var(--cyan)}
 
 .cta-section{
   background:rgba(0,212,255,0.05);border:1px solid var(--border);
@@ -370,6 +375,10 @@ footer{padding:1.5rem;text-align:center;font-size:.75rem;color:var(--muted);bord
         <div id="resultsSection" class="results-section">
           <h3 id="resultTitle" class="results-main">Resultado</h3>
           <p id="resultDesc" class="results-desc"></p>
+          <div id="recommendationsPanel">
+            <p class="rec-title">Recomendaciones Clave:</p>
+            <ul id="recList" class="rec-list"></ul>
+          </div>
         </div>
 
         <div id="ctaSection" class="cta-section">
@@ -463,12 +472,47 @@ function updateHeatmap() {
   indicator.innerHTML = `<p class="status-text"><strong>${statusText}</strong><br>Progreso: ${totalAnswered}/10 respondidas</p>`;
 
   if(totalAnswered === 10) {
-    document.getElementById('resultsSection').classList.add('show');
-    document.getElementById('ctaSection').style.display = 'block';
-    document.getElementById('resultTitle').textContent = statusText.split(':')[0];
-    document.getElementById('resultDesc').textContent = "Basado en tus respuestas, tu organización se encuentra en un nivel de riesgo " + (noCount >= 3 ? "Crítico" : noCount === 2 ? "Alto" : noCount === 1 ? "Medio" : "Bajo") + ". Recomendamos una consultoría personalizada para regularizar su situación ante la Ley 21.719.";
-    document.getElementById('formRiskLevel').value = "Riesgo: " + riskLevel + " (No: " + noCount + ")";
+    showResults(noCount);
   }
+}
+
+function showResults(noCount) {
+  const resultsSection = document.getElementById('resultsSection');
+  const ctaSection = document.getElementById('ctaSection');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultDesc = document.getElementById('resultDesc');
+  const recList = document.getElementById('recList');
+  const formRiskField = document.getElementById('formRiskLevel');
+  
+  let title = '';
+  let desc = '';
+  let recommendations = [];
+  
+  if(noCount >= 3) {
+    title = 'RIESGO CRÍTICO';
+    desc = 'Se han detectado brechas críticas. Se requiere intervención directa inmediata.';
+    recommendations = ['Regularizar consentimiento y MFA', 'Establecer protocolo de brechas', 'Auditoría técnica profunda'];
+  } else if(noCount === 2) {
+    title = 'RIESGO ALTO';
+    desc = 'Su organización presenta múltiples omisiones. El riesgo de sanciones es elevado.';
+    recommendations = ['Subsanar brechas de seguridad', 'Actualizar políticas y contratos', 'Ethical Hacking preventivo'];
+  } else if(noCount === 1) {
+    title = 'RIESGO MEDIO';
+    desc = 'Se ha identificado una vulnerabilidad puntual que debe ser corregida.';
+    recommendations = ['Corregir punto de incumplimiento', 'Revisar inventario de datos', 'Capacitación básica'];
+  } else {
+    title = 'CUMPLIMIENTO BAJO RIESGO';
+    desc = 'Felicidades. Su organización cumple con los estándares evaluados.';
+    recommendations = ['Mantener logs y auditorías', 'Capacitación continua', 'Revisión periódica'];
+  }
+  
+  resultTitle.textContent = title;
+  resultDesc.textContent = desc;
+  recList.innerHTML = recommendations.map(r => `<li class="rec-item">${r}</li>`).join('');
+  formRiskField.value = title + " (No: " + noCount + ")";
+  
+  resultsSection.classList.add('show');
+  ctaSection.style.display = 'block';
 }
 
 const modal = document.getElementById('contactModal');
