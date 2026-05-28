@@ -84,7 +84,7 @@ main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidde
   background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
   background-size:55px 55px;pointer-events:none;
 }
-.container{max-width:1000px;margin:0 auto;width:100%;position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:1}
 
 /* ══════════════════════════════════════════════
    HEADER
@@ -107,7 +107,7 @@ h1.diag-title em{
 /* ══════════════════════════════════════════════
    SURVEY SECTION
 ══════════════════════════════════════════════ */
-.survey-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:3rem}
+.survey-wrapper{display:grid;grid-template-columns:1fr 400px;gap:40px;margin-bottom:3rem}
 .survey-questions{display:flex;flex-direction:column;gap:1.5rem}
 .question-item{
   background:var(--card);border:1px solid var(--border);border-radius:3px;
@@ -157,35 +157,6 @@ h1.diag-title em{
   text-transform:uppercase;color:var(--cyan);margin-bottom:1.5rem;
   text-shadow:0 0 12px rgba(0,212,255,.45);
 }
-.heatmap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
-.heatmap-cell{
-  background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,.22);
-  border-radius:2px;padding:1rem;text-align:center;
-}
-.heatmap-cell.critical{background:rgba(255,107,107,0.12);border-color:rgba(255,107,107,.3)}
-.heatmap-cell.warning{background:rgba(255,217,61,0.12);border-color:rgba(255,217,61,.3)}
-.heatmap-cell.safe{background:rgba(52,211,153,0.12);border-color:rgba(52,211,153,.3)}
-.heatmap-value{font-size:1.8rem;font-weight:800;margin-bottom:.5rem}
-.heatmap-cell.critical .heatmap-value{color:var(--red)}
-.heatmap-cell.warning .heatmap-value{color:var(--yellow)}
-.heatmap-cell.safe .heatmap-value{color:var(--green)}
-.heatmap-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-
-/* Risk Matrix */
-.risk-matrix{margin-bottom:2rem}
-.risk-matrix-title{
-  font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;
-}
-.matrix-visual{
-  width:100%;height:180px;background:linear-gradient(135deg,rgba(255,107,107,0.1) 0%,rgba(255,217,61,0.1) 50%,rgba(52,211,153,0.1) 100%);
-  border:1px solid var(--border);border-radius:2px;position:relative;display:flex;align-items:center;justify-content:center;
-  font-size:.75rem;color:var(--muted);
-}
-.matrix-label{position:absolute;font-size:.65rem;font-weight:600;letter-spacing:.5px}
-.matrix-label.critical{top:10px;left:10px;color:var(--red)}
-.matrix-label.warning{top:50%;left:50%;transform:translate(-50%,-50%);color:var(--yellow)}
-.matrix-label.safe{bottom:10px;right:10px;color:var(--green)}
 
 /* Status Indicator */
 .status-indicator{
@@ -197,6 +168,44 @@ h1.diag-title em{
 .status-indicator.safe{border-left-color:var(--green);background:rgba(52,211,153,0.08)}
 .status-text{font-size:.85rem;color:var(--silver);font-weight:500}
 .status-text strong{display:block;margin-bottom:.25rem}
+
+/* Dynamic Risk Matrix */
+.risk-matrix-container{
+  margin-bottom:2rem;position:relative;
+}
+.risk-matrix-title{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;
+}
+.matrix-wrapper{
+  position:relative;width:100%;aspect-ratio:1/1;
+  background:var(--deep);border:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(2, 1fr);grid-template-rows:repeat(2, 1fr);
+}
+/* Cuadrantes */
+.quadrant{display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.quad-tl{background:rgba(255,107,107,0.2);color:var(--red)} /* Impacto Alto, Probabilidad Alta */
+.quad-tr{background:rgba(255,107,107,0.1);color:var(--red)} /* Impacto Alto, Probabilidad Baja */
+.quad-bl{background:rgba(255,217,61,0.1);color:var(--yellow)} /* Impacto Bajo, Probabilidad Alta */
+.quad-br{background:rgba(52,211,153,0.1);color:var(--green)} /* Impacto Bajo, Probabilidad Baja */
+
+/* Ejes */
+.axis-label{
+  position:absolute;font-family:'JetBrains Mono',monospace;font-size:.55rem;
+  color:var(--muted);text-transform:uppercase;letter-spacing:1px;
+}
+.axis-y{transform:rotate(-90deg);left:-45px;top:50%}
+.axis-x{bottom:-25px;left:50%;transform:translateX(-50%)}
+
+/* Indicador de Riesgo */
+.risk-pointer{
+  position:absolute;width:16px;height:16px;background:var(--cyan);
+  border-radius:50%;border:2px solid var(--silver);
+  box-shadow:0 0 15px var(--cyan), 0 0 30px var(--cyan);
+  transform:translate(-50%, -50%);
+  transition:all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index:10;left:50%;top:50%; /* Inicio al centro */
+}
 
 /* ══════════════════════════════════════════════
    RESULTS SECTION
@@ -269,7 +278,6 @@ footer a:hover{color:var(--cyan3)}
 }
 @media(max-width:640px){
   .nav-links{display:none}
-  .heatmap-grid{grid-template-columns:1fr}
   .question-item{padding:1rem}
   .btn-answer{font-size:.7rem;padding:8px 12px}
   .cta-section{padding:1.5rem}
@@ -408,25 +416,19 @@ footer a:hover{color:var(--cyan3)}
           <p class="status-text"><strong>Estado:</strong> Completa el diagnóstico para ver tu evaluación</p>
         </div>
 
-        <!-- Risk Metrics -->
-        <div class="heatmap-grid">
-          <div class="heatmap-cell safe" id="cellCompliance">
-            <div class="heatmap-value">0</div>
-            <div class="heatmap-label">Cumplimiento</div>
-          </div>
-          <div class="heatmap-cell critical" id="cellRisk">
-            <div class="heatmap-value">0</div>
-            <div class="heatmap-label">Riesgo</div>
-          </div>
-        </div>
-
         <!-- Risk Matrix Visual -->
-        <div class="risk-matrix">
+        <div class="risk-matrix-container">
           <p class="risk-matrix-title">Probabilidad vs Impacto</p>
-          <div class="matrix-visual">
-            <span class="matrix-label critical">CRÍTICO</span>
-            <span class="matrix-label warning">MEDIO</span>
-            <span class="matrix-label safe">BAJO</span>
+          <div class="matrix-wrapper">
+            <div class="quadrant quad-tl">Crítico</div>
+            <div class="quadrant quad-tr">Alto</div>
+            <div class="quadrant quad-bl">Medio</div>
+            <div class="quadrant quad-br">Bajo</div>
+            
+            <div class="axis-label axis-y">Impacto Financiero</div>
+            <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
+            
+            <div class="risk-pointer" id="riskPointer"></div>
           </div>
         </div>
 
@@ -466,10 +468,21 @@ footer a:hover{color:var(--cyan3)}
 // ════════ STATE MANAGEMENT ════════
 const answers = {};
 const questions = document.querySelectorAll('.question-item');
-const riskLevels = {
-  critical: ['2', '5', '7'],  // Consentimiento, protocolo brechas, MFA
-  warning: ['1', '3', '4', '6'],  // Inventario, exportación, eliminación, contratos
-  safe: ['8', '9', '10']  // Cifrado, DPO, penetration testing
+
+// Definición de pesos para el cálculo dinámico
+// Impacto: Preguntas críticas tienen más peso en el eje Y
+// Probabilidad: Falta de controles básicos aumenta el eje X
+const questionWeights = {
+  '1': { x: 8, y: 5 },  // Inventario (Probabilidad alta de error si no hay)
+  '2': { x: 5, y: 10 }, // Consentimiento (Impacto legal alto)
+  '3': { x: 7, y: 6 },  // Exportación
+  '4': { x: 7, y: 6 },  // Eliminación
+  '5': { x: 4, y: 10 }, // Protocolo brechas (Impacto crítico)
+  '6': { x: 6, y: 7 },  // Contratos
+  '7': { x: 9, y: 9 },  // MFA (Probabilidad de brecha alta + Impacto alto)
+  '8': { x: 5, y: 9 },  // Cifrado
+  '9': { x: 6, y: 7 },  // DPO
+  '10': { x: 8, y: 8 }  // Pentesting
 };
 
 // ════════ EVENT LISTENERS ════════
@@ -479,26 +492,13 @@ questions.forEach(q => {
   
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Remove previous active state
       buttons.forEach(b => b.classList.remove('active', 'no'));
-      
-      // Set new active state
       btn.classList.add('active');
       if(btn.dataset.answer === 'no') btn.classList.add('no');
       
-      // Update answer
       answers[qNum] = btn.dataset.answer;
-      
-      // Update visual state
       q.classList.add('answered');
-      if(btn.dataset.answer === 'yes') {
-        q.classList.remove('answered');
-        q.classList.add('answered');
-      } else {
-        q.classList.add('answered');
-      }
       
-      // Recalculate heatmap
       updateHeatmap();
     });
   });
@@ -507,55 +507,73 @@ questions.forEach(q => {
 // ════════ HEATMAP CALCULATION ════════
 function updateHeatmap() {
   const totalAnswered = Object.keys(answers).length;
-  const yesCount = Object.values(answers).filter(a => a === 'yes').length;
-  const noCount = totalAnswered - yesCount;
+  const pointer = document.getElementById('riskPointer');
   
-  // Update metrics
-  const compliancePercent = totalAnswered > 0 ? Math.round((yesCount / totalAnswered) * 100) : 0;
-  const riskPercent = 100 - compliancePercent;
+  // Cálculo de coordenadas (0 a 100)
+  let posX = 100; // Probabilidad (empezamos en alto riesgo si todo es NO)
+  let posY = 0;   // Impacto (empezamos en bajo impacto)
   
-  document.getElementById('cellCompliance').querySelector('.heatmap-value').textContent = compliancePercent + '%';
-  document.getElementById('cellRisk').querySelector('.heatmap-value').textContent = riskPercent + '%';
+  let xSum = 0;
+  let ySum = 0;
+  let totalXWeight = 0;
+  let totalYWeight = 0;
+
+  // Calculamos basados en las respuestas "SÍ" que reducen el riesgo
+  Object.keys(questionWeights).forEach(qNum => {
+    totalXWeight += questionWeights[qNum].x;
+    totalYWeight += questionWeights[qNum].y;
+    
+    if (answers[qNum] === 'yes') {
+      // Un SÍ reduce la probabilidad de incumplimiento y el impacto del riesgo
+      xSum += questionWeights[qNum].x;
+      ySum += questionWeights[qNum].y;
+    }
+  });
+
+  // Mapeo a porcentaje (0% es esquina superior izquierda - Crítico, 100% es inferior derecha - Bajo)
+  // En la matriz visual: 
+  // X: 0% (Izquierda - Probabilidad Alta), 100% (Derecha - Probabilidad Baja)
+  // Y: 0% (Arriba - Impacto Alto), 100% (Abajo - Impacto Bajo)
   
-  // Determine risk level
+  const currentX = (xSum / totalXWeight) * 100;
+  const currentY = (ySum / totalYWeight) * 100;
+
+  // Invertimos Y porque 0 en CSS es arriba (Impacto Alto)
+  const visualX = currentX; 
+  const visualY = 100 - currentY;
+
+  // Actualizar puntero
+  pointer.style.left = visualX + '%';
+  pointer.style.top = visualY + '%';
+  
+  // Determinar nivel de riesgo para el texto
   let riskLevel = 'safe';
   let statusText = '';
   
-  if(totalAnswered === 10) {
-    // Count critical "No" answers
-    const criticalNos = riskLevels.critical.filter(q => answers[q] === 'no').length;
-    const warningNos = riskLevels.warning.filter(q => answers[q] === 'no').length;
-    
-    if(criticalNos >= 2 || noCount > 5) {
+  // Lógica de clasificación
+  const noCount = Object.values(answers).filter(a => a === 'no').length;
+  
+  if (totalAnswered > 0) {
+    if (visualX < 40 && visualY < 40) {
       riskLevel = 'critical';
       statusText = '⚠️ RIESGO CRÍTICO: Acción inmediata requerida';
-    } else if(criticalNos === 1 || warningNos >= 2) {
+    } else if (visualX < 70 && visualY < 70) {
       riskLevel = 'warning';
       statusText = '⚠️ RIESGO MEDIO: Requiere atención prioritaria';
     } else {
       riskLevel = 'safe';
       statusText = '✓ RIESGO BAJO: Cumplimiento adecuado';
     }
-    
-    // Show results and CTA
-    showResults(riskLevel, compliancePercent, noCount);
   }
-  
-  // Update status indicator
+
+  // Actualizar UI
   const statusIndicator = document.getElementById('statusIndicator');
   statusIndicator.className = 'status-indicator ' + riskLevel;
   statusIndicator.innerHTML = `<p class="status-text"><strong>${statusText}</strong><br>Progreso: ${totalAnswered}/10 preguntas respondidas</p>`;
-  
-  // Update heatmap cells
-  updateHeatmapCells(riskLevel);
-}
 
-function updateHeatmapCells(riskLevel) {
-  const complianceCell = document.getElementById('cellCompliance');
-  const riskCell = document.getElementById('cellRisk');
-  
-  complianceCell.className = 'heatmap-cell ' + (riskLevel === 'safe' ? 'safe' : riskLevel === 'warning' ? 'warning' : 'critical');
-  riskCell.className = 'heatmap-cell ' + (riskLevel === 'safe' ? 'safe' : riskLevel === 'warning' ? 'warning' : 'critical');
+  if(totalAnswered === 10) {
+    showResults(riskLevel, Math.round(currentX), noCount);
+  }
 }
 
 // ════════ RESULTS DISPLAY ════════
@@ -571,48 +589,46 @@ function showResults(riskLevel, compliancePercent, noCount) {
   
   if(riskLevel === 'critical') {
     title = 'RIESGO CRÍTICO DETECTADO';
-    desc = `Tu organización tiene ${noCount} respuestas negativas a preguntas críticas. El riesgo de multas por incumplimiento de la Ley 21.719 es inminente. Se requiere acción inmediata.`;
+    desc = `Tu organización presenta brechas críticas en controles de seguridad y cumplimiento legal. El impacto financiero de una multa (20.000 UTM) es inminente bajo la Ley 21.719.`;
     recommendations = [
-      'Implementar protocolo de consentimiento explícito en formularios',
-      'Establecer procedimiento de notificación de brechas (72 horas)',
-      'Activar MFA en acceso a bases de datos',
-      'Revisar contratos con proveedores críticos',
-      'Designar DPO o responsable de protección de datos'
+      'Implementar protocolo de consentimiento explícito inmediatamente',
+      'Activar Autenticación de Doble Factor (MFA) en activos críticos',
+      'Establecer el protocolo de respuesta ante brechas de 72 horas',
+      'Auditar contratos con proveedores internacionales'
     ];
   } else if(riskLevel === 'warning') {
     title = 'RIESGO MEDIO IDENTIFICADO';
-    desc = `Tu organización tiene ${noCount} brechas de cumplimiento. Aunque no es crítico, requiere atención prioritaria en los próximos 30 días.`;
+    desc = `Existen vulnerabilidades moderadas que aumentan la probabilidad de incidentes de datos. Se recomienda fortalecer la gobernanza antes de la vigencia total de la ley.`;
     recommendations = [
-      'Auditar políticas de retención de datos',
-      'Actualizar contratos con terceros',
-      'Implementar cifrado para datos sensibles',
-      'Documentar procedimientos de eliminación de datos',
-      'Realizar capacitación del personal'
+      'Actualizar el inventario de datos personales',
+      'Realizar pruebas de penetración (Ethical Hacking)',
+      'Designar formalmente un Oficial de Protección de Datos (DPO)',
+      'Cifrar bases de datos con información sensible'
     ];
   } else {
-    title = 'CUMPLIMIENTO ADECUADO';
-    desc = `Tu organización mantiene un nivel de cumplimiento satisfactorio (${compliancePercent}% de conformidad). Continúa con auditorías periódicas.`;
+    title = 'CUMPLIMIENTO SATISFACTORIO';
+    desc = `Tu organización tiene una base sólida de cumplimiento. El enfoque ahora debe ser el mantenimiento y la mejora continua de los procesos.`;
     recommendations = [
-      'Mantener auditorías anuales de penetración',
-      'Revisar y actualizar políticas cada 6 meses',
-      'Capacitar al personal en protección de datos',
-      'Monitorear cambios en la legislación',
-      'Documentar todas las acciones de cumplimiento'
+      'Mantener registros de auditoría actualizados',
+      'Capacitación continua al personal sobre nuevas normativas',
+      'Revisión semestral de contratos con terceros',
+      'Simulacros de respuesta ante incidentes'
     ];
   }
   
   resultTitle.textContent = title;
   resultDesc.textContent = desc;
   
-  // Show recommendations
   const recPanel = document.getElementById('recommendationsPanel');
   const recList = document.getElementById('recList');
   recList.innerHTML = recommendations.map(r => `<li class="rec-item">${r}</li>`).join('');
   recPanel.style.display = 'block';
   
-  // Show sections
   resultsSection.classList.add('show');
   ctaSection.style.display = 'block';
+  
+  // Scroll suave a resultados
+  resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ════════ CTA HANDLER ════════
@@ -621,14 +637,11 @@ document.getElementById('contactBtn').addEventListener('click', () => {
   if(email) {
     const company = prompt('¿Nombre de tu empresa?');
     if(company) {
-      // Simulate sending data
-      alert(`✓ Gracias ${company}. Nos contactaremos a ${email} pronto con tu diagnóstico completo.`);
-      // In production, this would send data to a backend
+      alert(`✓ Gracias ${company}. Hemos recibido tu diagnóstico. Un especialista de ShellTI se contactará a ${email} para entregarte el informe detallado.`);
     }
   }
 });
 
-// ════════ SCROLL TO TOP ════════
 window.addEventListener('load', () => {
   window.scrollTo(0, 0);
 });
