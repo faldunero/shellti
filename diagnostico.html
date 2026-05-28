@@ -1,347 +1,671 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico Ley 21.719 | ShellTI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-/* ══════════════════════════════════════════════
-   RESET & ROOT
-══════════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --deep:    #020617;
-  --deep2:   #040d1e;
-  --deep3:   #060f1c;
-  --cyan:    #00D4FF;
-  --cyan2:   #00b8e6;
-  --cyan3:   #7eeeff;
-  --green:   #34D399;
-  --green2:  #22c587;
-  --red:     #FF6B6B;
-  --red2:    #FF5252;
-  --yellow:  #FFD93D;
-  --yellow2: #FFC107;
-  --silver:  #E2E8F0;
-  --muted:   #94A3B8;
-  --border:  rgba(0,212,255,0.13);
-  --bh:      rgba(0,212,255,0.32);
-  --card:    rgba(3,9,24,0.93);
-  --cg:      rgba(0,212,255,0.07);
-}
-html{scroll-behavior:smooth}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--deep)}
-::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.4);border-radius:2px}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);line-height:1.7;overflow-x:hidden}
-h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--silver);line-height:1.1}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnóstico Ley 21.719 | ShellTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ══════════════════════════════════════════════
-   NAVBAR
-══════════════════════════════════════════════ */
-nav{
-  position:fixed;top:0;width:100%;z-index:300;
-  height:68px;padding:0 2.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(2,6,23,0.95);
-  backdrop-filter:blur(28px) saturate(200%);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
-.nav-brand-name span{color:var(--cyan)}
+    :root {
+      --deep: #020617;
+      --deep2: #040d1e;
+      --deep3: #060f1c;
+      --cyan: #00D4FF;
+      --cyan2: #00b8e6;
+      --cyan3: #7eeeff;
+      --green: #34D399;
+      --green2: #22c587;
+      --red: #FF6B6B;
+      --red2: #FF5252;
+      --yellow: #FFD93D;
+      --yellow2: #FFC107;
+      --silver: #E2E8F0;
+      --muted: #94A3B8;
+      --border: rgba(0,212,255,0.13);
+      --bh: rgba(0,212,255,0.32);
+      --card: rgba(3,9,24,0.93);
+      --cg: rgba(0,212,255,0.07);
+    }
 
-/* ══════════════════════════════════════════════
-   MAIN CONTAINER
-══════════════════════════════════════════════ */
-main{min-height:100vh;padding:100px 2.5rem 60px;position:relative;overflow:hidden}
-.main-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),
-    radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.055) 0%,transparent 60%),
-    var(--deep);
-}
-.grid-lines{
-  position:absolute;inset:0;opacity:.028;
-  background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
-  background-size:55px 55px;pointer-events:none;
-}
-.container{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:1}
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--deep); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.4); border-radius: 2px; }
 
-/* ══════════════════════════════════════════════
-   SURVEY SECTION
-══════════════════════════════════════════════ */
-.survey-wrapper{display:grid;grid-template-columns:1fr 400px;gap:40px;margin-bottom:3rem}
-.survey-questions{display:flex;flex-direction:column;gap:1rem}
-.question-item{
-  background:var(--card);border:1px solid var(--border);border-radius:3px;
-  padding:1rem 1.5rem;box-shadow:0 0 32px rgba(0,212,255,0.06);
-  display:flex;justify-content:space-between;align-items:center;gap:20px;
-  transition:all .3s ease;
-}
-.question-content{flex:1}
-.question-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);text-transform:uppercase;margin-bottom:.2rem}
-.question-text{font-size:.9rem;color:var(--silver);font-weight:500;line-height:1.4}
-.answer-buttons{display:flex;gap:8px;flex-shrink:0}
-.btn-answer{
-  padding:8px 16px;border:1px solid rgba(226,232,240,.15);
-  background:transparent;color:var(--muted);
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.75rem;
-  border-radius:2px;cursor:pointer;transition:all .2s;min-width:60px;
-}
-.btn-answer.active.yes{background:var(--green);color:var(--deep);border-color:var(--green)}
-.btn-answer.active.no{background:var(--red);color:var(--silver);border-color:var(--red)}
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--deep);
+      color: var(--silver);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-/* ══════════════════════════════════════════════
-   HEATMAP SECTION
-══════════════════════════════════════════════ */
-.heatmap-panel{
-  background:var(--card);border:1px solid var(--border);border-radius:3px;
-  padding:2rem;position:sticky;top:100px;height:fit-content;
-}
-.heatmap-title{
-  font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);
-  margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:2px;
-}
-.matrix-wrapper{
-  position:relative;width:100%;aspect-ratio:1/1;
-  background:var(--deep);border:1px solid var(--border);
-  display:grid;grid-template-columns:repeat(2, 1fr);grid-template-rows:repeat(2, 1fr);
-  margin-bottom:2rem;
-}
-.quadrant{display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;text-transform:uppercase}
-.quad-tl{background:rgba(255,107,107,0.25);color:var(--red)} /* CRÍTICO */
-.quad-tr{background:rgba(255,107,107,0.15);color:var(--red)} /* ALTO */
-.quad-bl{background:rgba(255,217,61,0.15);color:var(--yellow)} /* MEDIO */
-.quad-br{background:rgba(52,211,153,0.15);color:var(--green)} /* BAJO */
+    h1, h2, h3, h4, h5 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      color: var(--silver);
+      line-height: 1.1;
+    }
 
-.axis-label{
-  position:absolute;font-family:'JetBrains Mono',monospace;font-size:.55rem;
-  color:var(--muted);text-transform:uppercase;letter-spacing:1px;
-}
-.axis-y{transform:rotate(-90deg);left:-45px;top:50%}
-.axis-x{bottom:-25px;left:50%;transform:translateX(-50%)}
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 300;
+      height: 68px;
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(2,6,23,0.95);
+      backdrop-filter: blur(28px) saturate(200%);
+      border-bottom: 1px solid var(--border);
+    }
 
-.risk-pointer{
-  position:absolute;width:16px;height:16px;background:var(--cyan);
-  border-radius:50%;border:2px solid var(--silver);
-  box-shadow:0 0 15px var(--cyan);
-  transform:translate(-50%, -50%);
-  transition:all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  left:75%;top:75%; /* Inicia en BAJO */
-}
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
 
-/* ══════════════════════════════════════════════
-   RESULTS
-══════════════════════════════════════════════ */
-.results-section{background:var(--card);border:1px solid var(--border);padding:2rem;margin-top:2rem;display:none}
-.results-section.show{display:block}
-.results-main{font-size:1.5rem;font-weight:800;margin-bottom:1rem}
-.critical-text{color:var(--red)}
-.high-text{color:var(--yellow)}
-.medium-text{color:var(--yellow)}
-.low-text{color:var(--green)}
+    .nav-brand-wrap {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
 
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(2,6,23,0.95);backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:center;z-index:9999;
-  opacity:0;visibility:hidden;transition:all .3s;
-}
-.modal-overlay.active{opacity:1;visibility:visible}
-.modal-content{background:var(--deep2);border:1px solid var(--border);padding:3rem;max-width:500px;width:90%;border-radius:4px;position:relative}
+    .nav-brand-name {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--silver);
+      letter-spacing: -.5px;
+      line-height: 1;
+    }
 
-.finput{
-  background:rgba(3,9,24,0.95);border:1px solid var(--border);
-  color:var(--silver);padding:12px 16px;border-radius:2px;
-  font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;
-  outline:none;transition:all .2s;width:100%;
-}
-.finput:focus{border-color:var(--cyan);box-shadow:0 0 15px rgba(0,212,255,0.1)}
+    .nav-brand-name span { color: var(--cyan); }
 
-</style>
+    .nav-brand-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .56rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      border: 1px solid var(--cyan) !important;
+      color: var(--cyan) !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+      box-shadow: 0 0 12px rgba(0,212,255,0.18);
+      transition: background .2s, box-shadow .2s !important;
+    }
+
+    .nav-cta:hover {
+      background: rgba(0,212,255,0.1) !important;
+      box-shadow: 0 0 28px rgba(0,212,255,0.35) !important;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      width: 22px;
+      height: 1.5px;
+      background: var(--cyan);
+      display: block;
+    }
+
+    main {
+      min-height: 100vh;
+      padding: 100px 2.5rem 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0, transparent 60%),
+        radial-gradient(ellipse 700px 600px at 5% 85%, rgba(52,211,153,0.055) 0, transparent 60%),
+        var(--deep);
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      opacity: .028;
+      background-image:
+        linear-gradient(var(--cyan) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cyan) 1px, transparent 1px);
+      background-size: 55px 55px;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .survey-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      margin-bottom: 3rem;
+    }
+
+    .survey-questions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .question-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 32px rgba(0,212,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      transition: all .3s ease;
+    }
+
+    .question-item:hover {
+      border-color: var(--bh);
+      box-shadow: 0 0 36px rgba(0,212,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .question-content { flex: 1; }
+
+    .question-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: .2rem;
+    }
+
+    .question-text {
+      font-size: .9rem;
+      color: var(--silver);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .answer-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-answer {
+      padding: 8px 16px;
+      border: 1px solid rgba(226,232,240,.15);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .75rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .2s;
+      min-width: 60px;
+    }
+
+    .btn-answer:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .btn-answer.active.yes {
+      background: var(--green);
+      color: var(--deep);
+      border-color: var(--green);
+    }
+
+    .btn-answer.active.no {
+      background: var(--red);
+      color: var(--silver);
+      border-color: var(--red);
+    }
+
+    .heatmap-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2rem;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .heatmap-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      color: var(--cyan);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .matrix-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--deep);
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin-bottom: 2rem;
+    }
+
+    .quadrant {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .quad-tl { background: rgba(255,107,107,0.25); color: var(--red); }
+    .quad-tr { background: rgba(255,107,107,0.15); color: var(--red); }
+    .quad-bl { background: rgba(255,217,61,0.15); color: var(--yellow); }
+    .quad-br { background: rgba(52,211,153,0.15); color: var(--green); }
+
+    .axis-label {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .55rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .axis-y {
+      transform: rotate(-90deg);
+      left: -45px;
+      top: 50%;
+    }
+
+    .axis-x {
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .risk-pointer {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--cyan);
+      border-radius: 50%;
+      border: 2px solid var(--silver);
+      box-shadow: 0 0 15px var(--cyan);
+      transform: translate(-50%, -50%);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      left: 75%;
+      top: 75%;
+    }
+
+    .results-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      margin-top: 2rem;
+      display: none;
+    }
+
+    .results-section.show { display: block; }
+    .results-main { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .critical-text { color: var(--red); }
+    .high-text { color: var(--yellow); }
+    .medium-text { color: var(--yellow); }
+    .low-text { color: var(--green); }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all .3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--deep2);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .finput {
+      background: rgba(3,9,24,0.95);
+      border: 1px solid var(--border);
+      color: var(--silver);
+      padding: 12px 16px;
+      border-radius: 2px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: all .2s;
+      width: 100%;
+    }
+
+    .finput:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0,212,255,0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--cyan), var(--cyan2));
+      border: none;
+      color: var(--deep);
+      font-weight: 800;
+      cursor: pointer;
+      border-radius: 3px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 960px) {
+      .survey-wrapper { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        position: fixed;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: rgba(2,6,23,0.98);
+        padding: 2rem;
+        border-bottom: 1px solid var(--border);
+        z-index: 299;
+      }
+      .hamburger { display: flex; }
+    }
+
+    @media (max-width: 768px) {
+      nav, main { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .question-item { flex-direction: column; align-items: flex-start; }
+      .answer-buttons { width: 100%; }
+      .btn-answer { flex: 1; }
+      .diag-header h1 { font-size: 2rem !important; }
+      .heatmap-panel { position: relative; top: auto; }
+      .modal-content { padding: 2rem; }
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-brand-wrap">
+        <span class="nav-brand-name">Shell<span>TI</span></span>
+        <span class="nav-brand-sub">Technology Consultancy</span>
+      </div>
+    </a>
 
-<nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-brand-name">Shell<span>TI</span></span>
-  </a>
-</nav>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#nosotros">Quiénes Somos</a></li>
+      <li><a href="index.html#assessment">Assessment</a></li>
+      <li><a href="index.html#compliance">Ley 21.719</a></li>
+      <li><a href="index.html#metodologia">Metodología</a></li>
+      <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
+    </ul>
 
-<main>
-  <div class="main-bg"></div>
-  <div class="grid-lines"></div>
-  <div class="container">
-    <div class="diag-header" style="text-align:center; margin-bottom:3rem">
-      <h1 style="font-size:2.5rem">Diagnóstico de <span style="color:var(--cyan)">Cumplimiento</span></h1>
-      <p style="color:var(--muted)">Evaluación rápida de postura frente a la Ley 21.719</p>
-    </div>
+    <button class="hamburger" id="burger" aria-label="Abrir menú" type="button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
 
-    <div class="survey-wrapper">
-      <div class="survey-questions" id="questionsContainer">
-        <!-- Preguntas generadas por JS -->
+  <main>
+    <div class="main-bg"></div>
+    <div class="grid-lines"></div>
+
+    <div class="container">
+      <div class="diag-header" style="text-align:center; margin-bottom:3rem;">
+        <h1 style="font-size:2.5rem;">Diagnóstico de <span style="color:var(--cyan)">Cumplimiento</span></h1>
+        <p style="color:var(--muted);">Evaluación rápida de postura frente a la Ley 21.719</p>
       </div>
 
-      <div class="heatmap-panel">
-        <p class="heatmap-title">Matriz de Riesgo</p>
-        <div class="risk-matrix-container" style="position:relative">
-          <div class="axis-label axis-y">Impacto Operativo</div>
-          <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
-          <div class="matrix-wrapper">
-            <div class="quadrant quad-tl">Crítico</div>
-            <div class="quadrant quad-tr">Alto</div>
-            <div class="quadrant quad-bl">Medio</div>
-            <div class="quadrant quad-br">Bajo</div>
-            <div class="risk-pointer" id="riskPointer"></div>
+      <div class="survey-wrapper">
+        <div class="survey-questions" id="questionsContainer"></div>
+
+        <div class="heatmap-panel">
+          <p class="heatmap-title">Matriz de Riesgo</p>
+          <div class="risk-matrix-container" style="position:relative;">
+            <div class="axis-label axis-y">Impacto Operativo</div>
+            <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
+            <div class="matrix-wrapper">
+              <div class="quadrant quad-tl">Crítico</div>
+              <div class="quadrant quad-tr">Alto</div>
+              <div class="quadrant quad-bl">Medio</div>
+              <div class="quadrant quad-br">Bajo</div>
+              <div class="risk-pointer" id="riskPointer"></div>
+            </div>
+          </div>
+
+          <div id="statusBox" style="margin-top:2.5rem; padding:1.2rem; border-left:3px solid var(--green); background:rgba(52,211,153,0.05);">
+            <p id="statusText" style="font-size:.85rem; font-weight:600;">Estado: <span style="color:var(--green)">Pendiente</span></p>
+            <p id="statusHint" style="font-size:.7rem; color:var(--muted); margin-top:.5rem;">Complete todas las preguntas para obtener el análisis detallado.</p>
           </div>
         </div>
-        
-        <div id="statusBox" style="margin-top:2.5rem; padding:1.2rem; border-left:3px solid var(--green); background:rgba(52,211,153,0.05)">
-          <p id="statusText" style="font-size:.85rem; font-weight:600">Estado: <span style="color:var(--green)">Pendiente</span></p>
-          <p id="statusHint" style="font-size:.7rem; color:var(--muted); margin-top:.5rem">Complete todas las preguntas para obtener el análisis detallado.</p>
+      </div>
+
+      <div class="results-section" id="resultsSection">
+        <h2 class="results-main" id="resultsLevel">Nivel de Riesgo --</h2>
+        <p id="resultsDesc" style="color:var(--muted); margin-bottom:2rem;"></p>
+        <button class="btn-submit" onclick="openModal()">AGENDAR CONSULTA PERSONALIZADA</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-content">
+      <button onclick="closeModal()" style="position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.2rem;">✕</button>
+      <h3 style="margin-bottom:.5rem; font-size:1.4rem;">Agendar Consulta</h3>
+      <p style="color:var(--muted); font-size:.85rem; margin-bottom:1.5rem;">Reciba un informe detallado basado en sus respuestas.</p>
+
+      <form action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="hidden" name="_subject" value="Nuevo Lead - Diagnóstico ShellTI" />
+        <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo" />
+        <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas" />
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <input class="finput" type="text" name="nombre" placeholder="Nombre" required />
+          <input class="finput" type="text" name="empresa" placeholder="Empresa" required />
         </div>
-      </div>
-    </div>
 
-    <div class="results-section" id="resultsSection">
-      <h2 class="results-main" id="resultsLevel">Nivel de Riesgo: --</h2>
-      <p id="resultsDesc" style="color:var(--muted); margin-bottom:2rem"></p>
-      <button class="btn-submit" style="width:100%; padding:18px; background:linear-gradient(135deg,var(--cyan),var(--cyan2)); border:none; color:var(--deep); font-weight:800; cursor:pointer; border-radius:3px; letter-spacing:1px" onclick="openModal()">AGENDAR CONSULTA PERSONALIZADA →</button>
+        <input class="finput" type="email" name="email" placeholder="Email Corporativo" required />
+        <textarea class="finput" name="comentarios" rows="3" placeholder="¿Algún comentario o duda específica?"></textarea>
+        <button type="submit" style="padding:16px; background:var(--cyan); border:none; color:var(--deep); font-weight:800; cursor:pointer; border-radius:2px; margin-top:10px;">ENVIAR SOLICITUD</button>
+      </form>
     </div>
   </div>
-</main>
 
-<div class="modal-overlay" id="contactModal">
-  <div class="modal-content">
-    <button onclick="closeModal()" style="position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.2rem">✕</button>
-    <h3 style="margin-bottom:0.5rem; font-size:1.4rem">Agendar Consulta</h3>
-    <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1.5rem">Reciba un informe detallado basado en sus respuestas.</p>
-    
-    <form action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex; flex-direction:column; gap:12px">
-      <input type="hidden" name="_subject" value="Nuevo Lead - Diagnóstico ShellTI">
-      <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo">
-      <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas">
-      
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-        <input class="finput" type="text" name="nombre" placeholder="Nombre" required>
-        <input class="finput" type="text" name="empresa" placeholder="Empresa" required>
-      </div>
-      <input class="finput" type="email" name="email" placeholder="Email Corporativo" required>
-      <textarea class="finput" name="comentarios" rows="3" placeholder="¿Algún comentario o duda específica?"></textarea>
-      
-      <button type="submit" style="padding:16px; background:var(--cyan); border:none; color:var(--deep); font-weight:800; cursor:pointer; border-radius:2px; margin-top:10px">ENVIAR SOLICITUD</button>
-    </form>
-  </div>
-</div>
+  <script>
+    const questions = [
+      { id: 1, text: '¿Cuenta con un inventario actualizado de activos de información y datos personales?' },
+      { id: 2, text: '¿Posee mecanismos de consentimiento explícito para el tratamiento de datos?' },
+      { id: 3, text: '¿Se realizan evaluaciones de impacto de protección de datos (DPIA) regularmente?' },
+      { id: 4, text: '¿Existen políticas de retención y eliminación de datos claramente definidas?' },
+      { id: 5, text: '¿Tiene un protocolo de notificación de brechas de seguridad (72 horas)?' },
+      { id: 6, text: '¿Los contratos con terceros incluyen cláusulas de protección de datos actualizadas?' },
+      { id: 7, text: '¿Utiliza autenticación de doble factor (MFA) para accesos a datos sensibles?' },
+      { id: 8, text: '¿Se realizan auditorías de seguridad y pruebas de penetración al menos una vez al año?' },
+      { id: 9, text: '¿Cuenta con un plan de respuesta a incidentes y continuidad del negocio probado?' },
+      { id: 10, text: '¿Existe un programa de capacitación continua en ciberseguridad para todo el personal?' }
+    ];
 
-<script>
-const questions = [
-  { id: 1, text: "¿Cuenta con un inventario actualizado de activos de información y datos personales?" },
-  { id: 2, text: "¿Posee mecanismos de consentimiento explícito para el tratamiento de datos?" },
-  { id: 3, text: "¿Se realizan evaluaciones de impacto de protección de datos (DPIA) regularmente?" },
-  { id: 4, text: "¿Existen políticas de retención y eliminación de datos claramente definidas?" },
-  { id: 5, text: "¿Tiene un protocolo de notificación de brechas de seguridad (72 horas)?" },
-  { id: 6, text: "¿Los contratos con terceros incluyen cláusulas de protección de datos actualizadas?" },
-  { id: 7, text: "¿Utiliza autenticación de doble factor (MFA) para accesos a datos sensibles?" },
-  { id: 8, text: "¿Se realizan auditorías de seguridad y pruebas de penetración al menos una vez al año?" },
-  { id: 9, text: "¿Cuenta con un plan de respuesta a incidentes y continuidad del negocio probado?" },
-  { id: 10, text: "¿Existe un programa de capacitación continua en ciberseguridad para todo el personal?" }
-];
+    let answers = {};
 
-let answers = {};
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = questions.map(q => `
+        <div class="question-item" id="q-${q.id}">
+          <div class="question-content">
+            <div class="question-num">Control ${String(q.id).padStart(2, '0')}</div>
+            <div class="question-text">${q.text}</div>
+          </div>
+          <div class="answer-buttons">
+            <button class="btn-answer yes" onclick="setAnswer(${q.id}, 'yes')">SÍ</button>
+            <button class="btn-answer no" onclick="setAnswer(${q.id}, 'no')">NO</button>
+          </div>
+        </div>
+      `).join('');
+    }
 
-function renderQuestions() {
-  const container = document.getElementById('questionsContainer');
-  container.innerHTML = questions.map(q => `
-    <div class="question-item" id="q-${q.id}">
-      <div class="question-content">
-        <div class="question-num">Control 0${q.id}</div>
-        <div class="question-text">${q.text}</div>
-      </div>
-      <div class="answer-buttons">
-        <button class="btn-answer yes" onclick="setAnswer(${q.id}, 'yes')">SÍ</button>
-        <button class="btn-answer no" onclick="setAnswer(${q.id}, 'no')">NO</button>
-      </div>
-    </div>
-  `).join('');
-}
+    function setAnswer(id, val) {
+      answers[id] = val;
+      const item = document.getElementById(`q-${id}`);
+      item.querySelectorAll('.btn-answer').forEach(b => b.classList.remove('active'));
+      item.querySelector(`.${val}`).classList.add('active');
+      updateRisk();
+    }
 
-function setAnswer(id, val) {
-  answers[id] = val;
-  const item = document.getElementById(`q-${id}`);
-  item.querySelectorAll('.btn-answer').forEach(b => b.classList.remove('active'));
-  item.querySelector(`.${val}`).classList.add('active');
-  updateRisk();
-}
+    function updateRisk() {
+      const noCount = Object.values(answers).filter(v => v === 'no').length;
+      const totalAnswered = Object.keys(answers).length;
+      const pointer = document.getElementById('riskPointer');
+      const statusBox = document.getElementById('statusBox');
+      const statusText = document.getElementById('statusText');
+      const statusHint = document.getElementById('statusHint');
 
-function updateRisk() {
-  const noCount = Object.values(answers).filter(v => v === 'no').length;
-  const totalAnswered = Object.keys(answers).length;
-  const pointer = document.getElementById('riskPointer');
-  const statusBox = document.getElementById('statusBox');
-  const statusText = document.getElementById('statusText');
-  const statusHint = document.getElementById('statusHint');
-  
-  let level = "Bajo";
-  let color = "var(--green)";
-  let posX = "75%", posY = "75%";
+      let level = 'Bajo';
+      let color = 'var(--green)';
+      let posX = '75%';
+      let posY = '75%';
 
-  if (noCount >= 3) {
-    level = "Crítico";
-    color = "var(--red)";
-    posX = "25%"; posY = "25%";
-  } else if (noCount === 2) {
-    level = "Alto";
-    color = "var(--yellow)";
-    posX = "75%"; posY = "25%";
-  } else if (noCount === 1) {
-    level = "Medio";
-    color = "var(--yellow)";
-    posX = "25%"; posY = "75%";
-  }
+      if (noCount >= 3) {
+        level = 'Crítico';
+        color = 'var(--red)';
+        posX = '25%';
+        posY = '25%';
+      } else if (noCount === 2) {
+        level = 'Alto';
+        color = 'var(--yellow)';
+        posX = '75%';
+        posY = '25%';
+      } else if (noCount === 1) {
+        level = 'Medio';
+        color = 'var(--yellow)';
+        posX = '25%';
+        posY = '75%';
+      }
 
-  pointer.style.left = posX;
-  pointer.style.top = posY;
-  statusBox.style.borderColor = color;
-  statusText.innerHTML = `Estado: <span style="color:${color}">${level}</span>`;
-  statusHint.innerText = `Se han detectado ${noCount} brechas de cumplimiento potenciales.`;
+      pointer.style.left = posX;
+      pointer.style.top = posY;
+      statusBox.style.borderColor = color;
+      statusText.innerHTML = `Estado: <span style="color:${color}">${level}</span>`;
+      statusHint.innerText = `Se han detectado ${noCount} brechas de cumplimiento potenciales.`;
 
-  if (totalAnswered === questions.length) {
-    showResults(level, noCount);
-  }
-}
+      if (totalAnswered === questions.length) {
+        showResults(level);
+      }
+    }
 
-function showResults(level, count) {
-  const section = document.getElementById('resultsSection');
-  const title = document.getElementById('resultsLevel');
-  const desc = document.getElementById('resultsDesc');
-  
-  const detalle = questions.map(q => `P${q.id}: ${answers[q.id] === 'yes' ? 'SÍ' : 'NO'}`).join(' | ');
-  document.getElementById('hiddenRiesgo').value = level;
-  document.getElementById('hiddenRespuestas').value = detalle;
+    function showResults(level) {
+      const section = document.getElementById('resultsSection');
+      const title = document.getElementById('resultsLevel');
+      const desc = document.getElementById('resultsDesc');
+      const detalle = questions.map(q => `P${q.id}: ${answers[q.id] === 'yes' ? 'SÍ' : 'NO'}`).join(' | ');
 
-  section.classList.add('show');
-  title.className = `results-main ${level.toLowerCase()}-text`;
-  title.innerText = `Nivel de Riesgo: ${level}`;
-  
-  if (level === "Crítico") {
-    desc.innerText = "Se han detectado múltiples brechas críticas de cumplimiento. Su organización requiere una intervención inmediata para mitigar riesgos legales y operativos bajo la Ley 21.719.";
-  } else if (level === "Alto") {
-    desc.innerText = "Existen debilidades importantes en los controles de protección de datos. Se recomienda priorizar la regularización de los puntos marcados como negativos.";
-  } else {
-    desc.innerText = "Su postura de cumplimiento es aceptable, sin embargo, existen oportunidades de mejora para alcanzar un estándar de seguridad total.";
-  }
-}
+      document.getElementById('hiddenRiesgo').value = level;
+      document.getElementById('hiddenRespuestas').value = detalle;
 
-function openModal() { document.getElementById('contactModal').classList.add('active'); }
-function closeModal() { document.getElementById('contactModal').classList.remove('active'); }
+      section.classList.add('show');
+      title.className = `results-main ${level.toLowerCase()}-text`;
+      title.innerText = `Nivel de Riesgo ${level}`;
 
-renderQuestions();
-</script>
+      if (level === 'Crítico') {
+        desc.innerText = 'Se han detectado múltiples brechas críticas de cumplimiento. Su organización requiere una intervención inmediata para mitigar riesgos legales y operativos bajo la Ley 21.719.';
+      } else if (level === 'Alto') {
+        desc.innerText = 'Existen debilidades importantes en los controles de protección de datos. Se recomienda priorizar la regularización de los puntos marcados como negativos.';
+      } else {
+        desc.innerText = 'Su postura de cumplimiento es aceptable, sin embargo, existen oportunidades de mejora para alcanzar un estándar de seguridad total.';
+      }
+    }
 
+    function openModal() {
+      document.getElementById('contactModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('contactModal').classList.remove('active');
+    }
+
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+
+    if (burger && navLinks) {
+      burger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => navLinks.classList.remove('open'));
+      });
+    }
+
+    renderQuestions();
+  </script>
 </body>
 </html>
