@@ -47,17 +47,6 @@ nav{
   border-bottom:1px solid var(--border);
 }
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo img{
-  height:42px;width:42px;object-fit:contain;
-  image-rendering:crisp-edges;
-  filter:
-    drop-shadow(0 0 10px rgba(0,212,255,0.85))
-    drop-shadow(0 0 22px rgba(0,212,255,0.5))
-    drop-shadow(0 0 5px rgba(52,211,153,0.7))
-    brightness(1.25) saturate(1.5) contrast(1.1);
-  transition:filter .3s;
-}
-.nav-logo:hover img{filter:drop-shadow(0 0 16px rgba(0,212,255,1)) drop-shadow(0 0 40px rgba(0,212,255,0.7)) brightness(1.35) saturate(1.6) contrast(1.15)}
 .nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
 .nav-brand-name span{color:var(--cyan)}
 .nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
@@ -66,113 +55,6 @@ nav{
 .nav-links a:hover{color:var(--cyan)}
 .nav-cta{border:1px solid var(--cyan)!important;color:var(--cyan)!important;padding:8px 20px;border-radius:2px;box-shadow:0 0 12px rgba(0,212,255,0.18);transition:background .2s,box-shadow .2s!important}
 .nav-cta:hover{background:rgba(0,212,255,0.1)!important;box-shadow:0 0 28px rgba(0,212,255,0.35)!important}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
-.hamburger span{width:22px;height:1.5px;background:var(--cyan);display:block}
-
-/* ══════════════════════════════════════════════
-   MODAL DIAGNÓSTICO
-══════════════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;
-  transition:opacity .3s ease,visibility .3s ease;
-}
-.modal-overlay.active{
-  opacity:1;visibility:visible;
-}
-.modal-content{
-  background:linear-gradient(135deg,rgba(2,6,23,0.98) 0%,rgba(4,13,30,0.96) 100%);
-  border:1px solid var(--border);border-radius:8px;padding:3rem;
-  max-width:600px;width:90%;max-height:90vh;overflow-y:auto;
-  box-shadow:
-    0 0 60px rgba(0,212,255,0.3),
-    0 0 120px rgba(0,212,255,0.15),
-    inset 0 0 40px rgba(0,212,255,0.05);
-  animation:slideUp .4s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes slideUp{
-  from{opacity:0;transform:translateY(40px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.modal-close{
-  position:absolute;top:1.5rem;right:1.5rem;
-  background:none;border:none;color:var(--muted);font-size:1.5rem;
-  cursor:pointer;transition:color .2s,transform .2s;
-  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
-}
-.modal-close:hover{
-  color:var(--cyan);transform:rotate(90deg);
-}
-.modal-header{
-  margin-bottom:2rem;text-align:center;
-}
-.modal-overline{
-  font-family:'JetBrains Mono',monospace;color:var(--green);
-  font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
-  margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:12px;
-}
-.modal-overline::before,.modal-overline::after{
-  content:'';display:block;width:28px;height:1px;background:var(--green);
-  box-shadow:0 0 8px rgba(52,211,153,.7);
-}
-.modal-title{
-  font-size:2rem;font-weight:800;margin-bottom:.5rem;line-height:1.2;
-}
-.modal-title em{
-  color:var(--cyan);font-style:normal;
-  text-shadow:0 0 28px rgba(0,212,255,.6),0 0 60px rgba(0,212,255,.25);
-}
-.modal-desc{
-  color:var(--muted);font-size:.95rem;line-height:1.8;margin-bottom:2rem;
-}
-.modal-buttons{
-  display:flex;gap:12px;flex-direction:column;
-}
-.btn-modal{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:14px 24px;border:none;border-radius:3px;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
-  font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;
-  cursor:pointer;transition:all .2s ease;text-decoration:none;
-}
-.btn-modal.primary{
-  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
-  color:var(--deep);box-shadow:0 0 28px rgba(0,212,255,0.42),0 4px 20px rgba(0,212,255,0.25);
-}
-.btn-modal.primary:hover{
-  transform:translateY(-2px);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35);
-}
-.btn-modal.secondary{
-  border:1px solid rgba(226,232,240,.28);color:var(--muted);
-  box-shadow:0 0 12px rgba(0,212,255,0.08);
-}
-.btn-modal.secondary:hover{
-  border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,.2);
-}
-
-/* Floating Trigger Button */
-.floating-btn{
-  position:fixed;bottom:30px;right:30px;z-index:1000;
-  width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--cyan2));
-  border:none;color:var(--deep);font-size:1.5rem;cursor:pointer;
-  box-shadow:0 0 28px rgba(0,212,255,0.42),0 4px 20px rgba(0,212,255,0.25);
-  transition:all .3s ease;display:flex;align-items:center;justify-content:center;
-  animation:pulse 2s ease-in-out infinite;
-}
-.floating-btn:hover{
-  transform:scale(1.1);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35);
-  animation:none;
-}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 28px rgba(0,212,255,0.42),0 4px 20px rgba(0,212,255,0.25)}
-  50%{box-shadow:0 0 48px rgba(0,212,255,0.6),0 8px 40px rgba(0,212,255,0.35)}
-}
-
-@media(max-width:640px){
-  .modal-content{padding:2rem;max-width:95%}
-  .modal-title{font-size:1.5rem}
-  .floating-btn{width:50px;height:50px;bottom:20px;right:20px;font-size:1.2rem}
-}
 
 /* ══════════════════════════════════════════════
    HERO
@@ -186,7 +68,6 @@ nav{
   background:
     radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),
     radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.055) 0%,transparent 60%),
-    radial-gradient(ellipse 500px 400px at 50% 50%,rgba(0,212,255,0.028) 0%,transparent 70%),
     var(--deep);
 }
 .grid-lines{
@@ -207,17 +88,9 @@ nav{
 h1.hero-title{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;line-height:1.06;margin-bottom:1.5rem}
 h1.hero-title em{
   color:var(--cyan);font-style:normal;
-  text-shadow:0 0 28px rgba(0,212,255,.6),0 0 60px rgba(0,212,255,.25),0 0 100px rgba(0,212,255,.1)
+  text-shadow:0 0 28px rgba(0,212,255,.6),0 0 60px rgba(0,212,255,.25)
 }
 .hero-sub{font-size:1rem;color:var(--muted);max-width:520px;margin-bottom:2rem;font-weight:300;line-height:1.85}
-
-.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2.5rem}
-.badge{
-  font-family:'JetBrains Mono',monospace;font-size:.68rem;
-  padding:5px 12px;border:1px solid var(--border);border-radius:2px;
-  color:var(--cyan);background:rgba(0,212,255,0.05);letter-spacing:1px;
-}
-.badge.g{color:var(--green);border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.05)}
 
 .actions{display:flex;gap:14px;flex-wrap:wrap}
 .btn-cta{
@@ -230,15 +103,24 @@ h1.hero-title em{
   transition:transform .2s,box-shadow .2s;
 }
 .btn-cta:hover{transform:translateY(-3px);box-shadow:0 0 44px rgba(0,212,255,.6),0 8px 32px rgba(0,212,255,.35)}
-.btn-ghost{
-  display:inline-flex;align-items:center;gap:8px;
-  border:1px solid rgba(226,232,240,.28);color:var(--muted);
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;
-  font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;
-  padding:14px 24px;text-decoration:none;border-radius:3px;
-  transition:border-color .2s,color .2s,box-shadow .2s;
+
+/* ══════════════════════════════════════════════
+   STAFFING SECTION
+══════════════════════════════════════════════ */
+#staffing{padding:100px 2.5rem;background:var(--deep3);border-top:1px solid var(--border)}
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:25px;margin-top:3rem}
+.staff-card{
+  background:var(--card);border:1px solid var(--border);padding:2.5rem;border-radius:4px;
+  transition:all .3s ease;position:relative;overflow:hidden;
 }
-.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px rgba(0,212,255,.18)}
+.staff-card:hover{border-color:var(--cyan);transform:translateY(-5px);box-shadow:0 0 40px rgba(0,212,255,0.1)}
+.staff-icon{font-size:2rem;margin-bottom:1.5rem;display:block}
+.staff-card h3{font-size:1.2rem;margin-bottom:1rem;color:var(--silver)}
+.staff-card p{font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.7}
+
+.staff-advantages{margin-top:4rem;display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px}
+.adv-item{display:flex;gap:12px;align-items:flex-start;font-size:.85rem;color:var(--muted)}
+.adv-item::before{content:'▸';color:var(--green);font-weight:800}
 
 /* ══════════════════════════════════════════════
    CONTACTO
@@ -246,10 +128,6 @@ h1.hero-title em{
 #contacto{background:var(--deep2);border-top:1px solid var(--border);padding:100px 2.5rem}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1200px;margin:0 auto}
 .contact-pitch p{color:var(--muted);font-size:.95rem;margin-bottom:1.25rem;font-weight:300}
-.contact-pitch .mono-info{color:var(--muted);font-size:.8rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;line-height:2.2}
-.cstats{display:flex;gap:2.5rem;margin-top:2rem;flex-wrap:wrap}
-.cstat span:first-child{font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);display:block;text-shadow:0 0 22px rgba(0,212,255,.45)}
-.cstat span:last-child{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 form.cform{display:flex;flex-direction:column;gap:14px}
 .finput{
   background:rgba(3,9,24,0.95);border:1px solid var(--border);
@@ -257,7 +135,7 @@ form.cform{display:flex;flex-direction:column;gap:14px}
   font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;
   outline:none;transition:border-color .2s,box-shadow .2s;width:100%;
 }
-.finput:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,.14)}
+.finput:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.14)}
 .btn-submit{
   background:linear-gradient(135deg,var(--cyan),var(--cyan2));
   color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
@@ -269,30 +147,21 @@ form.cform{display:flex;flex-direction:column;gap:14px}
 }
 .btn-submit:hover{transform:translateY(-2px);box-shadow:0 6px 36px rgba(0,212,255,.48)}
 
-/* ══════════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════════ */
 footer{
   padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--deep);
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
 }
-.footer-logo{display:flex;align-items:center;gap:12px}
 .footer-logo span{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;color:var(--muted)}
 footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted);text-align:right}
 
-/* ══════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════ */
 @media(max-width:960px){
   .contact-grid{grid-template-columns:1fr}
   .nav-links{display:none}
-  .hamburger{display:flex}
 }
 </style>
 </head>
 <body>
 
-<!-- ════════ NAVBAR ════════ -->
 <nav>
   <a href="#" class="nav-logo">
     <div class="nav-brand-name">Shell<span>TI</span></div>
@@ -300,11 +169,11 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
   </a>
   <ul class="nav-links">
     <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#staffing">Staffing</a></li>
     <li><a href="#contacto" class="nav-cta">Assessment Gratis</a></li>
   </ul>
 </nav>
 
-<!-- ════════ HERO ════════ -->
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="grid-lines"></div>
@@ -313,58 +182,94 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
       <div>
         <p class="overline">ShellTI · Technology Consultancy</p>
         <h1 class="hero-title">Arquitectura de<br><em>Ecosistemas</em><br>Digitales</h1>
-        <p class="hero-sub">Diseñamos el tejido lógico que sustenta la operatividad y resiliencia de organizaciones de alta complejidad. Especialistas en <strong style="color:var(--green)">Ley N° 21.719</strong>.</p>
+        <p class="hero-sub">Diseñamos el tejido lógico que sustenta la operatividad y resiliencia de organizaciones de alta complejidad. Especialistas en <strong>Ley N° 21.719</strong>.</p>
         <div class="actions">
           <a href="diagnostico.html" class="btn-cta">Iniciar Assessment →</a>
-          <a href="#nosotros" class="btn-ghost">Conocer más</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ CONTACTO ════════ -->
+<!-- ════════ STAFFING SECTION ════════ -->
+<section id="staffing">
+  <div class="container">
+    <p class="overline">Staffing & Outsourcing</p>
+    <h2 style="font-size:2.5rem; margin-bottom:1rem">Soluciones de <span style="color:var(--cyan)">Tercerización Tecnológica</span></h2>
+    <p style="color:var(--muted); max-width:700px; font-weight:300">Impulsamos la evolución de su ecosistema digital mediante la integración de talento especializado y procesos de ingeniería de software de alto rendimiento.</p>
+    
+    <div class="staff-grid">
+      <div class="staff-card">
+        <span class="staff-icon">💻</span>
+        <h3>Outsourcing de Desarrollo</h3>
+        <p>Ingeniería de software a medida bajo metodologías ágiles. Desplegamos equipos expertos en sistemas web, móviles y arquitecturas distribuidas enfocadas en escalabilidad.</p>
+      </div>
+      <div class="staff-card">
+        <span class="staff-icon">🏭</span>
+        <h3>Software Factory</h3>
+        <p>Procesos estandarizados de ciclo de vida completo: desde el diseño conceptual y testing automatizado hasta la implementación y mantenimiento evolutivo de soluciones empresariales.</p>
+      </div>
+      <div class="staff-card">
+        <span class="staff-icon">👥</span>
+        <h3>Staff Augmentation</h3>
+        <p>Integración inmediata de profesionales IT certificados. Externalice sus necesidades técnicas con expertos alineados a la cultura y objetivos de su organización.</p>
+      </div>
+      <div class="staff-card">
+        <span class="staff-icon">🛠️</span>
+        <h3>Soporte e Infraestructura</h3>
+        <p>Gestión proactiva de help desk 24/7 y mantenimiento de infraestructura crítica. Aseguramos la continuidad operativa mediante monitoreo preventivo y correctivo.</p>
+      </div>
+      <div class="staff-card">
+        <span class="staff-icon">☁️</span>
+        <h3>Cloud & DevOps</h3>
+        <p>Estrategias de migración hacia nubes híbridas, automatización de despliegues y administración avanzada de servidores con enfoque en seguridad Zero Trust.</p>
+      </div>
+      <div class="staff-card">
+        <span class="staff-icon">📊</span>
+        <h3>Project Management</h3>
+        <p>Gestión de proyectos tecnológicos bajo estándares PMI. Consultoría estratégica para la optimización de procesos y aceleración de la transformación digital.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:4rem; padding:3rem; background:rgba(0,212,255,0.03); border:1px solid var(--border); border-radius:4px">
+      <h3 style="margin-bottom:2rem; text-align:center">Ventajas Competitivas con <span style="color:var(--cyan)">ShellTI</span></h3>
+      <div class="staff-advantages">
+        <div class="adv-item"><strong>Eficiencia Operativa:</strong> Optimización de costos de hasta un 40% frente a la contratación tradicional.</div>
+        <div class="adv-item"><strong>Talento de Elite:</strong> Acceso a perfiles especializados en frameworks y tecnologías de vanguardia.</div>
+        <div class="adv-item"><strong>Escalabilidad Bajo Demanda:</strong> Flexibilidad total para ajustar la capacidad técnica según los hitos del proyecto.</div>
+        <div class="adv-item"><strong>Foco Estratégico:</strong> Delegue la operatividad técnica y concentre sus recursos en el core business.</div>
+        <div class="adv-item"><strong>Soporte Especializado:</strong> Atención técnica de alto nivel en español y cobertura horaria total.</div>
+        <div class="adv-item"><strong>Compliance Nativo:</strong> Gestión alineada a normativas de seguridad de la información y protección de datos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contacto">
   <div class="container">
     <div class="contact-grid">
       <div class="contact-pitch">
         <p class="overline">Contacto</p>
-        <h2 class="sec-title">Diseñemos tu <span class="tc">Ecosistema Digital</span></h2>
-        <p>Nuestro equipo de especialistas en Ley 21.719 está listo para analizar tu situación actual.</p>
-        <p class="mono-info">// TECHNOLOGY CONSULTANCY<br>// ESPECIALISTAS LEY N° 21.719</p>
-        <div class="cstats">
-          <div class="cstat"><span>Dic. 2026</span><span>Vigencia Ley 21.719</span></div>
-        </div>
+        <h2 style="font-size:2.5rem; margin-bottom:1rem">Diseñemos tu <span style="color:var(--cyan)">Ecosistema</span></h2>
+        <p>Nuestro equipo está listo para analizar sus desafíos tecnológicos y de cumplimiento.</p>
       </div>
       <div>
         <form class="cform" action="https://formsubmit.co/contacto@shellti.com" method="POST">
           <input type="hidden" name="_subject" value="Nuevo contacto desde ShellTI.com">
-          <input type="hidden" name="_template" value="table">
-          <input class="finput" type="text" name="empresa" placeholder="Nombre de la Empresa" required>
+          <input class="finput" type="text" name="empresa" placeholder="Empresa" required>
           <input class="finput" type="email" name="email" placeholder="Correo Corporativo" required>
-          <input class="finput" type="text" name="nombre" placeholder="Nombre del Contacto">
-          <select class="finput" name="sector">
-            <option value="">Sector: seleccionar...</option>
-            <option>Banca & Finanzas</option>
-            <option>Retail & E-commerce</option>
-            <option>Consumo Masivo</option>
-            <option>Otros</option>
-          </select>
-          <textarea class="finput" name="mensaje" rows="3" placeholder="Descripción breve de la necesidad" style="resize:vertical"></textarea>
-          <button class="btn-submit" type="submit">AGENDAR CONSULTA PERSONALIZADA →</button>
-          <a href="diagnostico.html" class="btn-submit" style="margin-top:10px; background:transparent; border:1px solid var(--cyan); color:var(--cyan)">O REALIZAR DIAGNÓSTICO INTERACTIVO →</a>
+          <input class="finput" type="text" name="nombre" placeholder="Nombre">
+          <textarea class="finput" name="mensaje" rows="3" placeholder="Descripción de la necesidad"></textarea>
+          <button class="btn-submit" type="submit">AGENDAR CONSULTA →</button>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ FOOTER ════════ -->
 <footer>
-  <div class="footer-logo">
-    <span>ShellTI · 2026</span>
-  </div>
-  <p>Especialistas en Arquitectura de Ecosistemas Digitales.</p>
+  <div class="footer-logo"><span>ShellTI · 2026</span></div>
+  <p>Arquitectura de Ecosistemas Digitales.</p>
 </footer>
 
 </body>
