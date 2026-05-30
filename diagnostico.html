@@ -202,6 +202,7 @@
             <p id="statusText" style="font-size:.85rem; font-weight:600;">Estado: <span style="color:var(--green)">Pendiente</span></p>
             <p id="statusHint" style="font-size:.7rem; color:var(--muted); margin-top:.5rem;">Complete todas las preguntas para obtener el an&aacute;lisis detallado.</p>
           </div>
+          <div id="recomBox" style="display:none; margin-top:1rem;"></div>
         </div>
       </div>
 
@@ -391,6 +392,46 @@
     statusText.innerHTML = 'Estado: <span style="color:' + color + '">' + level + '</span>';
     statusHint.innerText = 'Se han detectado ' + noCount + (noCount !== 1 ? ' brechas' : ' brecha') + ' de cumplimiento potencial' + (noCount !== 1 ? 'es' : '') + '.';
     if (totalAnswered === questionData.length) showResults(level);
+    updateRecomendaciones();
+  }
+
+  var recomData = {
+    1: { ley: 'Art. 14 bis Ley 21.719', iso: 'ISO 27001 A.5.9', impacto: 'Crítico', texto: 'Sin inventario de activos no es posible construir el Registro de Actividades de Tratamiento (RAT). Remediación: levantar catálogo de datos personales con propietario, finalidad y base de licitud.' },
+    2: { ley: 'Art. 12-13 Ley 21.719', iso: 'ISO 27001 A.5.34', impacto: 'Crítico', texto: 'El tratamiento sin consentimiento válido es ilícito. Remediación: implementar formularios de opt-in con registro de timestamp y mecanismo de revocación.' },
+    3: { ley: 'Art. 15 ter Ley 21.719', iso: 'ISO 27001 Cláusula 6.1.2', impacto: 'Alto', texto: 'Tratamientos de alto riesgo sin DPIA exponen a sanciones graves. Remediación: ejecutar evaluación de impacto documentada antes de nuevos tratamientos masivos o con datos sensibles.' },
+    4: { ley: 'Art. 14 Ley 21.719', iso: 'ISO 27001 A.8.10', impacto: 'Alto', texto: 'Conservar datos más allá de su finalidad infringe el principio de limitación del plazo. Remediación: definir tabla de retención por categoría y procedimiento de eliminación segura certificada.' },
+    5: { ley: 'Art. 26 Ley 21.719', iso: 'ISO 27001 A.5.24-5.26', impacto: 'Crítico', texto: 'Sin protocolo de brechas es imposible cumplir la notificación en 72 h. Remediación: establecer IRP con roles, playbooks y simulacros semestrales.' },
+    6: { ley: 'Art. 17-18 Ley 21.719', iso: 'ISO 27001 A.5.19-5.21', impacto: 'Alto', texto: 'El responsable responde solidariamente por sus encargados. Remediación: actualizar contratos con cláusulas de confidencialidad, auditoría y notificación de incidentes.' },
+    7: { ley: 'Art. 14 quater Ley 21.719', iso: 'ISO 27001 A.8.2', impacto: 'Alto', texto: 'Sin MFA los accesos a datos sensibles no cumplen el deber de seguridad. Remediación: activar autenticación multifactor en todos los sistemas con datos personales.' },
+    8: { ley: 'Art. 14 quater Ley 21.719', iso: 'ISO 27001 Cláusula 9.2 + A.8.8', impacto: 'Medio', texto: 'Sin auditorías periódicas no hay evidencia de diligencia ante la autoridad. Remediación: programar pentest anual y auditoría interna del SGSI con informe de hallazgos.' },
+    9: { ley: 'Art. 26 + Art. 14 quater Ley 21.719', iso: 'ISO 27001 A.5.29-5.30', impacto: 'Alto', texto: 'Un BCP/IRP no probado equivale a no tenerlo. Remediación: ejecutar tabletop exercise y validar RTO inferior a 24 h para sistemas críticos.' },
+    10: { ley: 'Art. 14 quater Ley 21.719', iso: 'ISO 27001 Cláusulas 7.2-7.3 + A.6.3', impacto: 'Medio', texto: 'El factor humano es la principal causa de brechas. Remediación: implementar programa trimestral de formación con simulacros de phishing medibles como KPI.' }
+  };
+
+  var impactoColor = { 'Crítico': 'var(--red)', 'Alto': 'var(--yellow)', 'Medio': 'var(--cyan)' };
+
+  function updateRecomendaciones() {
+    var box = document.getElementById('recomBox');
+    var fallos = [];
+    for (var k in answers) { if (answers[k] === 'no') fallos.push(parseInt(k)); }
+    if (fallos.length === 0) { box.style.display = 'none'; return; }
+    var html = '<p style="font-family:\'JetBrains Mono\',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:.75rem;">Recomendaciones Prioritarias</p>';
+    for (var i = 0; i < fallos.length; i++) {
+      var id = fallos[i];
+      var r = recomData[id];
+      if (!r) continue;
+      var ic = impactoColor[r.impacto] || 'var(--muted)';
+      html += '<div style="border-left:2px solid ' + ic + ';padding:.75rem 1rem;margin-bottom:.75rem;background:rgba(0,0,0,0.2);border-radius:0 2px 2px 0;">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:.4rem;flex-wrap:wrap;">';
+      html += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:.55rem;color:' + ic + ';border:1px solid ' + ic + ';padding:2px 7px;border-radius:2px;opacity:.9;">Impacto ' + r.impacto + '</span>';
+      html += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:.55rem;color:var(--cyan);opacity:.7;">' + r.ley + '</span>';
+      html += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:.55rem;color:var(--green);opacity:.7;">' + r.iso + '</span>';
+      html += '</div>';
+      html += '<p style="font-size:.75rem;color:var(--silver);line-height:1.6;font-weight:400;">' + r.texto + '</p>';
+      html += '</div>';
+    }
+    box.innerHTML = html;
+    box.style.display = 'block';
   }
 
   function showResults(level) {
