@@ -211,17 +211,18 @@ nav{
 .nav-cta{border:1px solid var(--cyan)!important;color:var(--cyan)!important;padding:8px 20px;border-radius:2px;box-shadow:0 0 12px rgba(0,212,255,0.18);transition:background .2s,box-shadow .2s!important}
 .nav-cta:hover{background:rgba(0,212,255,0.1)!important;box-shadow:0 0 28px rgba(0,212,255,0.35)!important}
 
-/* ── DROPDOWN RECURSOS ── */
 .nav-dropdown{position:relative}
 .nav-dropdown>a{display:flex;align-items:center;gap:5px;cursor:pointer}
 .nav-dropdown>a .dd-arrow{font-size:.5rem;transition:transform .25s;display:inline-block;opacity:.7}
 .nav-dropdown:hover>a .dd-arrow{transform:rotate(180deg)}
+/* Bridge: invisible area that connects nav item to dropdown, preventing hover loss */
+.nav-dropdown::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px;z-index:499}
 .dd-menu{
   position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);
   background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);
   border:1px solid rgba(0,212,255,0.22);border-radius:4px;
-  min-width:680px;padding:1.5rem;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;
+  min-width:720px;padding:1.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .22s ease,visibility .22s ease,transform .22s ease;
   box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 40px rgba(0,212,255,0.08);
@@ -236,7 +237,7 @@ nav{
 .nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 .dd-col-title{
   font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--green);margin-bottom:.75rem;
+  text-transform:uppercase;color:var(--green);margin-bottom:.75rem;white-space:nowrap;
   padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,0.15);
   display:flex;align-items:center;gap:6px;
 }
