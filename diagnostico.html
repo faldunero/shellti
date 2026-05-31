@@ -7,17 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --deep: #020617; --deep2: #040d1e; --deep3: #060f1c;
-      --cyan: #00D4FF; --cyan2: #00b8e6; --cyan3: #7eeeff;
-      --green: #34D399; --green2: #22c587;
-      --red: #FF6B6B; --red2: #FF5252;
-      --yellow: #FFD93D; --yellow2: #FFC107;
+      --deep: #020617; --cyan: #00D4FF; --cyan2: #00b8e6; --cyan3: #7eeeff;
+      --green: #34D399; --red: #FF6B6B; --yellow: #FFD93D;
       --silver: #E2E8F0; --muted: #94A3B8;
       --border: rgba(0,212,255,0.13); --bh: rgba(0,212,255,0.32);
-      --card: rgba(3,9,24,0.93); --cg: rgba(0,212,255,0.07);
+      --card: rgba(3,9,24,0.93);
     }
     html { scroll-behavior: smooth; }
     ::-webkit-scrollbar { width: 3px; }
@@ -25,40 +23,58 @@
     ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.4); border-radius: 2px; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--deep); color: var(--silver); line-height: 1.7; overflow-x: hidden; }
     h1,h2,h3,h4,h5 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: var(--silver); line-height: 1.1; }
+
+    /* NAV */
     nav { position: fixed; top: 0; width: 100%; z-index: 300; height: 68px; padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; background: rgba(2,6,23,0.95); backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .nav-brand-wrap { display: flex; flex-direction: column; line-height: 1; }
-    .nav-brand-name { font-weight: 800; font-size: 1.15rem; color: var(--silver); letter-spacing: -.5px; line-height: 1; }
+    .nav-brand-name { font-weight: 800; font-size: 1.15rem; color: var(--silver); letter-spacing: -.5px; }
     .nav-brand-name span { color: var(--cyan); }
     .nav-brand-sub { font-family: 'JetBrains Mono', monospace; font-size: .56rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
     .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
-    .nav-home-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--cyan); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--border); padding: 6px 12px; border-radius: 2px; transition: all 0.2s; }
-    .nav-home-btn:hover { border-color: var(--cyan); background: rgba(0,212,255,0.05); }
     .nav-links a { color: var(--muted); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s; }
     .nav-links a:hover { color: var(--cyan); }
     .nav-cta { border: 1px solid var(--cyan) !important; color: var(--cyan) !important; padding: 8px 20px; border-radius: 2px; box-shadow: 0 0 12px rgba(0,212,255,0.18); transition: background .2s, box-shadow .2s !important; }
     .nav-cta:hover { background: rgba(0,212,255,0.1) !important; box-shadow: 0 0 28px rgba(0,212,255,0.35) !important; }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
     .hamburger span { width: 22px; height: 1.5px; background: var(--cyan); display: block; }
+
+    /* MAIN */
     main { min-height: 100vh; padding: 100px 2.5rem 60px; position: relative; overflow: hidden; }
     .main-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0, transparent 60%), radial-gradient(ellipse 700px 600px at 5% 85%, rgba(52,211,153,0.055) 0, transparent 60%), var(--deep); }
     .grid-lines { position: absolute; inset: 0; opacity: .028; background-image: linear-gradient(var(--cyan) 1px, transparent 1px), linear-gradient(90deg, var(--cyan) 1px, transparent 1px); background-size: 55px 55px; pointer-events: none; }
     .container { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
-    .survey-wrapper { display: grid; grid-template-columns: 1fr 400px; gap: 40px; margin-bottom: 3rem; }
-    .survey-questions { display: flex; flex-direction: column; gap: 1rem; }
+
+    /* PROGRESS */
+    .progress-wrap { margin-bottom: 2rem; }
+    .progress-meta { display: flex; justify-content: space-between; margin-bottom: .5rem; }
+    .progress-label { font-family: 'JetBrains Mono', monospace; font-size: .63rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+    .progress-count { font-family: 'JetBrains Mono', monospace; font-size: .63rem; color: var(--cyan); }
+    .progress-bar-bg { width: 100%; height: 3px; background: rgba(0,212,255,0.1); border-radius: 2px; }
+    .progress-bar-fill { height: 3px; background: linear-gradient(90deg, var(--cyan), var(--green)); border-radius: 2px; transition: width .5s ease; width: 0%; }
+
+    /* LAYOUT */
+    .survey-wrapper { display: grid; grid-template-columns: 1fr 380px; gap: 40px; margin-bottom: 3rem; align-items: start; }
+
+    /* QUESTIONS — todas las 10 */
+    .survey-questions { display: flex; flex-direction: column; gap: .85rem; }
     .question-item { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 1rem 1.5rem; box-shadow: 0 0 32px rgba(0,212,255,0.06); display: flex; justify-content: space-between; align-items: center; gap: 20px; transition: all .3s ease; }
     .question-item:hover { border-color: var(--bh); box-shadow: 0 0 36px rgba(0,212,255,0.1); transform: translateY(-2px); }
+    .question-item.answered-yes { border-color: rgba(52,211,153,0.3); }
+    .question-item.answered-no  { border-color: rgba(255,107,107,0.3); }
     .question-content { flex: 1; }
-    .question-num { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--muted); text-transform: uppercase; margin-bottom: .2rem; }
-    .question-text { font-size: .9rem; color: var(--silver); font-weight: 500; line-height: 1.4; }
-    .btn-info { background: none; border: 1px solid rgba(0,212,255,0.25); color: var(--cyan); cursor: pointer; width: 26px; height: 26px; border-radius: 50%; font-size: .7rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; transition: all .2s; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(0,212,255,0.08); }
+    .question-num { font-family: 'JetBrains Mono', monospace; font-size: .63rem; color: var(--muted); text-transform: uppercase; margin-bottom: .2rem; }
+    .question-text { font-size: .9rem; color: var(--silver); font-weight: 500; line-height: 1.45; }
+    .btn-info { background: none; border: 1px solid rgba(0,212,255,0.25); color: var(--cyan); cursor: pointer; width: 26px; height: 26px; border-radius: 50%; font-size: .7rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; transition: all .2s; display: flex; align-items: center; justify-content: center; }
     .btn-info:hover { background: rgba(0,212,255,0.12); border-color: var(--cyan); box-shadow: 0 0 18px rgba(0,212,255,0.35); transform: scale(1.12); }
     .answer-buttons { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
     .btn-answer { padding: 8px 16px; border: 1px solid rgba(226,232,240,.15); background: transparent; color: var(--muted); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: .75rem; border-radius: 2px; cursor: pointer; transition: all .2s; min-width: 60px; }
     .btn-answer:hover { border-color: var(--cyan); color: var(--cyan); }
     .btn-answer.active.yes { background: var(--green); color: var(--deep); border-color: var(--green); }
-    .btn-answer.active.no { background: var(--red); color: var(--silver); border-color: var(--red); }
-    .heatmap-panel { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 2rem; position: sticky; top: 100px; height: fit-content; }
+    .btn-answer.active.no  { background: var(--red);  color: var(--silver); border-color: var(--red); }
+
+    /* HEATMAP PANEL */
+    .heatmap-panel { background: var(--card); border: 1px solid var(--border); border-radius: 3px; padding: 2rem; position: sticky; top: 88px; height: fit-content; }
     .heatmap-title { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--cyan); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
     .matrix-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; background: var(--deep); border: 1px solid var(--border); display: grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr); margin-bottom: 2rem; }
     .quadrant { display: flex; align-items: center; justify-content: center; font-size: .6rem; font-weight: 800; text-transform: uppercase; }
@@ -70,398 +86,701 @@
     .axis-y { transform: rotate(-90deg); left: -45px; top: 50%; }
     .axis-x { bottom: -40px; left: 50%; transform: translateX(-50%); width: 100%; text-align: center; }
     .risk-pointer { position: absolute; width: 16px; height: 16px; background: var(--cyan); border-radius: 50%; border: 2px solid var(--silver); box-shadow: 0 0 15px var(--cyan); transform: translate(-50%, -50%); transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); left: 75%; top: 75%; }
-    .results-section { background: var(--card); border: 1px solid var(--border); padding: 2rem; margin-top: 2rem; display: none; }
-    .results-section.show { display: block; }
-    .results-main { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
-    .critical-text { color: var(--red); }
-    .high-text { color: var(--yellow); }
-    .medium-text { color: var(--yellow); }
-    .low-text { color: var(--green); }
+    .status-box { margin-top: 2.5rem; padding: 1.2rem; border-left: 3px solid var(--green); background: rgba(52,211,153,0.05); transition: border-color .4s; }
 
-    /* ═══ MODAL OVERLAY UNIFICADO ═══ */
+    /* RECOMENDACIONES — paginadas de 2 en 2 */
+    .recom-section { margin-top: 1.2rem; display: none; }
+    .recom-section.show { display: block; }
+    .recom-section-title { font-family: 'JetBrains Mono', monospace; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: .85rem; }
+    .recom-pair { display: flex; flex-direction: column; gap: .75rem; }
+    .recom-card { border-left: 2px solid; padding: .85rem 1rem; background: rgba(0,0,0,0.25); border-radius: 0 3px 3px 0; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .recom-badges { display: flex; align-items: center; gap: 6px; margin-bottom: .45rem; flex-wrap: wrap; }
+    .recom-badge { font-family: 'JetBrains Mono', monospace; font-size: .52rem; padding: 2px 8px; border-radius: 2px; border: 1px solid; }
+    .recom-text { font-size: .75rem; color: var(--silver); line-height: 1.6; }
+    .recom-nav { display: flex; align-items: center; justify-content: space-between; margin-top: .85rem; }
+    .recom-nav-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .6rem; padding: 5px 12px; border-radius: 2px; cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: 1px; }
+    .recom-nav-btn:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+    .recom-nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+    .recom-page-info { font-family: 'JetBrains Mono', monospace; font-size: .6rem; color: var(--muted); }
+
+    /* PDF BUTTON */
+    .btn-pdf-panel { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 1rem; padding: 12px 16px; background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.25); color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: .65rem; letter-spacing: 1px; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: all .2s; justify-content: center; }
+    .btn-pdf-panel:hover { background: rgba(0,212,255,0.12); box-shadow: 0 0 18px rgba(0,212,255,0.2); }
+
+    /* RESULTS */
+    .results-section { background: var(--card); border: 1px solid var(--border); padding: 2rem; margin-top: 2rem; display: none; border-radius: 3px; }
+    .results-section.show { display: block; animation: fadeIn .4s ease; }
+    .results-main { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .critical-text { color: var(--red); } .high-text { color: var(--yellow); } .medium-text { color: var(--yellow); } .low-text { color: var(--green); }
+    .btn-submit { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); border: none; color: var(--deep); font-weight: 800; cursor: pointer; border-radius: 3px; letter-spacing: 1px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .85rem; transition: all .2s; margin-top: 1rem; }
+    .btn-submit:hover { box-shadow: 0 0 28px rgba(0,212,255,0.4); transform: translateY(-1px); }
+
+    /* MODALS */
     .modal-overlay { position: fixed; inset: 0; background: rgba(2,6,23,0.92); backdrop-filter: blur(14px) saturate(180%); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s ease; padding: 1rem; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-
-    /* Modal técnico */
-    .modal-tech { background: linear-gradient(145deg, #030c1f 0%, #020a1a 50%, #040e22 100%); border: 1px solid rgba(0,212,255,0.35); border-radius: 6px; padding: 0; max-width: 720px; width: 100%; max-height: 88vh; overflow: hidden; position: relative; box-shadow: 0 0 0 1px rgba(0,212,255,0.08), 0 0 60px rgba(0,212,255,0.12), 0 0 120px rgba(0,212,255,0.06), inset 0 1px 0 rgba(0,212,255,0.15); transform: translateY(18px) scale(0.97); transition: transform .38s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-tech { background: linear-gradient(145deg, #030c1f 0%, #020a1a 50%, #040e22 100%); border: 1px solid rgba(0,212,255,0.35); border-radius: 6px; padding: 0; max-width: 720px; width: 100%; max-height: 88vh; overflow: hidden; position: relative; box-shadow: 0 0 60px rgba(0,212,255,0.12), inset 0 1px 0 rgba(0,212,255,0.15); transform: translateY(18px) scale(0.97); transition: transform .38s cubic-bezier(0.34,1.56,0.64,1); }
     .modal-overlay.active .modal-tech { transform: translateY(0) scale(1); }
     .modal-tech::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), var(--cyan3), var(--cyan), transparent); animation: borderGlow 2.5s ease-in-out infinite; z-index: 2; }
-    .modal-tech::after { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: 6px; background: radial-gradient(ellipse 300px 200px at 90% 10%, rgba(0,212,255,0.06) 0, transparent 70%), radial-gradient(ellipse 200px 300px at 10% 90%, rgba(52,211,153,0.04) 0, transparent 70%); }
-    @keyframes borderGlow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; filter: blur(1px); } }
-
+    @keyframes borderGlow { 0%,100% { opacity:.6; } 50% { opacity:1; filter:blur(1px); } }
     .modal-tech-header { padding: 1.8rem 2rem 1.4rem; border-bottom: 1px solid rgba(0,212,255,0.1); background: rgba(0,212,255,0.03); position: relative; }
     .modal-tech-tag { font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--cyan); margin-bottom: .6rem; opacity: .85; display: flex; align-items: center; gap: 8px; }
     .modal-tech-tag::before { content: ''; width: 18px; height: 1px; background: var(--cyan); opacity: .6; }
     .modal-tech-title { font-size: 1.22rem; font-weight: 800; color: var(--silver); line-height: 1.2; }
     .modal-tech-title span { color: var(--cyan); }
     .modal-close { position: absolute; top: 1.4rem; right: 1.4rem; background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2); color: var(--muted); cursor: pointer; width: 32px; height: 32px; border-radius: 3px; font-size: .85rem; display: flex; align-items: center; justify-content: center; transition: all .2s; font-family: 'JetBrains Mono', monospace; }
-    .modal-close:hover { background: rgba(255,107,107,0.12); border-color: var(--red); color: var(--red); box-shadow: 0 0 12px rgba(255,107,107,0.2); }
-
+    .modal-close:hover { background: rgba(255,107,107,0.12); border-color: var(--red); color: var(--red); }
     .modal-tech-body { padding: 1.8rem 2rem; overflow-y: auto; max-height: calc(88vh - 130px); }
     .modal-tech-body::-webkit-scrollbar { width: 3px; }
     .modal-tech-body::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 2px; }
-
-    .ref-block { margin-bottom: 1.4rem; border-left: 2px solid rgba(0,212,255,0.5); padding-left: 1.2rem; position: relative; }
+    .ref-block { margin-bottom: 1.4rem; border-left: 2px solid rgba(0,212,255,0.5); padding-left: 1.2rem; }
     .ref-block:last-child { margin-bottom: 0; }
     .ref-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; margin-bottom: .55rem; font-weight: 500; }
     .ref-badge.ley { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.22); }
     .ref-badge.iso { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.22); }
     .ref-badge.riesgo { background: rgba(255,217,61,0.08); color: var(--yellow); border: 1px solid rgba(255,217,61,0.2); }
     .ref-label { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--cyan); font-weight: 500; margin-bottom: .3rem; letter-spacing: .5px; opacity: .8; }
-    .ref-text { font-size: .875rem; color: var(--silver); line-height: 1.68; font-weight: 400; }
+    .ref-text { font-size: .875rem; color: var(--silver); line-height: 1.68; }
     .ref-text strong { color: var(--cyan3); font-weight: 600; }
     .modal-divider { height: 1px; margin: 1.4rem 0; background: linear-gradient(90deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05), transparent); }
     .impact-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 2px; margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: .62rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
     .impact-critical { background: rgba(255,107,107,0.1); color: var(--red); border: 1px solid rgba(255,107,107,0.25); }
     .impact-high { background: rgba(255,217,61,0.08); color: var(--yellow); border: 1px solid rgba(255,217,61,0.2); }
     .impact-medium { background: rgba(0,212,255,0.08); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
-
-    /* Modal contacto */
-    .modal-contact { background: linear-gradient(145deg, #030c1f 0%, #020a1a 50%, #040e22 100%); border: 1px solid rgba(0,212,255,0.35); border-radius: 6px; padding: 3rem; max-width: 500px; width: 100%; position: relative; box-shadow: 0 0 0 1px rgba(0,212,255,0.08), 0 0 60px rgba(0,212,255,0.12), inset 0 1px 0 rgba(0,212,255,0.15); transform: translateY(18px) scale(0.97); transition: transform .38s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-contact { background: linear-gradient(145deg,#030c1f 0%,#020a1a 50%,#040e22 100%); border: 1px solid rgba(0,212,255,0.35); border-radius: 6px; padding: 3rem; max-width: 500px; width: 100%; position: relative; box-shadow: 0 0 60px rgba(0,212,255,0.12); transform: translateY(18px) scale(0.97); transition: transform .38s cubic-bezier(0.34,1.56,0.64,1); }
     .modal-overlay.active .modal-contact { transform: translateY(0) scale(1); }
-    .modal-contact::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), var(--cyan3), var(--cyan), transparent); animation: borderGlow 2.5s ease-in-out infinite; border-radius: 6px 6px 0 0; }
+    .modal-contact::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--cyan),var(--cyan3),var(--cyan),transparent); animation:borderGlow 2.5s ease-in-out infinite; border-radius:6px 6px 0 0; }
     .finput { background: rgba(3,9,24,0.95); border: 1px solid var(--border); color: var(--silver); padding: 12px 16px; border-radius: 2px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; outline: none; transition: all .2s; width: 100%; }
     .finput:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0,212,255,0.1); }
-    .btn-submit { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); border: none; color: var(--deep); font-weight: 800; cursor: pointer; border-radius: 3px; letter-spacing: 1px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .85rem; transition: all .2s; }
-    .btn-submit:hover { box-shadow: 0 0 28px rgba(0,212,255,0.4); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); background: var(--deep); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; }
+    .footer-logo img { height: 32px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,212,255,.65)) drop-shadow(0 0 22px rgba(0,212,255,.35)) brightness(1.2) saturate(1.4); }
+    .footer-logo span { font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 2px; color: var(--muted); }
+    footer p { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: 1px; color: var(--muted); text-align: right; }
 
     @media (max-width: 960px) {
       .survey-wrapper { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .nav-links.open { display: flex; flex-direction: column; gap: 1rem; position: fixed; top: 68px; left: 0; right: 0; background: rgba(2,6,23,0.98); padding: 2rem; border-bottom: 1px solid var(--border); z-index: 299; }
       .hamburger { display: flex; }
+      .heatmap-panel { position: relative; top: auto; }
     }
     @media (max-width: 768px) {
       nav, main { padding-left: 1.2rem; padding-right: 1.2rem; }
       .question-item { flex-direction: column; align-items: flex-start; }
       .answer-buttons { width: 100%; }
       .btn-answer { flex: 1; }
-      .diag-header h1 { font-size: 2rem !important; }
-      .heatmap-panel { position: relative; top: auto; }
-      .modal-tech-body { max-height: 60vh; }
-      .modal-tech-header { padding: 1.4rem 1.4rem 1rem; }
-      .modal-tech-body { padding: 1.2rem 1.4rem; }
-      .modal-contact { padding: 2rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+      footer p { text-align: left; }
     }
-    footer { padding: 2rem 2.5rem; border-top: 1px solid var(--border); background: var(--deep); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-logo { display: flex; align-items: center; gap: 12px; }
-    .footer-logo img { height: 32px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,212,255,.65)) drop-shadow(0 0 22px rgba(0,212,255,.35)) brightness(1.2) saturate(1.4); }
-    .footer-logo span { font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 2px; color: var(--muted); }
-    footer p { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: 1px; color: var(--muted); text-align: right; }
-    @media (max-width: 960px) { footer { flex-direction: column; align-items: flex-start; } footer p { text-align: left; } }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html" class="nav-logo">
-      <div class="nav-brand-wrap">
-        <span class="nav-brand-name">Shell<span>TI</span></span>
-        <span class="nav-brand-sub">Technology Consultancy</span>
-      </div>
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="nav-home-btn">&#8592; Inicio</a></li>
-      <li><a href="index.html#nosotros">Qui&eacute;nes Somos</a></li>
-      <li><a href="index.html#compliance">Ley 21.719</a></li>
-      <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
-    </ul>
-    <button class="hamburger" id="burger" aria-label="Abrir men&uacute;" type="button">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
 
-  <main>
-    <div class="main-bg"></div>
-    <div class="grid-lines"></div>
-    <div class="container">
-      <div class="diag-header" style="text-align:center; margin-bottom:3rem;">
-        <h1 style="font-size:2.5rem;">Diagn&oacute;stico de <span style="color:var(--cyan)">Cumplimiento</span></h1>
-        <p style="color:var(--muted); margin-top:.6rem;">Evaluaci&oacute;n r&aacute;pida de postura frente a la Ley 21.719 &mdash; haga clic en <span style="color:var(--cyan); font-family:'JetBrains Mono',monospace; font-size:.9rem; border:1px solid rgba(0,212,255,0.3); padding:1px 6px; border-radius:50%;">?</span> para ver el fundamento t&eacute;cnico y legal de cada control</p>
-      </div>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI" style="height:42px;width:42px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,0.85)) drop-shadow(0 0 22px rgba(0,212,255,0.5)) brightness(1.25) saturate(1.5);" />
+    <div class="nav-brand-wrap">
+      <span class="nav-brand-name">Shell<span>TI</span></span>
+      <span class="nav-brand-sub">Technology Consultancy</span>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Nosotros</a></li>
+    <li><a href="index.html#staffing">Staffing</a></li>
+    <li><a href="index.html#compliance">Compliance</a></li>
+    <li><a href="index.html#triangulo">Resiliencia</a></li>
+    <li><a href="index.html#metodologia">Metodolog&iacute;a</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+    <li><a href="diagnostico.html" class="nav-cta">Assessment Gratis</a></li>
+  </ul>
+  <button class="hamburger" id="burger" aria-label="Abrir men&uacute;" type="button">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-      <div class="survey-wrapper">
-        <div class="survey-questions" id="questionsContainer"></div>
-        <div class="heatmap-panel">
-          <p class="heatmap-title">Matriz de Riesgo</p>
-          <div class="risk-matrix-container" style="position:relative;">
-            <div class="axis-label axis-y">Impacto Operativo</div>
-            <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
-            <div class="matrix-wrapper">
-              <div class="quadrant quad-tl">Cr&iacute;tico</div>
-              <div class="quadrant quad-tr">Alto</div>
-              <div class="quadrant quad-bl">Medio</div>
-              <div class="quadrant quad-br">Bajo</div>
-              <div class="risk-pointer" id="riskPointer"></div>
-            </div>
-          </div>
-          <div id="statusBox" style="margin-top:2.5rem; padding:1.2rem; border-left:3px solid var(--green); background:rgba(52,211,153,0.05);">
-            <p id="statusText" style="font-size:.85rem; font-weight:600;">Estado: <span style="color:var(--green)">Pendiente</span></p>
-            <p id="statusHint" style="font-size:.7rem; color:var(--muted); margin-top:.5rem;">Complete todas las preguntas para obtener el an&aacute;lisis detallado.</p>
+<main>
+  <div class="main-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="container">
+
+    <div style="text-align:center; margin-bottom:2.5rem;">
+      <h1 style="font-size:2.5rem;">Diagn&oacute;stico de <span style="color:var(--cyan)">Cumplimiento</span></h1>
+      <p style="color:var(--muted); margin-top:.6rem;">Evaluaci&oacute;n frente a la Ley 21.719 &mdash; haga clic en <span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.9rem;border:1px solid rgba(0,212,255,0.3);padding:1px 6px;border-radius:50%;">?</span> para ver el fundamento legal de cada control</p>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Progreso de evaluaci&oacute;n</span>
+        <span class="progress-count" id="progressCount">0 / 10 controles</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="survey-wrapper">
+
+      <!-- PREGUNTAS — las 10 completas -->
+      <div class="survey-questions" id="questionsContainer"></div>
+
+      <!-- PANEL DERECHO -->
+      <div class="heatmap-panel">
+        <p class="heatmap-title">Matriz de Riesgo</p>
+        <div style="position:relative;">
+          <div class="axis-label axis-y">Impacto Operativo</div>
+          <div class="axis-label axis-x">Probabilidad de Incumplimiento</div>
+          <div class="matrix-wrapper">
+            <div class="quadrant quad-tl">Cr&iacute;tico</div>
+            <div class="quadrant quad-tr">Alto</div>
+            <div class="quadrant quad-bl">Medio</div>
+            <div class="quadrant quad-br">Bajo</div>
+            <div class="risk-pointer" id="riskPointer"></div>
           </div>
         </div>
-      </div>
 
-      <div class="results-section" id="resultsSection">
-        <h2 class="results-main" id="resultsLevel">Nivel de Riesgo --</h2>
-        <p id="resultsDesc" style="color:var(--muted); margin-bottom:2rem;"></p>
-        <button class="btn-submit" onclick="openContactModal()">AGENDAR CONSULTA PERSONALIZADA</button>
-      </div>
-    </div>
-  </main>
-
-  <!-- MODAL BASE UNICO — relleno dinamicamente por JS -->
-  <div class="modal-overlay" id="infoModal">
-    <div class="modal-tech">
-      <div class="modal-tech-header">
-        <div class="modal-tech-tag" id="modalTag">Control 00</div>
-        <h3 class="modal-tech-title" id="modalTitle">Cargando...</h3>
-        <button class="modal-close" onclick="closeInfoModal()" aria-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-tech-body" id="modalBody"></div>
-    </div>
-  </div>
-
-  <!-- Modal de contacto -->
-  <div class="modal-overlay" id="contactModal">
-    <div class="modal-contact">
-      <button onclick="closeContactModal()" class="modal-close" style="position:absolute; top:1.4rem; right:1.4rem;">&times;</button>
-      <h3 style="margin-bottom:.5rem; font-size:1.4rem;">Agendar Consulta</h3>
-      <p style="color:var(--muted); font-size:.85rem; margin-bottom:1.5rem;">Reciba un informe detallado basado en sus respuestas.</p>
-      <form action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex; flex-direction:column; gap:12px;">
-        <input type="hidden" name="_subject" value="Nuevo Lead - Diagn&oacute;stico ShellTI" />
-        <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo" />
-        <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas" />
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <input class="finput" type="text" name="nombre" placeholder="Nombre" required />
-          <input class="finput" type="text" name="empresa" placeholder="Empresa" required />
+        <div class="status-box" id="statusBox">
+          <p id="statusText" style="font-size:.85rem;font-weight:600;">Estado: <span style="color:var(--green)">Pendiente</span></p>
+          <p id="statusHint" style="font-size:.7rem;color:var(--muted);margin-top:.5rem;">Complete todas las preguntas para obtener el an&aacute;lisis detallado.</p>
         </div>
-        <input class="finput" type="email" name="email" placeholder="Email Corporativo" required />
-        <textarea class="finput" name="comentarios" rows="3" placeholder="Comentarios o dudas espec&iacute;ficas"></textarea>
-        <button type="submit" class="btn-submit" style="margin-top:10px;">ENVIAR SOLICITUD</button>
-      </form>
+
+        <!-- RECOMENDACIONES paginadas de 2 en 2 -->
+        <div class="recom-section" id="recomSection">
+          <p class="recom-section-title" style="margin-top:1.2rem;">Recomendaciones Prioritarias</p>
+          <div class="recom-pair" id="recomPair"></div>
+          <div class="recom-nav">
+            <button class="recom-nav-btn" id="recomPrev" onclick="recomPage(-1)" disabled>&#8592; Ant</button>
+            <span class="recom-page-info" id="recomPageInfo"></span>
+            <button class="recom-nav-btn" id="recomNext" onclick="recomPage(1)">Sig &#8594;</button>
+          </div>
+          <!-- PDF justo debajo de las recomendaciones -->
+          <button class="btn-pdf-panel" onclick="generarPDF()">&#8681;&nbsp; Descargar Informe PDF</button>
+        </div>
+      </div>
     </div>
+
+    <!-- RESULTS -->
+    <div class="results-section" id="resultsSection">
+      <h2 class="results-main" id="resultsLevel">Nivel de Riesgo --</h2>
+      <p id="resultsDesc" style="color:var(--muted);margin-bottom:.5rem;"></p>
+      <button class="btn-submit" onclick="openContactModal()">Agendar Consulta Personalizada &rarr;</button>
+    </div>
+
   </div>
+</main>
 
-  <footer>
-    <div class="footer-logo">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACUklEQVR4nO2b0W3CMBBG/68AA0SDRp2iA8BIA5oN2g2yQZpG2qBRGqFpkA0iDRoYAAaAAI76QpWc14ntOAnE+T+J5HNx/u9sz7bJvUeIiIiIiIh8hTnH0R5g7eA0kLgB2HlYd4Hl/81xH1g7OM+t0f2+Q1n4Z7271uN3HtbzQGIOtI64d7BeA/t1v7u11+M2kHgG2kXcH1gvO88n116Px0DizEGbifsP61nnec211+MxkLh00Fbi/sN63Hnecu31eAwkrh20iXgw9mE97jzvufZ6PAYSlw4aTTwY+7Aed573XHs9HgOJSwcNIB6MfViPO88Hrr0ej4HEpYMGEL8Xw0Hi0kEDiN+L4SBx6aABxO/FcJC4dNAA4vdiOEhcmgO9tS5rIu5/zD1o2nJpDjwEEmMibl+aAw+BxJiI25fmwEMgMSbi9qU58BBIjIm4fWkOPAQSYyJuX5oDD4HEmIjb1zQHWkvc/6Y50FrivtIcaC1xX2kOtJa4rzQHWkvcV5oDrSXuK82B1hL3leZAa4n7SnOgtcR9pTnQWuK+0hxoLXFfaQ60lrivNAdaS9xXmgOtJe4rzYHWEveV5kAriTtJc6CVxJ2kOdBK4k7SHGglcSdpDrSSuJM0B1pJ3EmaA60k7iTNgVYSd5LmQCuJO0lzoJXEnXTYB1pJ3MmwD7SSuJNhH2glcSfDPtBK4k6GfaCVxJ0M+0Arit9Lh32gFcXvpcM+0Iri99JhH2hF8XvpsA+0ovi9dNgHWlH8XjqMAyIiIiIiIv8oX6mO3gN0aR1sAAAAAElFTkSuQmCC" alt="ShellTI Logo" />
-      <span>ShellTI</span>
+<!-- Modal técnico -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal-tech">
+    <div class="modal-tech-header">
+      <div class="modal-tech-tag" id="modalTag">Control 00</div>
+      <h3 class="modal-tech-title" id="modalTitle">Cargando...</h3>
+      <button class="modal-close" onclick="closeInfoModal()" aria-label="Cerrar">&times;</button>
     </div>
-    <p>contacto@shellti.com<br>&copy; 2026 ShellTI. Todos los derechos reservados.</p>
-  </footer>
+    <div class="modal-tech-body" id="modalBody"></div>
+  </div>
+</div>
 
-  <script>
-  // BASE DE CONOCIMIENTO — 10 controles con fundamento Ley 21.719 + ISO 27001:2022
-  var questionData = [
-    {
-      id: 1,
-      text: "Cuenta con un inventario actualizado de activos de informacion y datos personales",
-      tag: "Control 01 — Inventario de Activos",
-      title: "Inventario de <span>Activos de Informacion</span> y Datos Personales",
-      impact: "critical",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 bis / Art. 3 lit. b</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 obliga al responsable del tratamiento a mantener un <strong>Registro de Actividades de Tratamiento (RAT)</strong> actualizado, identificando que datos se tratan, con que finalidad, bases de licitud, categorias de titulares y plazos de conservacion. Sin un inventario de activos que mapee los datos personales existentes, es materialmente imposible construir un RAT conforme a derecho. El incumplimiento habilita sanciones de hasta 5.000 UTM por parte del Consejo para la Transparencia.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Anexo A, Control 5.9</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control 5.9 exige un <strong>inventario de informacion y activos asociados</strong>, identificando propietarios responsables. Abarca sistemas TI, bases de datos, repositorios cloud, archivos fisicos y flujos de datos. Sin este inventario, los controles de seguridad carecen de alcance definido, haciendo inauditable cualquier SGSI.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Riesgo Operativo</span><div class='ref-label'>Exposicion ante incidentes</div><p class='ref-text'>Sin inventario, ante una brecha activa la obligacion de notificacion en <strong>72 horas</strong> (Art. 26 Ley 21.719), pero la organizacion no puede determinar que datos fueron comprometidos ni a cuantos titulares afecta, incumpliendo el requisito de notificacion adecuada.</p></div><div class='impact-pill impact-critical'>Requisito habilitante para todo el programa de cumplimiento</div>"
-    },
-    {
-      id: 2,
-      text: "Posee mecanismos de consentimiento explicito para el tratamiento de datos",
-      tag: "Control 02 — Consentimiento",
-      title: "Mecanismos de <span>Consentimiento Explicito</span>",
-      impact: "critical",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 12, 13 y 16</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 eleva el estandar de consentimiento al exigir que sea <strong>libre, informado, especifico, inequivoco y, para datos sensibles, explicito</strong>. Se requieren formularios con casillas de opt-in independientes (no pre-marcadas), registros de timestamp, version del aviso de privacidad aceptada y canal de obtencion. El consentimiento tacito queda expresamente prohibido como base de licitud autonoma.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Anexo A, Control 5.34</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control 5.34 establece que la organizacion debe implementar <strong>mecanismos de obtencion y gestion del consentimiento</strong> integrados en los sistemas de tratamiento desde el diseno (privacy by design). Los registros deben ser auditables y recuperables ante una reclamacion.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Derechos ARCOP</span><div class='ref-label'>Revocacion y portabilidad</div><p class='ref-text'>El Art. 16 garantiza al titular <strong>revocar el consentimiento en cualquier momento</strong>, por lo que los mecanismos deben ser bidireccionales: tan sencillo dar el consentimiento como retirarlo, sin consecuencias adversas. La imposibilidad tecnica de revocar es en si misma una infraccion.</p></div><div class='impact-pill impact-critical'>Base de licitud principal — sin consentimiento valido el tratamiento es ilicito</div>"
-    },
-    {
-      id: 3,
-      text: "Se realizan evaluaciones de impacto de proteccion de datos (DPIA) regularmente",
-      tag: "Control 03 — DPIA",
-      title: "Evaluaciones de Impacto en <span>Proteccion de Datos</span> (DPIA)",
-      impact: "high",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 15 ter (EIPD)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 introduce la <strong>Evaluacion de Impacto en la Proteccion de Datos Personales (EIPD)</strong> como obligacion para tratamientos de riesgo elevado: datos sensibles masivos, vigilancia sistematica, decisiones automatizadas con efectos juridicos, nuevas tecnologias de perfilamiento. La EIPD debe documentar la descripcion, finalidad, necesidad, proporcionalidad, riesgos y medidas de mitigacion del tratamiento.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausula 6.1.2 + Control A.5.29</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 6.1.2 exige la <strong>evaluacion de riesgos de seguridad</strong> como proceso sistematico y periodico. El control A.5.29 complementa la EIPD al requerir analisis de impacto sobre activos de informacion frente a escenarios de amenaza. Ambos procesos deben integrarse para garantizar cobertura completa.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Periodicidad y revision</span><div class='ref-label'>Criterio de regularidad</div><p class='ref-text'>La EIPD debe revisarse cuando <strong>cambien las circunstancias del tratamiento</strong>: nueva tecnologia, nuevo proveedor, expansion geografica o cambio regulatorio. Se recomienda revision anual formal mas evaluacion ad-hoc ante cambios materiales. Su ausencia en tratamientos de alto riesgo es infraccion grave.</p></div><div class='impact-pill impact-high'>Obligatorio para tratamientos de alto riesgo — recomendable como practica general</div>"
-    },
-    {
-      id: 4,
-      text: "Existen politicas de retencion y eliminacion de datos claramente definidas",
-      tag: "Control 04 — Retencion y Eliminacion",
-      title: "Politicas de <span>Retencion y Eliminacion</span> de Datos",
-      impact: "high",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 (Principio de limitacion del plazo)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El principio de <strong>limitacion del plazo de conservacion</strong> establece que los datos personales deben conservarse solo durante el tiempo necesario para cumplir la finalidad del tratamiento. Vencido ese plazo, el responsable debe <strong>eliminarlos o anonimizarlos de forma efectiva e irreversible</strong>. Las politicas deben especificar plazos concretos por categoria de dato, la base legal que justifica el plazo y el procedimiento tecnico de eliminacion segura.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.8.10 y A.7.8</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control A.8.10 exige procedimientos documentados para la <strong>eliminacion segura</strong> en todos los medios de almacenamiento (discos, cloud, cintas, papel), empleando tecnicas como sobreescritura segura (DoD 5220.22-M), desmagnetizacion o destruccion fisica certificada.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Tension con obligaciones legales de conservacion</span><div class='ref-label'>Compatibilidad normativa</div><p class='ref-text'>La politica debe conciliar la minimizacion con <strong>obligaciones legales de conservacion</strong>: SII exige 6 anos para documentos tributarios; el Codigo del Trabajo, 5 anos para registros laborales. La solucion es segregar los datos cuya retencion obedece a obligacion legal, documentando la base de licitud especifica para cada extension de plazo.</p></div><div class='impact-pill impact-high'>El almacenamiento indefinido es infraccion directa al principio de limitacion</div>"
-    },
-    {
-      id: 5,
-      text: "Tiene un protocolo de notificacion de brechas de seguridad dentro de 72 horas",
-      tag: "Control 05 — Notificacion de Brechas",
-      title: "Protocolo de <span>Notificacion de Brechas</span> en 72 Horas",
-      impact: "critical",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 26 (Vulneraciones de seguridad)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El Art. 26 establece la obligacion de notificar a la <strong>autoridad de control dentro de las 72 horas</strong> desde que el responsable toma conocimiento de una vulneracion. Si la brecha implica riesgo elevado para los titulares, debe notificarseles a ellos sin dilacion. El protocolo debe cubrir: deteccion, evaluacion de criticidad, contencion, notificacion a autoridad, notificacion a titulares (si aplica), documentacion forense y remediacion.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.24, A.5.25, A.5.26</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.24-5.26 conforman el bloque de <strong>gestion de incidentes de seguridad</strong>: planificacion y preparacion, reporte de eventos y respuesta. Exigen roles definidos (CISO, DPO, equipo legal), playbooks por tipo de incidente, criterios de escalamiento y simulacros periodicos. El tiempo deteccion-contencion-notificacion debe medirse como KPI del SGSI.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Consecuencias del incumplimiento</span><div class='ref-label'>Multas y responsabilidad civil</div><p class='ref-text'>No notificar dentro del plazo puede constituir una <strong>infraccion grave</strong>, con multas de hasta 5.000 UTM (aprox. $350M CLP). El incumplimiento del deber de notificacion a titulares puede dar lugar a acciones civiles por dano moral, siendo la organizacion solidariamente responsable.</p></div><div class='impact-pill impact-critical'>Plazo no negociable: 72 h desde el conocimiento del responsable</div>"
-    },
-    {
-      id: 6,
-      text: "Los contratos con terceros incluyen clausulas de proteccion de datos actualizadas",
-      tag: "Control 06 — Contratos con Terceros",
-      title: "Contratos con <span>Terceros</span> y Clausulas de Proteccion de Datos",
-      impact: "high",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 17 y 18 (Encargado del tratamiento)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>Cuando el responsable encarga el tratamiento a un tercero, debe celebrar un <strong>contrato que vincule al encargado</strong> con obligaciones equivalentes. El contrato debe especificar: objeto, duracion, naturaleza y finalidad del tratamiento, obligaciones del encargado (confidencialidad, seguridad, sub-encargo, asistencia ante derechos ARCOP, eliminacion al termino). El responsable mantiene <strong>responsabilidad solidaria</strong> frente a los titulares.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.19, A.5.20, A.5.21</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.19-5.21 abordan la <strong>seguridad en relaciones con proveedores</strong>: politica de seguridad para proveedores, requisitos de seguridad en contratos y gestion en cadena de suministro TIC. Exigen clausulas que establezcan derechos de auditoria, obligacion de notificar incidentes al contratante y controles tecnicos minimos.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Transferencias internacionales</span><div class='ref-label'>Proveedores fuera de Chile</div><p class='ref-text'>Si el encargado opera fuera de Chile (ej.: AWS us-east, Google Workspace), aplican restricciones de <strong>transferencia internacional de datos</strong> (Art. 25 Ley 21.719): solo se permite a paises con nivel adecuado de proteccion o mediante garantias contractuales equivalentes.</p></div><div class='impact-pill impact-high'>Contratos sin clausulas vigentes equivale a responsabilidad sin cobertura contractual</div>"
-    },
-    {
-      id: 7,
-      text: "Utiliza autenticacion de doble factor (MFA) para accesos a datos sensibles",
-      tag: "Control 07 — Autenticacion MFA",
-      title: "Autenticacion <span>Multifactor (MFA)</span> en Acceso a Datos Sensibles",
-      impact: "high",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater (Deber de seguridad)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El Art. 14 quater establece el <strong>deber de seguridad</strong>: el responsable debe adoptar medidas tecnicas y organizativas apropiadas al riesgo, considerando el estado de la tecnica. MFA es hoy un <strong>estandar minimo exigible</strong> para el acceso a datos sensibles (salud, biometria, datos financieros), ya que las contrasenas simples no constituyen una medida adecuada al estado actual de las amenazas.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.8.2 y A.5.16</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control A.8.2 exige que el acceso a sistemas privilegiados este sujeto a <strong>autenticacion robusta</strong>. El control A.5.16 requiere procesos formales de aprovisionamiento y desaprovisionamiento de credenciales. MFA mediante TOTP (RFC 6238), FIDO2/WebAuthn o tokens hardware satisface ambos controles.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Vectores de ataque actuales</span><div class='ref-label'>Contexto de amenaza 2024-2026</div><p class='ref-text'>El <strong>credential stuffing</strong>, phishing y compra de credenciales en dark web son las causas mas frecuentes de brechas. MFA mitiga mas del 99% de los ataques basados en credenciales comprometidas. Sin MFA en sistemas con datos sensibles, la organizacion no puede demostrar diligencia ante la autoridad de control.</p></div><div class='impact-pill impact-high'>Estandar minimo de la industria — su ausencia implica negligencia tecnica demostrable</div>"
-    },
-    {
-      id: 8,
-      text: "Se realizan auditorias de seguridad y pruebas de penetracion al menos una vez al ano",
-      tag: "Control 08 — Auditorias y Pentesting",
-      title: "Auditorias de Seguridad y <span>Pruebas de Penetracion</span>",
-      impact: "medium",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater + Responsabilidad Proactiva</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El principio de <strong>responsabilidad proactiva (accountability)</strong> exige que el responsable pueda demostrar activamente el cumplimiento de sus obligaciones. Las auditorias y tests de penetracion generan <strong>evidencia objetiva y fechada</strong> del estado de los controles de seguridad, identifican vulnerabilidades antes de que sean explotadas y documentan la diligencia organizacional ante un eventual procedimiento sancionatorio.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausula 9.2 + Control A.8.8</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 9.2 exige <strong>auditorias internas periodicas del SGSI</strong> para determinar conformidad y eficacia. El control A.8.8 requiere identificar, evaluar y remediar vulnerabilidades tecnicas. Los pentests (caja negra, caja gris y caja blanca) son el metodo mas riguroso para validar la efectividad real de los controles, complementando el analisis estatico (SAST/DAST).</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Alcance recomendado</span><div class='ref-label'>Cobertura minima para cumplimiento</div><p class='ref-text'>El programa de auditoria debe cubrir: <strong>infraestructura de red, aplicaciones web y APIs, directorio activo, configuraciones cloud (CIS Benchmarks), revision de controles de acceso y privilegios</strong>. Los hallazgos criticos deben remediarse en un plazo maximo de 30 dias con plan de accion documentado.</p></div><div class='impact-pill impact-medium'>Frecuencia minima anual — semestral para sectores criticos (finanzas, salud)</div>"
-    },
-    {
-      id: 9,
-      text: "Cuenta con un plan de respuesta a incidentes y continuidad del negocio probado",
-      tag: "Control 09 — BCP / IRP",
-      title: "Plan de Respuesta a Incidentes y <span>Continuidad del Negocio</span>",
-      impact: "high",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 26 + Art. 14 quater</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La obligacion de notificacion en 72 horas (Art. 26) presupone la capacidad operativa de <strong>detectar, contener, evaluar e iniciar notificaciones</strong> en ese plazo. Sin un IRP (Incident Response Plan) activo y probado, el cumplimiento del plazo legal es estructuralmente imposible. El BCP garantiza que las operaciones criticas puedan mantenerse o restaurarse ante un incidente, evitando perjuicios adicionales a los titulares por indisponibilidad de sus datos.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.29, A.5.30, A.8.13, A.8.14</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.29 y 5.30 abordan la <strong>continuidad de la seguridad durante la disrupcion</strong> y la preparacion de las TIC. Los controles A.8.13 (Respaldo) y A.8.14 (Redundancia) son los pilares tecnicos del RTO/RPO. La norma exige que los planes se <strong>prueben, revisen y actualicen</strong> mediante tabletop exercises o simulacros tecnicos de failover real.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>RTO y RPO desde la perspectiva de datos personales</span><div class='ref-label'>Metricas de continuidad</div><p class='ref-text'>El <strong>RTO</strong> debe ser coherente con el plazo de 72 h: si el sistema de gestion de incidentes cae, el RTO de restauracion no puede superar las 24 h. El <strong>RPO</strong> para datos sensibles debe ser inferior a 4 horas con backups cifrados y geograficamente distribuidos.</p></div><div class='impact-pill impact-high'>Un plan no probado equivale operativamente a no tener plan</div>"
-    },
-    {
-      id: 10,
-      text: "Existe un programa de capacitacion continua en ciberseguridad para todo el personal",
-      tag: "Control 10 — Capacitacion y Cultura",
-      title: "Programa de <span>Capacitacion Continua</span> en Ciberseguridad",
-      impact: "medium",
-      content: "<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater + Responsabilidad Proactiva</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El deber de seguridad no se agota en controles tecnicos: el responsable debe demostrar que adopto <strong>medidas organizativas apropiadas</strong>, entre las cuales la capacitacion del personal es fundamental. Un trabajador que cae en phishing o envia datos a un destinatario incorrecto genera una brecha atribuible al responsable, quien solo puede eximirse parcialmente acreditando programas de formacion adecuados.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausulas 7.2, 7.3 + Control A.6.3</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 7.2 exige que las personas que afecten al SGSI sean <strong>competentes</strong> (educacion, formacion, experiencia). La clausula 7.3 exige <strong>toma de conciencia</strong>: todo el personal debe conocer la politica de seguridad y las implicaciones del incumplimiento. El control A.6.3 especifica que el programa debe ser continuo, adaptado por rol y medido en efectividad.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Contenidos minimos del programa</span><div class='ref-label'>Estructura recomendada</div><p class='ref-text'>El programa debe cubrir: <strong>reconocimiento de phishing/ingenieria social, manejo seguro de datos personales, politica de escritorio limpio, gestion de contrasenas, reporte de incidentes y obligaciones bajo la Ley 21.719</strong>. Se recomiendan modulos trimestrales y simulacros de phishing semestrales medibles como KPI.</p></div><div class='impact-pill impact-medium'>El factor humano es responsable del 74% de las brechas (Verizon DBIR 2024)</div>"
-    }
+<!-- Modal contacto -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-contact">
+    <button onclick="closeContactModal()" class="modal-close" style="position:absolute;top:1.4rem;right:1.4rem;">&times;</button>
+    <h3 style="margin-bottom:.5rem;font-size:1.4rem;">Agendar Consulta</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem;">Reciba un informe detallado basado en sus respuestas.</p>
+    <form action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex;flex-direction:column;gap:12px;">
+      <input type="hidden" name="_subject" value="Nuevo Lead - Diagn&oacute;stico ShellTI" />
+      <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo" />
+      <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input class="finput" type="text" name="nombre" placeholder="Nombre" required />
+        <input class="finput" type="text" name="empresa" placeholder="Empresa" required />
+      </div>
+      <input class="finput" type="email" name="email" placeholder="Email Corporativo" required />
+      <textarea class="finput" name="comentarios" rows="3" placeholder="Comentarios o dudas espec&iacute;ficas"></textarea>
+      <button type="submit" class="btn-submit" style="margin-top:10px;">ENVIAR SOLICITUD</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <img src="imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI Logo" />
+    <span>ShellTI</span>
+  </div>
+  <p>contacto@shellti.com<br>&copy; 2026 ShellTI. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+var answers = {};
+var recomCurrentPage = 0;
+var recomFallos = [];
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+var questionData = [
+  { id:1, text:"Cuenta con un inventario actualizado de activos de informacion y datos personales", tag:"Control 01 — Inventario de Activos", title:"Inventario de <span>Activos de Informacion</span> y Datos Personales", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 bis / Art. 3 lit. b</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 obliga al responsable del tratamiento a mantener un <strong>Registro de Actividades de Tratamiento (RAT)</strong> actualizado, identificando que datos se tratan, con que finalidad, bases de licitud, categorias de titulares y plazos de conservacion. Sin un inventario de activos que mapee los datos personales existentes, es materialmente imposible construir un RAT conforme a derecho. El incumplimiento habilita sanciones de hasta 5.000 UTM por parte del Consejo para la Transparencia.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Anexo A, Control 5.9</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control 5.9 exige un <strong>inventario de informacion y activos asociados</strong>, identificando propietarios responsables. Abarca sistemas TI, bases de datos, repositorios cloud, archivos fisicos y flujos de datos. Sin este inventario, los controles de seguridad carecen de alcance definido, haciendo inauditable cualquier SGSI.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Riesgo Operativo</span><div class='ref-label'>Exposicion ante incidentes</div><p class='ref-text'>Sin inventario, ante una brecha activa la obligacion de notificacion en <strong>72 horas</strong> (Art. 26 Ley 21.719), pero la organizacion no puede determinar que datos fueron comprometidos ni a cuantos titulares afecta, incumpliendo el requisito de notificacion adecuada.</p></div><div class='impact-pill impact-critical'>Requisito habilitante para todo el programa de cumplimiento</div>" },
+  { id:2, text:"Posee mecanismos de consentimiento explicito para el tratamiento de datos", tag:"Control 02 — Consentimiento", title:"Mecanismos de <span>Consentimiento Explicito</span>", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 12, 13 y 16</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 eleva el estandar de consentimiento al exigir que sea <strong>libre, informado, especifico, inequivoco y, para datos sensibles, explicito</strong>. Se requieren formularios con casillas de opt-in independientes (no pre-marcadas), registros de timestamp, version del aviso de privacidad aceptada y canal de obtencion. El consentimiento tacito queda expresamente prohibido como base de licitud autonoma.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Anexo A, Control 5.34</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control 5.34 establece que la organizacion debe implementar <strong>mecanismos de obtencion y gestion del consentimiento</strong> integrados en los sistemas de tratamiento desde el diseno (privacy by design). Los registros deben ser auditables y recuperables ante una reclamacion.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Derechos ARCOP</span><div class='ref-label'>Revocacion y portabilidad</div><p class='ref-text'>El Art. 16 garantiza al titular <strong>revocar el consentimiento en cualquier momento</strong>, por lo que los mecanismos deben ser bidireccionales: tan sencillo dar el consentimiento como retirarlo, sin consecuencias adversas. La imposibilidad tecnica de revocar es en si misma una infraccion.</p></div><div class='impact-pill impact-critical'>Base de licitud principal — sin consentimiento valido el tratamiento es ilicito</div>" },
+  { id:3, text:"Se realizan evaluaciones de impacto de proteccion de datos (DPIA) regularmente", tag:"Control 03 — DPIA", title:"Evaluaciones de Impacto en <span>Proteccion de Datos</span> (DPIA)", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 15 ter (EIPD)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La Ley 21.719 introduce la <strong>Evaluacion de Impacto en la Proteccion de Datos Personales (EIPD)</strong> como obligacion para tratamientos de riesgo elevado: datos sensibles masivos, vigilancia sistematica, decisiones automatizadas con efectos juridicos, nuevas tecnologias de perfilamiento. La EIPD debe documentar la descripcion, finalidad, necesidad, proporcionalidad, riesgos y medidas de mitigacion del tratamiento.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausula 6.1.2 + Control A.5.29</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 6.1.2 exige la <strong>evaluacion de riesgos de seguridad</strong> como proceso sistematico y periodico. El control A.5.29 complementa la EIPD al requerir analisis de impacto sobre activos de informacion frente a escenarios de amenaza.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Periodicidad y revision</span><div class='ref-label'>Criterio de regularidad</div><p class='ref-text'>La EIPD debe revisarse cuando <strong>cambien las circunstancias del tratamiento</strong>: nueva tecnologia, nuevo proveedor, expansion geografica o cambio regulatorio. Su ausencia en tratamientos de alto riesgo es infraccion grave.</p></div><div class='impact-pill impact-high'>Obligatorio para tratamientos de alto riesgo</div>" },
+  { id:4, text:"Existen politicas de retencion y eliminacion de datos claramente definidas", tag:"Control 04 — Retencion y Eliminacion", title:"Politicas de <span>Retencion y Eliminacion</span> de Datos", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 (Principio de limitacion del plazo)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El principio de <strong>limitacion del plazo de conservacion</strong> establece que los datos personales deben conservarse solo durante el tiempo necesario para cumplir la finalidad del tratamiento. Vencido ese plazo, el responsable debe <strong>eliminarlos o anonimizarlos de forma efectiva e irreversible</strong>.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.8.10 y A.7.8</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control A.8.10 exige procedimientos documentados para la <strong>eliminacion segura</strong> en todos los medios de almacenamiento (discos, cloud, cintas, papel), empleando tecnicas como sobreescritura segura (DoD 5220.22-M), desmagnetizacion o destruccion fisica certificada.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Tension con obligaciones legales de conservacion</span><div class='ref-label'>Compatibilidad normativa</div><p class='ref-text'>La politica debe conciliar la minimizacion con <strong>obligaciones legales de conservacion</strong>: SII exige 6 anos para documentos tributarios; el Codigo del Trabajo, 5 anos para registros laborales.</p></div><div class='impact-pill impact-high'>El almacenamiento indefinido es infraccion directa al principio de limitacion</div>" },
+  { id:5, text:"Tiene un protocolo de notificacion de brechas de seguridad dentro de 72 horas", tag:"Control 05 — Notificacion de Brechas", title:"Protocolo de <span>Notificacion de Brechas</span> en 72 Horas", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 26 (Vulneraciones de seguridad)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El Art. 26 establece la obligacion de notificar a la <strong>autoridad de control dentro de las 72 horas</strong> desde que el responsable toma conocimiento de una vulneracion. Si la brecha implica riesgo elevado para los titulares, debe notificarseles a ellos sin dilacion. El protocolo debe cubrir: deteccion, evaluacion de criticidad, contencion, notificacion a autoridad, documentacion forense y remediacion.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.24, A.5.25, A.5.26</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.24-5.26 conforman el bloque de <strong>gestion de incidentes de seguridad</strong>: planificacion y preparacion, reporte de eventos y respuesta. Exigen roles definidos (CISO, DPO, equipo legal), playbooks por tipo de incidente y simulacros periodicos.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Consecuencias del incumplimiento</span><div class='ref-label'>Multas y responsabilidad civil</div><p class='ref-text'>No notificar dentro del plazo puede constituir una <strong>infraccion grave</strong>, con multas de hasta 5.000 UTM (aprox. $350M CLP).</p></div><div class='impact-pill impact-critical'>Plazo no negociable: 72 h desde el conocimiento del responsable</div>" },
+  { id:6, text:"Los contratos con terceros incluyen clausulas de proteccion de datos actualizadas", tag:"Control 06 — Contratos con Terceros", title:"Contratos con <span>Terceros</span> y Clausulas de Proteccion de Datos", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 17 y 18 (Encargado del tratamiento)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>Cuando el responsable encarga el tratamiento a un tercero, debe celebrar un <strong>contrato que vincule al encargado</strong> con obligaciones equivalentes. El responsable mantiene <strong>responsabilidad solidaria</strong> frente a los titulares.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.19, A.5.20, A.5.21</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.19-5.21 abordan la <strong>seguridad en relaciones con proveedores</strong>: politica de seguridad para proveedores, requisitos de seguridad en contratos y gestion en cadena de suministro TIC.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Transferencias internacionales</span><div class='ref-label'>Proveedores fuera de Chile</div><p class='ref-text'>Si el encargado opera fuera de Chile (ej.: AWS us-east, Google Workspace), aplican restricciones de <strong>transferencia internacional de datos</strong> (Art. 25 Ley 21.719).</p></div><div class='impact-pill impact-high'>Contratos sin clausulas vigentes equivale a responsabilidad sin cobertura contractual</div>" },
+  { id:7, text:"Utiliza autenticacion de doble factor (MFA) para accesos a datos sensibles", tag:"Control 07 — Autenticacion MFA", title:"Autenticacion <span>Multifactor (MFA)</span> en Acceso a Datos Sensibles", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater (Deber de seguridad)</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El Art. 14 quater establece el <strong>deber de seguridad</strong>: el responsable debe adoptar medidas tecnicas y organizativas apropiadas al riesgo, considerando el estado de la tecnica. MFA es hoy un <strong>estandar minimo exigible</strong> para el acceso a datos sensibles.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.8.2 y A.5.16</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>El control A.8.2 exige que el acceso a sistemas privilegiados este sujeto a <strong>autenticacion robusta</strong>. MFA mediante TOTP (RFC 6238), FIDO2/WebAuthn o tokens hardware satisface ambos controles.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Vectores de ataque actuales</span><div class='ref-label'>Contexto de amenaza 2024-2026</div><p class='ref-text'>MFA mitiga mas del 99% de los ataques basados en credenciales comprometidas. Sin MFA en sistemas con datos sensibles, la organizacion no puede demostrar diligencia ante la autoridad de control.</p></div><div class='impact-pill impact-high'>Estandar minimo de la industria — su ausencia implica negligencia tecnica demostrable</div>" },
+  { id:8, text:"Se realizan auditorias de seguridad y pruebas de penetracion al menos una vez al ano", tag:"Control 08 — Auditorias y Pentesting", title:"Auditorias de Seguridad y <span>Pruebas de Penetracion</span>", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater + Responsabilidad Proactiva</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El principio de <strong>responsabilidad proactiva (accountability)</strong> exige que el responsable pueda demostrar activamente el cumplimiento de sus obligaciones. Las auditorias generan <strong>evidencia objetiva y fechada</strong> del estado de los controles de seguridad.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausula 9.2 + Control A.8.8</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 9.2 exige <strong>auditorias internas periodicas del SGSI</strong> para determinar conformidad y eficacia. Los pentests (caja negra, caja gris y caja blanca) son el metodo mas riguroso para validar la efectividad real de los controles.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Alcance recomendado</span><div class='ref-label'>Cobertura minima para cumplimiento</div><p class='ref-text'>El programa debe cubrir: <strong>infraestructura de red, aplicaciones web y APIs, directorio activo, configuraciones cloud (CIS Benchmarks)</strong>. Los hallazgos criticos deben remediarse en un plazo maximo de 30 dias.</p></div><div class='impact-pill impact-medium'>Frecuencia minima anual — semestral para sectores criticos</div>" },
+  { id:9, text:"Cuenta con un plan de respuesta a incidentes y continuidad del negocio probado", tag:"Control 09 — BCP / IRP", title:"Plan de Respuesta a Incidentes y <span>Continuidad del Negocio</span>", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 26 + Art. 14 quater</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>La obligacion de notificacion en 72 horas (Art. 26) presupone la capacidad operativa de <strong>detectar, contener, evaluar e iniciar notificaciones</strong> en ese plazo. Sin un IRP activo y probado, el cumplimiento del plazo legal es estructuralmente imposible.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Controles A.5.29, A.5.30, A.8.13, A.8.14</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>Los controles 5.29 y 5.30 abordan la <strong>continuidad de la seguridad durante la disrupcion</strong>. Los controles A.8.13 (Respaldo) y A.8.14 (Redundancia) son los pilares tecnicos del RTO/RPO.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>RTO y RPO criticos</span><div class='ref-label'>Metricas de continuidad</div><p class='ref-text'>El <strong>RTO</strong> no puede superar las 24 h. El <strong>RPO</strong> para datos sensibles debe ser inferior a 4 horas con backups cifrados y geograficamente distribuidos.</p></div><div class='impact-pill impact-high'>Un plan no probado equivale operativamente a no tener plan</div>" },
+  { id:10, text:"Existe un programa de capacitacion continua en ciberseguridad para todo el personal", tag:"Control 10 — Capacitacion y Cultura", title:"Programa de <span>Capacitacion Continua</span> en Ciberseguridad", content:"<div class='ref-block'><span class='ref-badge ley'>Ley 21.719 — Art. 14 quater + Responsabilidad Proactiva</span><div class='ref-label'>Fundamento Legal</div><p class='ref-text'>El deber de seguridad no se agota en controles tecnicos: el responsable debe demostrar que adopto <strong>medidas organizativas apropiadas</strong>, entre las cuales la capacitacion del personal es fundamental.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge iso'>ISO/IEC 27001:2022 — Clausulas 7.2, 7.3 + Control A.6.3</span><div class='ref-label'>Fundamento Tecnico-Normativo</div><p class='ref-text'>La clausula 7.2 exige que las personas que afecten al SGSI sean <strong>competentes</strong>. El control A.6.3 especifica que el programa debe ser continuo, adaptado por rol y medido en efectividad.</p></div><div class='modal-divider'></div><div class='ref-block'><span class='ref-badge riesgo'>Contenidos minimos del programa</span><div class='ref-label'>Estructura recomendada</div><p class='ref-text'>El programa debe cubrir: <strong>phishing/ingenieria social, manejo seguro de datos personales, gestion de contrasenas, reporte de incidentes y obligaciones bajo la Ley 21.719</strong>. Modulos trimestrales + simulacros de phishing semestrales.</p></div><div class='impact-pill impact-medium'>El factor humano es responsable del 74% de las brechas (Verizon DBIR 2024)</div>" }
+];
+
+var recomData = {
+  1:  { ley:'Art. 14 bis Ley 21.719', iso:'ISO 27001 A.5.9',             impacto:'Critico', color:'#FF6B6B', texto:'Sin inventario de activos no es posible construir el RAT. Remediar: levantar catalogo de datos personales con propietario, finalidad y base de licitud.' },
+  2:  { ley:'Art. 12-13 Ley 21.719',  iso:'ISO 27001 A.5.34',            impacto:'Critico', color:'#FF6B6B', texto:'El tratamiento sin consentimiento valido es ilicito. Remediar: implementar formularios de opt-in con timestamp y mecanismo de revocacion.' },
+  3:  { ley:'Art. 15 ter Ley 21.719', iso:'ISO 27001 Clausula 6.1.2',    impacto:'Alto',    color:'#FFD93D', texto:'Tratamientos de alto riesgo sin DPIA exponen a sanciones graves. Remediar: ejecutar evaluacion de impacto documentada antes de nuevos tratamientos con datos sensibles.' },
+  4:  { ley:'Art. 14 Ley 21.719',     iso:'ISO 27001 A.8.10',            impacto:'Alto',    color:'#FFD93D', texto:'Conservar datos mas alla de su finalidad infringe el principio de limitacion del plazo. Remediar: definir tabla de retencion por categoria y eliminacion segura certificada.' },
+  5:  { ley:'Art. 26 Ley 21.719',     iso:'ISO 27001 A.5.24-5.26',       impacto:'Critico', color:'#FF6B6B', texto:'Sin protocolo de brechas es imposible cumplir la notificacion en 72 h. Remediar: establecer IRP con roles, playbooks y simulacros semestrales.' },
+  6:  { ley:'Art. 17-18 Ley 21.719',  iso:'ISO 27001 A.5.19-5.21',       impacto:'Alto',    color:'#FFD93D', texto:'El responsable responde solidariamente por sus encargados. Remediar: actualizar contratos con clausulas de confidencialidad, auditoria y notificacion de incidentes.' },
+  7:  { ley:'Art. 14 quater Ley 21.719', iso:'ISO 27001 A.8.2',          impacto:'Alto',    color:'#FFD93D', texto:'Sin MFA los accesos a datos sensibles no cumplen el deber de seguridad. Remediar: activar autenticacion multifactor en todos los sistemas con datos personales.' },
+  8:  { ley:'Art. 14 quater Ley 21.719', iso:'ISO 27001 Clausula 9.2',   impacto:'Medio',   color:'#00D4FF', texto:'Sin auditorias periodicas no hay evidencia de diligencia ante la autoridad. Remediar: programar pentest anual y auditoria interna del SGSI con informe de hallazgos.' },
+  9:  { ley:'Art. 26 Ley 21.719',     iso:'ISO 27001 A.5.29-5.30',       impacto:'Alto',    color:'#FFD93D', texto:'Un BCP/IRP no probado equivale a no tenerlo. Remediar: ejecutar tabletop exercise y validar RTO inferior a 24 h para sistemas criticos.' },
+  10: { ley:'Art. 14 quater Ley 21.719', iso:'ISO 27001 Clausulas 7.2-7.3', impacto:'Medio', color:'#00D4FF', texto:'El factor humano es la principal causa de brechas. Remediar: implementar programa trimestral de formacion con simulacros de phishing medibles como KPI.' }
+};
+
+// ── RENDER QUESTIONS (todas las 10) ─────────────────────────────────────────
+function renderQuestions() {
+  var c = document.getElementById('questionsContainer'); c.innerHTML = '';
+  for (var i = 0; i < questionData.length; i++) {
+    var q = questionData[i];
+    var num = q.id < 10 ? '0' + q.id : '' + q.id;
+    var cls = answers[q.id] === 'yes' ? ' answered-yes' : answers[q.id] === 'no' ? ' answered-no' : '';
+    var yA = answers[q.id] === 'yes' ? ' active yes' : '';
+    var nA = answers[q.id] === 'no'  ? ' active no'  : '';
+    var div = document.createElement('div');
+    div.className = 'question-item' + cls; div.id = 'q-' + q.id;
+    div.innerHTML =
+      '<div class="question-content">' +
+        '<div class="question-num">Control ' + num + '</div>' +
+        '<div class="question-text">' + q.text + '</div>' +
+      '</div>' +
+      '<div class="answer-buttons">' +
+        '<button class="btn-info" onclick="openInfoModal(' + q.id + ')" title="Ver fundamento legal">?</button>' +
+        '<button class="btn-answer yes' + yA + '" onclick="setAnswer(' + q.id + ',\'yes\')">SI</button>' +
+        '<button class="btn-answer no'  + nA + '" onclick="setAnswer(' + q.id + ',\'no\')">NO</button>' +
+      '</div>';
+    c.appendChild(div);
+  }
+}
+
+// ── ANSWER ───────────────────────────────────────────────────────────────────
+function setAnswer(id, val) {
+  answers[id] = val;
+  // Actualizar solo la fila tocada
+  var item = document.getElementById('q-' + id);
+  item.className = 'question-item ' + (val === 'yes' ? 'answered-yes' : 'answered-no');
+  var btns = item.querySelectorAll('.btn-answer');
+  btns[0].className = 'btn-answer yes' + (val === 'yes' ? ' active yes' : '');
+  btns[1].className = 'btn-answer no'  + (val === 'no'  ? ' active no'  : '');
+  updateProgress();
+  updateRisk();
+}
+
+// ── PROGRESS ─────────────────────────────────────────────────────────────────
+function updateProgress() {
+  var n = Object.keys(answers).length;
+  document.getElementById('progressCount').textContent = n + ' / 10 controles';
+  document.getElementById('progressFill').style.width = (n / 10 * 100) + '%';
+}
+
+// ── RISK ─────────────────────────────────────────────────────────────────────
+function updateRisk() {
+  var noCount = 0;
+  for (var k in answers) { if (answers[k] === 'no') noCount++; }
+  var level = 'Bajo', color = '#34D399', posX = '75%', posY = '75%';
+  if (noCount >= 3)      { level = 'Critico'; color = '#FF6B6B'; posX = '25%'; posY = '25%'; }
+  else if (noCount === 2){ level = 'Alto';    color = '#FFD93D'; posX = '75%'; posY = '25%'; }
+  else if (noCount === 1){ level = 'Medio';   color = '#FFD93D'; posX = '25%'; posY = '75%'; }
+  var pointer = document.getElementById('riskPointer');
+  pointer.style.left = posX; pointer.style.top = posY;
+  var sb = document.getElementById('statusBox');
+  sb.style.borderColor = color;
+  document.getElementById('statusText').innerHTML = 'Estado: <span style="color:' + color + '">' + level + '</span>';
+  document.getElementById('statusHint').textContent = noCount + (noCount !== 1 ? ' brechas' : ' brecha') + ' de cumplimiento detectada' + (noCount !== 1 ? 's' : '') + '.';
+  updateRecomendaciones();
+  if (Object.keys(answers).length === 10) showResults(level);
+}
+
+// ── RECOMENDACIONES paginadas 2 en 2 ─────────────────────────────────────────
+function updateRecomendaciones() {
+  recomFallos = [];
+  for (var k in answers) { if (answers[k] === 'no') recomFallos.push(parseInt(k)); }
+  var sec = document.getElementById('recomSection');
+  if (recomFallos.length === 0) { sec.classList.remove('show'); return; }
+  sec.classList.add('show');
+  recomCurrentPage = 0;
+  renderRecomPage();
+}
+
+function recomPage(dir) {
+  var totalPages = Math.ceil(recomFallos.length / 2);
+  recomCurrentPage = Math.max(0, Math.min(totalPages - 1, recomCurrentPage + dir));
+  renderRecomPage();
+}
+
+function renderRecomPage() {
+  var pair = document.getElementById('recomPair');
+  pair.innerHTML = '';
+  var totalPages = Math.ceil(recomFallos.length / 2);
+  var start = recomCurrentPage * 2;
+  var end = Math.min(start + 2, recomFallos.length);
+  for (var i = start; i < end; i++) {
+    var id = recomFallos[i]; var r = recomData[id]; if (!r) continue;
+    var card = document.createElement('div');
+    card.className = 'recom-card';
+    card.style.borderColor = r.color;
+    card.innerHTML =
+      '<div class="recom-badges">' +
+        '<span class="recom-badge" style="color:' + r.color + ';border-color:' + r.color + ';">Impacto ' + r.impacto + '</span>' +
+        '<span class="recom-badge" style="color:#00D4FF;border-color:rgba(0,212,255,0.3);">' + r.ley + '</span>' +
+      '</div>' +
+      '<div class="recom-badges" style="margin-bottom:.5rem;">' +
+        '<span class="recom-badge" style="color:#34D399;border-color:rgba(52,211,153,0.3);">' + r.iso + '</span>' +
+      '</div>' +
+      '<p class="recom-text">' + r.texto + '</p>';
+    pair.appendChild(card);
+  }
+  document.getElementById('recomPageInfo').textContent = (recomCurrentPage + 1) + ' / ' + totalPages;
+  document.getElementById('recomPrev').disabled = recomCurrentPage === 0;
+  document.getElementById('recomNext').disabled = recomCurrentPage >= totalPages - 1;
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function showResults(level) {
+  var sec = document.getElementById('resultsSection');
+  var detalle = '';
+  for (var i = 0; i < questionData.length; i++) {
+    var q = questionData[i];
+    detalle += 'P' + q.id + ':' + (answers[q.id] === 'yes' ? 'SI' : 'NO');
+    if (i < 9) detalle += ' | ';
+  }
+  document.getElementById('hiddenRiesgo').value = level;
+  document.getElementById('hiddenRespuestas').value = detalle;
+  sec.classList.add('show');
+  var noCount = 0; for (var k in answers) { if (answers[k] === 'no') noCount++; }
+  document.getElementById('resultsLevel').className = 'results-main ' + level.toLowerCase() + '-text';
+  document.getElementById('resultsLevel').textContent = 'Nivel de Riesgo ' + level;
+  var desc = noCount >= 3
+    ? 'Se detectaron multiples brechas criticas. Su organizacion requiere intervencion inmediata para mitigar riesgos legales y operativos bajo la Ley 21.719.'
+    : noCount === 2
+    ? 'Existen debilidades importantes en los controles de proteccion de datos. Se recomienda priorizar la regularizacion de los puntos criticos.'
+    : noCount === 1
+    ? 'Hay una brecha de cumplimiento que requiere atencion. Remediar el control identificado para alcanzar postura de cumplimiento.'
+    : 'Su postura de cumplimiento es solida. Mantenga revision periodica para asegurar el estandar ante cambios regulatorios.';
+  document.getElementById('resultsDesc').textContent = desc;
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── PDF — diseño sobrio ───────────────────────────────────────────────────────
+function generarPDF() {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  var W = 210; var H = 297; var m = 20; var cw = W - m * 2;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('es-CL', { year:'numeric', month:'long', day:'numeric' });
+
+  var cDeep  = [8, 18, 40];
+  var cCyan  = [0, 180, 220];
+  var cGreen = [40, 180, 130];
+  var cRed   = [210, 80, 80];
+  var cYellow= [210, 170, 40];
+  var cWhite = [255, 255, 255];
+  var cGray  = [150, 165, 185];
+  var cLight = [220, 230, 245];
+
+  var noCount = 0;
+  for (var k in answers) { if (answers[k] === 'no') noCount++; }
+  var rLevel = noCount >= 3 ? 'CRITICO' : noCount === 2 ? 'ALTO' : noCount === 1 ? 'MEDIO' : 'BAJO';
+  var rCol   = noCount >= 3 ? cRed : noCount >= 1 ? cYellow : cGreen;
+
+  // ── PORTADA — limpia y sobria ──────────────────────────────────────────────
+  // Fondo blanco
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, W, H, 'F');
+
+  // Franja superior oscura
+  doc.setFillColor(cDeep[0], cDeep[1], cDeep[2]);
+  doc.rect(0, 0, W, 52, 'F');
+
+  // Acento cyan — barra izquierda delgada
+  doc.setFillColor(cCyan[0], cCyan[1], cCyan[2]);
+  doc.rect(0, 0, 4, 52, 'F');
+
+  // Logo texto en franja oscura
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(26); doc.setTextColor(255, 255, 255);
+  doc.text('Shell', m, 30);
+  var sw = doc.getTextWidth('Shell');
+  doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+  doc.text('TI', m + sw, 30);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('TECHNOLOGY CONSULTANCY  ·  shellti.com', m, 38);
+
+  // Linea separadora cyan bajo franja
+  doc.setDrawColor(cCyan[0], cCyan[1], cCyan[2]);
+  doc.setLineWidth(0.8);
+  doc.line(0, 52, W, 52);
+
+  // Titulo del documento
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+  doc.text('INFORME DE DIAGNOSTICO DE CUMPLIMIENTO', m, 80);
+  doc.setFontSize(11); doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+  doc.text('Ley N\u00b0 21.719 · ISO/IEC 27001:2022', m, 90);
+
+  // Linea separadora gris
+  doc.setDrawColor(cLight[0], cLight[1], cLight[2]);
+  doc.setLineWidth(0.4);
+  doc.line(m, 96, W - m, 96);
+
+  // Caja de nivel de riesgo
+  doc.setFillColor(rCol[0], rCol[1], rCol[2]);
+  doc.setGState(doc.GState({ opacity: 0.08 }));
+  doc.rect(m, 104, cw, 30, 'F');
+  doc.setGState(doc.GState({ opacity: 1 }));
+  doc.setDrawColor(rCol[0], rCol[1], rCol[2]);
+  doc.setLineWidth(1);
+  doc.line(m, 104, m, 134);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('NIVEL DE RIESGO DETECTADO', m + 6, 114);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20); doc.setTextColor(rCol[0], rCol[1], rCol[2]);
+  doc.text(rLevel, m + 6, 126);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text(noCount + ' de 10 controles no conformes', W - m, 126, { align: 'right' });
+
+  // Metadatos
+  doc.setFontSize(8.5); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+  var metas = [
+    ['Fecha de generacion', dateStr],
+    ['Marco normativo',     'Ley N\u00b0 21.719 · ISO/IEC 27001:2022'],
+    ['Elaborado por',       'ShellTI SpA — contacto@shellti.com'],
+    ['Clasificacion',       'Documento Confidencial']
+  ];
+  var my = 150;
+  for (var i = 0; i < metas.length; i++) {
+    doc.setFont('helvetica', 'bold');   doc.setTextColor(cDeep[0],cDeep[1],cDeep[2]); doc.text(metas[i][0] + ':', m, my);
+    doc.setFont('helvetica', 'normal'); doc.setTextColor(cGray[0],cGray[1],cGray[2]); doc.text(metas[i][1], m + 48, my);
+    my += 9;
+  }
+
+  // Pie portada
+  doc.setDrawColor(cLight[0], cLight[1], cLight[2]);
+  doc.setLineWidth(0.3);
+  doc.line(m, H - 22, W - m, H - 22);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('ShellTI SpA  ·  contacto@shellti.com  ·  \u00a9 2026 Todos los derechos reservados', W / 2, H - 14, { align:'center' });
+  doc.text('Documento generado automaticamente. No constituye asesoría legal.', W / 2, H - 9, { align:'center' });
+
+  // ── FUNCION HEADER INTERNO ────────────────────────────────────────────────
+  function addPageHeader(title) {
+    doc.setFillColor(255, 255, 255); doc.rect(0, 0, W, H, 'F');
+    doc.setFillColor(cDeep[0], cDeep[1], cDeep[2]); doc.rect(0, 0, W, 16, 'F');
+    doc.setFillColor(cCyan[0], cCyan[1], cCyan[2]); doc.rect(0, 0, 4, 16, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+    doc.text('SHELLTI  /  DIAGNOSTICO LEY 21.719', m, 10);
+    doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+    doc.text(title.toUpperCase(), W - m, 10, { align: 'right' });
+    doc.setDrawColor(cCyan[0], cCyan[1], cCyan[2]); doc.setLineWidth(0.3);
+    doc.line(0, 16, W, 16);
+  }
+
+  // ── PAG 2: RESUMEN CONTROLES ───────────────────────────────────────────────
+  doc.addPage();
+  addPageHeader('Resumen de Controles');
+
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+  doc.text('Resumen de Controles Evaluados', m, 32);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('10 controles evaluados frente a Ley 21.719 e ISO/IEC 27001:2022', m, 39);
+  doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.setLineWidth(0.3);
+  doc.line(m, 43, W - m, 43);
+
+  var shortTexts = [
+    'Inventario de activos y datos personales',
+    'Mecanismos de consentimiento explicito',
+    'Evaluaciones de impacto (DPIA/EIPD)',
+    'Politicas de retencion y eliminacion de datos',
+    'Protocolo de notificacion de brechas 72 h',
+    'Contratos con terceros actualizados',
+    'Autenticacion MFA en accesos sensibles',
+    'Auditorias de seguridad y pentesting anual',
+    'Plan de respuesta a incidentes (BCP/IRP)',
+    'Programa de capacitacion en ciberseguridad'
   ];
 
-  var answers = {};
+  var y2 = 52;
+  for (var i = 0; i < questionData.length; i++) {
+    var q2 = questionData[i];
+    var isYes = answers[q2.id] === 'yes';
+    var rc2 = isYes ? cGreen : cRed;
 
-  function renderQuestions() {
-    var container = document.getElementById('questionsContainer');
-    var html = '';
-    for (var i = 0; i < questionData.length; i++) {
-      var q = questionData[i];
-      var num = q.id < 10 ? '0' + q.id : '' + q.id;
-      html += '<div class="question-item" id="q-' + q.id + '">';
-      html += '<div class="question-content">';
-      html += '<div class="question-num">Control ' + num + '</div>';
-      html += '<div class="question-text">' + q.text + '</div>';
-      html += '</div>';
-      html += '<div class="answer-buttons">';
-      html += '<button class="btn-info" onclick="openInfoModal(' + q.id + ')" title="Ver fundamento tecnico y legal" aria-label="Detalle control ' + q.id + '">?</button>';
-      html += '<button class="btn-answer yes" onclick="setAnswer(' + q.id + ', \'yes\')">SI</button>';
-      html += '<button class="btn-answer no" onclick="setAnswer(' + q.id + ', \'no\')">NO</button>';
-      html += '</div></div>';
+    // Fondo alterno suave
+    if (i % 2 === 0) {
+      doc.setFillColor(245, 248, 252); doc.rect(m, y2 - 4, cw, 13, 'F');
     }
-    container.innerHTML = html;
+    // Borde izquierdo color
+    doc.setFillColor(rc2[0], rc2[1], rc2[2]); doc.rect(m, y2 - 4, 2.5, 13, 'F');
+
+    // Numero
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+    doc.text((i + 1 < 10 ? '0' : '') + (i + 1), m + 5, y2 + 3);
+
+    // Texto
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+    doc.text(shortTexts[i], m + 16, y2 + 3);
+
+    // Badge SI/NO
+    doc.setFillColor(rc2[0], rc2[1], rc2[2]);
+    doc.roundedRect(W - m - 14, y2 - 1, 14, 7, 1, 1, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5);
+    doc.setTextColor(isYes ? cDeep[0] : 255, isYes ? cDeep[1] : 255, isYes ? cDeep[2] : 255);
+    doc.text(isYes ? 'SI' : 'NO', W - m - 7, y2 + 3.5, { align:'center' });
+
+    y2 += 14;
   }
 
-  function setAnswer(id, val) {
-    answers[id] = val;
-    var item = document.getElementById('q-' + id);
-    var btns = item.querySelectorAll('.btn-answer');
-    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-    item.querySelector('.' + val).classList.add('active');
-    updateRisk();
-  }
+  // ── PAG 3: RECOMENDACIONES ─────────────────────────────────────────────────
+  var fallos2 = [];
+  for (var k2 in answers) { if (answers[k2] === 'no') fallos2.push(parseInt(k2)); }
 
-  function updateRisk() {
-    var noCount = 0;
-    var totalAnswered = 0;
-    for (var k in answers) {
-      totalAnswered++;
-      if (answers[k] === 'no') noCount++;
-    }
-    var pointer = document.getElementById('riskPointer');
-    var statusBox = document.getElementById('statusBox');
-    var statusText = document.getElementById('statusText');
-    var statusHint = document.getElementById('statusHint');
-    var level = 'Bajo', color = 'var(--green)', posX = '75%', posY = '75%';
-    if (noCount >= 3) { level = 'Critico'; color = 'var(--red)'; posX = '25%'; posY = '25%'; }
-    else if (noCount === 2) { level = 'Alto'; color = 'var(--yellow)'; posX = '75%'; posY = '25%'; }
-    else if (noCount === 1) { level = 'Medio'; color = 'var(--yellow)'; posX = '25%'; posY = '75%'; }
-    pointer.style.left = posX;
-    pointer.style.top = posY;
-    statusBox.style.borderColor = color;
-    statusText.innerHTML = 'Estado: <span style="color:' + color + '">' + level + '</span>';
-    statusHint.innerText = 'Se han detectado ' + noCount + (noCount !== 1 ? ' brechas' : ' brecha') + ' de cumplimiento potencial' + (noCount !== 1 ? 'es' : '') + '.';
-    if (totalAnswered === questionData.length) showResults(level);
-  }
+  if (fallos2.length > 0) {
+    doc.addPage();
+    addPageHeader('Recomendaciones Prioritarias');
 
-  function showResults(level) {
-    var section = document.getElementById('resultsSection');
-    var title = document.getElementById('resultsLevel');
-    var desc = document.getElementById('resultsDesc');
-    var detalle = '';
-    for (var i = 0; i < questionData.length; i++) {
-      var q = questionData[i];
-      detalle += 'P' + q.id + ': ' + (answers[q.id] === 'yes' ? 'SI' : 'NO');
-      if (i < questionData.length - 1) detalle += ' | ';
-    }
-    document.getElementById('hiddenRiesgo').value = level;
-    document.getElementById('hiddenRespuestas').value = detalle;
-    section.classList.add('show');
-    title.className = 'results-main ' + level.toLowerCase() + '-text';
-    title.innerText = 'Nivel de Riesgo ' + level;
-    if (level === 'Critico') {
-      desc.innerText = 'Se han detectado multiples brechas criticas de cumplimiento. Su organizacion requiere intervencion inmediata para mitigar riesgos legales y operativos bajo la Ley 21.719.';
-    } else if (level === 'Alto') {
-      desc.innerText = 'Existen debilidades importantes en los controles de proteccion de datos. Se recomienda priorizar la regularizacion de los puntos marcados como negativos.';
-    } else {
-      desc.innerText = 'Su postura de cumplimiento es aceptable, sin embargo, existen oportunidades de mejora para alcanzar un estandar de seguridad total.';
-    }
-  }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+    doc.text('Recomendaciones Prioritarias', m, 32);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+    doc.text('Controles no conformes con fundamento legal, referencia ISO y plan de remediacion', m, 39);
+    doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.setLineWidth(0.3);
+    doc.line(m, 43, W - m, 43);
 
-  function openInfoModal(questionId) {
-    var q = null;
-    for (var i = 0; i < questionData.length; i++) {
-      if (questionData[i].id === questionId) { q = questionData[i]; break; }
-    }
-    if (!q) return;
-    document.getElementById('modalTag').textContent = q.tag;
-    document.getElementById('modalTitle').innerHTML = q.title;
-    document.getElementById('modalBody').innerHTML = q.content;
-    document.getElementById('infoModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
+    var y3 = 52;
+    for (var j = 0; j < fallos2.length; j++) {
+      var rid = fallos2[j]; var r3 = recomData[rid]; if (!r3) continue;
+      var rCol3 = r3.impacto === 'Critico' ? cRed : r3.impacto === 'Alto' ? cYellow : cCyan;
 
-  function closeInfoModal() {
-    document.getElementById('infoModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
+      if (y3 > 248) {
+        doc.addPage(); addPageHeader('Recomendaciones (cont.)');
+        doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.line(m, 43, W - m, 43);
+        y3 = 52;
+      }
 
-  function openContactModal() {
-    document.getElementById('contactModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
+      // Card fondo
+      doc.setFillColor(248, 250, 254); doc.rect(m, y3, cw, 40, 'F');
+      // Borde izquierdo
+      doc.setFillColor(rCol3[0], rCol3[1], rCol3[2]); doc.rect(m, y3, 3, 40, 'F');
+      // Borde bottom
+      doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.setLineWidth(0.2);
+      doc.line(m, y3 + 40, W - m, y3 + 40);
 
-  function closeContactModal() {
-    document.getElementById('contactModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
+      // Control label
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+      doc.text('CONTROL ' + (rid < 10 ? '0' : '') + rid, m + 6, y3 + 8);
 
-  document.getElementById('infoModal').addEventListener('click', function(e) {
-    if (e.target === this) closeInfoModal();
-  });
-  document.getElementById('contactModal').addEventListener('click', function(e) {
-    if (e.target === this) closeContactModal();
-  });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closeInfoModal(); closeContactModal(); }
-  });
+      // Impacto badge
+      doc.setFillColor(rCol3[0], rCol3[1], rCol3[2]);
+      doc.roundedRect(m + 6, y3 + 11, 24, 6, 1, 1, 'F');
+      doc.setFontSize(6); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+      doc.text(r3.impacto.toUpperCase(), m + 18, y3 + 15, { align:'center' });
 
-  var burger = document.getElementById('burger');
-  var navLinks = document.getElementById('navLinks');
-  if (burger && navLinks) {
-    burger.addEventListener('click', function() { navLinks.classList.toggle('open'); });
-    var links = navLinks.querySelectorAll('a');
-    for (var i = 0; i < links.length; i++) {
-      links[i].addEventListener('click', function() { navLinks.classList.remove('open'); });
+      // Ley + ISO
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+      doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+      doc.text(r3.ley, m + 34, y3 + 15);
+      doc.setTextColor(cGreen[0], cGreen[1], cGreen[2]);
+      doc.text(r3.iso, m + 34, y3 + 22);
+
+      // Texto remediacion
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+      var lines3 = doc.splitTextToSize(r3.texto, cw - 12);
+      doc.text(lines3, m + 6, y3 + 31);
+
+      y3 += 46;
     }
   }
 
-  renderQuestions();
-  </script>
+  // ── PAG FINAL: CONTACTO ────────────────────────────────────────────────────
+  doc.addPage();
+  addPageHeader('Contacto');
+
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+  doc.text('Proximos Pasos', m, 36);
+  doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.setLineWidth(0.3);
+  doc.line(m, 40, W - m, 40);
+
+  var steps = [
+    ['01', 'Agende una sesion de consultoria con nuestros especialistas en Ley 21.719.'],
+    ['02', 'Reciba un plan de remediacion priorizado con cronograma de implementacion.'],
+    ['03', 'Implemente los controles criticos con acompanamiento tecnico de ShellTI.'],
+    ['04', 'Valide el nivel de cumplimiento con auditoria de verificacion.']
+  ];
+  var ys = 52;
+  for (var s = 0; s < steps.length; s++) {
+    doc.setFillColor(cCyan[0], cCyan[1], cCyan[2]); doc.setGState(doc.GState({ opacity: 0.12 }));
+    doc.circle(m + 5, ys + 1, 4, 'F'); doc.setGState(doc.GState({ opacity: 1 }));
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+    doc.text(steps[s][0], m + 5, ys + 2.5, { align:'center' });
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(cDeep[0], cDeep[1], cDeep[2]);
+    doc.text(steps[s][1], m + 14, ys + 3);
+    ys += 16;
+  }
+
+  // Caja contacto
+  doc.setFillColor(cDeep[0], cDeep[1], cDeep[2]); doc.roundedRect(m, ys + 8, cw, 28, 2, 2, 'F');
+  doc.setFillColor(cCyan[0], cCyan[1], cCyan[2]); doc.roundedRect(m, ys + 8, 4, 28, 2, 2, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(cCyan[0], cCyan[1], cCyan[2]);
+  doc.text('contacto@shellti.com', m + 10, ys + 22);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('shellti.com  ·  ShellTI SpA  ·  Santiago, Chile', m + 10, ys + 30);
+
+  // Pie
+  doc.setDrawColor(cLight[0], cLight[1], cLight[2]); doc.setLineWidth(0.3);
+  doc.line(m, H - 22, W - m, H - 22);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(cGray[0], cGray[1], cGray[2]);
+  doc.text('ShellTI SpA  ·  contacto@shellti.com  ·  \u00a9 2026  ·  Todos los derechos reservados', W / 2, H - 14, { align:'center' });
+
+  doc.save('ShellTI_Diagnostico_' + now.getFullYear() + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2) + '.pdf');
+}
+
+// ── MODALS ────────────────────────────────────────────────────────────────────
+function openInfoModal(id) {
+  var q = null;
+  for (var i = 0; i < questionData.length; i++) { if (questionData[i].id === id) { q = questionData[i]; break; } }
+  if (!q) return;
+  document.getElementById('modalTag').textContent = q.tag;
+  document.getElementById('modalTitle').innerHTML = q.title;
+  document.getElementById('modalBody').innerHTML = q.content;
+  document.getElementById('infoModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeInfoModal()  { document.getElementById('infoModal').classList.remove('active');  document.body.style.overflow = ''; }
+function openContactModal(){ document.getElementById('contactModal').classList.add('active');  document.body.style.overflow = 'hidden'; }
+function closeContactModal(){ document.getElementById('contactModal').classList.remove('active'); document.body.style.overflow = ''; }
+
+document.getElementById('infoModal').addEventListener('click',  function(e){ if(e.target===this) closeInfoModal(); });
+document.getElementById('contactModal').addEventListener('click',function(e){ if(e.target===this) closeContactModal(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeInfoModal(); closeContactModal(); } });
+
+var burger = document.getElementById('burger');
+var navLinks = document.getElementById('navLinks');
+if (burger && navLinks) {
+  burger.addEventListener('click', function(){ navLinks.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ navLinks.classList.remove('open'); }); });
+}
+
+// INIT
+renderQuestions();
+</script>
 </body>
 </html>
