@@ -129,23 +129,39 @@
     .nav-links a:hover { color: var(--cyan); }
     .nav-cta { border: 1px solid var(--cyan) !important; color: var(--cyan) !important; padding: 8px 20px; border-radius: 2px; box-shadow: 0 0 12px rgba(0,212,255,0.18); transition: background .2s, box-shadow .2s !important; }
     .nav-cta:hover { background: rgba(0,212,255,0.1) !important; box-shadow: 0 0 28px rgba(0,212,255,0.35) !important; }
-    .hamburger {
-      display: none; flex-direction: column; justify-content: center; gap: 5px;
-      cursor: pointer; background: none; border: none; outline: none;
-      -webkit-appearance: none; appearance: none;
-      padding: 6px; margin: 0; width: 36px; height: 36px;
-      border-radius: 0; box-shadow: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--cyan); border-radius: 2px;
-      transition: transform .3s ease, opacity .3s ease;
-      pointer-events: none;
-    }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; background: none; border: none; outline: none; -webkit-appearance: none; appearance: none; padding: 6px; margin: 0; width: 36px; height: 36px; border-radius: 0; box-shadow: none; -webkit-tap-highlight-color: transparent; z-index: 401; position: relative; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--cyan); border-radius: 2px; transition: transform .3s ease, opacity .3s ease; pointer-events: none; }
     .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* SIDE DRAWER */
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(2,6,23,0.72); backdrop-filter: blur(4px); z-index: 398; opacity: 0; transition: opacity .3s ease; }
+    .drawer-overlay.open { display: block; opacity: 1; }
+    .drawer { position: fixed; top: 0; left: 0; bottom: 0; width: min(300px, 82vw); background: linear-gradient(160deg,#030c20 0%,#020a1a 60%,#040e24 100%); border-right: 1px solid rgba(0,212,255,0.18); z-index: 399; display: flex; flex-direction: column; transform: translateX(-100%); transition: transform .32s cubic-bezier(0.32,0,0.08,1); box-shadow: 8px 0 40px rgba(0,0,0,0.5); }
+    .drawer.open { transform: translateX(0); }
+    .drawer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), rgba(0,212,255,0.2)); }
+    .drawer-head { height: 68px; padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,212,255,0.08); flex-shrink: 0; }
+    .drawer-head-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .drawer-head-brand img { height: 32px; width: 32px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,212,255,0.7)) brightness(1.2); }
+    .drawer-head-name { font-weight: 800; font-size: 1rem; color: var(--silver); letter-spacing: -.5px; }
+    .drawer-head-name span { color: var(--cyan); }
+    .drawer-close { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; -webkit-appearance: none; appearance: none; }
+    .drawer-close:hover { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.35); color: #FF6B6B; }
+    .drawer-nav { flex: 1; overflow-y: auto; padding: .5rem 0; display: flex; flex-direction: column; }
+    .drawer-item { display: flex; flex-direction: row; align-items: center; gap: 14px; width: 100%; box-sizing: border-box; padding: .9rem 1.25rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background .18s, padding-left .18s; }
+    .drawer-item:hover { background: rgba(0,212,255,0.06); padding-left: 1.5rem; }
+    .drawer-item:hover .drawer-item-icon { color: var(--cyan); border-color: rgba(0,212,255,0.25); }
+    .drawer-item:hover .drawer-item-label { color: var(--silver); }
+    .drawer-item-icon { width: 34px; height: 34px; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; color: var(--muted); flex-shrink: 0; transition: all .18s; }
+    .drawer-item-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .drawer-item-label { font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); transition: color .18s; white-space: nowrap; }
+    .drawer-item-hint { font-size: .65rem; color: rgba(148,163,184,0.38); letter-spacing: .2px; }
+    .drawer-footer { padding: 1.1rem 1.25rem 1.4rem; border-top: 1px solid rgba(0,212,255,0.08); flex-shrink: 0; }
+    .drawer-cta { display: block; width: 100%; padding: 13px; text-align: center; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); color: var(--deep); font-weight: 800; font-size: .78rem; letter-spacing: 1.5px; text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: box-shadow .2s, transform .2s; font-family: 'JetBrains Mono', monospace; }
+    .drawer-cta:hover { box-shadow: 0 0 24px rgba(0,212,255,0.45); transform: translateY(-1px); }
 
     /* MAIN */
     main { min-height: 100vh; padding: 100px 2.5rem 60px; position: relative; overflow: hidden; }
@@ -288,41 +304,82 @@
     footer p { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: 1px; color: var(--muted); text-align: right; }
 
     @media (max-width: 960px) {
-      .survey-wrapper { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex; flex-direction: column; gap: 0;
-        position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
-        background: rgba(2,6,23,0.98); backdrop-filter: blur(20px);
-        padding: 1.5rem; border-top: 1px solid var(--border);
-        z-index: 299; overflow-y: auto;
-        animation: slideDown .25s ease;
-      }
-      @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-      .nav-links.open li { border-bottom: 1px solid rgba(0,212,255,0.08); }
-      .nav-links.open a { display: block; padding: 1rem 0; font-size: .85rem; color: var(--silver); }
-      .nav-links.open a:hover { color: var(--cyan); padding-left: 6px; transition: all .2s; }
-      .nav-links.open .nav-cta {
-        display: block; margin-top: 1.5rem; text-align: center;
-        padding: 14px 20px; border-radius: 3px;
-        background: rgba(0,212,255,0.08);
-        color: var(--cyan) !important;
-        border: 1px solid rgba(0,212,255,0.35) !important;
-      }
+      .nav-links { display: none !important; }
       .hamburger { display: flex; }
+      nav { padding: 0 1.5rem; }
+      .survey-wrapper { grid-template-columns: 1fr; }
       .heatmap-panel { position: relative; top: auto; }
     }
     @media (max-width: 768px) {
-      nav, main { padding-left: 1.2rem; padding-right: 1.2rem; }
+      main { padding-left: 1.2rem; padding-right: 1.2rem; }
       .question-item { flex-direction: column; align-items: flex-start; }
       .answer-buttons { width: 100%; }
       .btn-answer { flex: 1; }
-      footer { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; align-items: flex-start; padding: 1.2rem; }
       footer p { text-align: left; }
     }
   </style>
 </head>
 <body>
+
+<!-- OVERLAY DEL DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+<!-- SIDE DRAWER -->
+<aside class="drawer" id="sideDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="drawer-head">
+    <a href="index.html" class="drawer-head-brand">
+      <img src="imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI" />
+      <div class="drawer-head-name">Shell<span>TI</span></div>
+    </a>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Cerrar menú">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="drawer-nav" role="navigation" aria-label="Navegación principal">
+    <a href="index.html" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Inicio</span>
+        <span class="drawer-item-hint">Volver al sitio principal</span>
+      </div>
+    </a>
+    <a href="index.html#nosotros" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Nosotros</span>
+        <span class="drawer-item-hint">Quiénes somos</span>
+      </div>
+    </a>
+    <a href="index.html#compliance" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Compliance</span>
+        <span class="drawer-item-hint">Ley 21.719 · ISO 27001</span>
+      </div>
+    </a>
+    <a href="index.html#contacto" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Contacto</span>
+        <span class="drawer-item-hint">Agendar consulta</span>
+      </div>
+    </a>
+  </div>
+  <div class="drawer-footer">
+    <a href="diagnostico.html" class="drawer-cta">Assessment Gratuito &rarr;</a>
+  </div>
+</aside>
 
 <nav>
   <a href="index.html" class="nav-logo">
@@ -341,7 +398,7 @@
     <li><a href="index.html#contacto">Contacto</a></li>
     <li><a href="diagnostico.html" class="nav-cta">Assessment Gratis</a></li>
   </ul>
-  <button class="hamburger" id="burger" aria-label="Abrir men&uacute;" type="button">
+  <button class="hamburger" id="burger" type="button" aria-label="Abrir men&uacute;" aria-expanded="false" aria-controls="sideDrawer">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -945,32 +1002,46 @@ document.getElementById('infoModal').addEventListener('click',  function(e){ if(
 document.getElementById('contactModal').addEventListener('click',function(e){ if(e.target===this) closeContactModal(); });
 document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeInfoModal(); closeContactModal(); } });
 
-var burger = document.getElementById('burger');
-var navLinks = document.getElementById('navLinks');
-if (burger && navLinks) {
-  burger.addEventListener('click', function() {
-    var isOpen = navLinks.classList.toggle('open');
-    burger.classList.toggle('active');
-    burger.setAttribute('aria-expanded', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
-  navLinks.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', function() {
-      navLinks.classList.remove('open');
-      burger.classList.remove('active');
-      burger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
-  document.addEventListener('click', function(e) {
-    if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !burger.contains(e.target)) {
-      navLinks.classList.remove('open');
-      burger.classList.remove('active');
-      burger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-  });
+// SIDE DRAWER
+var burger        = document.getElementById('burger');
+var drawer        = document.getElementById('sideDrawer');
+var drawerOverlay = document.getElementById('drawerOverlay');
+var drawerClose   = document.getElementById('drawerClose');
+
+function openDrawer() {
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('open');
+  burger.classList.add('active');
+  burger.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+  drawerClose.focus();
 }
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('open');
+  burger.classList.remove('active');
+  burger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  burger.focus();
+}
+
+burger.addEventListener('click', openDrawer);
+drawerClose.addEventListener('click', closeDrawer);
+drawerOverlay.addEventListener('click', closeDrawer);
+drawer.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeDrawer); });
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+});
+// Swipe left para cerrar
+(function(){
+  var sx = 0, sy = 0;
+  drawer.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  drawer.addEventListener('touchend',   function(e){
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = Math.abs(e.changedTouches[0].clientY - sy);
+    if (dx < -50 && dy < 60) closeDrawer();
+  }, {passive:true});
+})();
 
 // INIT
 renderQuestions();
