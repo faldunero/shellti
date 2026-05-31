@@ -129,8 +129,23 @@
     .nav-links a:hover { color: var(--cyan); }
     .nav-cta { border: 1px solid var(--cyan) !important; color: var(--cyan) !important; padding: 8px 20px; border-radius: 2px; box-shadow: 0 0 12px rgba(0,212,255,0.18); transition: background .2s, box-shadow .2s !important; }
     .nav-cta:hover { background: rgba(0,212,255,0.1) !important; box-shadow: 0 0 28px rgba(0,212,255,0.35) !important; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
-    .hamburger span { width: 22px; height: 1.5px; background: var(--cyan); display: block; }
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      cursor: pointer; background: none; border: none; outline: none;
+      -webkit-appearance: none; appearance: none;
+      padding: 6px; margin: 0; width: 36px; height: 36px;
+      border-radius: 0; box-shadow: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--cyan); border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease;
+      pointer-events: none;
+    }
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* MAIN */
     main { min-height: 100vh; padding: 100px 2.5rem 60px; position: relative; overflow: hidden; }
@@ -275,7 +290,25 @@
     @media (max-width: 960px) {
       .survey-wrapper { grid-template-columns: 1fr; }
       .nav-links { display: none; }
-      .nav-links.open { display: flex; flex-direction: column; gap: 1rem; position: fixed; top: 68px; left: 0; right: 0; background: rgba(2,6,23,0.98); padding: 2rem; border-bottom: 1px solid var(--border); z-index: 299; }
+      .nav-links.open {
+        display: flex; flex-direction: column; gap: 0;
+        position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+        background: rgba(2,6,23,0.98); backdrop-filter: blur(20px);
+        padding: 1.5rem; border-top: 1px solid var(--border);
+        z-index: 299; overflow-y: auto;
+        animation: slideDown .25s ease;
+      }
+      @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+      .nav-links.open li { border-bottom: 1px solid rgba(0,212,255,0.08); }
+      .nav-links.open a { display: block; padding: 1rem 0; font-size: .85rem; color: var(--silver); }
+      .nav-links.open a:hover { color: var(--cyan); padding-left: 6px; transition: all .2s; }
+      .nav-links.open .nav-cta {
+        display: block; margin-top: 1.5rem; text-align: center;
+        padding: 14px 20px; border-radius: 3px;
+        background: rgba(0,212,255,0.08);
+        color: var(--cyan) !important;
+        border: 1px solid rgba(0,212,255,0.35) !important;
+      }
       .hamburger { display: flex; }
       .heatmap-panel { position: relative; top: auto; }
     }
@@ -915,8 +948,28 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeInf
 var burger = document.getElementById('burger');
 var navLinks = document.getElementById('navLinks');
 if (burger && navLinks) {
-  burger.addEventListener('click', function(){ navLinks.classList.toggle('open'); });
-  navLinks.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ navLinks.classList.remove('open'); }); });
+  burger.addEventListener('click', function() {
+    var isOpen = navLinks.classList.toggle('open');
+    burger.classList.toggle('active');
+    burger.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  navLinks.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      burger.classList.remove('active');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !burger.contains(e.target)) {
+      navLinks.classList.remove('open');
+      burger.classList.remove('active');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  });
 }
 
 // INIT
