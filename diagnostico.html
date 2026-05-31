@@ -307,6 +307,7 @@
     <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem;">Reciba un informe detallado basado en sus respuestas.</p>
     <form id="contactFormDiag" action="https://formsubmit.co/contacto@shellti.com" method="POST" style="display:flex;flex-direction:column;gap:12px;" novalidate>
       <input type="hidden" name="_subject" value="Nuevo Lead — Diagnóstico ShellTI" />
+      <input type="hidden" name="_next" value="https://shellti.com/diagnostico.html?enviado=1" />
       <input type="hidden" name="riesgo_detectado" id="hiddenRiesgo" />
       <input type="hidden" name="respuestas_detalle" id="hiddenRespuestas" />
       <input type="hidden" name="consentimiento_ley21719" value="Otorgado — tratamiento comercial y de seguimiento" />
@@ -867,6 +868,16 @@ document.getElementById('consentDiag1').addEventListener('change', function() {
     document.getElementById('consentErrorDiag').classList.remove('show');
   }
 });
+
+// Banner de confirmación si viene de redirect tras envío
+if (new URLSearchParams(window.location.search).get('enviado') === '1') {
+  var banner = document.createElement('div');
+  banner.innerHTML = '✓ &nbsp;Solicitud enviada correctamente — le contactaremos en menos de 24 horas hábiles.';
+  banner.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(52,211,153,0.12);color:#34D399;border:1px solid rgba(52,211,153,0.4);padding:14px 28px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.5px;box-shadow:0 0 30px rgba(52,211,153,0.2);z-index:9999;white-space:nowrap;';
+  document.body.appendChild(banner);
+  setTimeout(function(){ banner.style.transition='opacity .6s'; banner.style.opacity='0'; setTimeout(function(){ banner.remove(); }, 700); }, 5000);
+  history.replaceState(null, '', window.location.pathname);
+}
 </script>
 </body>
 </html>
