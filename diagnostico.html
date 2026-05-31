@@ -150,19 +150,18 @@
     .drawer-head-name span { color: var(--cyan); }
     .drawer-close { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; -webkit-appearance: none; appearance: none; }
     .drawer-close:hover { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.35); color: #FF6B6B; }
-    .drawer-nav { flex: 1; overflow-y: auto; padding: .5rem 0; }
-    .drawer-item { display: flex; align-items: center; gap: 14px; padding: .85rem 1.25rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.03); transition: all .18s; }
-    .drawer-item:hover { background: rgba(0,212,255,0.05); padding-left: 1.5rem; }
-    .drawer-item:hover .drawer-item-icon { color: var(--cyan); border-color: rgba(0,212,255,0.2); }
+    .drawer-nav { flex: 1; overflow-y: auto; padding: .5rem 0; display: flex; flex-direction: column; }
+    .drawer-item { display: flex; flex-direction: row; align-items: center; gap: 14px; width: 100%; box-sizing: border-box; padding: .9rem 1.25rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background .18s, padding-left .18s; }
+    .drawer-item:hover { background: rgba(0,212,255,0.06); padding-left: 1.5rem; }
+    .drawer-item:hover .drawer-item-icon { color: var(--cyan); border-color: rgba(0,212,255,0.25); }
     .drawer-item:hover .drawer-item-label { color: var(--silver); }
-    .drawer-item-icon { width: 32px; height: 32px; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; color: var(--muted); flex-shrink: 0; transition: all .18s; }
-    .drawer-item-text { display: flex; flex-direction: column; gap: 2px; }
-    .drawer-item-label { font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); transition: color .18s; }
-    .drawer-item-hint { font-size: .65rem; color: rgba(148,163,184,0.4); letter-spacing: .3px; }
-    .drawer-footer { padding: 1.25rem; border-top: 1px solid rgba(0,212,255,0.08); flex-shrink: 0; }
+    .drawer-item-icon { width: 34px; height: 34px; border-radius: 4px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; color: var(--muted); flex-shrink: 0; transition: all .18s; }
+    .drawer-item-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .drawer-item-label { font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); transition: color .18s; white-space: nowrap; }
+    .drawer-item-hint { font-size: .65rem; color: rgba(148,163,184,0.38); letter-spacing: .2px; }
+    .drawer-footer { padding: 1.1rem 1.25rem 1.4rem; border-top: 1px solid rgba(0,212,255,0.08); flex-shrink: 0; }
     .drawer-cta { display: block; width: 100%; padding: 13px; text-align: center; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); color: var(--deep); font-weight: 800; font-size: .78rem; letter-spacing: 1.5px; text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: box-shadow .2s, transform .2s; font-family: 'JetBrains Mono', monospace; }
     .drawer-cta:hover { box-shadow: 0 0 24px rgba(0,212,255,0.45); transform: translateY(-1px); }
-    .drawer-version { margin-top: .75rem; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: 1.5px; color: rgba(148,163,184,0.3); text-transform: uppercase; }
 
     /* MAIN */
     main { min-height: 100vh; padding: 100px 2.5rem 60px; position: relative; overflow: hidden; }
@@ -379,7 +378,6 @@
   </nav>
   <div class="drawer-footer">
     <a href="diagnostico.html" class="drawer-cta">Assessment Gratuito &rarr;</a>
-    <div class="drawer-version">ShellTI &middot; Technology Consultancy</div>
   </div>
 </aside>
 
