@@ -129,8 +129,58 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--d
 footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted);text-align:right}
 .fu{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .fu.vis{opacity:1;transform:none}
-@media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}}
-@media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}}
+.hero-img-wrap{position:relative}
+.hero-img-wrap img{border-radius:4px;border:1px solid var(--border);box-shadow:0 0 60px rgba(0,212,255,.12),0 20px 60px rgba(0,0,0,.5);width:100%;height:240px;object-fit:cover;filter:brightness(.85) saturate(1.1)}
+.hero-img-wrap::before{content:'NIST CSF 2.0';position:absolute;top:-10px;left:16px;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--cyan);background:var(--deep2);padding:3px 12px;border:1px solid rgba(0,212,255,.3);border-radius:2px;z-index:2}
+.hero-img-wrap::after{content:'';position:absolute;inset:0;border-radius:4px;background:linear-gradient(to bottom,transparent 50%,rgba(2,6,23,.6));pointer-events:none}
+.img-section{margin:2rem 0;border-radius:4px;overflow:hidden;border:1px solid var(--border);position:relative}
+.img-section img{width:100%;height:240px;object-fit:cover;filter:brightness(.85) saturate(1.1);display:block}
+.img-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(2,6,23,.95),transparent);padding:1.25rem 1.5rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted)}
+.img-caption strong{color:var(--cyan);display:block;margin-bottom:.2rem;font-size:.65rem}
+.quiz-section{background:linear-gradient(135deg,rgba(0,212,255,.04),rgba(52,211,153,.03));border:1px solid rgba(0,212,255,.18);border-radius:4px;padding:2.5rem;margin:0 2.5rem 56px;max-width:1200px;margin-left:auto;margin-right:auto}
+.quiz-header{margin-bottom:2rem}
+.quiz-header h2{font-size:1.6rem;margin-bottom:.4rem}
+.quiz-meta{display:flex;align-items:center;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.quiz-progress-bar{flex:1;min-width:120px;height:3px;background:rgba(0,212,255,.12);border-radius:2px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:var(--cyan);border-radius:2px;transition:width .4s ease;width:0}
+.quiz-progress-text{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);white-space:nowrap}
+.quiz-q-wrap{display:none}.quiz-q-wrap.active{display:block}
+.quiz-q-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:.5rem}
+.quiz-q-text{font-size:1.02rem;font-weight:700;color:var(--silver);margin-bottom:1.25rem;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:.85rem 1.2rem;cursor:pointer;font-size:.88rem;color:var(--muted);transition:border-color .18s,background .18s,color .18s;font-family:'Plus Jakarta Sans',sans-serif;text-align:left;display:flex;align-items:center;gap:10px}
+.quiz-opt:hover:not(.correct):not(.wrong):not(.dimmed){border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.04);color:var(--silver)}
+.quiz-opt::before{content:attr(data-letter);font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);flex-shrink:0;width:18px}
+.quiz-opt.correct{border-color:var(--green);background:rgba(52,211,153,.1);color:var(--silver)}
+.quiz-opt.correct::before{color:var(--green)}
+.quiz-opt.wrong{border-color:#FF6B6B;background:rgba(255,107,107,.1);color:var(--silver)}
+.quiz-opt.wrong::before{color:#FF6B6B}
+.quiz-opt.dimmed{opacity:.4;cursor:default}
+.quiz-explanation{background:rgba(0,212,255,.05);border-left:2px solid var(--cyan);padding:.9rem 1.1rem;margin-top:1rem;border-radius:0 3px 3px 0;display:none}
+.quiz-explanation.show{display:block}
+.quiz-explanation p{font-size:.83rem;color:var(--muted);font-weight:300;line-height:1.7;margin:0}
+.quiz-explanation strong{color:var(--cyan3)}
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.75rem;gap:12px}
+.quiz-btn{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;padding:10px 22px;border-radius:2px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.quiz-btn-prev{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.quiz-btn-prev:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}
+.quiz-btn-next{background:linear-gradient(135deg,var(--cyan),var(--cyan2));border:none;color:var(--deep);font-weight:800}
+.quiz-btn-next:hover:not(:disabled){box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-1px)}
+.quiz-btn:disabled{opacity:.35;cursor:default;transform:none !important;box-shadow:none !important}
+.quiz-result{display:none;text-align:center;padding:2rem 0}
+.quiz-result.show{display:block}
+.result-score{font-size:3.5rem;font-weight:800;line-height:1;margin-bottom:.5rem}
+.result-msg{font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+.result-sub{color:var(--muted);font-size:.88rem;font-weight:300;max-width:480px;margin:0 auto 1.5rem}
+.result-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.result-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;padding:5px 14px;border-radius:2px}
+.rb-green{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.rb-yellow{background:rgba(255,217,61,.08);color:#FFD93D;border:1px solid rgba(255,217,61,.25)}
+.rb-red{background:rgba(255,107,107,.08);color:#FF6B6B;border:1px solid rgba(255,107,107,.25)}
+.quiz-retry{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;padding:10px 22px;border-radius:2px;cursor:pointer;text-transform:uppercase;transition:all .2s}
+.quiz-retry:hover{border-color:var(--cyan);color:var(--cyan)}
+@media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}.quiz-section{margin:0 1.5rem 40px;padding:1.5rem}}
+@media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}.quiz-section{margin:0 1.2rem 30px}}
 </style>
 </head>
 <body>
@@ -198,21 +248,19 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
     <div>
       <p class="overline">ShellTI · Marcos y Estándares</p>
       <h1 class="hero-title">NIST <em>CSF 2.0</em><br>Cybersecurity Framework</h1>
-      <p class="hero-sub">El marco de ciberseguridad más utilizado globalmente, publicado por el Instituto Nacional de Estándares y Tecnología de EE.UU. La versión 2.0 de 2024 añade la función Governar y amplía el alcance a toda la cadena de suministro.</p>
-      <div class="hero-tags"><span class="htag">Governar</span><span class="htag">Identificar</span><span class="htag">Proteger</span><span class="htag">Detectar</span><span class="htag">Responder</span><span class="htag">Recuperar</span></div>
+      <p class="hero-sub">El marco de ciberseguridad más utilizado globalmente, publicado por el Instituto Nacional de Estándares y Tecnología de EE.UU. La versión 2.0 de 2024 añade la función Gobernar y amplía el alcance a toda la cadena de suministro.</p>
+      <div class="hero-tags"><span class="htag">Gobernar</span><span class="htag">Identificar</span><span class="htag">Proteger</span><span class="htag">Detectar</span><span class="htag">Responder</span><span class="htag">Recuperar</span></div>
     </div>
-    <div class="toc-box">
-      <div class="toc-title">Índice de Contenido</div>
-      <ul class="toc-list"><li><a href="#resumen">Resumen Ejecutivo</a></li>
-<li><a href="#funciones">Las 6 Funciones</a></li>
-<li><a href="#perfiles">Perfiles y Niveles</a></li>
-<li><a href="#aplicacion">Aplicación Práctica</a></li>
-<li><a href="#relacion">Relación con ISO 27001</a></li>
-<li><a href="#faq">Preguntas Frecuentes</a></li></ul>
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80&fit=crop" alt="NIST CSF 2.0 Cybersecurity Framework" loading="lazy"/>
     </div>
   </div>
 </div>
-<section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">¿Qué es el <span class="tc">NIST CSF 2.0</span>?</h2></div><div class="res-body fu"><p>El NIST Cybersecurity Framework (CSF) 2.0, publicado en febrero de 2024, es un marco voluntario desarrollado por el National Institute of Standards and Technology de Estados Unidos. Organiza las capacidades de ciberseguridad en <strong>6 funciones de alto nivel</strong> que permiten a las organizaciones gestionar y comunicar su postura de ciberseguridad de forma estructurada.</p><p>A diferencia de la versión 1.1, el CSF 2.0 expande su aplicabilidad más allá de infraestructura crítica, es aplicable a <strong>organizaciones de cualquier tamaño, sector o madurez</strong>, e incorpora una nueva función: Governar (GV), que reconoce que la ciberseguridad es una función de gestión empresarial, no solo técnica.</p><div class="info-box blue"><h4>// Versión 1.1 vs 2.0</h4><p>Las principales adiciones del CSF 2.0 son: nueva función GV.Governar, enfoque explícito en gestión de riesgos de la cadena de suministro (C-SCRM), mayor integración con gestión de riesgos empresariales, y un catálogo de referencias cruzadas con ISO 27001, CIS Controls y COBIT.</p></div></div></div></section><section class="res" id="funciones" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Las 6 Funciones</p><h2 class="sec-title">Estructura del <span class="tc">Framework</span></h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>GV — Governar</h5><p>Nuevo en v2.0. Establece la estrategia, expectativas y política de ciberseguridad. Cubre roles, responsabilidades, supervisión del directorio y cultura de seguridad.</p></div><div class="benefit-item"><h5>ID — Identificar</h5><p>Inventario de activos, contexto organizacional, evaluación de riesgos y estrategia de mejora. Base para todo el programa de ciberseguridad.</p></div><div class="benefit-item"><h5>PR — Proteger</h5><p>Controles de acceso, formación y concienciación, seguridad de datos, procesos de protección y mantenimiento de tecnologías de seguridad.</p></div><div class="benefit-item"><h5>DE — Detectar</h5><p>Monitoreo continuo, procesos de detección de anomalías y eventos de ciberseguridad. Incluye inteligencia de amenazas.</p></div><div class="benefit-item"><h5>RS — Responder</h5><p>Planificación de respuesta, comunicación, análisis, mitigación y mejoras post-incidente. Incluye coordinación con partes externas.</p></div><div class="benefit-item"><h5>RC — Recuperar</h5><p>Planes de recuperación, mejoras basadas en lecciones aprendidas y comunicación durante la recuperación para restaurar capacidades.</p></div></div></div></section><section class="res" id="perfiles" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Perfiles y Niveles</p><h2 class="sec-title">Midiendo la <span class="tc">Madurez</span></h2></div><div class="res-body fu"><p>El CSF 2.0 utiliza dos herramientas complementarias para medir y comunicar la postura de ciberseguridad:</p><div class="info-box blue"><h4>// Perfiles del Framework</h4><p>Un perfil representa la <strong>selección de resultados del Core</strong> que una organización ha priorizado. El "Perfil Actual" describe el estado presente; el "Perfil Objetivo" describe el estado deseado. La brecha entre ambos define el plan de trabajo.</p></div><div class="info-box green"><h4>// Niveles de Implementación (Tiers)</h4><p><strong>Tier 1 — Parcial:</strong> prácticas ad hoc, sin formalización. <strong>Tier 2 — Riesgo Informado:</strong> prácticas aprobadas, no institucionalizadas. <strong>Tier 3 — Repetible:</strong> prácticas formalizadas y actualizadas. <strong>Tier 4 — Adaptativo:</strong> prácticas basadas en lecciones aprendidas y mejora continua activa.</p></div></div></div></section><section class="res" id="aplicacion" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Aplicación Práctica</p><h2 class="sec-title">Implementando <span class="tc">NIST CSF 2.0</span> en Chile</h2></div><div class="res-body fu"><p>El NIST CSF 2.0 es un excelente punto de partida para organizaciones que no tienen un programa de ciberseguridad formalizado, ya que su lenguaje de alto nivel facilita la comunicación entre equipos técnicos y la alta dirección.</p><h3>Paso 1 — Alcance y Priorización</h3><p>Define el alcance del framework (toda la organización o una unidad específica) y prioriza las categorías según el impacto al negocio. No es necesario implementar todo el framework de inmediato.</p><h3>Paso 2 — Creación del Perfil Actual</h3><p>Realiza un assessment de las prácticas existentes mapeadas a las subcategorías del CSF. Documenta las evidencias disponibles y las brechas identificadas.</p><h3>Paso 3 — Definición del Perfil Objetivo</h3><p>Basado en el apetito de riesgo, los requisitos regulatorios (Ley 21.719, CMF) y los recursos disponibles, define qué subcategorías deben mejorar y hacia qué Tier.</p><h3>Paso 4 — Plan de Acción y Medición</h3><p>Desarrolla un plan de trabajo con responsables, plazos y métricas. Revisa el progreso semestralmente y ajusta el Perfil Objetivo según cambios en el contexto.</p></div></div></section><section class="res" id="relacion" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Integración</p><h2 class="sec-title">NIST CSF 2.0 e <span class="tc">ISO 27001</span></h2></div><div class="res-body fu"><p>NIST CSF 2.0 e ISO 27001 son complementarios. El CSF proporciona una estructura de alto nivel ideal para la comunicación ejecutiva y la medición de madurez, mientras que ISO 27001 provee el marco de gestión formal con requisitos certificables.</p><div class="info-box blue"><h4>// Uso Combinado Recomendado</h4><p>Muchas organizaciones utilizan el <strong>CSF como brújula estratégica</strong> para priorizar inversiones en ciberseguridad y el <strong>SGSI ISO 27001 como motor operacional</strong> para implementar y certificar los controles. ShellTI trabaja con ambos marcos de forma integrada.</p></div></div></div></section>
+<section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">¿Qué es el <span class="tc">NIST CSF 2.0</span>?</h2></div><div class="res-body fu"><p>El NIST Cybersecurity Framework (CSF) 2.0, publicado en febrero de 2024, es un marco voluntario desarrollado por el National Institute of Standards and Technology de Estados Unidos. Organiza las capacidades de ciberseguridad en <strong>6 funciones de alto nivel</strong> que permiten a las organizaciones gestionar y comunicar su postura de ciberseguridad de forma estructurada.</p><p>A diferencia de la versión 1.1, el CSF 2.0 expande su aplicabilidad más allá de infraestructura crítica, es aplicable a <strong>organizaciones de cualquier tamaño, sector o madurez</strong>, e incorpora una nueva función: Gobernar (GV), que reconoce que la ciberseguridad es una función de gestión empresarial, no solo técnica.</p><div class="info-box blue"><h4>// Versión 1.1 vs 2.0</h4><p>Las principales adiciones del CSF 2.0 son: nueva función GV.Gobernar, enfoque explícito en gestión de riesgos de la cadena de suministro (C-SCRM), mayor integración con gestión de riesgos empresariales, y un catálogo de referencias cruzadas con ISO 27001, CIS Controls y COBIT.</p></div>
+<div class="img-section fu"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80&fit=crop" alt="Ciberseguridad empresarial" loading="lazy"/><div class="img-caption"><strong>// Marco de referencia universal</strong>El NIST CSF 2.0 es adoptado por organizaciones de más de 50 países como lenguaje común para comunicar postura de ciberseguridad ante directorios y reguladores.</div></div>
+</div></div></section><section class="res" id="funciones" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Las 6 Funciones</p><h2 class="sec-title">Estructura del <span class="tc">Framework</span></h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>GV — Gobernar</h5><p>Nuevo en v2.0. Establece la estrategia, expectativas y política de ciberseguridad. Cubre roles, responsabilidades, supervisión del directorio y cultura de seguridad.</p></div><div class="benefit-item"><h5>ID — Identificar</h5><p>Inventario de activos, contexto organizacional, evaluación de riesgos y estrategia de mejora. Base para todo el programa de ciberseguridad.</p></div><div class="benefit-item"><h5>PR — Proteger</h5><p>Controles de acceso, formación y concienciación, seguridad de datos, procesos de protección y mantenimiento de tecnologías de seguridad.</p></div><div class="benefit-item"><h5>DE — Detectar</h5><p>Monitoreo continuo, procesos de detección de anomalías y eventos de ciberseguridad. Incluye inteligencia de amenazas.</p></div><div class="benefit-item"><h5>RS — Responder</h5><p>Planificación de respuesta, comunicación, análisis, mitigación y mejoras post-incidente. Incluye coordinación con partes externas.</p></div><div class="benefit-item"><h5>RC — Recuperar</h5><p>Planes de recuperación, mejoras basadas en lecciones aprendidas y comunicación durante la recuperación para restaurar capacidades.</p></div>
+<div class="img-section fu"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80&fit=crop" alt="Monitoreo de seguridad SOC" loading="lazy"/><div class="img-caption"><strong>// Detectar · Responder · Recuperar</strong>Las funciones operativas del CSF 2.0 exigen capacidades de monitoreo continuo, playbooks de respuesta y planes de recuperación probados con RTO/RPO definidos.</div></div>
+</div></div></section><section class="res" id="perfiles" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Perfiles y Niveles</p><h2 class="sec-title">Midiendo la <span class="tc">Madurez</span></h2></div><div class="res-body fu"><p>El CSF 2.0 utiliza dos herramientas complementarias para medir y comunicar la postura de ciberseguridad:</p><div class="info-box blue"><h4>// Perfiles del Framework</h4><p>Un perfil representa la <strong>selección de resultados del Core</strong> que una organización ha priorizado. El "Perfil Actual" describe el estado presente; el "Perfil Objetivo" describe el estado deseado. La brecha entre ambos define el plan de trabajo.</p></div><div class="info-box green"><h4>// Niveles de Implementación (Tiers)</h4><p><strong>Tier 1 — Parcial:</strong> prácticas ad hoc, sin formalización. <strong>Tier 2 — Riesgo Informado:</strong> prácticas aprobadas, no institucionalizadas. <strong>Tier 3 — Repetible:</strong> prácticas formalizadas y actualizadas. <strong>Tier 4 — Adaptativo:</strong> prácticas basadas en lecciones aprendidas y mejora continua activa.</p></div></div></div></section><section class="res" id="aplicacion" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Aplicación Práctica</p><h2 class="sec-title">Implementando <span class="tc">NIST CSF 2.0</span> en Chile</h2></div><div class="res-body fu"><p>El NIST CSF 2.0 es un excelente punto de partida para organizaciones que no tienen un programa de ciberseguridad formalizado, ya que su lenguaje de alto nivel facilita la comunicación entre equipos técnicos y la alta dirección.</p><h3>Paso 1 — Alcance y Priorización</h3><p>Define el alcance del framework (toda la organización o una unidad específica) y prioriza las categorías según el impacto al negocio. No es necesario implementar todo el framework de inmediato.</p><h3>Paso 2 — Creación del Perfil Actual</h3><p>Realiza un assessment de las prácticas existentes mapeadas a las subcategorías del CSF. Documenta las evidencias disponibles y las brechas identificadas.</p><h3>Paso 3 — Definición del Perfil Objetivo</h3><p>Basado en el apetito de riesgo, los requisitos regulatorios (Ley 21.719, CMF) y los recursos disponibles, define qué subcategorías deben mejorar y hacia qué Tier.</p><h3>Paso 4 — Plan de Acción y Medición</h3><p>Desarrolla un plan de trabajo con responsables, plazos y métricas. Revisa el progreso semestralmente y ajusta el Perfil Objetivo según cambios en el contexto.</p></div></div></section><section class="res" id="relacion" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Integración</p><h2 class="sec-title">NIST CSF 2.0 e <span class="tc">ISO 27001</span></h2></div><div class="res-body fu"><p>NIST CSF 2.0 e ISO 27001 son complementarios. El CSF proporciona una estructura de alto nivel ideal para la comunicación ejecutiva y la medición de madurez, mientras que ISO 27001 provee el marco de gestión formal con requisitos certificables.</p><div class="info-box blue"><h4>// Uso Combinado Recomendado</h4><p>Muchas organizaciones utilizan el <strong>CSF como brújula estratégica</strong> para priorizar inversiones en ciberseguridad y el <strong>SGSI ISO 27001 como motor operacional</strong> para implementar y certificar los controles. ShellTI trabaja con ambos marcos de forma integrada.</p></div></div></div></section>
 <section class="res" id="faq" style="background:var(--deep2);border-top:1px solid var(--border)">
 <div class="container">
 <div class="fu"><p class="sec-label">Preguntas Frecuentes</p><h2 class="sec-title">Lo que Nuestros <span class="tc">Clientes Preguntan</span></h2></div>
@@ -231,6 +279,48 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 </div></div>
 </div>
 </section>
+<!-- QUIZ NIST CSF 2.0 -->
+<section class="res" id="quiz" style="background:var(--deep3);border-top:1px solid var(--border)">
+<div class="container">
+<div class="quiz-section fu">
+  <div class="quiz-header">
+    <p class="sec-label">Evaluación de Conocimiento</p>
+    <h2>Quiz <span class="tc">NIST CSF 2.0</span></h2>
+    <p style="color:var(--muted);font-size:.88rem;font-weight:300;margin-top:.4rem;">12 preguntas para validar tu dominio del framework</p>
+    <div class="quiz-meta">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="nistProgressFill"></div></div>
+      <span class="quiz-progress-text" id="nistProgressText">0 / 12</span>
+    </div>
+  </div>
+  <div id="nistQuizContainer">
+    <div class="quiz-q-wrap active" data-q="0"><div class="quiz-q-num">Pregunta 01 / 12</div><div class="quiz-q-text">¿En qué año fue publicado el NIST CSF 2.0?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">2022</button><button class="quiz-opt" data-letter="B">2023</button><button class="quiz-opt" data-letter="C">2024</button><button class="quiz-opt" data-letter="D">2025</button></div><div class="quiz-explanation" id="nist-exp-0"><p><strong>Correcto: C — 2024.</strong> El NIST CSF 2.0 fue publicado en febrero de 2024, actualizando la versión 1.1 de 2018. La versión 2.0 introdujo la nueva función Gobernar (GV) y amplió el alcance a toda cadena de suministro.</p></div></div>
+    <div class="quiz-q-wrap" data-q="1"><div class="quiz-q-num">Pregunta 02 / 12</div><div class="quiz-q-text">¿Cuál es la función nueva que incorporó el CSF 2.0 respecto a la versión 1.1?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">Detectar (DE)</button><button class="quiz-opt" data-letter="B">Gobernar (GV)</button><button class="quiz-opt" data-letter="C">Recuperar (RC)</button><button class="quiz-opt" data-letter="D">Identificar (ID)</button></div><div class="quiz-explanation" id="nist-exp-1"><p><strong>Correcto: B — Gobernar (GV).</strong> La función GV es completamente nueva en el CSF 2.0 y reconoce que la ciberseguridad es una función de gestión empresarial. Cubre estrategia, roles, responsabilidades, supervisión del directorio y cultura de seguridad.</p></div></div>
+    <div class="quiz-q-wrap" data-q="2"><div class="quiz-q-num">Pregunta 03 / 12</div><div class="quiz-q-text">¿Cuántas funciones tiene el NIST CSF 2.0?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">4</button><button class="quiz-opt" data-letter="B">5</button><button class="quiz-opt" data-letter="C">6</button><button class="quiz-opt" data-letter="D">7</button></div><div class="quiz-explanation" id="nist-exp-2"><p><strong>Correcto: C — 6 funciones.</strong> GV (Gobernar), ID (Identificar), PR (Proteger), DE (Detectar), RS (Responder) y RC (Recuperar). La versión 1.1 tenía 5 funciones; el CSF 2.0 añadió GV.</p></div></div>
+    <div class="quiz-q-wrap" data-q="3"><div class="quiz-q-num">Pregunta 04 / 12</div><div class="quiz-q-text">¿Qué representa un "Perfil Actual" en el CSF 2.0?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">El presupuesto asignado a ciberseguridad</button><button class="quiz-opt" data-letter="B">El nivel de madurez deseado a futuro</button><button class="quiz-opt" data-letter="C">La selección de resultados del Core que la organización tiene hoy</button><button class="quiz-opt" data-letter="D">El número de controles implementados en el Tier 4</button></div><div class="quiz-explanation" id="nist-exp-3"><p><strong>Correcto: C.</strong> El Perfil Actual describe el estado presente de la organización respecto a los resultados del Core del CSF. La brecha entre el Perfil Actual y el Perfil Objetivo define el plan de mejora.</p></div></div>
+    <div class="quiz-q-wrap" data-q="4"><div class="quiz-q-num">Pregunta 05 / 12</div><div class="quiz-q-text">¿Qué Tier del CSF 2.0 describe prácticas formalizadas, repetibles y actualizadas?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">Tier 1 — Parcial</button><button class="quiz-opt" data-letter="B">Tier 2 — Riesgo Informado</button><button class="quiz-opt" data-letter="C">Tier 3 — Repetible</button><button class="quiz-opt" data-letter="D">Tier 4 — Adaptativo</button></div><div class="quiz-explanation" id="nist-exp-4"><p><strong>Correcto: C — Tier 3 Repetible.</strong> En el Tier 3, las prácticas están formalizadas, aprobadas y actualizadas regularmente. El Tier 4 (Adaptativo) va más allá: incluye mejora continua basada en lecciones aprendidas y amenazas emergentes.</p></div></div>
+    <div class="quiz-q-wrap" data-q="5"><div class="quiz-q-num">Pregunta 06 / 12</div><div class="quiz-q-text">¿Qué función del CSF cubre el inventario de activos y la evaluación de riesgos?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">GV — Gobernar</button><button class="quiz-opt" data-letter="B">ID — Identificar</button><button class="quiz-opt" data-letter="C">PR — Proteger</button><button class="quiz-opt" data-letter="D">DE — Detectar</button></div><div class="quiz-explanation" id="nist-exp-5"><p><strong>Correcto: B — ID Identificar.</strong> La función ID cubre el contexto organizacional, inventario de activos (hardware, software, datos), evaluación de riesgos y estrategia de mejora. Es la base sobre la que se construyen las demás funciones.</p></div></div>
+    <div class="quiz-q-wrap" data-q="6"><div class="quiz-q-num">Pregunta 07 / 12</div><div class="quiz-q-text">¿Qué enfoque nuevo incorpora el CSF 2.0 respecto a la cadena de suministro?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">Elimina los requisitos de proveedores</button><button class="quiz-opt" data-letter="B">C-SCRM: gestión explícita de riesgos de la cadena de suministro</button><button class="quiz-opt" data-letter="C">Obliga a certificar a todos los proveedores en ISO 27001</button><button class="quiz-opt" data-letter="D">Reemplaza los contratos con proveedores por acuerdos de nivel de servicio</button></div><div class="quiz-explanation" id="nist-exp-6"><p><strong>Correcto: B — C-SCRM.</strong> El CSF 2.0 incorpora explícitamente la Gestión de Riesgos de la Cadena de Suministro de Ciberseguridad (C-SCRM), reconociendo que los ataques a proveedores (como SolarWinds) son uno de los vectores más relevantes de los últimos años.</p></div></div>
+    <div class="quiz-q-wrap" data-q="7"><div class="quiz-q-num">Pregunta 08 / 12</div><div class="quiz-q-text">¿El NIST CSF 2.0 es un estándar certificable como ISO 27001?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">Sí, emite certificados reconocidos internacionalmente</button><button class="quiz-opt" data-letter="B">No, es un framework de referencia voluntario sin certificación formal</button><button class="quiz-opt" data-letter="C">Sí, pero solo para empresas de infraestructura crítica</button><button class="quiz-opt" data-letter="D">No, solo aplica a entidades del gobierno de EE.UU.</button></div><div class="quiz-explanation" id="nist-exp-7"><p><strong>Correcto: B.</strong> El NIST CSF es un framework voluntario sin proceso de certificación formal. A diferencia de ISO 27001, no existe un organismo que emita certificados de conformidad. Sin embargo, muchas auditorías y licitaciones lo aceptan como evidencia de madurez.</p></div></div>
+    <div class="quiz-q-wrap" data-q="8"><div class="quiz-q-num">Pregunta 09 / 12</div><div class="quiz-q-text">¿Qué función del CSF 2.0 aborda los planes de recuperación y restauración de capacidades?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">RS — Responder</button><button class="quiz-opt" data-letter="B">DE — Detectar</button><button class="quiz-opt" data-letter="C">RC — Recuperar</button><button class="quiz-opt" data-letter="D">PR — Proteger</button></div><div class="quiz-explanation" id="nist-exp-8"><p><strong>Correcto: C — RC Recuperar.</strong> La función RC cubre los planes de recuperación, mejoras basadas en lecciones aprendidas y comunicación durante la recuperación. Es complementaria a RS (Responder), que cubre la contención activa del incidente.</p></div></div>
+    <div class="quiz-q-wrap" data-q="9"><div class="quiz-q-num">Pregunta 10 / 12</div><div class="quiz-q-text">¿Cómo se recomienda combinar el NIST CSF 2.0 con ISO 27001?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">No son compatibles; debe elegirse uno u otro</button><button class="quiz-opt" data-letter="B">CSF como brújula estratégica + ISO 27001 como motor operacional certificable</button><button class="quiz-opt" data-letter="C">ISO 27001 reemplaza completamente al CSF 2.0</button><button class="quiz-opt" data-letter="D">CSF solo aplica a la función técnica de TI</button></div><div class="quiz-explanation" id="nist-exp-9"><p><strong>Correcto: B.</strong> La estrategia más efectiva es usar el CSF 2.0 para comunicar postura y priorizar inversiones a nivel ejecutivo, mientras el SGSI ISO 27001 provee el rigor operacional y la certificación formal. Son marcos complementarios, no competidores.</p></div></div>
+    <div class="quiz-q-wrap" data-q="10"><div class="quiz-q-num">Pregunta 11 / 12</div><div class="quiz-q-text">¿Cuál de las siguientes es una característica clave del CSF 2.0 en comparación con la versión 1.1?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">Reduce el número de subcategorías a la mitad</button><button class="quiz-opt" data-letter="B">Se limita exclusivamente a infraestructura crítica</button><button class="quiz-opt" data-letter="C">Amplía el alcance a organizaciones de cualquier tamaño y sector</button><button class="quiz-opt" data-letter="D">Elimina los Tiers de implementación</button></div><div class="quiz-explanation" id="nist-exp-10"><p><strong>Correcto: C.</strong> La versión 1.1 estaba diseñada originalmente para infraestructura crítica. El CSF 2.0 amplía explícitamente su alcance a organizaciones de cualquier tamaño, sector y nivel de madurez, incluyendo guías específicas para pymes.</p></div></div>
+    <div class="quiz-q-wrap" data-q="11"><div class="quiz-q-num">Pregunta 12 / 12</div><div class="quiz-q-text">¿Qué función del CSF 2.0 incluye la inteligencia de amenazas y el monitoreo continuo?</div><div class="quiz-opts"><button class="quiz-opt" data-letter="A">GV — Gobernar</button><button class="quiz-opt" data-letter="B">RS — Responder</button><button class="quiz-opt" data-letter="C">PR — Proteger</button><button class="quiz-opt" data-letter="D">DE — Detectar</button></div><div class="quiz-explanation" id="nist-exp-11"><p><strong>Correcto: D — DE Detectar.</strong> La función Detectar cubre el monitoreo continuo de eventos de seguridad, la detección de anomalías y la integración de inteligencia de amenazas para identificar incidentes de forma oportuna.</p></div></div>
+  </div>
+  <div class="quiz-nav" id="nistQuizNav">
+    <button class="quiz-btn quiz-btn-prev" id="nistPrevBtn" onclick="nistPrev()" disabled>← Anterior</button>
+    <button class="quiz-btn quiz-btn-next" id="nistNextBtn" onclick="nistNext()" disabled>Siguiente →</button>
+  </div>
+  <div class="quiz-result" id="nistQuizResult">
+    <div class="result-score" id="nistResultScore">--</div>
+    <div class="result-msg" id="nistResultMsg"></div>
+    <div class="result-sub" id="nistResultSub"></div>
+    <div class="result-badges" id="nistResultBadges"></div>
+    <button class="quiz-retry" onclick="nistReset()">Reintentar Quiz</button>
+  </div>
+</div>
+</div>
+</section>
+
 <section class="res" id="contacto" style="background:var(--deep3);border-top:1px solid var(--border)">
 <div class="container">
 <div class="cta-band fu">
@@ -265,6 +355,75 @@ document.querySelectorAll('.faq-q').forEach(btn=>{
     if(!isOpen)item.classList.add('open');
   });
 });
+// ─── NIST QUIZ ENGINE ───
+const NIST_CORRECT = [2, 1, 2, 2, 2, 1, 1, 1, 2, 1, 2, 3];
+let nistQ = 0, nistScore = 0;
+let nistAnswered = new Array(12).fill(false);
+function nistUpdateProgress(){
+  const done = nistAnswered.filter(Boolean).length;
+  document.getElementById('nistProgressText').textContent = done + ' / 12';
+  document.getElementById('nistProgressFill').style.width = (done/12*100)+'%';
+}
+function nistSelectOpt(qIdx, optIdx){
+  if(nistAnswered[qIdx]) return;
+  nistAnswered[qIdx] = true;
+  const wrap = document.querySelector('#nistQuizContainer [data-q="'+qIdx+'"]');
+  const opts = wrap.querySelectorAll('.quiz-opt');
+  const correct = NIST_CORRECT[qIdx];
+  if(optIdx === correct) nistScore++;
+  opts.forEach((opt,i)=>{ if(i===correct) opt.classList.add('correct'); else if(i===optIdx&&i!==correct) opt.classList.add('wrong'); else opt.classList.add('dimmed'); opt.style.cursor='default'; });
+  const exp = document.getElementById('nist-exp-'+qIdx);
+  if(exp) exp.classList.add('show');
+  nistUpdateProgress();
+  document.getElementById('nistNextBtn').disabled = false;
+  if(nistQ===11) document.getElementById('nistNextBtn').textContent = 'Ver Resultado →';
+}
+function nistNext(){
+  if(nistQ===11){ nistShowResult(); return; }
+  if(!nistAnswered[nistQ]) return;
+  document.querySelector('#nistQuizContainer [data-q="'+nistQ+'"]').classList.remove('active');
+  nistQ++;
+  document.querySelector('#nistQuizContainer [data-q="'+nistQ+'"]').classList.add('active');
+  document.getElementById('nistPrevBtn').disabled = false;
+  document.getElementById('nistNextBtn').disabled = !nistAnswered[nistQ];
+  document.getElementById('nistNextBtn').textContent = nistQ===11 ? 'Ver Resultado →' : 'Siguiente →';
+}
+function nistPrev(){
+  if(nistQ===0) return;
+  document.querySelector('#nistQuizContainer [data-q="'+nistQ+'"]').classList.remove('active');
+  nistQ--;
+  document.querySelector('#nistQuizContainer [data-q="'+nistQ+'"]').classList.add('active');
+  document.getElementById('nistPrevBtn').disabled = nistQ===0;
+  document.getElementById('nistNextBtn').disabled = false;
+  document.getElementById('nistNextBtn').textContent = nistQ===11 ? 'Ver Resultado →' : 'Siguiente →';
+}
+function nistShowResult(){
+  document.getElementById('nistQuizContainer').style.display='none';
+  document.getElementById('nistQuizNav').style.display='none';
+  const result = document.getElementById('nistQuizResult');
+  result.classList.add('show');
+  const pct = Math.round(nistScore/12*100);
+  const scoreEl = document.getElementById('nistResultScore');
+  scoreEl.textContent = nistScore+'/12';
+  if(pct>=83){ scoreEl.style.color='var(--green)'; document.getElementById('nistResultMsg').textContent='🏆 Excelente dominio del NIST CSF 2.0'; document.getElementById('nistResultSub').textContent='Tienes un conocimiento sólido del framework. Estás preparado para liderar su implementación.'; document.getElementById('nistResultBadges').innerHTML='<span class="result-badge rb-green">Experto CSF 2.0</span><span class="result-badge rb-green">Listo para Assessment</span>'; }
+  else if(pct>=58){ scoreEl.style.color='#FFD93D'; document.getElementById('nistResultMsg').textContent='📘 Buen conocimiento, con áreas a reforzar'; document.getElementById('nistResultSub').textContent='Tienes una buena base. Revisa las funciones GV e ID y los Tiers de implementación.'; document.getElementById('nistResultBadges').innerHTML='<span class="result-badge rb-yellow">Conocimiento Intermedio</span><span class="result-badge rb-yellow">Sigue Aprendiendo</span>'; }
+  else{ scoreEl.style.color='#FF6B6B'; document.getElementById('nistResultMsg').textContent='📚 Recomendamos revisar el contenido'; document.getElementById('nistResultSub').textContent='El NIST CSF 2.0 tiene matices importantes. Te sugerimos releer las secciones y contactar a ShellTI.'; document.getElementById('nistResultBadges').innerHTML='<span class="result-badge rb-red">En Proceso</span><span class="result-badge rb-yellow">Capacitación Recomendada</span>'; }
+}
+function nistReset(){
+  nistQ=0; nistScore=0; nistAnswered=new Array(12).fill(false);
+  document.getElementById('nistQuizContainer').style.display='block';
+  document.getElementById('nistQuizNav').style.display='flex';
+  document.getElementById('nistQuizResult').classList.remove('show');
+  document.querySelectorAll('#nistQuizContainer .quiz-q-wrap').forEach((w,i)=>{ w.classList.toggle('active',i===0); w.querySelectorAll('.quiz-opt').forEach(o=>{ o.classList.remove('correct','wrong','dimmed'); o.style.cursor='pointer'; }); const exp=w.querySelector('.quiz-explanation'); if(exp) exp.classList.remove('show'); });
+  document.getElementById('nistPrevBtn').disabled=true;
+  document.getElementById('nistNextBtn').disabled=true;
+  document.getElementById('nistNextBtn').textContent='Siguiente →';
+  nistUpdateProgress();
+}
+document.querySelectorAll('#nistQuizContainer .quiz-q-wrap').forEach((wrap,qIdx)=>{
+  wrap.querySelectorAll('.quiz-opt').forEach((opt,optIdx)=>{ opt.addEventListener('click',()=>nistSelectOpt(qIdx,optIdx)); });
+});
+nistUpdateProgress();
 </script>
 </body>
 </html>
