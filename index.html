@@ -1150,6 +1150,156 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
   .badge{font-size:.58rem;padding:4px 8px}
   .terreno-img,.proc-img{height:250px}
 }
+
+/* ══════════════════════════════════════════════
+   BANNER CONSENTIMIENTO COOKIES — LEY 21.719
+══════════════════════════════════════════════ */
+/* ─── Overlay de bloqueo (primera visita) ─── */
+#ck-overlay{position:fixed;inset:0;background:rgba(2,6,23,0.72);backdrop-filter:blur(6px);z-index:8999;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+#ck-overlay.active{opacity:1;visibility:visible}
+
+/* ─── Banner principal ─── */
+#ck-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9000;
+  background:linear-gradient(160deg,#030c1f 0%,#020a1a 60%,#040e24 100%);
+  border-top:1px solid rgba(0,212,255,0.3);
+  box-shadow:0 -4px 60px rgba(0,212,255,0.1),0 -1px 0 rgba(0,212,255,0.08);
+  transform:translateY(100%);transition:transform .5s cubic-bezier(0.34,1.2,0.64,1);
+  padding:0;
+}
+#ck-banner.show{transform:translateY(0)}
+#ck-banner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#00D4FF,#7eeeff,#00D4FF,transparent);
+  animation:ckGlow 2.5s ease-in-out infinite
+}
+@keyframes ckGlow{0%,100%{opacity:.6}50%{opacity:1;filter:blur(1px)}}
+.ck-inner{
+  max-width:1280px;margin:0 auto;padding:1.5rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto;gap:1.5rem 2.5rem;align-items:start
+}
+.ck-left{display:flex;flex-direction:column;gap:.75rem}
+.ck-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2px;
+  text-transform:uppercase;color:#00D4FF;opacity:.85
+}
+.ck-tag::before{content:'';width:18px;height:1px;background:#00D4FF;opacity:.6}
+.ck-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;font-weight:800;color:#E2E8F0;line-height:1.2}
+.ck-title span{color:#00D4FF}
+.ck-desc{font-size:.82rem;color:#94A3B8;font-weight:300;line-height:1.65;max-width:680px}
+.ck-desc strong{color:#E2E8F0;font-weight:600}
+.ck-cats{display:flex;flex-wrap:wrap;gap:6px;margin-top:.25rem}
+.ck-cat{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1px;
+  padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;user-select:none
+}
+.ck-cat.essential{background:rgba(52,211,153,0.1);color:#34D399;border:1px solid rgba(52,211,153,0.28);cursor:default}
+.ck-cat.optional{background:rgba(0,212,255,0.07);color:#00D4FF;border:1px solid rgba(0,212,255,0.22)}
+.ck-cat.optional.off{background:rgba(148,163,184,0.07);color:#94A3B8;border:1px solid rgba(148,163,184,0.18);text-decoration:line-through;opacity:.7}
+.ck-cat-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ck-legal{font-size:.72rem;color:#64748B;line-height:1.6;margin-top:.2rem}
+.ck-legal a{color:#00D4FF;text-decoration:none;opacity:.8;transition:opacity .2s}
+.ck-legal a:hover{opacity:1}
+.ck-right{display:flex;flex-direction:column;gap:10px;min-width:200px;padding-top:.25rem}
+.ck-btn{
+  width:100%;padding:12px 20px;border-radius:2px;cursor:pointer;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;letter-spacing:.5px;
+  transition:all .2s;border:none;text-align:center;white-space:nowrap
+}
+.ck-btn-accept{
+  background:linear-gradient(135deg,#00D4FF,#00b8e6);color:#020617;
+  box-shadow:0 0 18px rgba(0,212,255,0.22)
+}
+.ck-btn-accept:hover{box-shadow:0 0 30px rgba(0,212,255,0.4);transform:translateY(-1px)}
+.ck-btn-custom{
+  background:transparent;color:#94A3B8;
+  border:1px solid rgba(226,232,240,0.15)
+}
+.ck-btn-custom:hover{border-color:rgba(0,212,255,0.4);color:#00D4FF}
+.ck-btn-reject{
+  background:transparent;color:#64748B;font-size:.73rem;font-weight:500;
+  border:1px solid rgba(148,163,184,0.12)
+}
+.ck-btn-reject:hover{border-color:rgba(148,163,184,0.3);color:#94A3B8}
+
+/* ─── Modal de preferencias granulares ─── */
+#ck-modal{
+  position:fixed;inset:0;background:rgba(2,6,23,0.9);backdrop-filter:blur(14px);
+  z-index:9100;display:flex;align-items:center;justify-content:center;padding:1rem;
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s
+}
+#ck-modal.show{opacity:1;visibility:visible}
+.ck-modal-box{
+  background:linear-gradient(145deg,#030c1f 0%,#020a1a 50%,#040e24 100%);
+  border:1px solid rgba(0,212,255,0.3);border-radius:6px;
+  max-width:540px;width:100%;max-height:88vh;overflow-y:auto;
+  box-shadow:0 0 60px rgba(0,212,255,0.1),inset 0 1px 0 rgba(0,212,255,0.12);
+  position:relative
+}
+.ck-modal-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:6px 6px 0 0;
+  background:linear-gradient(90deg,transparent,#00D4FF,#7eeeff,#00D4FF,transparent)
+}
+.ck-modal-head{padding:1.8rem 2rem 1.2rem;border-bottom:1px solid rgba(0,212,255,0.1)}
+.ck-modal-head h3{font-size:1.15rem;font-weight:800;color:#E2E8F0;margin-bottom:.3rem}
+.ck-modal-head p{font-size:.8rem;color:#94A3B8;font-weight:300;line-height:1.6}
+.ck-modal-body{padding:1.4rem 2rem}
+.ck-toggle-row{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding:1rem 0;border-bottom:1px solid rgba(0,212,255,0.07)
+}
+.ck-toggle-row:last-child{border-bottom:none}
+.ck-toggle-info h5{font-size:.85rem;font-weight:700;color:#E2E8F0;margin-bottom:.3rem}
+.ck-toggle-info p{font-size:.76rem;color:#94A3B8;font-weight:300;line-height:1.55}
+.ck-toggle-info .ck-art{
+  font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:1.5px;
+  color:#00D4FF;opacity:.7;margin-top:.3rem;text-transform:uppercase
+}
+.ck-switch{position:relative;width:44px;height:24px;flex-shrink:0;margin-top:2px}
+.ck-switch input{opacity:0;width:0;height:0;position:absolute}
+.ck-slider{
+  position:absolute;inset:0;border-radius:24px;cursor:pointer;
+  background:rgba(148,163,184,0.2);border:1px solid rgba(148,163,184,0.25);
+  transition:all .3s
+}
+.ck-slider::before{
+  content:'';position:absolute;left:3px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;border-radius:50%;background:#64748B;transition:all .3s
+}
+input:checked~.ck-slider{background:rgba(0,212,255,0.25);border-color:rgba(0,212,255,0.5)}
+input:checked~.ck-slider::before{transform:translate(20px,-50%);background:#00D4FF;box-shadow:0 0 8px rgba(0,212,255,0.5)}
+input:disabled~.ck-slider{cursor:default;opacity:.6}
+.ck-modal-foot{
+  padding:1.2rem 2rem 1.8rem;display:flex;gap:10px;flex-wrap:wrap;
+  border-top:1px solid rgba(0,212,255,0.08)
+}
+.ck-modal-foot .ck-btn{flex:1;min-width:120px}
+
+/* ─── Botón flotante (revisión posterior) ─── */
+#ck-float{
+  position:fixed;bottom:1.5rem;left:1.5rem;z-index:8900;
+  display:flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:#64748B;background:rgba(3,9,24,0.92);
+  border:1px solid rgba(0,212,255,0.18);border-radius:2px;
+  padding:7px 13px;cursor:pointer;
+  transition:all .25s;backdrop-filter:blur(10px);
+  opacity:0;visibility:hidden
+}
+#ck-float.show{opacity:1;visibility:visible}
+#ck-float:hover{border-color:rgba(0,212,255,0.45);color:#00D4FF;box-shadow:0 0 16px rgba(0,212,255,0.15)}
+#ck-float svg{width:11px;height:11px;flex-shrink:0}
+
+/* ─── Responsive ─── */
+@media(max-width:768px){
+  .ck-inner{grid-template-columns:1fr;gap:1rem;padding:1.25rem 1.2rem}
+  .ck-right{flex-direction:row;flex-wrap:wrap}
+  .ck-btn{flex:1;min-width:140px;padding:11px 14px}
+  .ck-modal-head,.ck-modal-body,.ck-modal-foot{padding-left:1.25rem;padding-right:1.25rem}
+  #ck-float{bottom:1rem;left:1rem;font-size:.55rem}
+}
 </style>
 </head>
 <body>
@@ -1899,6 +2049,238 @@ closeModalBtn.addEventListener('click',closeModalFunc);
 diagModal.addEventListener('click',(e)=>{
   if(e.target===diagModal) closeModalFunc();
 });
+</script>
+
+<!-- ══════════════════════════════════════════════
+     CONSENTIMIENTO COOKIES — LEY 21.719 CHILE
+     Art. 12-13: consentimiento libre, informado,
+     específico e inequívoco. Art. 16: revocable.
+══════════════════════════════════════════════ -->
+
+<!-- Overlay de fondo (bloquea interacción hasta decidir) -->
+<div id="ck-overlay"></div>
+
+<!-- Banner principal -->
+<div id="ck-banner" role="dialog" aria-modal="true" aria-label="Consentimiento de cookies y datos personales">
+  <div class="ck-inner">
+    <div class="ck-left">
+      <span class="ck-tag">Ley 21.719 · Privacidad</span>
+      <h2 class="ck-title">Cookies y <span>Datos Personales</span></h2>
+      <p class="ck-desc">
+        ShellTI utiliza tecnologías de seguimiento para mejorar tu experiencia y analizar el uso del sitio.
+        El formulario de contacto recopila <strong>nombre, empresa y email</strong> para responder tu solicitud,
+        conforme al <strong>Art. 12 de la Ley 21.719</strong> (consentimiento explícito).
+        Puedes aceptar todo, personalizar por categoría o rechazar las no esenciales.
+      </p>
+      <div class="ck-cats">
+        <span class="ck-cat essential"><span class="ck-cat-dot"></span>Esenciales (siempre activas)</span>
+        <span class="ck-cat optional" id="ck-tag-analytics"><span class="ck-cat-dot"></span>Analíticas</span>
+        <span class="ck-cat optional" id="ck-tag-marketing"><span class="ck-cat-dot"></span>Marketing</span>
+        <span class="ck-cat optional" id="ck-tag-contact"><span class="ck-cat-dot"></span>Formulario de contacto</span>
+      </div>
+      <p class="ck-legal">
+        Consulta nuestra <a href="/privacidad.html">Política de Privacidad</a> y
+        <a href="/cookies.html">Política de Cookies</a>.
+        Responsable del tratamiento: ShellTI Technology Consultancy · contacto@shellti.com ·
+        Base de licitud: Art. 12 Ley 21.719 (consentimiento) y Art. 13 lit. c (interés legítimo para cookies esenciales).
+        Puedes revocar tu consentimiento en cualquier momento desde el botón "Privacidad" en la esquina inferior izquierda.
+      </p>
+    </div>
+    <div class="ck-right">
+      <button class="ck-btn ck-btn-accept" onclick="ckAcceptAll()">Aceptar todo</button>
+      <button class="ck-btn ck-btn-custom" onclick="ckOpenModal()">Personalizar</button>
+      <button class="ck-btn ck-btn-reject" onclick="ckRejectAll()">Solo esenciales</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de preferencias granulares -->
+<div id="ck-modal" role="dialog" aria-modal="true" aria-label="Configurar preferencias de privacidad">
+  <div class="ck-modal-box">
+    <div class="ck-modal-head">
+      <h3>Configurar Privacidad</h3>
+      <p>Activa o desactiva cada categoría. Las cookies esenciales no pueden desactivarse ya que son necesarias para el funcionamiento del sitio.</p>
+    </div>
+    <div class="ck-modal-body">
+      <!-- Esenciales -->
+      <div class="ck-toggle-row">
+        <div class="ck-toggle-info">
+          <h5>Cookies Esenciales</h5>
+          <p>Necesarias para la navegación, seguridad y funcionamiento básico del sitio. No recopilan información personal identificable.</p>
+          <div class="ck-art">Art. 13 lit. c Ley 21.719 · Base: interés legítimo</div>
+        </div>
+        <label class="ck-switch" title="Siempre activa">
+          <input type="checkbox" checked disabled id="ck-essential"/>
+          <span class="ck-slider"></span>
+        </label>
+      </div>
+      <!-- Formulario de contacto -->
+      <div class="ck-toggle-row">
+        <div class="ck-toggle-info">
+          <h5>Formulario de Contacto</h5>
+          <p>Recopilamos nombre, empresa y email cuando nos contactas, únicamente para responder tu solicitud. No se comparte con terceros sin consentimiento adicional.</p>
+          <div class="ck-art">Art. 12 Ley 21.719 · Base: consentimiento explícito</div>
+        </div>
+        <label class="ck-switch">
+          <input type="checkbox" id="ck-contact"/>
+          <span class="ck-slider"></span>
+        </label>
+      </div>
+      <!-- Analíticas -->
+      <div class="ck-toggle-row">
+        <div class="ck-toggle-info">
+          <h5>Cookies Analíticas</h5>
+          <p>Nos permiten medir el tráfico y entender cómo los visitantes interactúan con el sitio (páginas vistas, tiempo de sesión). Datos anonimizados o seudonimizados.</p>
+          <div class="ck-art">Art. 12 Ley 21.719 · Base: consentimiento</div>
+        </div>
+        <label class="ck-switch">
+          <input type="checkbox" id="ck-analytics"/>
+          <span class="ck-slider"></span>
+        </label>
+      </div>
+      <!-- Marketing -->
+      <div class="ck-toggle-row">
+        <div class="ck-toggle-info">
+          <h5>Cookies de Marketing</h5>
+          <p>Permiten mostrar publicidad relevante en otras plataformas y medir la efectividad de campañas. Pueden vincular datos entre sitios.</p>
+          <div class="ck-art">Art. 12 Ley 21.719 · Base: consentimiento · Mayor riesgo</div>
+        </div>
+        <label class="ck-switch">
+          <input type="checkbox" id="ck-marketing"/>
+          <span class="ck-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="ck-modal-foot">
+      <button class="ck-btn ck-btn-reject" onclick="ckCloseModal()">Cancelar</button>
+      <button class="ck-btn ck-btn-accept" onclick="ckSaveCustom()">Guardar preferencias</button>
+    </div>
+  </div>
+</div>
+
+<!-- Botón flotante para revisar/revocar consentimiento -->
+<button id="ck-float" onclick="ckRevoke()" aria-label="Configurar privacidad y cookies">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+  </svg>
+  Privacidad
+</button>
+
+<!-- ══════════════════════════════════════════════
+     ENGINE — CONSENTIMIENTO COOKIES LEY 21.719
+══════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'shellti_ck_consent_v1';
+  var TIMESTAMP_KEY = 'shellti_ck_timestamp_v1';
+
+  /* ── Leer preferencias guardadas ── */
+  function ckLoad(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+    catch(e){ return null; }
+  }
+
+  /* ── Guardar preferencias con timestamp (Art. 12: registro del consentimiento) ── */
+  function ckSave(prefs){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+      localStorage.setItem(TIMESTAMP_KEY, new Date().toISOString());
+    }catch(e){}
+    ckApply(prefs);
+    ckHideBanner();
+    ckShowFloat();
+  }
+
+  /* ── Aplicar preferencias a scripts de terceros ── */
+  function ckApply(prefs){
+    // Analytics: activar/desactivar aquí Google Analytics, Plausible, etc.
+    // Ejemplo: if(prefs.analytics){ /* cargar GA */ }
+    // Marketing: activar/desactivar Meta Pixel, LinkedIn Insight, etc.
+    // Ejemplo: if(prefs.marketing){ /* cargar Meta Pixel */ }
+    // Contact form: habilitar/deshabilitar formsubmit
+    var forms = document.querySelectorAll('form[action*="formsubmit"]');
+    forms.forEach(function(f){ f.style.opacity = prefs.contact ? '1' : '0.6'; });
+    // Actualizar visual de etiquetas en el banner
+    ckUpdateTags(prefs);
+  }
+
+  /* ── Actualizar chips visuales del banner ── */
+  function ckUpdateTags(prefs){
+    var tags = {analytics:'ck-tag-analytics',marketing:'ck-tag-marketing',contact:'ck-tag-contact'};
+    Object.keys(tags).forEach(function(k){
+      var el = document.getElementById(tags[k]);
+      if(el){ prefs[k] ? el.classList.remove('off') : el.classList.add('off'); }
+    });
+  }
+
+  /* ── Mostrar/ocultar banner y overlay ── */
+  function ckShowBanner(){
+    document.getElementById('ck-banner').classList.add('show');
+    document.getElementById('ck-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function ckHideBanner(){
+    document.getElementById('ck-banner').classList.remove('show');
+    document.getElementById('ck-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function ckShowFloat(){
+    setTimeout(function(){ document.getElementById('ck-float').classList.add('show'); }, 600);
+  }
+
+  /* ── Abrir/cerrar modal de preferencias ── */
+  window.ckOpenModal = function(){
+    var prefs = ckLoad() || {};
+    document.getElementById('ck-analytics').checked = !!prefs.analytics;
+    document.getElementById('ck-marketing').checked = !!prefs.marketing;
+    document.getElementById('ck-contact').checked = !!prefs.contact;
+    document.getElementById('ck-modal').classList.add('show');
+  };
+  window.ckCloseModal = function(){
+    document.getElementById('ck-modal').classList.remove('show');
+  };
+
+  /* ── Acciones principales ── */
+  window.ckAcceptAll = function(){
+    ckSave({essential:true, analytics:true, marketing:true, contact:true});
+  };
+  window.ckRejectAll = function(){
+    ckSave({essential:true, analytics:false, marketing:false, contact:false});
+  };
+  window.ckSaveCustom = function(){
+    ckSave({
+      essential: true,
+      analytics: document.getElementById('ck-analytics').checked,
+      marketing: document.getElementById('ck-marketing').checked,
+      contact:   document.getElementById('ck-contact').checked
+    });
+    ckCloseModal();
+  };
+
+  /* ── Revocar: vuelve a abrir el modal (Art. 16 Ley 21.719) ── */
+  window.ckRevoke = function(){
+    ckOpenModal();
+    // Remap Save dentro del modal para que también guarde sin banner
+    document.getElementById('ck-modal').classList.add('show');
+  };
+
+  /* ── Cerrar modal al hacer click fuera ── */
+  document.getElementById('ck-modal').addEventListener('click', function(e){
+    if(e.target === this) ckCloseModal();
+  });
+
+  /* ── Inicialización ── */
+  var saved = ckLoad();
+  if(!saved){
+    // Primera visita: mostrar banner tras 400ms
+    setTimeout(ckShowBanner, 400);
+  } else {
+    // Ya decidió: aplicar prefs silenciosamente y mostrar botón flotante
+    ckApply(saved);
+    ckShowFloat();
+  }
+})();
 </script>
 </body>
 </html>
