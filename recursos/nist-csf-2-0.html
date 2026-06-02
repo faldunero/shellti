@@ -67,10 +67,10 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .breadcrumb a:hover{color:var(--cyan)}
 .breadcrumb-sep{opacity:.4}
 .breadcrumb-current{color:var(--cyan)}
-.resource-hero{padding:36px 2.5rem 70px;position:relative;overflow:hidden}
+.resource-hero{padding:36px 2.5rem 0;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 900px 600px at 70% 20%,rgba(0,212,255,0.08) 0,transparent 60%),radial-gradient(ellipse 600px 400px at 5% 80%,rgba(52,211,153,0.055) 0,transparent 60%),var(--deep)}
 .grid-lines{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
-.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:start}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .overline{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px}
 .overline::before{content:'';display:block;width:32px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.7)}
 .hero-title{font-size:clamp(1.9rem,4vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
@@ -79,7 +79,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem}
 .htag{font-family:'JetBrains Mono',monospace;font-size:.63rem;padding:4px 11px;border:1px solid var(--border);border-radius:2px;color:var(--cyan);background:rgba(0,212,255,.05);letter-spacing:1px}
 .htag.g{color:var(--green);border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.05)}
-.toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;position:sticky;top:88px}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;position:relative;top:auto;height:fit-content}
 .toc-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
 .toc-title::before{content:'';width:14px;height:1px;background:var(--cyan)}
 .toc-list{list-style:none;display:flex;flex-direction:column;gap:.3rem}
@@ -179,8 +179,19 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 .rb-red{background:rgba(255,107,107,.08);color:#FF6B6B;border:1px solid rgba(255,107,107,.25)}
 .quiz-retry{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;padding:10px 22px;border-radius:2px;cursor:pointer;text-transform:uppercase;transition:all .2s}
 .quiz-retry:hover{border-color:var(--cyan);color:var(--cyan)}
-@media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}.quiz-section{margin:0 1.5rem 40px;padding:1.5rem}}
+@media(max-width:1100px){.page-layout{grid-template-columns:1fr}.toc-sidebar{display:none}}@media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 0}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}.quiz-section{margin:0 1.5rem 40px;padding:1.5rem}}
 @media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}.quiz-section{margin:0 1.2rem 30px}}
+
+/* ═══ PAGE LAYOUT (content + sidebar TOC) ═══ */
+.page-layout{max-width:1280px;margin:0 auto;padding:56px 2.5rem 80px;display:grid;grid-template-columns:1fr 260px;gap:52px;align-items:start}
+.content-body{min-width:0}
+.toc-sidebar{position:sticky;top:88px;height:fit-content}
+.toc-sidebar .toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;height:fit-content}
+.toc-divider{height:1px;background:var(--border);margin:.75rem 0}
+.sidebar-cta{margin-top:1.25rem;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(52,211,153,.05));border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:1.1rem}
+.sidebar-cta p{font-size:.78rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:.8rem}
+.sidebar-cta a{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:var(--deep);font-weight:800;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px;border-radius:2px;transition:box-shadow .2s,transform .2s}
+.sidebar-cta a:hover{box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-2px)}
 </style>
 </head>
 <body>
@@ -251,11 +262,13 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
       <p class="hero-sub">El marco de ciberseguridad más utilizado globalmente, publicado por el Instituto Nacional de Estándares y Tecnología de EE.UU. La versión 2.0 de 2024 añade la función Governar y amplía el alcance a toda la cadena de suministro.</p>
       <div class="hero-tags"><span class="htag">Governar</span><span class="htag">Identificar</span><span class="htag">Proteger</span><span class="htag">Detectar</span><span class="htag">Responder</span><span class="htag">Recuperar</span></div>
     </div>
-    <div class="hero-img-wrap">
-      <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80&fit=crop" alt="NIST CSF 2.0 Cybersecurity Framework" loading="lazy"/>
+
     </div>
   </div>
 </div>
+<div class="page-layout">
+  <div class="content-body">
+
 <section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">¿Qué es el <span class="tc">NIST CSF 2.0</span>?</h2></div><div class="res-body fu"><p>El NIST Cybersecurity Framework (CSF) 2.0, publicado en febrero de 2024, es un marco voluntario desarrollado por el National Institute of Standards and Technology de Estados Unidos. Organiza las capacidades de ciberseguridad en <strong>6 funciones de alto nivel</strong> que permiten a las organizaciones gestionar y comunicar su postura de ciberseguridad de forma estructurada.</p><p>A diferencia de la versión 1.1, el CSF 2.0 expande su aplicabilidad más allá de infraestructura crítica, es aplicable a <strong>organizaciones de cualquier tamaño, sector o madurez</strong>, e incorpora una nueva función: Governar (GV), que reconoce que la ciberseguridad es una función de gestión empresarial, no solo técnica.</p><div class="info-box blue"><h4>// Versión 1.1 vs 2.0</h4><p>Las principales adiciones del CSF 2.0 son: nueva función GV.Governar, enfoque explícito en gestión de riesgos de la cadena de suministro (C-SCRM), mayor integración con gestión de riesgos empresariales, y un catálogo de referencias cruzadas con ISO 27001, CIS Controls y COBIT.</p></div>
 <div class="img-section fu"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80&fit=crop" alt="Ciberseguridad empresarial" loading="lazy"/><div class="img-caption"><strong>// Marco de referencia universal</strong>El NIST CSF 2.0 es adoptado por organizaciones de más de 50 países como lenguaje común para comunicar postura de ciberseguridad ante directorios y reguladores.</div></div>
 </div></div></section><section class="res" id="funciones" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Las 6 Funciones</p><h2 class="sec-title">Estructura del <span class="tc">Framework</span></h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>GV — Governar</h5><p>Nuevo en v2.0. Establece la estrategia, expectativas y política de ciberseguridad. Cubre roles, responsabilidades, supervisión del directorio y cultura de seguridad.</p></div><div class="benefit-item"><h5>ID — Identificar</h5><p>Inventario de activos, contexto organizacional, evaluación de riesgos y estrategia de mejora. Base para todo el programa de ciberseguridad.</p></div><div class="benefit-item"><h5>PR — Proteger</h5><p>Controles de acceso, formación y concienciación, seguridad de datos, procesos de protección y mantenimiento de tecnologías de seguridad.</p></div><div class="benefit-item"><h5>DE — Detectar</h5><p>Monitoreo continuo, procesos de detección de anomalías y eventos de ciberseguridad. Incluye inteligencia de amenazas.</p></div><div class="benefit-item"><h5>RS — Responder</h5><p>Planificación de respuesta, comunicación, análisis, mitigación y mejoras post-incidente. Incluye coordinación con partes externas.</p></div><div class="benefit-item"><h5>RC — Recuperar</h5><p>Planes de recuperación, mejoras basadas en lecciones aprendidas y comunicación durante la recuperación para restaurar capacidades.</p></div>
@@ -329,6 +342,41 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 </div>
 </div>
 </section>
+  </div><!-- /content-body -->
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc-sidebar">
+    <div class="toc-box">
+      <div class="toc-title">Contenido</div>
+      <ul class="toc-list">
+        <li><a href="#resumen">Resumen Ejecutivo</a></li>
+        <li><a href="#funciones">Las 6 Funciones</a></li>
+        <li><a href="#perfiles">Perfiles y Niveles</a></li>
+        <li><a href="#aplicacion">Aplicación Práctica</a></li>
+        <li><a href="#relacion">Relación con ISO 27001</a></li>
+        <li><a href="#faq">Preguntas Frecuentes</a></li>
+        <li><a href="#quiz">Quiz NIST CSF 2.0</a></li>
+      </ul>
+      <div class="toc-divider"></div>
+      <div class="toc-title" style="color:var(--green);margin-top:.25rem">Otros Marcos</div>
+      <ul class="toc-list">
+        <li><a href="iso-27001.html">ISO 27001</a></li>
+        <li><a href="nist-csf-2-0.html">NIST CSF 2.0</a></li>
+        <li><a href="cis-controls.html">CIS Controls v8</a></li>
+        <li><a href="owasp.html">OWASP Top 10</a></li>
+        <li><a href="ley-21719.html">Ley N° 21.719</a></li>
+        <li><a href="proteccion-datos.html">Protección de Datos</a></li>
+        <li><a href="anci.html">ANCI</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-cta">
+      <p>¿Necesitas implementar este marco en tu organización?</p>
+      <a href="../diagnostico.html">Assessment Gratis →</a>
+    </div>
+  </aside>
+
+</div><!-- /page-layout -->
+
 <footer>
   <div class="footer-logo">
     <a href="https://shellti.com" style="display:flex;align-items:center;gap:12px;text-decoration:none;">

@@ -67,10 +67,10 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .breadcrumb a:hover{color:var(--cyan)}
 .breadcrumb-sep{opacity:.4}
 .breadcrumb-current{color:var(--cyan)}
-.resource-hero{padding:36px 2.5rem 70px;position:relative;overflow:hidden}
+.resource-hero{padding:36px 2.5rem 0;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 900px 600px at 70% 20%,rgba(0,212,255,0.08) 0,transparent 60%),radial-gradient(ellipse 600px 400px at 5% 80%,rgba(52,211,153,0.055) 0,transparent 60%),var(--deep)}
 .grid-lines{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
-.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:start}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .overline{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px}
 .overline::before{content:'';display:block;width:32px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.7)}
 .hero-title{font-size:clamp(1.9rem,4vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
@@ -79,7 +79,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem}
 .htag{font-family:'JetBrains Mono',monospace;font-size:.63rem;padding:4px 11px;border:1px solid var(--border);border-radius:2px;color:var(--cyan);background:rgba(0,212,255,.05);letter-spacing:1px}
 .htag.g{color:var(--green);border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.05)}
-.toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;position:sticky;top:88px}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;position:relative;top:auto;height:fit-content}
 .toc-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
 .toc-title::before{content:'';width:14px;height:1px;background:var(--cyan)}
 .toc-list{list-style:none;display:flex;flex-direction:column;gap:.3rem}
@@ -175,6 +175,17 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 .quiz-retry{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;padding:10px 22px;border-radius:2px;cursor:pointer;text-transform:uppercase;transition:all .2s}.quiz-retry:hover{border-color:var(--cyan);color:var(--cyan)}
 @media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}}
 @media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}}
+
+/* ═══ PAGE LAYOUT (content + sidebar TOC) ═══ */
+.page-layout{max-width:1280px;margin:0 auto;padding:56px 2.5rem 80px;display:grid;grid-template-columns:1fr 260px;gap:52px;align-items:start}
+.content-body{min-width:0}
+.toc-sidebar{position:sticky;top:88px;height:fit-content}
+.toc-sidebar .toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;height:fit-content}
+.toc-divider{height:1px;background:var(--border);margin:.75rem 0}
+.sidebar-cta{margin-top:1.25rem;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(52,211,153,.05));border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:1.1rem}
+.sidebar-cta p{font-size:.78rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:.8rem}
+.sidebar-cta a{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:var(--deep);font-weight:800;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px;border-radius:2px;transition:box-shadow .2s,transform .2s}
+.sidebar-cta a:hover{box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-2px)}
 </style>
 </head>
 <body>
@@ -245,11 +256,13 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
       <p class="hero-sub">18 controles priorizados por el Center for Internet Security (CIS) basados en ataques reales. El punto de partida más pragmático para organizaciones que buscan mejorar su postura de seguridad con recursos limitados.</p>
       <div class="hero-tags"><span class="htag">IG1</span><span class="htag">IG2</span><span class="htag">IG3</span><span class="htag">18 Controles</span><span class="htag">153 Salvaguardas</span></div>
     </div>
-    <div class="hero-img-wrap">
-      <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80&fit=crop" alt="CIS Controls v8 Seguridad" loading="lazy"/>
+
     </div>
   </div>
 </div>
+<div class="page-layout">
+  <div class="content-body">
+
 <section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">¿Qué son los <span class="tc">CIS Controls</span>?</h2></div><div class="res-body fu"><p>Los CIS Controls (anteriormente SANS Top 20) son un conjunto de <strong>18 controles de seguridad prioritarios</strong> desarrollados y mantenidos por el Center for Internet Security. Su versión 8, publicada en 2021, se diseñó en base a los patrones de ataque reales más frecuentes documentados en inteligencia de amenazas global.</p><p>A diferencia de ISO 27001 o NIST CSF, los CIS Controls son <strong>altamente prescriptivos</strong>: cada control se descompone en salvaguardas (safeguards) específicas y accionables, con referencia al activo de seguridad que protegen (Datos, Dispositivos, Redes, Software, Identidad, etc.).</p><div class="info-box blue"><h4>// Enfoque Basado en Evidencia</h4><p>Los controles se priorizan según la frecuencia real de los vectores de ataque documentados en informes como el Verizon DBIR. Implementar el IG1 completo mitiga más del <strong>77% de los ataques más comunes</strong>, siendo el conjunto mínimo recomendable para cualquier organización.</p></div>
 <div class="img-section fu"><img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&q=80&fit=crop" alt="Centro de operaciones de seguridad" loading="lazy"/><div class="img-caption"><strong>// Priorización basada en ataques reales</strong>Los CIS Controls nacen del análisis de incidentes documentados. El IG1 (56 salvaguardas) cubre los vectores de ataque que causan el 77% de las brechas en organizaciones sin madurez de seguridad.</div></div>
 </div></div></section><section class="res" id="grupos" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Grupos de Implementación</p><h2 class="sec-title">Ciberhigiene Esencial por <span class="tc">Nivel de Madurez</span></h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>IG1 — Ciberhigiene Esencial</h5><p>56 salvaguardas para organizaciones pequeñas con recursos y expertise de TI limitados. Protege contra los ataques más comunes. Es el mínimo recomendable para cualquier organización.</p></div><div class="benefit-item"><h5>IG2 — Empresas con Equipo TI</h5><p>130 salvaguardas adicionales para organizaciones que gestionan datos sensibles de clientes o empleados. Requiere personal especializado en seguridad.</p></div><div class="benefit-item"><h5>IG3 — Organizaciones Maduras</h5><p>Todas las 153 salvaguardas, incluyendo controles avanzados de monitoreo, respuesta a incidentes y gestión de la cadena de suministro. Para sectores críticos.</p></div></div></div></section><section class="res" id="controles" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Los 18 Controles</p><h2 class="sec-title">Mapa Completo de <span class="tc">Controles</span></h2></div><div class="res-body fu"><div class="info-box blue"><h4>// Controles IG1 (Ciberhigiene Esencial)</h4><p>CIS 1: Inventario y Control de Activos de Empresa. CIS 2: Inventario y Control de Activos de Software. CIS 3: Protección de Datos. CIS 4: Configuración Segura de Activos y Software. CIS 5: Gestión de Cuentas. CIS 6: Gestión del Control de Acceso.</p></div><div class="info-box blue"><h4>// Controles IG2 (Empresa con Equipo TI)</h4><p>CIS 7: Gestión Continua de Vulnerabilidades. CIS 8: Gestión de Registros de Auditoría. CIS 9: Protección de Correo y Navegador Web. CIS 10: Defensas contra Malware. CIS 11: Recuperación de Datos. CIS 12: Gestión de Infraestructura de Red.</p></div><div class="info-box green"><h4>// Controles IG3 (Madurez Avanzada)</h4><p>CIS 13: Monitoreo y Defensa de Redes. CIS 14: Concientización y Capacitación en Seguridad. CIS 15: Gestión de Proveedores de Servicios. CIS 16: Seguridad del Software de Aplicaciones. CIS 17: Gestión de Respuesta a Incidentes. CIS 18: Pruebas de Penetración.</p></div>
@@ -323,6 +336,41 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 </div>
 </div>
 </section>
+  </div><!-- /content-body -->
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc-sidebar">
+    <div class="toc-box">
+      <div class="toc-title">Contenido</div>
+      <ul class="toc-list">
+        <li><a href="#resumen">Resumen Ejecutivo</a></li>
+        <li><a href="#grupos">Grupos de Implementación</a></li>
+        <li><a href="#controles">Los 18 Controles</a></li>
+        <li><a href="#aplicacion">Aplicación Práctica</a></li>
+        <li><a href="#relacion">Relación con ISO 27001</a></li>
+        <li><a href="#faq">Preguntas Frecuentes</a></li>
+        <li><a href="#quiz">Quiz CIS Controls v8</a></li>
+      </ul>
+      <div class="toc-divider"></div>
+      <div class="toc-title" style="color:var(--green);margin-top:.25rem">Otros Marcos</div>
+      <ul class="toc-list">
+        <li><a href="iso-27001.html">ISO 27001</a></li>
+        <li><a href="nist-csf-2-0.html">NIST CSF 2.0</a></li>
+        <li><a href="cis-controls.html">CIS Controls v8</a></li>
+        <li><a href="owasp.html">OWASP Top 10</a></li>
+        <li><a href="ley-21719.html">Ley N° 21.719</a></li>
+        <li><a href="proteccion-datos.html">Protección de Datos</a></li>
+        <li><a href="anci.html">ANCI</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-cta">
+      <p>¿Necesitas implementar este marco en tu organización?</p>
+      <a href="../diagnostico.html">Assessment Gratis →</a>
+    </div>
+  </aside>
+
+</div><!-- /page-layout -->
+
 <footer>
   <div class="footer-logo">
     <a href="https://shellti.com" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
