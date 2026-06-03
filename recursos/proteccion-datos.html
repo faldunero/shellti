@@ -131,6 +131,59 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 .fu.vis{opacity:1;transform:none}
 @media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.benefits-grid{grid-template-columns:1fr}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}}
 @media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}}
+
+/* ── Ejemplo RR.HH. card + modal ── */
+.ejemplo-trigger{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem 1.75rem;margin-top:1.5rem;cursor:pointer;transition:border-color .25s,box-shadow .25s;text-decoration:none}
+.ejemplo-trigger:hover{border-color:var(--bh);box-shadow:0 0 28px rgba(0,212,255,.12)}
+.ej-thumb{width:88px;height:88px;flex-shrink:0;border-radius:3px;background:linear-gradient(135deg,rgba(0,212,255,.12) 0%,rgba(52,211,153,.08) 100%);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform .25s}
+.ejemplo-trigger:hover .ej-thumb{transform:scale(1.06)}
+.ej-info{flex:1}
+.ej-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:.45rem;display:flex;align-items:center;gap:8px}
+.ej-tag::before{content:'';width:18px;height:1px;background:var(--green)}
+.ej-title{color:var(--silver);font-size:.98rem;font-weight:700;line-height:1.3;margin-bottom:.35rem}
+.ej-sub{color:var(--muted);font-size:.8rem;font-weight:300}
+.ej-cta{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;color:var(--cyan);display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0}
+.ej-cta svg{transition:transform .22s}
+.ejemplo-trigger:hover .ej-cta svg{transform:translateX(4px)}
+
+/* Modal artículo */
+.art-modal-overlay{position:fixed;inset:0;z-index:900;background:rgba(2,6,23,.85);backdrop-filter:blur(18px) saturate(180%);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.art-modal-overlay.open{opacity:1;visibility:visible}
+.art-modal{position:relative;width:100%;max-width:820px;max-height:90vh;overflow-y:auto;background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);border:1px solid rgba(0,212,255,.22);border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 60px rgba(0,212,255,.08);scrollbar-width:thin;scrollbar-color:rgba(0,212,255,.3) transparent}
+.art-modal::-webkit-scrollbar{width:3px}
+.art-modal::-webkit-scrollbar-thumb{background:rgba(0,212,255,.35);border-radius:2px}
+.art-modal-close{position:sticky;top:0;z-index:10;display:flex;justify-content:flex-end;padding:.75rem 1.25rem .25rem;background:linear-gradient(to bottom,rgba(3,12,32,1) 60%,transparent)}
+.art-modal-close button{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:2px;cursor:pointer;transition:background .2s}
+.art-modal-close button:hover{background:rgba(0,212,255,.18)}
+.art-modal-body{padding:.5rem 2.5rem 2.5rem}
+.art-overline{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.art-overline::before{content:'';display:block;width:24px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.6)}
+.art-hero-title{font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:800;line-height:1.1;margin-bottom:.75rem;color:var(--silver)}
+.art-hero-title em{color:var(--cyan);font-style:normal;text-shadow:0 0 28px rgba(0,212,255,.5)}
+.art-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.art-lead{color:var(--muted);font-size:.95rem;font-weight:300;line-height:1.85;margin-bottom:1.5rem;padding-left:1rem;border-left:2px solid rgba(0,212,255,.3)}
+.art-h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:800;color:var(--silver);margin:1.75rem 0 .75rem}
+.art-h2::before{content:'// ';font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:.8rem;letter-spacing:1px}
+.art-h3{font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin:1.5rem 0 .6rem;display:flex;align-items:center;gap:8px}
+.art-h3::before{content:'';display:block;width:18px;height:1px;background:var(--cyan)}
+.art-p{color:var(--muted);font-size:.9rem;font-weight:300;line-height:1.85;margin-bottom:.9rem}
+.art-p strong{color:var(--silver);font-weight:600}
+.art-step{display:flex;gap:1rem;margin-bottom:1rem;background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.1rem 1.25rem;transition:border-color .25s}
+.art-step:hover{border-color:rgba(0,212,255,.25)}
+.art-step-num{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--cyan);opacity:.5;flex-shrink:0;line-height:1;padding-top:.1rem}
+.art-step-body h5{color:var(--silver);font-size:.88rem;font-weight:700;margin-bottom:.3rem}
+.art-step-body p{color:var(--muted);font-size:.83rem;font-weight:300;line-height:1.7;margin:0}
+.art-warn{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-left:2px solid #ef4444;border-radius:3px;padding:1.25rem 1.5rem;margin:1.25rem 0}
+.art-warn h5{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:#f87171;margin-bottom:.5rem}
+.art-warn p{color:#fca5a5;font-size:.85rem;font-weight:300;line-height:1.72;margin:0}
+.art-sanctions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1rem 0 1.25rem}
+.art-sanction-card{background:var(--card);border:1px solid rgba(239,68,68,.2);border-radius:3px;padding:1rem;text-align:center}
+.art-sanction-card .val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:400;color:#f87171;display:block;margin-bottom:.3rem}
+.art-sanction-card .lbl{font-size:.72rem;color:var(--muted);font-weight:300}
+.art-cta-strip{background:linear-gradient(135deg,rgba(0,212,255,.07),rgba(52,211,153,.04));border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:1.75rem;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.art-cta-strip h4{color:var(--silver);font-size:1rem;margin-bottom:.3rem}
+.art-cta-strip p{color:var(--muted);font-size:.82rem;font-weight:300;margin:0}
+@media(max-width:640px){.art-modal-body{padding:.5rem 1.25rem 2rem}.art-sanctions{grid-template-columns:1fr}.ejemplo-trigger{flex-direction:column;align-items:flex-start}.ej-cta{display:none}}
 </style>
 </head>
 <body>
@@ -212,7 +265,15 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
     </div>
   </div>
 </div>
-<section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">El Ecosistema de <span class="tg">Protección de Datos</span></h2></div><div class="res-body fu"><p>La protección de datos personales en Chile se rige principalmente por la <strong>Ley N° 21.719</strong>, que modifica la Ley N° 19.628. Este nuevo marco eleva sustancialmente el estándar de protección, acercando el sistema chileno al Reglamento General de Protección de Datos (RGPD) de la Unión Europea.</p><p>El concepto central es el <strong>dato personal</strong>: toda información relativa a una persona natural identificada o identificable. Esto incluye nombres, RUT, correos, ubicación GPS, hábitos de consumo, datos biométricos y cualquier otra información que permita individualizar a una persona, directa o indirectamente.</p><div class="info-box green"><h4>// Datos Sensibles — Protección Reforzada</h4><p>Requieren tratamiento especialmente cuidadoso: datos de salud, origen racial o étnico, opiniones políticas, creencias religiosas o filosóficas, datos genéticos, datos biométricos, orientación sexual e información patrimonial o sindical. Solo pueden tratarse con consentimiento explícito o base legal específica.</p></div></div></div></section><section class="res" id="principios" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Principios Fundamentales</p><h2 class="sec-title">Los 7 <span class="tc">Principios</span> del Tratamiento</h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>Licitud</h5><p>El tratamiento debe tener una base legal válida: consentimiento del titular, contrato, obligación legal, interés vital, función pública o interés legítimo.</p></div><div class="benefit-item"><h5>Finalidad</h5><p>Los datos deben recogerse con fines determinados, explícitos y legítimos. No pueden tratarse de manera incompatible con esa finalidad original.</p></div><div class="benefit-item"><h5>Proporcionalidad</h5><p>Solo deben tratarse los datos adecuados, pertinentes y no excesivos en relación con la finalidad declarada. Principio de minimización de datos.</p></div><div class="benefit-item"><h5>Calidad</h5><p>Los datos deben ser exactos y actualizados. El responsable debe adoptar medidas para rectificar o suprimir datos inexactos o incompletos.</p></div><div class="benefit-item"><h5>Seguridad</h5><p>Adoptar medidas técnicas y organizativas apropiadas al riesgo para proteger la confidencialidad, integridad y disponibilidad de los datos.</p></div><div class="benefit-item"><h5>Limitación del Plazo</h5><p>Los datos deben conservarse solo durante el tiempo necesario para la finalidad. Vencido el plazo, deben eliminarse o anonimizarse de forma efectiva.</p></div></div></div></section><section class="res" id="licitud" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Bases de Licitud</p><h2 class="sec-title">¿Cuándo Puedo <span class="tc">Tratar Datos</span>?</h2></div><div class="res-body fu"><div class="info-box blue"><h4>// Consentimiento (Art. 12-13)</h4><p>Base más común pero más exigente: debe ser libre (sin condicionamientos), informado (con aviso de privacidad completo), específico (para cada finalidad) e inequívoco (opt-in activo, no pre-marcado). Para datos sensibles: consentimiento explícito reforzado.</p></div><div class="info-box blue"><h4>// Contrato (Art. 13 lit. b)</h4><p>Permite el tratamiento cuando es necesario para la ejecución de un contrato en que el titular es parte, o para medidas precontractuales. Ej: datos de facturación, datos de entrega.</p></div><div class="info-box blue"><h4>// Obligación Legal (Art. 13 lit. c)</h4><p>Cuando el tratamiento es necesario para cumplir una obligación legal aplicable al responsable. Ej: datos retenidos por obligaciones tributarias o laborales.</p></div><div class="info-box green"><h4>// Interés Legítimo (Art. 13 lit. f)</h4><p>Base más flexible pero que requiere una prueba de ponderación: los intereses legítimos del responsable no deben prevalecer sobre los derechos del titular. Inadecuada para datos sensibles. Requiere documentación del análisis de ponderación.</p></div></div></div></section><section class="res" id="transferencias" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Transferencias Internacionales</p><h2 class="sec-title">Datos que <span class="tc">Cruzan Fronteras</span></h2></div><div class="res-body fu"><p>El Art. 25 de la Ley 21.719 regula las transferencias de datos personales fuera del territorio chileno. Solo se permiten hacia países, organizaciones internacionales o estándares que ofrezcan <strong>un nivel adecuado de protección</strong> comparable al chileno, o mediante garantías contractuales adecuadas.</p><div class="info-box blue"><h4>// Implicaciones Prácticas para Servicios Cloud</h4><p>El uso de servicios cloud estadounidenses (AWS us-east, Google Workspace, Microsoft 365) implica transferencia internacional de datos personales. Estos proveedores ofrecen cláusulas contractuales estándar y certifications que pueden satisfacer el requisito, pero deben formalizarse contractualmente y documentarse.</p></div><div class="info-box green"><h4>// Excepciones</h4><p>Existen excepciones al requisito de nivel adecuado: consentimiento explícito del titular para la transferencia específica, necesidad para un contrato, razones de interés público o vital, o cuando la transferencia forma parte de un registro público. Cada excepción tiene requisitos específicos.</p></div></div></div></section><section class="res" id="bydesign" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Privacy by Design</p><h2 class="sec-title">Privacidad desde el <span class="tc">Diseño</span></h2></div><div class="res-body fu"><p>El principio de Privacy by Design (PbD) establece que la protección de datos debe incorporarse en el diseño de sistemas, productos y procesos desde el inicio, no como un elemento añadido a posteriori. La Ley 21.719 reconoce este principio implícitamente a través de la responsabilidad proactiva.</p><div class="info-box blue"><h4>// 7 Principios de Privacy by Design</h4><p>1. Proactivo, no reactivo. 2. Privacidad como configuración predeterminada. 3. Privacidad integrada en el diseño. 4. Funcionalidad total (no disyuntiva). 5. Seguridad de extremo a extremo. 6. Visibilidad y transparencia. 7. Respeto por la privacidad del usuario.</p></div><div class="info-box green"><h4>// Aplicación Práctica en Desarrollo</h4><p>Mínima recolección de datos desde el formulario de diseño, pseudonimización por defecto, cifrado en reposo desde la primera línea de código, y controles de acceso definidos en la arquitectura antes de la implementación. ShellTI acompaña a equipos de desarrollo en la implementación de PbD.</p></div></div></div></section>
+<section class="res" id="resumen"><div class="container"><div class="fu"><p class="sec-label">Resumen Ejecutivo</p><h2 class="sec-title">El Ecosistema de <span class="tg">Protección de Datos</span></h2></div><div class="res-body fu"><p>La protección de datos personales en Chile se rige principalmente por la <strong>Ley N° 21.719</strong>, que modifica la Ley N° 19.628. Este nuevo marco eleva sustancialmente el estándar de protección, acercando el sistema chileno al Reglamento General de Protección de Datos (RGPD) de la Unión Europea.</p><p>El concepto central es el <strong>dato personal</strong>: toda información relativa a una persona natural identificada o identificable. Esto incluye nombres, RUT, correos, ubicación GPS, hábitos de consumo, datos biométricos y cualquier otra información que permita individualizar a una persona, directa o indirectamente.</p><div class="info-box green"><h4>// Datos Sensibles — Protección Reforzada</h4><p>Requieren tratamiento especialmente cuidadoso: datos de salud, origen racial o étnico, opiniones políticas, creencias religiosas o filosóficas, datos genéticos, datos biométricos, orientación sexual e información patrimonial o sindical. Solo pueden tratarse con consentimiento explícito o base legal específica.</p></div></div></div></section><section class="res" id="principios" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Principios Fundamentales</p><h2 class="sec-title">Los 7 <span class="tc">Principios</span> del Tratamiento</h2></div><div class="benefits-grid fu"><div class="benefit-item"><h5>Licitud</h5><p>El tratamiento debe tener una base legal válida: consentimiento del titular, contrato, obligación legal, interés vital, función pública o interés legítimo.</p></div><div class="benefit-item"><h5>Finalidad</h5><p>Los datos deben recogerse con fines determinados, explícitos y legítimos. No pueden tratarse de manera incompatible con esa finalidad original.</p></div><div class="benefit-item"><h5>Proporcionalidad</h5><p>Solo deben tratarse los datos adecuados, pertinentes y no excesivos en relación con la finalidad declarada. Principio de minimización de datos.</p></div><div class="benefit-item"><h5>Calidad</h5><p>Los datos deben ser exactos y actualizados. El responsable debe adoptar medidas para rectificar o suprimir datos inexactos o incompletos.</p></div><div class="benefit-item"><h5>Seguridad</h5><p>Adoptar medidas técnicas y organizativas apropiadas al riesgo para proteger la confidencialidad, integridad y disponibilidad de los datos.</p></div><div class="benefit-item"><h5>Limitación del Plazo</h5><p>Los datos deben conservarse solo durante el tiempo necesario para la finalidad. Vencido el plazo, deben eliminarse o anonimizarse de forma efectiva.</p></div></div></div></section><section class="res" id="licitud" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Bases de Licitud</p><h2 class="sec-title">¿Cuándo Puedo <span class="tc">Tratar Datos</span>?</h2></div><div class="res-body fu"><div class="info-box blue"><h4>// Consentimiento (Art. 12-13)</h4><p>Base más común pero más exigente: debe ser libre (sin condicionamientos), informado (con aviso de privacidad completo), específico (para cada finalidad) e inequívoco (opt-in activo, no pre-marcado). Para datos sensibles: consentimiento explícito reforzado.</p></div><div class="info-box blue"><h4>// Contrato (Art. 13 lit. b)</h4><p>Permite el tratamiento cuando es necesario para la ejecución de un contrato en que el titular es parte, o para medidas precontractuales. Ej: datos de facturación, datos de entrega.</p></div><div class="info-box blue"><h4>// Obligación Legal (Art. 13 lit. c)</h4><p>Cuando el tratamiento es necesario para cumplir una obligación legal aplicable al responsable. Ej: datos retenidos por obligaciones tributarias o laborales.</p></div><div class="info-box green"><h4>// Interés Legítimo (Art. 13 lit. f)</h4><p>Base más flexible pero que requiere una prueba de ponderación: los intereses legítimos del responsable no deben prevalecer sobre los derechos del titular. Inadecuada para datos sensibles. Requiere documentación del análisis de ponderación.</p></div><a class="ejemplo-trigger fu" onclick="document.getElementById('artModal').classList.add('open')" href="javascript:void(0)" aria-label="Ver ejemplo: RR.HH. y Ley 21.719">
+  <div class="ej-thumb">📋</div>
+  <div class="ej-info">
+    <p class="ej-tag">Ejemplo Práctico</p>
+    <p class="ej-title">Ley 21.719: Lo que RR.HH. debe hacer antes del 1 de diciembre de 2026</p>
+    <p class="ej-sub">5 acciones prioritarias, régimen sancionatorio y cómo prepararse ahora</p>
+  </div>
+  <span class="ej-cta">Leer ejemplo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+</a></div></div></section><section class="res" id="transferencias" style="background:var(--deep2);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Transferencias Internacionales</p><h2 class="sec-title">Datos que <span class="tc">Cruzan Fronteras</span></h2></div><div class="res-body fu"><p>El Art. 25 de la Ley 21.719 regula las transferencias de datos personales fuera del territorio chileno. Solo se permiten hacia países, organizaciones internacionales o estándares que ofrezcan <strong>un nivel adecuado de protección</strong> comparable al chileno, o mediante garantías contractuales adecuadas.</p><div class="info-box blue"><h4>// Implicaciones Prácticas para Servicios Cloud</h4><p>El uso de servicios cloud estadounidenses (AWS us-east, Google Workspace, Microsoft 365) implica transferencia internacional de datos personales. Estos proveedores ofrecen cláusulas contractuales estándar y certifications que pueden satisfacer el requisito, pero deben formalizarse contractualmente y documentarse.</p></div><div class="info-box green"><h4>// Excepciones</h4><p>Existen excepciones al requisito de nivel adecuado: consentimiento explícito del titular para la transferencia específica, necesidad para un contrato, razones de interés público o vital, o cuando la transferencia forma parte de un registro público. Cada excepción tiene requisitos específicos.</p></div></div></div></section><section class="res" id="bydesign" style="background:var(--deep3);border-top:1px solid var(--border)"><div class="container"><div class="fu"><p class="sec-label">Privacy by Design</p><h2 class="sec-title">Privacidad desde el <span class="tc">Diseño</span></h2></div><div class="res-body fu"><p>El principio de Privacy by Design (PbD) establece que la protección de datos debe incorporarse en el diseño de sistemas, productos y procesos desde el inicio, no como un elemento añadido a posteriori. La Ley 21.719 reconoce este principio implícitamente a través de la responsabilidad proactiva.</p><div class="info-box blue"><h4>// 7 Principios de Privacy by Design</h4><p>1. Proactivo, no reactivo. 2. Privacidad como configuración predeterminada. 3. Privacidad integrada en el diseño. 4. Funcionalidad total (no disyuntiva). 5. Seguridad de extremo a extremo. 6. Visibilidad y transparencia. 7. Respeto por la privacidad del usuario.</p></div><div class="info-box green"><h4>// Aplicación Práctica en Desarrollo</h4><p>Mínima recolección de datos desde el formulario de diseño, pseudonimización por defecto, cifrado en reposo desde la primera línea de código, y controles de acceso definidos en la arquitectura antes de la implementación. ShellTI acompaña a equipos de desarrollo en la implementación de PbD.</p></div></div></div></section>
 <section class="res" id="faq" style="background:var(--deep2);border-top:1px solid var(--border)">
 <div class="container">
 <div class="fu"><p class="sec-label">Preguntas Frecuentes</p><h2 class="sec-title">Lo que Nuestros <span class="tc">Clientes Preguntan</span></h2></div>
@@ -266,5 +327,97 @@ document.querySelectorAll('.faq-q').forEach(btn=>{
   });
 });
 </script>
+
+<!-- Modal: artículo RR.HH. y Ley 21.719 -->
+<div class="art-modal-overlay" id="artModal" onclick="if(event.target===this)this.classList.remove('open')" role="dialog" aria-modal="true" aria-labelledby="artModalTitle">
+  <div class="art-modal">
+    <div class="art-modal-close">
+      <button onclick="document.getElementById('artModal').classList.remove('open')" aria-label="Cerrar">✕ Cerrar</button>
+    </div>
+    <div class="art-modal-body">
+      <p class="art-overline">ShellTI · Recursos Humanos &amp; Compliance</p>
+      <h2 class="art-hero-title" id="artModalTitle">Ley 21.719: Lo que <em>RR.HH.</em> debe hacer<br>antes del 1 de diciembre de 2026</h2>
+      <div class="art-tags">
+        <span class="htag g">Ley 21.719</span>
+        <span class="htag g">RR.HH.</span>
+        <span class="htag">Datos Laborales</span>
+        <span class="htag">Biometría</span>
+        <span class="htag">Cumplimiento</span>
+      </div>
+      <p class="art-lead">A partir del 1 de diciembre de 2026 entrará en vigencia la Ley 21.719, que moderniza la protección de datos personales en Chile. Recursos Humanos administra gran parte de la información personal de trabajadores y postulantes — y será una de las áreas más expuestas al nuevo estándar.</p>
+
+      <p class="art-h2">¿Por qué RR.HH. debe prepararse ahora?</p>
+      <p class="art-p">La nueva normativa exige que las empresas puedan demostrar qué datos personales recopilan, para qué los utilizan, cuál es la base legal que justifica su tratamiento, quién tiene acceso a ellos y qué medidas de seguridad existen para protegerlos.</p>
+      <p class="art-p">Contratos, remuneraciones, licencias médicas, registros biométricos, evaluaciones de desempeño y antecedentes previsionales son solo algunos ejemplos de datos que deberán gestionarse bajo estándares mucho más exigentes. <strong>Ya no bastará con tener la información: será necesario acreditar que se administra de forma responsable.</strong></p>
+
+      <p class="art-h2">Cinco acciones prioritarias</p>
+
+      <div class="art-step">
+        <span class="art-step-num">01</span>
+        <div class="art-step-body">
+          <h5>Identificar los datos que maneja la empresa</h5>
+          <p>El primer paso es conocer qué información personal se recopila, dónde se almacena y quién la utiliza. Muchas organizaciones descubren en esta etapa que mantienen información duplicada, desactualizada o sin una finalidad clara.</p>
+        </div>
+      </div>
+      <div class="art-step">
+        <span class="art-step-num">02</span>
+        <div class="art-step-body">
+          <h5>Actualizar contratos y políticas internas</h5>
+          <p>Los trabajadores deben ser informados de manera transparente sobre el tratamiento de sus datos personales. Es recomendable revisar contratos de trabajo, reglamentos internos, formularios de reclutamiento y políticas corporativas.</p>
+        </div>
+      </div>
+      <div class="art-step">
+        <span class="art-step-num">03</span>
+        <div class="art-step-body">
+          <h5>Revisar el uso de datos biométricos</h5>
+          <p>Los sistemas de control de asistencia mediante huella dactilar o reconocimiento facial requieren especial atención. Las empresas deberán asegurarse de que estos tratamientos estén debidamente justificados, documentados y protegidos.</p>
+        </div>
+      </div>
+      <div class="art-step">
+        <span class="art-step-num">04</span>
+        <div class="art-step-body">
+          <h5>Prepararse para atender solicitudes de los trabajadores</h5>
+          <p>La ley fortalece los derechos ARCOP de las personas. Los trabajadores podrán solicitar acceso, rectificación, eliminación u oposición respecto de determinada información, por lo que las empresas deberán contar con procedimientos claros para responder oportunamente.</p>
+        </div>
+      </div>
+      <div class="art-step">
+        <span class="art-step-num">05</span>
+        <div class="art-step-body">
+          <h5>Documentar los tratamientos de datos</h5>
+          <p>La capacidad de demostrar cumplimiento será tan importante como el cumplimiento mismo. Mantener registros actualizados de los tratamientos de datos permitirá responder ante fiscalizaciones, auditorías o requerimientos de la futura autoridad de control.</p>
+        </div>
+      </div>
+
+      <p class="art-h2">Atención con los procesos de selección</p>
+      <div class="info-box blue" style="margin-bottom:0">
+        <h4>// Decisiones Automatizadas y ATS</h4>
+        <p>Las empresas que utilizan plataformas de reclutamiento o sistemas ATS deberán revisar especialmente aquellos procesos que incorporan evaluaciones o decisiones automatizadas sobre candidatos. La nueva normativa establece mayores exigencias de transparencia y protección cuando las decisiones son adoptadas total o parcialmente mediante algoritmos.</p>
+      </div>
+
+      <p class="art-h2">Régimen sancionatorio</p>
+      <div class="art-warn">
+        <h5>// Multas aplicables</h5>
+        <p>La Ley 21.719 incorpora un régimen sancionatorio significativo. Además del impacto económico, un incumplimiento puede afectar la reputación de la empresa y la confianza de trabajadores, clientes y socios comerciales.</p>
+      </div>
+      <div class="art-sanctions">
+        <div class="art-sanction-card"><span class="val">5.000 UTM</span><span class="lbl">Infracciones leves</span></div>
+        <div class="art-sanction-card"><span class="val">10.000 UTM</span><span class="lbl">Infracciones graves</span></div>
+        <div class="art-sanction-card"><span class="val">20.000 UTM</span><span class="lbl">Infracciones gravísimas</span></div>
+      </div>
+
+      <p class="art-h2">¿Por dónde comenzar?</p>
+      <p class="art-p">La mejor forma de prepararse es realizar un diagnóstico que permita identificar qué datos personales posee la organización, dónde se encuentran, quiénes acceden a ellos, cómo se utilizan y qué brechas de cumplimiento existen frente a la nueva ley. Ese diagnóstico se convierte en la base para diseñar un plan de adecuación realista y priorizar las acciones más relevantes.</p>
+
+      <div class="art-cta-strip">
+        <div>
+          <h4>¿Necesitas preparar tu área de RR.HH.?</h4>
+          <p>En ShellTI acompañamos a las organizaciones desde el levantamiento de información hasta la implementación de controles y capacitación continua, combinando aspectos legales, tecnológicos y operativos.</p>
+        </div>
+        <a href="../index.html#contacto" class="btn-cta" onclick="document.getElementById('artModal').classList.remove('open')">Agendar Evaluación →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
