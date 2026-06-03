@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Biblioteca de Recursos — ShellTI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#020617;--deep2:#040d1e;
+  --cyan:#00D4FF;--cyan2:#00b8e6;--cyan3:#7eeeff;
+  --green:#34D399;--green2:#22c587;
+  --red:#FF6B6B;--yellow:#FFD93D;
+  --silver:#E2E8F0;--muted:#94A3B8;
+  --border:rgba(0,212,255,0.13);--bh:rgba(0,212,255,0.28);
+  --card:rgba(3,9,24,0.95);--cg:rgba(0,212,255,0.07);
+}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.4);border-radius:2px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);line-height:1.7;overflow-x:hidden;min-height:100vh}
+h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--silver);line-height:1.1}
+a{text-decoration:none}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(2,6,23,0.96);backdrop-filter:blur(28px) saturate(200%);border-bottom:1px solid var(--border)}
+.nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px}
+.nav-brand-name span{color:var(--cyan)}
+.nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:16px}
+.user-badge{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);
+  border-radius:3px;padding:6px 12px;
+}
+.user-badge-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:800;color:var(--deep);flex-shrink:0;
+}
+.user-badge-info{line-height:1.2}
+.user-badge-name{font-size:.75rem;font-weight:600;color:var(--silver)}
+.user-badge-status{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;color:var(--green)}
+.btn-logout{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted);border:1px solid var(--border);
+  padding:6px 12px;border-radius:2px;background:none;cursor:pointer;transition:all .2s;
+}
+.btn-logout:hover{color:var(--red);border-color:var(--red)}
+.btn-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted);transition:color .2s;
+}
+.btn-back:hover{color:var(--cyan)}
+.btn-back svg{transition:transform .2s}
+.btn-back:hover svg{transform:translateX(-3px)}
+
+/* HERO BIBLIOTECA */
+.bib-hero{
+  padding:100px 2.5rem 50px;position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.bib-hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 900px 600px at 70% 50%,rgba(0,212,255,0.065) 0,transparent 60%),
+             radial-gradient(ellipse 500px 400px at 15% 80%,rgba(52,211,153,0.05) 0,transparent 60%),
+             var(--deep);
+}
+.grid-lines{position:absolute;inset:0;opacity:.022;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+.bib-hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.bib-overline{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.bib-overline::before{content:'';width:24px;height:1px;background:var(--green)}
+.bib-title{font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:.6rem}
+.bib-title span{color:var(--cyan)}
+.bib-sub{color:var(--muted);font-size:.92rem;font-weight:300;max-width:560px;line-height:1.75}
+.bib-stats{display:flex;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
+.bib-stat{text-align:left}
+.bib-stat-num{font-size:1.5rem;font-weight:800;color:var(--cyan);line-height:1}
+.bib-stat-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* WELCOME BANNER */
+.welcome-banner{
+  background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(0,212,255,.05));
+  border:1px solid rgba(52,211,153,.2);border-radius:4px;
+  padding:1rem 1.4rem;display:flex;align-items:center;gap:12px;
+  margin-bottom:2rem;
+}
+.welcome-banner svg{color:var(--green);flex-shrink:0}
+.welcome-banner-text{font-size:.87rem;color:var(--silver)}
+.welcome-banner-text strong{color:var(--green)}
+
+/* MAIN LAYOUT */
+.bib-main{max-width:1100px;margin:0 auto;padding:3rem 2.5rem 4rem}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:2rem;flex-wrap:wrap}
+.filter-btn{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1.5px;
+  text-transform:uppercase;padding:6px 14px;border-radius:2px;border:1px solid var(--border);
+  background:none;color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.filter-btn:hover{border-color:var(--bh);color:var(--cyan)}
+.filter-btn.active{background:rgba(0,212,255,.09);border-color:rgba(0,212,255,.35);color:var(--cyan)}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-right:4px}
+
+/* RECURSOS GRID */
+.resources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.resource-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:1.6rem;transition:border-color .3s,box-shadow .3s,transform .25s;
+  position:relative;overflow:hidden;display:flex;flex-direction:column;gap:0;
+}
+.resource-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity .3s;
+}
+.resource-card.cat-iso::before{background:linear-gradient(90deg,var(--cyan),var(--cyan3))}
+.resource-card.cat-ley::before{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.resource-card.cat-herramienta::before{background:linear-gradient(90deg,var(--yellow),var(--green))}
+.resource-card.cat-playbook::before{background:linear-gradient(90deg,var(--red),var(--yellow))}
+.resource-card:hover{border-color:var(--bh);box-shadow:0 0 28px rgba(0,212,255,.1);transform:translateY(-3px)}
+.resource-card:hover::before{opacity:1}
+.resource-card.highlighted{border-color:rgba(0,212,255,.32);box-shadow:0 0 20px rgba(0,212,255,.12)}
+.resource-card.highlighted::before{opacity:1}
+
+.rc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:8px}
+.rc-icon{
+  width:40px;height:40px;border:1px solid rgba(0,212,255,.18);border-radius:3px;
+  background:var(--cg);display:flex;align-items:center;justify-content:center;
+  color:var(--cyan);flex-shrink:0;
+}
+.rc-icon.green{color:var(--green);border-color:rgba(52,211,153,.18);background:rgba(52,211,153,.06)}
+.rc-icon.yellow{color:var(--yellow);border-color:rgba(255,217,61,.18);background:rgba(255,217,61,.05)}
+.rc-icon.red{color:var(--red);border-color:rgba(255,107,107,.18);background:rgba(255,107,107,.05)}
+.rc-badge{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1.5px;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;
+  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.rc-badge.iso{background:rgba(0,212,255,.08);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+.rc-badge.ley{background:rgba(52,211,153,.08);color:var(--green);border:1px solid rgba(52,211,153,.2)}
+.rc-badge.herramienta{background:rgba(255,217,61,.06);color:var(--yellow);border:1px solid rgba(255,217,61,.18)}
+.rc-badge.playbook{background:rgba(255,107,107,.06);color:var(--red);border:1px solid rgba(255,107,107,.18)}
+
+.rc-title{font-size:.95rem;font-weight:700;color:var(--silver);margin-bottom:.4rem;line-height:1.3}
+.rc-desc{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.65;margin-bottom:1.2rem;flex:1}
+
+.rc-meta{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.rc-meta-item{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:4px}
+.rc-meta-item svg{opacity:.6}
+
+.rc-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:1rem;border-top:1px solid rgba(0,212,255,.07)}
+.btn-download{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.07));
+  border:1px solid rgba(0,212,255,.3);color:var(--cyan);
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;
+  padding:8px 14px;border-radius:2px;cursor:pointer;transition:all .25s;font-weight:500;
+  text-decoration:none;
+}
+.btn-download:hover{background:rgba(0,212,255,.22);border-color:var(--cyan);box-shadow:0 0 16px rgba(0,212,255,.22);transform:translateY(-1px)}
+.btn-download.green{color:var(--green);border-color:rgba(52,211,153,.3);background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(52,211,153,.05))}
+.btn-download.green:hover{background:rgba(52,211,153,.2);border-color:var(--green);box-shadow:0 0 16px rgba(52,211,153,.2)}
+.btn-download.yellow{color:var(--yellow);border-color:rgba(255,217,61,.3);background:linear-gradient(135deg,rgba(255,217,61,.1),rgba(255,217,61,.04))}
+.btn-download.yellow:hover{background:rgba(255,217,61,.18);border-color:var(--yellow)}
+
+.rc-views{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.5px;color:var(--muted);display:flex;align-items:center;gap:4px}
+
+/* NEW BADGE */
+.new-badge{
+  position:absolute;top:.9rem;right:.9rem;
+  font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25);
+  padding:2px 7px;border-radius:2px;
+}
+
+/* SIDEBAR */
+.bib-layout{display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+.sidebar-panel{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.5rem;position:sticky;top:90px}
+.sidebar-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;display:flex;align-items:center;gap:8px}
+.sidebar-title::before{content:'';width:14px;height:1px;background:var(--cyan)}
+.sidebar-section{margin-bottom:1.4rem}
+.sidebar-section-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.sidebar-link{
+  display:flex;align-items:center;gap:8px;padding:.45rem 0;
+  font-size:.82rem;color:var(--muted);cursor:pointer;transition:color .2s;
+  border-bottom:1px solid rgba(0,212,255,.05);
+}
+.sidebar-link:last-child{border-bottom:none}
+.sidebar-link:hover{color:var(--cyan)}
+.sidebar-link svg{flex-shrink:0;opacity:.5}
+.sidebar-link:hover svg{opacity:1}
+.sidebar-divider{height:1px;background:rgba(0,212,255,.08);margin:1rem 0}
+
+.cta-mini{
+  background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(0,212,255,.03));
+  border:1px solid rgba(0,212,255,.18);border-radius:3px;padding:1.2rem;
+  text-align:center;margin-top:1.4rem;
+}
+.cta-mini h5{font-size:.85rem;margin-bottom:.4rem}
+.cta-mini p{font-size:.75rem;color:var(--muted);font-weight:300;line-height:1.5;margin-bottom:.9rem}
+.btn-cta-mini{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
+  font-size:.7rem;letter-spacing:1px;text-transform:uppercase;
+  padding:10px 16px;border-radius:3px;width:100%;
+  transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;
+  text-decoration:none;
+}
+.btn-cta-mini:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(0,212,255,.4)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--card);border:1px solid rgba(52,211,153,.35);border-radius:4px;
+  padding:1rem 1.3rem;display:flex;align-items:center;gap:10px;
+  box-shadow:0 0 30px rgba(52,211,153,.15);z-index:9000;
+  transform:translateY(20px);opacity:0;
+  transition:transform .35s cubic-bezier(0.34,1.56,0.64,1),opacity .35s ease;
+  pointer-events:none;max-width:340px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-icon{color:var(--green);flex-shrink:0}
+.toast-text{font-size:.82rem;color:var(--silver)}
+.toast-text strong{color:var(--green);display:block;margin-bottom:2px}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-state svg{opacity:.3;margin-bottom:1rem}
+.empty-state h4{font-size:1rem;color:var(--silver);margin-bottom:.4rem}
+.empty-state p{font-size:.82rem;font-weight:300}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .bib-layout{grid-template-columns:1fr}
+  .sidebar-panel{position:relative;top:auto}
+  .resources-grid{grid-template-columns:1fr 1fr}
+  .bib-main{padding:2rem 1.5rem 3rem}
+  .bib-hero{padding:90px 1.5rem 40px}
+  nav{padding:0 1.5rem}
+}
+@media(max-width:640px){
+  .resources-grid{grid-template-columns:1fr}
+  nav{padding:0 1.2rem}
+  .bib-main{padding:1.5rem 1.2rem 2.5rem}
+  .bib-hero{padding:85px 1.2rem 32px}
+  .bib-stats{gap:1.2rem}
+  .user-badge-info{display:none}
+  .toast{right:1rem;left:1rem;max-width:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-brand-name">Shell<span>TI</span></div>
+    <div class="nav-brand-sub">Technology Consultancy</div>
+  </div>
+  <div class="nav-right">
+    <div class="user-badge" id="userBadge">
+      <div class="user-badge-avatar" id="userAvatar">U</div>
+      <div class="user-badge-info">
+        <div class="user-badge-name" id="userName">Usuario</div>
+        <div class="user-badge-status">✓ Acceso verificado</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">Salir</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="bib-hero">
+  <div class="bib-hero-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="bib-hero-inner">
+    <div class="bib-overline">Biblioteca de Recursos</div>
+    <h1 class="bib-title">Centro de <span>Descarga</span> ShellTI</h1>
+    <p class="bib-sub">Plantillas, checklists, playbooks y guías para cumplimiento de la Ley 21.719 e ISO 27001:2022. Todos los recursos son de uso libre para tu organización.</p>
+    <div class="bib-stats">
+      <div class="bib-stat">
+        <div class="bib-stat-num">6</div>
+        <div class="bib-stat-label">Recursos disponibles</div>
+      </div>
+      <div class="bib-stat">
+        <div class="bib-stat-num">∞</div>
+        <div class="bib-stat-label">Descargas incluidas</div>
+      </div>
+      <div class="bib-stat">
+        <div class="bib-stat-num">2026</div>
+        <div class="bib-stat-label">Versión actualizada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="bib-main">
+
+  <!-- Banner bienvenida -->
+  <div class="welcome-banner" id="welcomeBanner">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <div class="welcome-banner-text">
+      <strong id="welcomeMsg">Bienvenido/a — acceso verificado.</strong>
+      Descarga cualquier recurso directamente haciendo clic en el botón correspondiente.
+    </div>
+  </div>
+
+  <div class="bib-layout">
+    <!-- RECURSOS -->
+    <div>
+      <!-- Filtros -->
+      <div class="filter-bar">
+        <span class="filter-label">Filtrar:</span>
+        <button class="filter-btn active" onclick="filterResources('all',this)">Todos</button>
+        <button class="filter-btn" onclick="filterResources('iso',this)">ISO 27001</button>
+        <button class="filter-btn" onclick="filterResources('ley',this)">Ley 21.719</button>
+        <button class="filter-btn" onclick="filterResources('herramienta',this)">Herramientas</button>
+        <button class="filter-btn" onclick="filterResources('playbook',this)">Playbooks</button>
+      </div>
+
+      <!-- Grid de recursos -->
+      <div class="resources-grid" id="resourcesGrid">
+
+        <!-- 1. Checklist ISO 27001 -->
+        <div class="resource-card cat-iso" data-cat="iso" data-key="checklist-iso27001">
+          <div class="new-badge">Actualizado</div>
+          <div class="rc-header">
+            <div class="rc-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <span class="rc-badge iso">ISO 27001</span>
+          </div>
+          <div class="rc-title">Checklist ISO 27001:2022 — 93 Controles</div>
+          <div class="rc-desc">Lista de verificación completa del Anexo A con los 93 controles, columnas de estado de implementación (Implementado / Parcial / No aplica), notas de evidencia requerida y porcentaje de cumplimiento calculado automáticamente.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              Excel (.xlsx)
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              May 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download" onclick="downloadResource('Checklist ISO 27001:2022','checklist-iso27001')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              843 descargas
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. Plantilla Política de Seguridad -->
+        <div class="resource-card cat-iso" data-cat="iso" data-key="politica-seguridad">
+          <div class="rc-header">
+            <div class="rc-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span class="rc-badge iso">ISO 27001</span>
+          </div>
+          <div class="rc-title">Plantilla Política de Seguridad de la Información</div>
+          <div class="rc-desc">Documento base editable con estructura completa: alcance, objetivos, roles y responsabilidades, principios de seguridad, controles mínimos exigibles y declaración de aplicabilidad. Adaptable a Ley 21.719 e ISO 27001:2022.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              Word (.docx)
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Mar 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download" onclick="downloadResource('Plantilla Política de Seguridad','politica-seguridad')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              612 descargas
+            </span>
+          </div>
+        </div>
+
+        <!-- 3. Registro RAT -->
+        <div class="resource-card cat-ley" data-cat="ley" data-key="registro-rat">
+          <div class="new-badge" style="color:var(--green);border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.1)">Nuevo</div>
+          <div class="rc-header">
+            <div class="rc-icon green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span class="rc-badge ley">Ley 21.719</span>
+          </div>
+          <div class="rc-title">Plantilla Registro de Actividades de Tratamiento (RAT)</div>
+          <div class="rc-desc">Plantilla conforme al Art. 14 bis de la Ley 21.719 con todos los campos requeridos: categoría de datos, finalidad, base de licitud, destinatarios, plazos de conservación, medidas de seguridad y transferencias internacionales.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+              Excel (.xlsx)
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              May 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download green" onclick="downloadResource('Plantilla RAT — Ley 21.719','registro-rat')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              428 descargas
+            </span>
+          </div>
+        </div>
+
+        <!-- 4. Matriz de Riesgos -->
+        <div class="resource-card cat-herramienta" data-cat="herramienta" data-key="matriz-riesgos">
+          <div class="rc-header">
+            <div class="rc-icon yellow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            </div>
+            <span class="rc-badge herramienta">Herramienta</span>
+          </div>
+          <div class="rc-title">Matriz de Evaluación de Riesgos — ISO 27005</div>
+          <div class="rc-desc">Plantilla Excel con metodología ISO 27005: identificación de activos, amenazas y vulnerabilidades, cálculo automático de nivel de riesgo (probabilidad × impacto), plan de tratamiento y mapa de calor visual integrado.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+              Excel (.xlsx)
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Feb 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download yellow" onclick="downloadResource('Matriz de Riesgos ISO 27005','matriz-riesgos')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              731 descargas
+            </span>
+          </div>
+        </div>
+
+        <!-- 5. Guía de Respuesta a Incidentes -->
+        <div class="resource-card cat-playbook" data-cat="playbook" data-key="guia-incidentes">
+          <div class="rc-header">
+            <div class="rc-icon red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <span class="rc-badge playbook">Playbook</span>
+          </div>
+          <div class="rc-title">Guía de Respuesta a Incidentes — Protocolo 72h</div>
+          <div class="rc-desc">Playbook completo conforme al Art. 26 de la Ley 21.719: flujo de detección, contención, evaluación de criticidad, plantillas de notificación a la autoridad y a los titulares, checklist de evidencia forense y formulario de cierre de incidente.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              PDF
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Abr 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download" style="color:var(--red);border-color:rgba(255,107,107,.3);background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,107,107,.04))" onmouseover="this.style.background='rgba(255,107,107,.18)';this.style.borderColor='var(--red)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,107,107,.04))';this.style.borderColor='rgba(255,107,107,.3)'" onclick="downloadResource('Guía de Respuesta a Incidentes','guia-incidentes')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              519 descargas
+            </span>
+          </div>
+        </div>
+
+        <!-- 6. Checklist Ley 21.719 -->
+        <div class="resource-card cat-ley" data-cat="ley" data-key="checklist-ley21719">
+          <div class="rc-header">
+            <div class="rc-icon green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="rc-badge ley">Ley 21.719</span>
+          </div>
+          <div class="rc-title">Checklist Ley 21.719 — 10 Controles Críticos</div>
+          <div class="rc-desc">Lista de verificación de los 10 controles críticos del diagnóstico de cumplimiento con fundamento legal articulado por artículo, referencia ISO 27001 correspondiente, nivel de riesgo y plan de acción recomendado.</div>
+          <div class="rc-meta">
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+              Excel (.xlsx)
+            </span>
+            <span class="rc-meta-item">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              May 2026
+            </span>
+          </div>
+          <div class="rc-footer">
+            <button class="btn-download green" onclick="downloadResource('Checklist Ley 21.719','checklist-ley21719')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </button>
+            <span class="rc-views">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              367 descargas
+            </span>
+          </div>
+        </div>
+
+      </div><!-- /resources-grid -->
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-panel">
+      <div class="sidebar-title">Acceso rápido</div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Por categoría</div>
+        <div class="sidebar-link" onclick="filterResources('iso',null)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          ISO 27001 (2 recursos)
+        </div>
+        <div class="sidebar-link" onclick="filterResources('ley',null)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Ley 21.719 (2 recursos)
+        </div>
+        <div class="sidebar-link" onclick="filterResources('herramienta',null)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          Herramientas (1 recurso)
+        </div>
+        <div class="sidebar-link" onclick="filterResources('playbook',null)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Playbooks (1 recurso)
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Navegar</div>
+        <a href="diagnostico.html" class="sidebar-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Diagnóstico Interactivo
+        </a>
+        <a href="recursos.html" class="sidebar-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Centro de Recursos
+        </a>
+        <a href="index.html" class="sidebar-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Inicio ShellTI
+        </a>
+      </div>
+
+      <div class="cta-mini">
+        <h5>¿Necesitas implementación?</h5>
+        <p>Nuestros consultores te acompañan desde el diagnóstico hasta la certificación ISO 27001 o el cumplimiento total de la Ley 21.719.</p>
+        <a href="index.html#contacto" class="btn-cta-mini">Agendar consulta →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICACIÓN -->
+<div class="toast" id="toast">
+  <div class="toast-icon">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  </div>
+  <div class="toast-text">
+    <strong id="toastTitle">Descarga iniciada</strong>
+    <span id="toastBody">Tu recurso está listo.</span>
+  </div>
+</div>
+
+<script>
+// ══ SESIÓN ══
+var session = null;
+try { session = JSON.parse(sessionStorage.getItem('shellti_session')); } catch(e){}
+
+// Si no hay sesión, redirigir
+if (!session) {
+  window.location.href = 'recursos.html';
+}
+
+// Personalizar interfaz con datos de sesión
+if (session) {
+  var name = session.name || (session.email ? session.email.split('@')[0] : 'Usuario');
+  var initial = name.charAt(0).toUpperCase();
+  document.getElementById('userAvatar').textContent = initial;
+  document.getElementById('userName').textContent = name;
+  var greeting = name !== 'Usuario' ? '¡Bienvenido/a, ' + name + '!' : 'Bienvenido/a — acceso verificado.';
+  document.getElementById('welcomeMsg').textContent = greeting;
+}
+
+// Resaltar recurso que originó el acceso
+var urlParams = new URLSearchParams(window.location.search);
+var targetResource = urlParams.get('resource');
+if (targetResource) {
+  setTimeout(function() {
+    var card = document.querySelector('[data-key="' + targetResource + '"]');
+    if (card) {
+      card.classList.add('highlighted');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 300);
+}
+
+// ══ FILTROS ══
+function filterResources(cat, btn) {
+  // Actualizar botones
+  if (btn) {
+    document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+  // Mostrar/ocultar cards
+  var cards = document.querySelectorAll('.resource-card');
+  var hasVisible = false;
+  cards.forEach(function(card) {
+    var show = (cat === 'all') || (card.dataset.cat === cat);
+    card.style.display = show ? '' : 'none';
+    if (show) hasVisible = true;
+  });
+  // Empty state
+  var grid = document.getElementById('resourcesGrid');
+  var existing = document.getElementById('emptyState');
+  if (!hasVisible && !existing) {
+    var emptyEl = document.createElement('div');
+    emptyEl.id = 'emptyState';
+    emptyEl.className = 'empty-state';
+    emptyEl.style.gridColumn = '1/-1';
+    emptyEl.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h4>Sin resultados</h4><p>No hay recursos en esta categoría aún.</p>';
+    grid.appendChild(emptyEl);
+  } else if (hasVisible && existing) {
+    existing.remove();
+  }
+}
+
+// ══ DESCARGA ══
+function downloadResource(name, key) {
+  // Mapa de URLs de descarga — reemplazar con URLs reales
+  var downloadUrls = {
+    'checklist-iso27001':   '#placeholder-checklist-iso27001',
+    'politica-seguridad':   '#placeholder-politica-seguridad',
+    'registro-rat':         '#placeholder-registro-rat',
+    'matriz-riesgos':       '#placeholder-matriz-riesgos',
+    'guia-incidentes':      '#placeholder-guia-incidentes',
+    'checklist-ley21719':   '#placeholder-checklist-ley21719'
+  };
+
+  var url = downloadUrls[key];
+  if (url && url !== '#placeholder-' + key) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  // Registrar descarga en sesión
+  if (session) {
+    if (!session.downloads) session.downloads = [];
+    session.downloads.push({ key: key, name: name, ts: Date.now() });
+    try { sessionStorage.setItem('shellti_session', JSON.stringify(session)); } catch(e){}
+  }
+
+  // Mostrar toast
+  showToast(name);
+}
+
+function showToast(name) {
+  var toast = document.getElementById('toast');
+  document.getElementById('toastTitle').textContent = '✓ Descarga lista';
+  document.getElementById('toastBody').textContent = name + ' — guardado en tu equipo.';
+  toast.classList.add('show');
+  setTimeout(function(){ toast.classList.remove('show'); }, 3800);
+}
+
+// ══ LOGOUT ══
+function logout() {
+  try { sessionStorage.removeItem('shellti_session'); } catch(e){}
+  window.location.href = 'recursos.html';
+}
+</script>
+</body>
+</html>
