@@ -589,46 +589,60 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 </div>
 
 <script>
-// ══ SESIÓN ══
+// ══ SESIÓN — funciona en Vercel con URL params como fuente primaria ══
+var urlParams = new URLSearchParams(window.location.search);
+var urlName     = urlParams.get('name')    || '';
+var urlEmail    = urlParams.get('email')   || '';
+var urlResource = urlParams.get('resource') || 'all';
+
+// Leer sessionStorage como fallback
 var session = null;
 try { session = JSON.parse(sessionStorage.getItem('shellti_session')); } catch(e){}
 
-// Si no hay sesión, redirigir
+// Construir sesión desde URL si no hay sessionStorage (Vercel redirect case)
+if (!session && (urlName || urlEmail)) {
+  session = { nombre: urlName, email: urlEmail, resource: { key: urlResource }, ts: Date.now() };
+  try { sessionStorage.setItem('shellti_session', JSON.stringify(session)); } catch(e){}
+}
+
+// Sin sesión Y sin params → redirigir
 if (!session) {
   window.location.href = 'recursos.html';
 }
 
-// Personalizar interfaz con datos de sesión
+// ══ PERSONALIZAR INTERFAZ ══
+var displayName = '';
 if (session) {
-  var name = session.name || (session.email ? session.email.split('@')[0] : 'Usuario');
-  var initial = name.charAt(0).toUpperCase();
-  document.getElementById('userAvatar').textContent = initial;
-  document.getElementById('userName').textContent = name;
-  var greeting = name !== 'Usuario' ? '¡Bienvenido/a, ' + name + '!' : 'Bienvenido/a — acceso verificado.';
-  document.getElementById('welcomeMsg').textContent = greeting;
+  displayName = session.nombre || session.name || (session.email ? session.email.split('@')[0] : '') || urlName || 'Usuario';
 }
+if (!displayName) displayName = urlName || 'Usuario';
 
-// Resaltar recurso que originó el acceso
-var urlParams = new URLSearchParams(window.location.search);
-var targetResource = urlParams.get('resource');
-if (targetResource) {
+var initial = displayName.charAt(0).toUpperCase() || 'U';
+document.getElementById('userAvatar').textContent = initial;
+document.getElementById('userName').textContent = displayName;
+var greeting = displayName && displayName !== 'Usuario'
+  ? '¡Bienvenido/a, ' + displayName + '!'
+  : 'Bienvenido/a — acceso verificado.';
+document.getElementById('welcomeMsg').textContent = greeting;
+
+// ══ RESALTAR RECURSO SOLICITADO ══
+var targetResource = urlResource || (session && session.resource && session.resource.key) || '';
+if (targetResource && targetResource !== 'all') {
   setTimeout(function() {
     var card = document.querySelector('[data-key="' + targetResource + '"]');
     if (card) {
       card.classList.add('highlighted');
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, 300);
+  }, 400);
 }
 
 // ══ FILTROS ══
 function filterResources(cat, btn) {
-  // Actualizar botones
   if (btn) {
     document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
   }
-  // Mostrar/ocultar cards
   var cards = document.querySelectorAll('.resource-card');
   var hasVisible = false;
   cards.forEach(function(card) {
@@ -636,7 +650,6 @@ function filterResources(cat, btn) {
     card.style.display = show ? '' : 'none';
     if (show) hasVisible = true;
   });
-  // Empty state
   var grid = document.getElementById('resourcesGrid');
   var existing = document.getElementById('emptyState');
   if (!hasVisible && !existing) {
@@ -651,45 +664,47 @@ function filterResources(cat, btn) {
   }
 }
 
-// ══ DESCARGA ══
+// ══ DESCARGA — rutas absolutas desde la raíz del sitio ══
 function downloadResource(name, key) {
-  // Mapa de URLs de descarga — reemplazar con URLs reales
   var downloadUrls = {
-    'checklist-iso27001':   'checklist_iso27001.xlsx',
-    'politica-seguridad':   'politica_seguridad.docx',
-    'registro-rat':         'registro_rat.xlsx',
-    'matriz-riesgos':       'matriz_riesgos.xlsx',
-    'guia-incidentes':      'guia_respuesta_incidentes.xlsx',
-    'checklist-ley21719':   'checklist_ley21719.xlsx'
+    'checklist-iso27001':  '/recursos/checklist_iso27001.xlsx',
+    'politica-seguridad':  '/recursos/politica_seguridad.docx',
+    'registro-rat':        '/recursos/registro_rat.xlsx',
+    'matriz-riesgos':      '/recursos/matriz_riesgos.xlsx',
+    'guia-incidentes':     '/recursos/guia_respuesta_incidentes.xlsx',
+    'checklist-ley21719':  '/recursos/checklist_ley21719.xlsx'
   };
 
   var url = downloadUrls[key];
-  if (url && url !== '#placeholder-' + key) {
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = '';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
+  if (!url) { showToast(name, true); return; }
 
-  // Registrar descarga en sesión
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = url.split('/').pop(); // nombre de archivo real
+  a.target = '_blank'; // fallback si download es bloqueado
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ document.body.removeChild(a); }, 200);
+
+  // Registrar en sesión
   if (session) {
     if (!session.downloads) session.downloads = [];
     session.downloads.push({ key: key, name: name, ts: Date.now() });
     try { sessionStorage.setItem('shellti_session', JSON.stringify(session)); } catch(e){}
   }
 
-  // Mostrar toast
-  showToast(name);
+  showToast(name, false);
 }
 
-function showToast(name) {
+function showToast(name, error) {
   var toast = document.getElementById('toast');
-  document.getElementById('toastTitle').textContent = '✓ Descarga lista';
-  document.getElementById('toastBody').textContent = name + ' — guardado en tu equipo.';
+  document.getElementById('toastTitle').textContent = error ? '⚠ Error al descargar' : '✓ Descarga iniciada';
+  document.getElementById('toastBody').textContent = error
+    ? 'No se encontró el archivo. Contacta a contacto@shellti.com'
+    : name + ' — guardado en tu equipo.';
+  toast.style.borderColor = error ? 'rgba(255,107,107,.35)' : 'rgba(52,211,153,.35)';
   toast.classList.add('show');
-  setTimeout(function(){ toast.classList.remove('show'); }, 3800);
+  setTimeout(function(){ toast.classList.remove('show'); }, 4000);
 }
 
 // ══ LOGOUT ══

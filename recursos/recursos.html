@@ -624,7 +624,7 @@ function handleSubmit() {
     document.getElementById('successEmail').textContent = email;
     setTimeout(function(){ document.getElementById('redirectFill').style.width = '100%'; }, 80);
     setTimeout(function(){
-      window.location.href = 'biblioteca.html?resource=' + encodeURIComponent(currentResource.key) + '&name=' + encodeURIComponent(nombre);
+      window.location.href = 'biblioteca.html?resource=' + encodeURIComponent(currentResource.key || 'all') + '&name=' + encodeURIComponent(nombre) + '&email=' + encodeURIComponent(email);
     }, 1600);
   }, 600);
 }
