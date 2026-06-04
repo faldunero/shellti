@@ -1,19 +1,17 @@
 {
   "headers": [
     {
-      "source": "/recursos/(.*\\.xlsx)",
+      "source": "/(.*)\\.xlsx",
       "headers": [
         { "key": "Content-Type", "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-        { "key": "Content-Disposition", "value": "attachment" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        { "key": "Content-Disposition", "value": "attachment" }
       ]
     },
     {
-      "source": "/recursos/(.*\\.docx)",
+      "source": "/(.*)\\.docx",
       "headers": [
         { "key": "Content-Type", "value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-        { "key": "Content-Disposition", "value": "attachment" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        { "key": "Content-Disposition", "value": "attachment" }
       ]
     }
   ]
