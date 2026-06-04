@@ -236,6 +236,9 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 @media(max-width:960px){.nav-links{display:none}.dl-grid{grid-template-columns:1fr 1fr}.featured-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.dl-grid,.featured-grid{grid-template-columns:1fr}section,.resources-hero{padding:48px 1.2rem}nav{padding:0 1.2rem}.auth-input-group{grid-template-columns:1fr}.auth-header{padding:1.5rem 1.4rem 1.2rem}.auth-body{padding:1.3rem 1.4rem 1.5rem}.cta-box .btn-cta,.cta-box .btn-ghost{width:100%;justify-content:center;margin:6px 0}}
 </style>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init({ publicKey: "TU_PUBLIC_KEY" });</script>
 </head>
 <body>
 
@@ -613,18 +616,57 @@ function handleSubmit() {
   document.getElementById('fTimestamp').value = new Date().toISOString();
   document.getElementById('authFormHidden').submit();
 
-  // Guardar sesión en sessionStorage
+  // Guardar sesión
   var session = { nombre: nombre, empresa: empresa, email: email, resource: currentResource, ts: Date.now() };
   try { sessionStorage.setItem('shellti_session', JSON.stringify(session)); } catch(e){}
 
-  // Mostrar estado de éxito
+  // Enviar email con links de descarga via EmailJS
+  var DOWNLOAD_BASE = 'https://shellti.com/recursos/';
+  var allResources = [
+    { key: 'checklist-iso27001', nombre: 'Checklist ISO 27001:2022 — 93 Controles',      file: 'checklist_iso27001.xlsx' },
+    { key: 'politica-seguridad', nombre: 'Plantilla Política de Seguridad',               file: 'politica_seguridad.docx' },
+    { key: 'registro-rat',       nombre: 'Plantilla Registro RAT — Ley 21.719',          file: 'registro_rat.xlsx' },
+    { key: 'matriz-riesgos',     nombre: 'Matriz de Evaluación de Riesgos ISO 27005',    file: 'matriz_riesgos.xlsx' },
+    { key: 'guia-incidentes',    nombre: 'Guía de Respuesta a Incidentes 72h',           file: 'guia_respuesta_incidentes.xlsx' },
+    { key: 'checklist-ley21719', nombre: 'Checklist Ley 21.719 — 10 Controles Críticos', file: 'checklist_ley21719.xlsx' },
+  ];
+
+  // Recurso solicitado
+  var requested = allResources.find(function(r){ return r.key === currentResource.key; }) || allResources[0];
+
+  // Lista HTML de todos los recursos para el template
+  var linksHtml = allResources.map(function(r){
+    return '• ' + r.nombre + ': ' + DOWNLOAD_BASE + r.file;
+  }).join('
+');
+
+  emailjs.send(
+    "TU_SERVICE_ID",
+    "TU_TEMPLATE_ID",
+    {
+      to_name:         nombre,
+      to_email:        email,
+      empresa:         empresa,
+      recurso_nombre:  requested.nombre,
+      recurso_url:     DOWNLOAD_BASE + requested.file,
+      todos_recursos:  linksHtml,
+    }
+  ).then(function(){
+    console.log('[ShellTI] Email enviado a', email);
+  }).catch(function(err){
+    console.warn('[ShellTI] EmailJS error (no bloquea el flujo):', err);
+  });
+
+  // Mostrar estado de éxito y redirigir
   setTimeout(function() {
     document.getElementById('authBody').classList.add('hide');
     document.getElementById('authSuccess').classList.add('show');
     document.getElementById('successEmail').textContent = email;
     setTimeout(function(){ document.getElementById('redirectFill').style.width = '100%'; }, 80);
     setTimeout(function(){
-      window.location.href = 'biblioteca.html?resource=' + encodeURIComponent(currentResource.key || 'all') + '&name=' + encodeURIComponent(nombre) + '&email=' + encodeURIComponent(email);
+      window.location.href = 'biblioteca.html?resource=' + encodeURIComponent(currentResource.key || 'all')
+        + '&name='  + encodeURIComponent(nombre)
+        + '&email=' + encodeURIComponent(email);
     }, 1600);
   }, 600);
 }
