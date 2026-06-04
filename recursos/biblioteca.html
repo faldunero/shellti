@@ -679,49 +679,33 @@ function filterResources(cat, btn) {
   }
 }
 
-// ══ DESCARGA — rutas absolutas desde la raíz del sitio ══
+// ══ DESCARGA ══
+var downloadUrls = {
+  'checklist-iso27001':  'checklist_iso27001.xlsx',
+  'politica-seguridad':  'politica_seguridad.docx',
+  'registro-rat':        'registro_rat.xlsx',
+  'matriz-riesgos':      'matriz_riesgos.xlsx',
+  'guia-incidentes':     'guia_respuesta_incidentes.xlsx',
+  'checklist-ley21719':  'checklist_ley21719.xlsx'
+};
+
 function downloadResource(name, key) {
-  var downloadUrls = {
-    'checklist-iso27001':  'checklist_iso27001.xlsx',
-    'politica-seguridad':  'politica_seguridad.docx',
-    'registro-rat':        'registro_rat.xlsx',
-    'matriz-riesgos':      'matriz_riesgos.xlsx',
-    'guia-incidentes':     'guia_respuesta_incidentes.xlsx',
-    'checklist-ley21719':  'checklist_ley21719.xlsx'
-  };
-
   var url = downloadUrls[key];
-  if (!url) { showToast(name, true); return; }
+  if (!url) return;
 
-  // Verificar que el archivo existe y descargarlo
-  fetch(url, { method: 'HEAD' })
-    .then(function(res) {
-      if (res.ok) {
-        // Método principal: tag <a> con download
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = url.split('/').pop();
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function(){ document.body.removeChild(a); }, 300);
-        showToast(name, false);
-      } else {
-        showFileNotFound(name, key);
-      }
-    })
-    .catch(function() {
-      // CORS o red — intentar descarga directa de todas formas
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = url.split('/').pop();
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function(){ document.body.removeChild(a); }, 300);
-      showToast(name, false);
-    });
-  return; // el toast se muestra dentro del fetch
+  // Método 1: link con download attribute
+  var a = document.createElement('a');
+  a.href = url;
+  a.setAttribute('download', url);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Método 2 (fallback tras 800ms): window.open si el navegador bloqueó el click
+  setTimeout(function() {
+    window.open(url, '_blank');
+  }, 800);
 
   // Registrar en sesión
   if (session) {
@@ -730,31 +714,14 @@ function downloadResource(name, key) {
     try { sessionStorage.setItem('shellti_session', JSON.stringify(session)); } catch(e){}
   }
 
+  showToast(name);
 }
 
-function showFileNotFound(name, key) {
-  var modal = document.getElementById('fileNotFoundModal');
-  if (modal) { modal.classList.add('active'); return; }
-  // Fallback inline toast con instrucción
+function showToast(name) {
   var toast = document.getElementById('toast');
-  document.getElementById('toastTitle').textContent = '⚠ Archivo no disponible en el servidor';
-  document.getElementById('toastBody').textContent = 'Sube los archivos .xlsx y .docx a tu repo de Vercel. Ver instrucciones más abajo.';
-  toast.style.borderColor = 'rgba(255,107,107,.5)';
-  toast.style.boxShadow = '0 0 30px rgba(255,107,107,.2)';
-  toast.classList.add('show');
-  setTimeout(function(){ toast.classList.remove('show'); toast.style.borderColor=''; toast.style.boxShadow=''; }, 6000);
-  // Mostrar banner de ayuda
-  var banner = document.getElementById('uploadBanner');
-  if (banner) banner.style.display = 'flex';
-}
-
-function showToast(name, error) {
-  var toast = document.getElementById('toast');
-  document.getElementById('toastTitle').textContent = error ? '⚠ Error al descargar' : '✓ Descarga iniciada';
-  document.getElementById('toastBody').textContent = error
-    ? 'No se encontró el archivo. Contacta a contacto@shellti.com'
-    : name + ' — guardado en tu equipo.';
-  toast.style.borderColor = error ? 'rgba(255,107,107,.35)' : 'rgba(52,211,153,.35)';
+  document.getElementById('toastTitle').textContent = '✓ Descarga iniciada';
+  document.getElementById('toastBody').textContent = name + ' — revisa tu carpeta de Descargas.';
+  toast.style.borderColor = 'rgba(52,211,153,.35)';
   toast.classList.add('show');
   setTimeout(function(){ toast.classList.remove('show'); }, 4000);
 }
