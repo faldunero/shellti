@@ -675,10 +675,9 @@ function updateRisk() {
   var noCount = 0;
   for (var k in answers) { if (answers[k] === 'no') noCount++; }
   var level = 'Bajo', color = '#34D399', posX = '25%', posY = '75%';
-  if      (noCount >= 7) { level = 'Crítico'; color = '#FF6B6B'; posX = '75%'; posY = '25%'; }
-  else if (noCount >= 5) { level = 'Alto';    color = '#FF9F43'; posX = '75%'; posY = '50%'; }
-  else if (noCount >= 3) { level = 'Medio';   color = '#FFD93D'; posX = '50%'; posY = '25%'; }
-  else if (noCount >= 1) { level = 'Bajo';    color = '#34D399'; posX = '25%'; posY = '75%'; }
+  if      (noCount >= 6) { level = 'Crítico'; color = '#FF6B6B'; posX = '75%'; posY = '25%'; }
+  else if (noCount >= 3) { level = 'Alto';    color = '#FF9F43'; posX = '75%'; posY = '50%'; }
+  else if (noCount >= 1) { level = 'Medio';   color = '#FFD93D'; posX = '25%'; posY = '25%'; }
   var pointer = document.getElementById('riskPointer');
   pointer.style.left = posX; pointer.style.top = posY;
   var sb = document.getElementById('statusBox');
@@ -750,12 +749,10 @@ function showResults(level) {
   var noCount = 0; for (var k in answers) { if (answers[k] === 'no') noCount++; }
   document.getElementById('resultsLevel').className = 'results-main ' + level.toLowerCase() + '-text';
   document.getElementById('resultsLevel').textContent = 'Nivel de Riesgo ' + level;
-  var desc = noCount >= 7
+  var desc = noCount >= 6
     ? 'Se detectaron ' + noCount + ' brechas críticas. Su organización requiere intervención inmediata para mitigar riesgos legales y operativos bajo la Ley 21.719.'
-    : noCount >= 5
-    ? 'Se detectaron ' + noCount + ' brechas de cumplimiento. Existen debilidades importantes que deben priorizarse para reducir la exposición regulatoria.'
     : noCount >= 3
-    ? 'Se detectaron ' + noCount + ' brechas de cumplimiento. Se recomienda abordar los controles identificados con un plan de remediación estructurado.'
+    ? 'Se detectaron ' + noCount + ' brechas de cumplimiento. Existen debilidades importantes que deben priorizarse para reducir la exposición regulatoria.'
     : noCount >= 1
     ? 'Se detectó ' + noCount + (noCount === 1 ? ' brecha' : ' brechas') + ' de cumplimiento. Remedie el control identificado para alcanzar una postura de cumplimiento sólida.'
     : 'Su postura de cumplimiento es sólida. Mantenga revisión periódica para asegurar el estándar ante cambios regulatorios.';
@@ -782,8 +779,8 @@ function generarPDF() {
 
   var noCount = 0;
   for (var k in answers) { if (answers[k] === 'no') noCount++; }
-  var rLevel = noCount >= 7 ? 'CRÍTICO' : noCount >= 5 ? 'ALTO' : noCount >= 3 ? 'MEDIO' : 'BAJO';
-  var rCol   = noCount >= 7 ? cRed : noCount >= 5 ? [255,159,67] : noCount >= 3 ? cYellow : cGreen;
+  var rLevel = noCount >= 6 ? 'CRÍTICO' : noCount >= 3 ? 'ALTO' : noCount >= 1 ? 'MEDIO' : 'BAJO';
+  var rCol   = noCount >= 6 ? cRed : noCount >= 3 ? [255,159,67] : noCount >= 1 ? cYellow : cGreen;
 
   // ── PORTADA — limpia y sobria ──────────────────────────────────────────────
   // Fondo blanco
