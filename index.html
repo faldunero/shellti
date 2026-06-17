@@ -1763,23 +1763,21 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 
     <form
       id="newsletterForm"
-      action="https://formsubmit.co/contacto@shellti.com"
+      action="https://41d6e97c.sibforms.com/serve/MUIFAB0FU0-20C0D3cojhgHGkw5iGU_o71A9_e0IIcihshSgqeTaj6b5rvizdMFcTkcIivkF5scuolyypFOy5B4t5Oawvi1WWXRqFGSbBYnT1hqkYKFvAaAo0YM8coZNMtgaKpxyGIzt10bVRcBkByf_v1IcCKwQd-81S8xdUh6usW0nCrW5LTys3gBFjo8Njml8IzuZ7dHH3sOpeg=="
       method="POST"
+      target="_blank"
       novalidate
       style="display:flex;flex-direction:column;gap:14px;max-width:480px;margin:0 auto;">
 
-      <!-- FormSubmit config -->
-      <input type="hidden" name="_subject"  value="Nueva suscripción Newsletter — ShellTI Insights" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_captcha"  value="false" />
-      <input type="hidden" name="_next"     value="https://shellti.com/?newsletter=ok" />
-      <input type="hidden" name="origen"    value="Newsletter ShellTI Insights #001" />
+      <!-- Campos requeridos por Brevo -->
+      <input type="hidden" name="locale" value="es" />
+      <input type="hidden" name="html_type" value="simple" />
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <input
           class="finput"
           type="email"
-          name="email_suscriptor"
+          name="EMAIL"
           id="nl-email"
           placeholder="tu@correo.com"
           required
@@ -1838,7 +1836,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </footer>
 
 <script>
-// ── NEWSLETTER (FormSubmit → contacto@shellti.com) ──
+// ── NEWSLETTER (Brevo) ───────────────────────
 function handleNewsletter(e){
   e.preventDefault();
   var email   = document.getElementById('nl-email');
@@ -1859,7 +1857,6 @@ function handleNewsletter(e){
     return;
   }
 
-  // Mostrar confirmación visual antes de enviar
   okEl.style.display = 'block';
   document.getElementById('newsletterForm').submit();
 }
