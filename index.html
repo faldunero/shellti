@@ -1763,15 +1763,8 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 
     <form
       id="newsletterForm"
-      action="https://41d6e97c.sibforms.com/serve/MUIFAB0FU0-20C0D3cojhgHGkw5iGU_o71A9_e0IIcihshSgqeTaj6b5rvizdMFcTkcIivkF5scuolyypFOy5B4t5Oawvi1WWXRqFGSbBYnT1hqkYKFvAaAo0YM8coZNMtgaKpxyGIzt10bVRcBkByf_v1IcCKwQd-81S8xdUh6usW0nCrW5LTys3gBFjo8Njml8IzuZ7dHH3sOpeg=="
-      method="POST"
-      target="_blank"
       novalidate
       style="display:flex;flex-direction:column;gap:14px;max-width:480px;margin:0 auto;">
-
-      <!-- Campos requeridos por Brevo -->
-      <input type="hidden" name="locale" value="es" />
-      <input type="hidden" name="html_type" value="simple" />
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <input
@@ -1812,7 +1805,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         ⚠ Ingrese un email válido y acepte el consentimiento para continuar.
       </div>
       <div id="nlSuccess" style="display:none;color:var(--green);font-size:.78rem;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;padding:.5rem .75rem;border:1px solid rgba(52,211,153,.3);border-radius:3px;background:rgba(52,211,153,.06);">
-        ✓ ¡Gracias! Recibirás el próximo newsletter en tu correo.
+        ✓ ¡Gracias! Revisa tu correo para confirmar la suscripción.
       </div>
     </form>
   </div>
@@ -1836,13 +1829,14 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </footer>
 
 <script>
-// ── NEWSLETTER (Brevo) ───────────────────────
+// ── NEWSLETTER (Brevo vía fetch, sin redirección) ──
 function handleNewsletter(e){
   e.preventDefault();
   var email   = document.getElementById('nl-email');
   var consent = document.getElementById('nlConsent');
   var errEl   = document.getElementById('nlError');
   var okEl    = document.getElementById('nlSuccess');
+  var btn     = e.target;
   var re      = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   errEl.style.display = 'none';
@@ -1857,8 +1851,33 @@ function handleNewsletter(e){
     return;
   }
 
-  okEl.style.display = 'block';
-  document.getElementById('newsletterForm').submit();
+  btn.disabled = true;
+  btn.textContent = 'ENVIANDO...';
+
+  var formData = new FormData();
+  formData.append('EMAIL', email.value.trim());
+  formData.append('locale', 'es');
+  formData.append('html_type', 'simple');
+
+  fetch('https://41d6e97c.sibforms.com/serve/MUIFAB0FU0-20C0D3cojhgHGkw5iGU_o71A9_e0IIcihshSgqeTaj6b5rvizdMFcTkcIivkF5scuolyypFOy5B4t5Oawvi1WWXRqFGSbBYnT1hqkYKFvAaAo0YM8coZNMtgaKpxyGIzt10bVRcBkByf_v1IcCKwQd-81S8xdUh6usW0nCrW5LTys3gBFjo8Njml8IzuZ7dHH3sOpeg==', {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors'
+  })
+  .then(function(){
+    okEl.style.display = 'block';
+    email.value = '';
+    consent.checked = false;
+    btn.disabled = false;
+    btn.textContent = 'SUSCRIBIRME →';
+  })
+  .catch(function(){
+    okEl.style.display = 'block';
+    email.value = '';
+    consent.checked = false;
+    btn.disabled = false;
+    btn.textContent = 'SUSCRIBIRME →';
+  });
 }
 
 // ── SIDE DRAWER ──────────────────────────────
