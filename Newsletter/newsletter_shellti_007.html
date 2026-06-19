@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ShellTI Insights #007 — Ciberseguridad en cifras: lo que los datos dicen sobre los ataques</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Helvetica Neue',Arial,sans-serif;">
+
+<!-- VOLVER AL ARCHIVO -->
+<div style="background:#00D4AA;padding:9px 32px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="/newsletter.html" target="_top" style="font-size:12px;font-weight:700;color:#080C1F;text-decoration:none;letter-spacing:0.3px;">&#8592; Archivo de newsletters</a>
+  <span style="font-size:11px;color:#005C4A;font-weight:600;">ShellTI Insights</span>
+</div>
+
+<div style="max-width:640px;margin:0 auto;background:#fff;">
+
+<!-- MASTHEAD -->
+<div style="background:#fff;padding:16px 32px;border-bottom:2px solid #080C1F;display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <div style="font-size:22px;font-weight:800;color:#080C1F;letter-spacing:-0.5px;">Shell<span style="color:#00B4D8;">TI</span> Insights</div>
+    <div style="font-size:11px;color:#94A3B8;margin-top:2px;font-style:italic;">Compliance · Ciberseguridad · Datos Personales</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#94A3B8;text-transform:uppercase;">Edición especial</div>
+    <div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:4px;">
+      <span style="background:#080C1F;color:#00D4AA;font-size:11px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:1px;">#007</span>
+      <span style="font-size:11px;color:#475569;">Junio 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div style="background:#080C1F;padding:28px 32px 32px;border-bottom:3px solid #00D4AA;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <div style="font-size:11px;color:#64748B;letter-spacing:1px;text-transform:uppercase;">Ciberseguridad · Estadísticas 2024-2025</div>
+    <div style="display:inline-block;background:rgba(239,68,68,0.1);border:1px solid #EF4444;color:#EF4444;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;">DATOS VERIFICADOS</div>
+  </div>
+  <div style="font-size:11px;color:#00D4AA;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Phishing · Malware · Ransomware · Suplantación</div>
+  <div style="font-size:26px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px;">Ciberseguridad en cifras:<br><span style="color:#00D4AA;">lo que los datos revelan</span> sobre los ataques</div>
+  <div style="font-size:13px;color:#94A3B8;line-height:1.6;max-width:520px;">Estadísticas verificadas de IBM, Fortinet, Sophos, Verizon y fuentes chilenas. Qué tipos de ataque predominan, cuánto cuestan, y cómo una política de seguridad sólida — y el cumplimiento de la Ley 21.719 — reducen la exposición.</div>
+  <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
+    <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:10px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#EF4444;">$4,88M</div>
+      <div style="font-size:10px;color:#94A3B8;margin-top:2px;">costo prom. brecha 2024 (IBM)</div>
+    </div>
+    <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:10px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#FBB924;">27.600M</div>
+      <div style="font-size:10px;color:#94A3B8;margin-top:2px;">intentos de ataque en Chile 2024 (Fortinet)</div>
+    </div>
+    <div style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.3);border-radius:6px;padding:10px 16px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#00D4AA;">258 días</div>
+      <div style="font-size:10px;color:#94A3B8;margin-top:2px;">promedio para detectar una brecha (IBM)</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div style="padding:28px 32px;">
+
+  <!-- INTRO -->
+  <p style="font-size:14px;color:#334155;line-height:1.7;margin-bottom:20px;">Los ataques de ciberseguridad no son un problema de grandes corporaciones ni de países lejanos. En 2024, Chile sufrió 27.600 millones de intentos de ciberataques, casi cinco veces más que el año anterior, según el reporte de FortiGuard Labs. El cibercrimen organizado creció un 30% en la región (Entel Digital CCI, 2025). Y el 55% de las empresas chilenas reportó haber sido víctima de ransomware ese mismo año.</p>
+  <p style="font-size:14px;color:#334155;line-height:1.7;margin-bottom:20px;">Los números son contundentes. Pero también lo son las soluciones. Esta edición analiza los cuatro tipos de ataque más comunes, su impacto real y qué medidas — incluyendo el cumplimiento de la Ley 21.719 — reducen de forma concreta la exposición al riesgo.</p>
+
+  <div style="height:1px;background:#E2E8F0;margin:8px 0 24px;"></div>
+
+  <!-- SECCIÓN 1: PHISHING -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#EF4444;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #FEE2E2;">01 — Phishing: la puerta de entrada</div>
+
+  <div style="background:#FEF2F2;border-radius:8px;padding:16px 18px;margin-bottom:16px;">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#EF4444;">39,6%</div>
+        <div style="font-size:10px;color:#991B1B;line-height:1.4;">de todos los ataques por email son phishing<br><span style="opacity:0.7;">Hornetsecurity 2024</span></div>
+      </div>
+      <div style="width:1px;background:#FECACA;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#EF4444;">15%</div>
+        <div style="font-size:10px;color:#991B1B;line-height:1.4;">de las brechas globales iniciaron con phishing<br><span style="opacity:0.7;">IBM 2024</span></div>
+      </div>
+      <div style="width:1px;background:#FECACA;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#EF4444;">$4,76M</div>
+        <div style="font-size:10px;color:#991B1B;line-height:1.4;">costo promedio de una brecha iniciada por phishing<br><span style="opacity:0.7;">IBM 2024</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">El phishing sigue siendo el vector de ataque más prevalente a nivel global. Un correo que imita a un banco, un proveedor o un servicio gubernamental — hoy potenciado por IA generativa que elimina los errores ortográficos que antes los delataban — es suficiente para comprometer credenciales y abrir la puerta a ataques mayores.</p>
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">En Chile, el phishing y el malware en documentos de Microsoft Office son las técnicas más utilizadas por los cibercriminales, según Fortinet. El correo electrónico sigue siendo el principal vector de entrada.</p>
+
+  <div style="background:#F8FAFC;border-left:3px solid #EF4444;padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;">
+    <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:4px;">Conexión con Ley 21.719</div>
+    <div style="font-size:12px;color:#475569;line-height:1.6;">Un ataque de phishing exitoso que derive en brecha de datos personales obliga a notificar a la APDP y a los afectados (Art. 49). Sin protocolo previo, la notificación dentro del plazo legal es prácticamente imposible — y la ausencia de protocolo es en sí misma una infracción sancionable.</div>
+  </div>
+
+  <div style="height:1px;background:#E2E8F0;margin:20px 0;"></div>
+
+  <!-- SECCIÓN 2: MALWARE -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F59E0B;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #FEF3C7;">02 — Malware: el intruso silencioso</div>
+
+  <div style="background:#FFFBEB;border-radius:8px;padding:16px 18px;margin-bottom:16px;">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#D97706;">54%</div>
+        <div style="font-size:10px;color:#92400E;line-height:1.4;">de las infecciones ransomware provienen de phishing previo<br><span style="opacity:0.7;">Statista 2024</span></div>
+      </div>
+      <div style="width:1px;background:#FDE68A;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#D97706;">61%</div>
+        <div style="font-size:10px;color:#92400E;line-height:1.4;">aumento de incidentes malware en cloud vs 2023<br><span style="opacity:0.7;">Entel Digital CCI 2025</span></div>
+      </div>
+      <div style="width:1px;background:#FDE68A;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#D97706;">83%</div>
+        <div style="font-size:10px;color:#92400E;line-height:1.4;">de las empresas sufrió al menos un ataque interno en 2024<br><span style="opacity:0.7;">AAG IT 2024</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">El malware moderno no se instala con un click obvio — llega embebido en documentos adjuntos legítimos, en actualizaciones falsas o a través de conexiones a redes comprometidas. Una vez dentro, puede permanecer inactivo por semanas antes de activarse.</p>
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">El informe de Sophos 2025 indica que el tiempo mediano entre la intrusión inicial y la ejecución del malware bajó a 5 días — los atacantes han acelerado el ciclo para reducir el tiempo de detección. Las herramientas de IA generativa como FraudGPT y BlackmailerV3 están impulsando campañas más escalables y difíciles de detectar.</p>
+
+  <div style="background:#F8FAFC;border-left:3px solid #F59E0B;padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;">
+    <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:4px;">Conexión con Ley 21.719</div>
+    <div style="font-size:12px;color:#475569;line-height:1.6;">El Art. 46 obliga a implementar medidas técnicas y organizativas proporcionales al riesgo. Un ambiente sin MFA, sin segmentación de redes y sin control de acceso por roles no cumple ese estándar — y si ocurre una brecha, la organización no podrá demostrar diligencia ante la Agencia.</div>
+  </div>
+
+  <div style="height:1px;background:#E2E8F0;margin:20px 0;"></div>
+
+  <!-- SECCIÓN 3: RANSOMWARE -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8B5CF6;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #EDE9FE;">03 — Ransomware: el costo de no estar preparado</div>
+
+  <div style="background:#F5F3FF;border-radius:8px;padding:16px 18px;margin-bottom:16px;">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#7C3AED;">55%</div>
+        <div style="font-size:10px;color:#4C1D95;line-height:1.4;">de empresas chilenas atacadas por ransomware en 2024<br><span style="opacity:0.7;">Prey Project 2025</span></div>
+      </div>
+      <div style="width:1px;background:#DDD6FE;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#7C3AED;">$3M</div>
+        <div style="font-size:10px;color:#4C1D95;line-height:1.4;">costo promedio de recuperación post-ransomware 2024<br><span style="opacity:0.7;">Entel Digital CCI 2025</span></div>
+      </div>
+      <div style="width:1px;background:#DDD6FE;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#7C3AED;">60%</div>
+        <div style="font-size:10px;color:#4C1D95;line-height:1.4;">de víctimas sufrieron un segundo ataque tras pagar<br><span style="opacity:0.7;">Varonis 2024</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">El ransomware es hoy la principal amenaza en Latinoamérica, representando el 38% de todos los ciberataques registrados en la región en 2024, según el Centro de Ciberinteligencia de Entel Digital. Chile concentra el 7% de los incidentes regionales. Los sectores más afectados en el país son manufactura (17%), servicios empresariales (11%), construcción (9%) y comercio minorista (9%).</p>
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">El modelo de doble extorsión — cifrar los datos y amenazar con publicarlos — se ha consolidado: el 90% de las víctimas enfrentaron amenazas de exposición pública de datos robados. Pagar el rescate no garantiza nada: el 60% de quienes pagaron fueron atacados nuevamente.</p>
+
+  <div style="background:#080C1F;border-radius:8px;padding:14px 18px;margin:16px 0;">
+    <div style="font-size:11px;font-weight:700;color:#8B5CF6;margin-bottom:6px;letter-spacing:1px;">DATO CLAVE — SOPHOS STATE OF RANSOMWARE 2025</div>
+    <div style="font-size:13px;color:#CBD5E1;line-height:1.6;">El 40,2% de las víctimas de ransomware en 2025 atribuye el ataque a <strong style="color:#fff;">falta de expertise en ciberseguridad</strong>. El 39,4% cita <strong style="color:#fff;">insuficiencia de personal</strong>. El 40,1% identifica <strong style="color:#fff;">brechas de seguridad desconocidas</strong> dentro de la organización.</div>
+  </div>
+
+  <div style="background:#F8FAFC;border-left:3px solid #8B5CF6;padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;">
+    <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:4px;">Conexión con Ley 21.719</div>
+    <div style="font-size:12px;color:#475569;line-height:1.6;">Un ransomware que cifra bases de datos con información personal es una brecha que activa el Art. 49: notificación obligatoria a la APDP y a los titulares afectados. Si los datos cifrados incluyen información sensible (salud, biometría, datos financieros), las sanciones se agravan. El Registro de Actividades de Tratamiento (RAT) es esencial para saber qué datos fueron comprometidos y notificar con precisión.</div>
+  </div>
+
+  <div style="height:1px;background:#E2E8F0;margin:20px 0;"></div>
+
+  <!-- SECCIÓN 4: SUPLANTACIÓN -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#0EA5E9;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #E0F2FE;">04 — Suplantación de identidad: el ataque más invisible</div>
+
+  <div style="background:#F0F9FF;border-radius:8px;padding:16px 18px;margin-bottom:16px;">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#0284C7;">292 días</div>
+        <div style="font-size:10px;color:#0C4A6E;line-height:1.4;">promedio para detectar brecha por credenciales robadas<br><span style="opacity:0.7;">IBM 2024</span></div>
+      </div>
+      <div style="width:1px;background:#BAE6FD;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#0284C7;">46%</div>
+        <div style="font-size:10px;color:#0C4A6E;line-height:1.4;">de las brechas involucran datos personales de clientes (PII)<br><span style="opacity:0.7;">IBM 2024</span></div>
+      </div>
+      <div style="width:1px;background:#BAE6FD;flex-shrink:0;"></div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:22px;font-weight:800;color:#0284C7;">$2M</div>
+        <div style="font-size:10px;color:#0C4A6E;line-height:1.4;">pago promedio de rescate en 2024 (94% de víctimas pagó)<br><span style="opacity:0.7;">Comcast Business 2024</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">La suplantación de identidad — ya sea de personas, marcas o instituciones — es el mecanismo detrás de la mayoría de los ataques exitosos. Un atacante que obtiene las credenciales de un ejecutivo puede operar dentro de los sistemas durante meses sin ser detectado.</p>
+  <p style="font-size:13px;color:#334155;line-height:1.7;margin-bottom:8px;">Las brechas que involucran credenciales robadas son las más lentas de detectar: 292 días en promedio, según IBM. Ese tiempo es suficiente para exfiltrar bases de datos completas, modificar registros y cubrir las huellas antes de que alguien lo note.</p>
+
+  <div style="background:#F8FAFC;border-left:3px solid #0EA5E9;padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;">
+    <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:4px;">Conexión con Ley 21.719</div>
+    <div style="font-size:12px;color:#475569;line-height:1.6;">Cuando una suplantación compromete datos personales, la Ley 21.719 aplica en toda su extensión: brecha notificable, responsabilidad del responsable del tratamiento, y posible infracción al Art. 46 por falta de medidas de autenticación robusta. El MFA no es una recomendación — es parte de las "medidas técnicas proporcionales al riesgo" que la ley exige.</div>
+  </div>
+
+  <div style="height:1px;background:#E2E8F0;margin:20px 0;"></div>
+
+  <!-- SECCIÓN 5: POLÍTICA DE SEGURIDAD -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid rgba(0,212,170,0.2);">05 — Lo que una política de seguridad cambia en los números</div>
+
+  <p style="font-size:14px;color:#334155;line-height:1.7;margin-bottom:16px;">Los datos no solo muestran el problema — también confirman que las medidas funcionan. Las organizaciones que implementan programas de seguridad estructurados reducen de forma medible su exposición y el costo de los incidentes.</p>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:12px;">
+    <thead>
+      <tr style="background:#F8FAFC;">
+        <th style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;padding:8px 10px;border-bottom:2px solid #E2E8F0;text-align:left;width:45%;">Medida implementada</th>
+        <th style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;padding:8px 10px;border-bottom:2px solid #E2E8F0;text-align:left;">Impacto verificado</th>
+        <th style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;padding:8px 10px;border-bottom:2px solid #E2E8F0;text-align:left;width:22%;">Fuente</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#1E293B;font-weight:600;">IA y automatización en seguridad</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#475569;">Detección 108 días más rápida. Ahorro promedio de $1,76M por brecha</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;"><span style="background:#E6FAF6;color:#008B72;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">IBM 2024</span></td>
+      </tr>
+      <tr>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#1E293B;font-weight:600;">Equipo de respuesta a incidentes (IR)</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#475569;">63% de organizaciones con IR evitaron pagar rescate. Ahorro promedio de $1M</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;"><span style="background:#E6FAF6;color:#008B72;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">IBM 2024</span></td>
+      </tr>
+      <tr>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#1E293B;font-weight:600;">Capacitación en seguridad al personal</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#475569;">Factor #1 en reducción del costo de brechas. Detecta y detiene phishing antes de que escale</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;"><span style="background:#E6FAF6;color:#008B72;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">IBM 2024</span></td>
+      </tr>
+      <tr>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#1E293B;font-weight:600;">Gestión de identidad y acceso (IAM)</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;color:#475569;">Ahorro de hasta $223.000 al año. Reduce la ventana de exposición por credenciales comprometidas</td>
+        <td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;"><span style="background:#E6FAF6;color:#008B72;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">IBM 2024</span></td>
+      </tr>
+      <tr>
+        <td style="padding:9px 10px;color:#1E293B;font-weight:600;">Involucramiento de fuerzas del orden</td>
+        <td style="padding:9px 10px;color:#475569;">Reduce el costo del incidente en casi $1M adicional en promedio</td>
+        <td style="padding:9px 10px;"><span style="background:#E6FAF6;color:#008B72;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">IBM 2024</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="height:1px;background:#E2E8F0;margin:8px 0 20px;"></div>
+
+  <!-- SECCIÓN 6: LEY 21.719 -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid rgba(0,212,170,0.2);">06 — Ley 21.719 y ciberseguridad: dos caras de la misma moneda</div>
+
+  <p style="font-size:14px;color:#334155;line-height:1.7;margin-bottom:16px;">La Ley 21.719 no es solo una ley de privacidad. Es también una ley que obliga a las organizaciones a tener controles de seguridad proporcionales al riesgo — lo que en la práctica se alinea directamente con las mejores prácticas de ciberseguridad.</p>
+
+  <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+    <tr>
+      <td style="width:50%;vertical-align:top;padding-right:6px;">
+        <div style="background:#080C1F;border-radius:8px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:#00D4AA;margin-bottom:10px;letter-spacing:1px;">Lo que exige la Ley 21.719</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#00D4AA;font-weight:700;">+</span>Medidas técnicas proporcionales al riesgo (Art. 46)</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#00D4AA;font-weight:700;">+</span>Notificación de brechas a APDP y afectados (Art. 49)</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#00D4AA;font-weight:700;">+</span>Registro de Actividades de Tratamiento (Art. 16)</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#00D4AA;font-weight:700;">+</span>Evaluación de Impacto en Privacidad — EIPD (Art. 15)</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.7;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:#00D4AA;font-weight:700;">+</span>Contratos DPA con proveedores que traten datos</div>
+        </div>
+      </td>
+      <td style="width:50%;vertical-align:top;padding-left:6px;">
+        <div style="background:#F0FDF9;border:1px solid rgba(0,212,170,0.2);border-radius:8px;padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:#008B72;margin-bottom:10px;letter-spacing:1px;">Lo que exige la ciberseguridad</div>
+          <div style="font-size:12px;color:#166534;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#16A34A;font-weight:700;">+</span>MFA, cifrado, control de acceso por roles</div>
+          <div style="font-size:12px;color:#166534;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#16A34A;font-weight:700;">+</span>Protocolo de respuesta a incidentes (IR)</div>
+          <div style="font-size:12px;color:#166534;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#16A34A;font-weight:700;">+</span>Inventario de activos y clasificación de datos</div>
+          <div style="font-size:12px;color:#166534;line-height:1.7;padding-left:14px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:0;color:#16A34A;font-weight:700;">+</span>Evaluación de riesgos periódica</div>
+          <div style="font-size:12px;color:#166534;line-height:1.7;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:#16A34A;font-weight:700;">+</span>Contratos de seguridad con terceros</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div style="background:#080C1F;border-radius:8px;padding:16px 18px;margin-bottom:20px;">
+    <div style="font-size:13px;color:#CBD5E1;line-height:1.7;">Una organización que construye su programa de ciberseguridad correctamente — con controles técnicos, gestión de accesos, respuesta a incidentes y capacitación — está, al mismo tiempo, cumpliendo los requisitos de seguridad de la Ley 21.719. <strong style="color:#00D4AA;">No son dos proyectos distintos. Son el mismo proyecto.</strong></div>
+  </div>
+
+  <!-- CTA -->
+  <div style="background:#080C1F;border-radius:8px;padding:24px;text-align:center;margin-bottom:8px;">
+    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">Evalúe su postura de seguridad antes de diciembre</div>
+    <div style="font-size:13px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">ShellTI realiza diagnósticos de brecha en ciberseguridad y cumplimiento de Ley 21.719 para empresas chilenas. Identifique sus vulnerabilidades antes de que lo haga un atacante — o la Agencia.</div>
+    <a href="https://shellti.com/#contacto" style="display:inline-block;background:#00D4AA;color:#080C1F;font-weight:800;font-size:13px;padding:11px 26px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">Solicitar diagnóstico gratuito</a>
+  </div>
+
+  <!-- FUENTES -->
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #F1F5F9;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94A3B8;margin-bottom:8px;">Fuentes</div>
+    <div style="font-size:10px;color:#CBD5E1;line-height:1.8;color:#94A3B8;">
+      IBM Cost of a Data Breach Report 2024 · FortiGuard Labs Global Threat Landscape Report 2025 · Sophos State of Ransomware 2025 · Entel Digital Centro de Ciberinteligencia (CCI) 2025 · Hornetsecurity Cyber Security Report 2024 · Verizon DBIR 2025 · Statista 2024 · Prey Project / INCIBE 2025 · Varonis 2024 · Comcast Business Cybersecurity Threat Report 2024 · CSIRT Gobierno de Chile Q1 2024 · Cobalt.io Cybersecurity Statistics 2025
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="background:#080C1F;padding:20px 32px;border-top:2px solid #00D4AA;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="font-size:13px;color:#94A3B8;"><strong style="color:#fff;">ShellTI</strong> · Compliance Consulting<br><span style="font-size:11px;">ShellTI Insights · Edición #007 · Junio 2026</span></div>
+  </div>
+  <div style="height:1px;background:#1E2D50;margin-bottom:12px;"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:11px;color:#475569;"><a href="https://www.shellti.com" style="color:#00D4AA;text-decoration:none;">www.shellti.com</a> · <a href="mailto:contacto@shellti.com" style="color:#00D4AA;text-decoration:none;">contacto@shellti.com</a></div>
+    <div style="font-size:10px;color:#334155;">© 2026 ShellTI</div>
+  </div>
+  <div style="margin-top:12px;font-size:10px;color:#334155;text-align:center;">Recibiste este email porque te suscribiste a ShellTI Insights. <a href="{{unsubscribe}}" style="color:#475569;">Cancelar suscripción</a></div>
+</div>
+
+</div>
+</body>
+</html>
