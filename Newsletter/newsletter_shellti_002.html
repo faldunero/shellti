@@ -1,0 +1,222 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.nl{max-width:640px;margin:0 auto;font-family:'Helvetica Neue',Arial,sans-serif;color:#0A0E27;background:#fff}
+.masthead{background:#fff;padding:16px 32px;border-bottom:2px solid #080C1F;display:flex;align-items:center;justify-content:space-between}
+.ml{font-size:22px;font-weight:800;color:#080C1F;letter-spacing:-0.5px}
+.ml span{color:#00B4D8}
+.ms{font-size:11px;color:#94A3B8;margin-top:2px;font-style:italic}
+.iss{background:#080C1F;color:#00D4AA;font-size:11px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:1px}
+.header{background:#080C1F;padding:28px 32px 32px;border-bottom:3px solid #00D4AA}
+.tag{display:inline-block;background:rgba(0,212,170,0.1);border:1px solid #00D4AA;color:#00D4AA;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:3px 10px;border-radius:3px}
+.eyebrow{font-size:11px;color:#00D4AA;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 10px}
+.htitle{font-size:26px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px}
+.htitle em{color:#00D4AA;font-style:normal}
+.hsub{font-size:13px;color:#94A3B8;line-height:1.6;max-width:500px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.1);border:1px solid #10B981;border-radius:4px;padding:6px 14px;margin-top:16px}
+.body{padding:28px 32px}
+.slabel{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(226,232,240,0.2)}
+.intro{font-size:14px;color:#334155;line-height:1.7;margin-bottom:20px}
+.hr{height:1px;background:#E2E8F0;margin:20px 0}
+.steptable{width:100%;border-collapse:collapse;margin-bottom:24px}
+.steptable td{padding:0;vertical-align:top}
+.stepnum{width:32px;padding-right:12px;padding-top:2px}
+.stepbadge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.stepbody{padding-bottom:16px;border-bottom:1px solid #F1F5F9}
+.steptitle{font-size:13px;font-weight:700;color:#1E293B;margin-bottom:3px}
+.stepdesc{font-size:12px;color:#475569;line-height:1.6}
+.steptip{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.docard{border-radius:8px;padding:14px 16px}
+.docard.ok{background:#F0FDF4}
+.docard.no{background:#FEF2F2}
+.dotitle{font-size:11px;font-weight:700;margin-bottom:8px}
+.docard.ok .dotitle{color:#15803D}
+.docard.no .dotitle{color:#DC2626}
+.doitem{font-size:11px;line-height:1.6;padding-left:14px;position:relative;margin-bottom:4px}
+.doitem::before{position:absolute;left:0;font-weight:700}
+.docard.ok .doitem{color:#166534}
+.docard.ok .doitem::before{content:'✓';color:#16A34A}
+.docard.no .doitem{color:#991B1B}
+.docard.no .doitem::before{content:'✕';color:#DC2626}
+.tipbox{border-radius:8px;padding:16px 18px;margin-bottom:12px}
+.tiplabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.tiptext{font-size:13px;line-height:1.6}
+.checklist{list-style:none;margin-bottom:20px}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#334155;line-height:1.5;padding:6px 0;border-bottom:1px solid #F1F5F9}
+.chk{width:18px;height:18px;border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff}
+.footer{background:#080C1F;padding:20px 32px;border-top:2px solid #00D4AA}
+.footer a{color:#00D4AA;text-decoration:none}
+</style>
+
+<div class="nl">
+
+<div class="masthead">
+  <div>
+    <div class="ml">Shell<span>TI</span> Insights</div>
+    <div class="ms">Compliance · Ciberseguridad · Datos Personales</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#94A3B8;text-transform:uppercase;">Edición especial</div>
+    <div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:4px">
+      <span class="iss">#002</span>
+      <span style="font-size:11px;color:#475569;">Junio 2026</span>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:11px;color:#64748B;letter-spacing:1px;text-transform:uppercase">Ley 21.719 · Guía práctica</div>
+    <div class="tag">BUENAS PRÁCTICAS</div>
+  </div>
+  <div class="eyebrow">Tratamiento de datos personales</div>
+  <div class="htitle">Cómo tratar datos personales<br><em>correctamente</em> en su organización</div>
+  <div class="hsub">Una guía práctica y accionable para equipos que manejan datos a diario. Sin tecnicismos. Con ejemplos reales.</div>
+  <div class="pill">
+    <div style="font-size:11px;color:#10B981;line-height:1.4;font-weight:700">Guía de implementación<br><span style="color:#94A3B8;font-weight:400;font-size:10px">aplicable desde hoy</span></div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="slabel">Por qué importa tener buenas prácticas</div>
+  <p class="intro">No basta con cumplir la ley en el papel. Las buenas prácticas de tratamiento de datos protegen a las personas, generan confianza y reducen el riesgo de incidentes. Esta guía le muestra cómo aplicarlas en el día a día de su organización.</p>
+
+  <div class="hr"></div>
+
+  <div class="slabel">Los 7 pasos del tratamiento correcto</div>
+
+  <table class="steptable">
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#00D4AA">1</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Capture solo lo que necesita</div>
+        <div class="stepdesc">Antes de crear cualquier formulario, pregúntese: ¿realmente necesito este dato? Nombre, email y teléfono pueden ser suficientes. Pedir RUT, fecha de nacimiento o dirección sin necesidad real es infracción al principio de proporcionalidad.</div>
+        <div class="steptip" style="background:#E1F5EE;color:#0F6E56">Regla: si no tiene una finalidad clara para ese dato, no lo pida.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#00B4D8">2</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Informe siempre antes de recopilar</div>
+        <div class="stepdesc">El titular debe saber, antes de entregar sus datos: quién los recopila, para qué, cuánto tiempo se guardan y cómo ejercer sus derechos. Sin esta información, el consentimiento no es válido.</div>
+        <div class="steptip" style="background:#E6F1FB;color:#185FA5">Agregue un aviso de privacidad visible en cada formulario, no solo en el pie de página.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#8B5CF6">3</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Registre el consentimiento con evidencia</div>
+        <div class="stepdesc">Un checkbox no marcado por defecto, con texto claro, que el titular marca activamente. Guarde el registro con timestamp, versión del aviso aceptado e IP. Si la Agencia le pide evidencia, debe poder mostrarla.</div>
+        <div class="steptip" style="background:#EEEDFE;color:#534AB7">Nunca use consentimientos pre-marcados o tácitos. Son nulos.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#F59E0B">4</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Use los datos solo para lo declarado</div>
+        <div class="stepdesc">Si capturó un email para enviar una cotización, no lo agregue a su lista de newsletter sin consentimiento adicional. Cada nueva finalidad requiere nueva base legal. El principio de finalidad es uno de los más infringidos.</div>
+        <div class="steptip" style="background:#FAEEDA;color:#854F0B">Ante la duda: pida permiso explícito para cada uso diferente.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#10B981">5</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Proteja los datos técnicamente</div>
+        <div class="stepdesc">Cifrado en reposo y en tránsito, acceso por roles, contraseñas robustas, MFA en sistemas críticos. No se trata de tecnología sofisticada — se trata de medidas proporcionales al riesgo. Una planilla de Excel con datos de clientes enviada por email sin cifrar es una vulneración.</div>
+        <div class="steptip" style="background:#EAF3DE;color:#3B6D11">Mínimo: cifre las bases de datos, active MFA y controle quién accede a qué.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum"><div class="stepbadge" style="background:#EF4444">6</div></td>
+      <td class="stepbody">
+        <div class="steptitle">Elimine los datos cuando ya no los necesite</div>
+        <div class="stepdesc">Guardar datos "por si acaso" es una mala práctica y un riesgo. Defina plazos de retención por categoría y cúmplalos. Un candidato rechazado tiene derecho a que eliminen su CV después del proceso de selección.</div>
+        <div class="steptip" style="background:#FCEBEB;color:#A32D2D">Establezca una política de retención y un proceso de borrado certificado.</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="stepnum" style="border:none"><div class="stepbadge" style="background:#475569">7</div></td>
+      <td style="padding-bottom:0">
+        <div class="steptitle">Responda las solicitudes ARCOP en plazo</div>
+        <div class="stepdesc">Si alguien le pide acceder, corregir, eliminar u oponerse al uso de sus datos, tiene 30 días hábiles para responder. Habilite un canal claro, registre cada solicitud y documente la respuesta. Sin esto, está expuesto a denuncia directa ante la Agencia.</div>
+        <div class="steptip" style="background:#F1EFE8;color:#444441">Canal mínimo: un email dedicado como arcop@suempresa.com con auto-respuesta de acuse.</div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="hr"></div>
+
+  <div class="slabel">Qué hacer y qué evitar</div>
+
+  <div class="dos">
+    <div class="docard ok">
+      <div class="dotitle">Buenas prácticas</div>
+      <div class="doitem">Pedir solo los datos necesarios para la finalidad</div>
+      <div class="doitem">Informar al titular antes de recopilar</div>
+      <div class="doitem">Guardar evidencia de consentimientos</div>
+      <div class="doitem">Cifrar datos en reposo y en tránsito</div>
+      <div class="doitem">Definir plazos de retención por categoría</div>
+      <div class="doitem">Tener canal ARCOP operativo 24/7</div>
+      <div class="doitem">Capacitar al personal anualmente</div>
+    </div>
+    <div class="docard no">
+      <div class="dotitle">Errores frecuentes</div>
+      <div class="doitem">Checkbox pre-marcado o consentimiento tácito</div>
+      <div class="doitem">Reusar datos sin nueva base legal</div>
+      <div class="doitem">Compartir datos por email sin cifrar</div>
+      <div class="doitem">Guardar CVs o leads indefinidamente</div>
+      <div class="doitem">Usar info@empresa.com como canal ARCOP</div>
+      <div class="doitem">No registrar quién accede a los datos</div>
+      <div class="doitem">Política de privacidad copiada de internet</div>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="slabel">Datos sensibles — categoría especial</div>
+
+  <div class="tipbox" style="background:#FEF2F2">
+    <div class="tiplabel" style="color:#DC2626">Requieren protección adicional obligatoria</div>
+    <div class="tiptext" style="color:#991B1B">Los datos de <strong>salud, religión, origen étnico, orientación sexual, biometría, opiniones políticas y datos penales</strong> son datos sensibles. Requieren consentimiento explícito por escrito, controles técnicos más estrictos y están prohibidos de tratar sin base legal específica. Si su empresa maneja alguno de estos, realice una DPIA antes de continuar.</div>
+  </div>
+
+  <div class="tipbox" style="background:#FFF7ED">
+    <div class="tiplabel" style="color:#D97706">Datos de menores de edad</div>
+    <div class="tiptext" style="color:#92400E">Cualquier dato de personas menores de 18 años requiere autorización del padre, madre o tutor legal. No es suficiente que el menor "acepte" los términos. Si su sitio o aplicación puede ser usado por menores, implemente verificación de edad y controles específicos.</div>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="slabel">Checklist de implementación inmediata</div>
+
+  <ul class="checklist">
+    <li><div class="chk" style="background:#10B981">✓</div><div><strong>Revise todos sus formularios</strong> — ¿piden solo lo necesario? ¿tienen aviso de privacidad? ¿el checkbox no está pre-marcado?</div></li>
+    <li><div class="chk" style="background:#10B981">✓</div><div><strong>Audite sus bases de datos</strong> — ¿sabe qué datos tiene, dónde están y quién puede acceder?</div></li>
+    <li><div class="chk" style="background:#10B981">✓</div><div><strong>Verifique sus proveedores</strong> — ¿tienen contrato DPA? ¿los SaaS que usa procesan datos fuera de Chile?</div></li>
+    <li><div class="chk" style="background:#F59E0B">!</div><div><strong>Habilite un canal ARCOP</strong> — cree arcop@suempresa.com o un formulario dedicado antes de diciembre 2026.</div></li>
+    <li><div class="chk" style="background:#F59E0B">!</div><div><strong>Defina plazos de retención</strong> — ¿cuánto tiempo guarda leads, CVs, datos de clientes inactivos?</div></li>
+    <li><div class="chk" style="background:#F59E0B">!</div><div><strong>Capacite a su equipo</strong> — RRHH, ventas y marketing manejan datos personales a diario. Necesitan formación básica documentada.</div></li>
+    <li><div class="chk" style="background:#EF4444">!</div><div><strong>Prepare un protocolo de brechas</strong> — si hay un incidente, tiene 72 horas para notificar a la Agencia. ¿Sabe qué hacer?</div></li>
+  </ul>
+
+  <div class="tipbox" style="background:#080C1F">
+    <div class="tiplabel" style="color:#00D4AA">ShellTI puede ayudarle</div>
+    <div class="tiptext" style="color:#CBD5E1">Si necesita apoyo para implementar estas prácticas — diagnóstico GAP, política de tratamiento, contratos DPA, capacitación o EPD como servicio — <a href="https://shellti.com/#contacto" style="color:#00D4AA;font-weight:700;">contáctenos en shellti.com</a>. Acompañamos a su organización en todo el proceso de adecuación antes de diciembre 2026.</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="font-size:13px;color:#94A3B8"><strong style="color:#fff">ShellTI</strong> · Compliance Consulting<br><span style="font-size:11px">ShellTI Insights · Edición #002 · Junio 2026</span></div>
+  </div>
+  <div style="height:1px;background:#1E2D50;margin-bottom:12px"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:11px;color:#475569"><a href="https://www.shellti.com">www.shellti.com</a> · <a href="mailto:contacto@shellti.com">contacto@shellti.com</a></div>
+    <div style="font-size:10px;color:#334155">© 2026 ShellTI</div>
+  </div>
+  <div style="margin-top:12px;font-size:10px;color:#334155;text-align:center">Recibiste este email porque te suscribiste a ShellTI Insights. <a href="{{unsubscribe}}" style="color:#475569">Cancelar suscripción</a></div>
+</div>
+
+</div>

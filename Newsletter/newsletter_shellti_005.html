@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ShellTI Insights #005 — Casos reales de vulneración de datos</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Helvetica Neue',Arial,sans-serif;">
+<div style="max-width:640px;margin:0 auto;background:#fff;">
+
+<!-- MASTHEAD -->
+<div style="background:#fff;padding:16px 32px;border-bottom:2px solid #080C1F;display:flex;align-items:center;justify-content:space-between;">
+  <div>
+    <div style="font-size:22px;font-weight:800;color:#080C1F;letter-spacing:-0.5px;">Shell<span style="color:#00B4D8;">TI</span> Insights</div>
+    <div style="font-size:11px;color:#94A3B8;margin-top:2px;font-style:italic;">Compliance · Ciberseguridad · Datos Personales</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#94A3B8;text-transform:uppercase;">ShellTI Insights</div>
+    <div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:4px;">
+      <span style="background:#080C1F;color:#00D4AA;font-size:11px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:1px;">#005</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div style="background:#080C1F;padding:28px 32px 32px;border-bottom:3px solid #EF4444;">
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:11px;color:#64748B;letter-spacing:1px;text-transform:uppercase;">Casos reales · Lecciones concretas</div>
+    <div style="background:rgba(239,68,68,0.1);border:1px solid #EF4444;color:#EF4444;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;">ALERTA DE RIESGO</div>
+  </div>
+  <div style="font-size:11px;color:#EF4444;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 10px;">Cuando los datos fallan, todo falla</div>
+  <div style="font-size:26px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px;">Vulneraciones de datos reales: <span style="color:#EF4444;">el costo que nadie quiere pagar</span></div>
+  <div style="font-size:13px;color:#94A3B8;line-height:1.6;max-width:520px;">Casos documentados de empresas que enfrentaron brechas de datos. Lo que le pasó a ellas puede pasarle a usted. La diferencia está en estar preparado antes de que ocurra.</div>
+</div>
+
+<!-- BODY -->
+<div style="padding:28px 32px;">
+
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(226,232,240,0.3);">Por qué estudiar casos reales</div>
+  <p style="font-size:14px;color:#334155;line-height:1.7;margin:0 0 20px;">Las vulneraciones de datos no ocurren solo en empresas descuidadas ni solo en grandes corporaciones. Ocurren en organizaciones con equipos técnicos, con abogados y con políticas escritas. Lo que las diferencia es la capacidad de detectar, responder y demostrar que actuaron bien. Los casos a continuación muestran cómo una brecha impacta simultáneamente en cuatro dimensiones: reputacional, legal, operacional y financiera.</p>
+
+  <hr style="border:none;border-top:1px solid #E2E8F0;margin:20px 0;"/>
+
+  <!-- CASO 1: Meta -->
+  <div style="background:#080C1F;border-radius:8px;padding:14px 18px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:13px;font-weight:800;color:#fff;">Meta (Facebook / Instagram)</div>
+      <div style="font-size:10px;font-weight:700;color:#EF4444;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:3px;">2023</div>
+    </div>
+    <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Transferencia ilegal de datos de usuarios europeos a servidores en EE.UU., sin mecanismo legal válido tras la invalidación del acuerdo Privacy Shield por el Tribunal Europeo de Justicia.</div>
+  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#F5F3FF;border-radius:6px;padding:10px 12px;height:100%;">
+          <div style="font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:1px;margin-bottom:5px;">REPUTACIONAL</div>
+          <div style="font-size:11px;color:#5B21B6;line-height:1.6;">Portadas globales por semanas. Usuarios europeos cuestionaron públicamente si su información estaba segura. La imagen de Facebook, ya debilitada, sufrió otro golpe directo ante reguladores y usuarios.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#FEF2F2;border-radius:6px;padding:10px 12px;height:100%;">
+          <div style="font-size:10px;font-weight:700;color:#DC2626;letter-spacing:1px;margin-bottom:5px;">LEGAL</div>
+          <div style="font-size:11px;color:#991B1B;line-height:1.6;">Multa de <strong>1.200 millones de euros</strong> — la mayor impuesta bajo el GDPR hasta la fecha. Obligación de suspender transferencias de datos a EE.UU. en un plazo de 6 meses o cesar operaciones en Europa.</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#FFFBEB;border-radius:6px;padding:10px 12px;height:100%;">
+          <div style="font-size:10px;font-weight:700;color:#D97706;letter-spacing:1px;margin-bottom:5px;">OPERACIONAL</div>
+          <div style="font-size:11px;color:#92400E;line-height:1.6;">Rediseño completo de la arquitectura de transferencia de datos entre continentes. Negociación de emergencia de nuevos marcos contractuales con reguladores europeos. Meses de trabajo de ingeniería y legal a la vez.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:10px 12px;height:100%;">
+          <div style="font-size:10px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:5px;">FINANCIERO</div>
+          <div style="font-size:11px;color:#166534;line-height:1.6;">Además de la multa, el costo de remediación técnica y legal se estimó en cientos de millones adicionales. La acción de Meta cayó en los días siguientes al anuncio de la sanción.</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- CASO 2: TikTok menores -->
+  <div style="background:#080C1F;border-radius:8px;padding:14px 18px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:13px;font-weight:800;color:#fff;">TikTok</div>
+      <div style="font-size:10px;font-weight:700;color:#EF4444;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:3px;">2023</div>
+    </div>
+    <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Tratamiento de datos de menores de edad sin el consentimiento de los padres exigido por el GDPR. La plataforma configuraba automáticamente cuentas de menores como públicas, exponiendo su actividad a cualquier usuario.</div>
+  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#F5F3FF;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:1px;margin-bottom:5px;">REPUTACIONAL</div>
+          <div style="font-size:11px;color:#5B21B6;line-height:1.6;">Campaña mediática masiva sobre la seguridad de menores en la plataforma. Varios gobiernos prohibieron TikTok en dispositivos oficiales. Padres y apoderados retiraron a menores de la aplicación.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#FEF2F2;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#DC2626;letter-spacing:1px;margin-bottom:5px;">LEGAL</div>
+          <div style="font-size:11px;color:#991B1B;line-height:1.6;">Multa de <strong>345 millones de euros</strong> por la autoridad irlandesa de protección de datos. La infracción fue considerada gravísima por involucrar específicamente a menores de edad — categoría de máxima protección.</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#FFFBEB;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#D97706;letter-spacing:1px;margin-bottom:5px;">OPERACIONAL</div>
+          <div style="font-size:11px;color:#92400E;line-height:1.6;">Rediseño forzado de la configuración de privacidad por defecto. Implementación de verificación de edad en todos los mercados europeos. Los plazos los impuso el regulador, no la empresa.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:5px;">FINANCIERO</div>
+          <div style="font-size:11px;color:#166534;line-height:1.6;">Multa directa más el costo de auditorías externas, rediseño de producto y campañas de comunicación de crisis. En mercados donde fue prohibida, el impacto en ingresos publicitarios fue inmediato.</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- CASO 3: H&M -->
+  <div style="background:#080C1F;border-radius:8px;padding:14px 18px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:13px;font-weight:800;color:#fff;">H&amp;M (Alemania)</div>
+      <div style="font-size:10px;font-weight:700;color:#EF4444;background:rgba(239,68,68,0.15);padding:2px 8px;border-radius:3px;">2020</div>
+    </div>
+    <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Supervisión ilegal de empleados. Gerentes recopilaban y almacenaban información detallada sobre la vida privada de los trabajadores: enfermedades, situación familiar, creencias religiosas y problemas personales — todo registrado en sistemas corporativos sin consentimiento.</div>
+  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#F5F3FF;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:1px;margin-bottom:5px;">REPUTACIONAL</div>
+          <div style="font-size:11px;color:#5B21B6;line-height:1.6;">El caso reveló una cultura de vigilancia interna que contradecía los valores públicos de la empresa. Ex empleados hablaron en medios. El daño a la marca empleadora fue severo y persistente en Alemania.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#FEF2F2;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#DC2626;letter-spacing:1px;margin-bottom:5px;">LEGAL</div>
+          <div style="font-size:11px;color:#991B1B;line-height:1.6;">Multa de <strong>35 millones de euros</strong>. La infracción involucró datos sensibles (salud, religión) y fue sistemática durante años. La autoridad hamburgesa describió la conducta como "particularmente intrusiva".</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#FFFBEB;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#D97706;letter-spacing:1px;margin-bottom:5px;">OPERACIONAL</div>
+          <div style="font-size:11px;color:#92400E;line-height:1.6;">Revisión completa de todos los sistemas de RRHH. Eliminación de registros ilegales. Auditoría interna forzada. Nuevas políticas de gestión de datos de empleados implementadas bajo supervisión regulatoria.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:5px;">FINANCIERO</div>
+          <div style="font-size:11px;color:#166534;line-height:1.6;">Compensaciones voluntarias a empleados afectados, más costos legales y de consultoría. La empresa también ofreció indemnizaciones para mitigar el impacto reputacional y evitar demandas civiles adicionales.</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- CASO 4: caso sin nombre - empresa mediana -->
+  <div style="background:#080C1F;border-radius:8px;padding:14px 18px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-size:13px;font-weight:800;color:#fff;">Empresa mediana de retail — Chile</div>
+      <div style="font-size:10px;font-weight:700;color:#F59E0B;background:rgba(245,158,11,0.15);padding:2px 8px;border-radius:3px;">CASO TIPO</div>
+    </div>
+    <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Un ex empleado filtró una base de datos con información de 180.000 clientes — nombres, RUT, emails y direcciones — a través de un acceso que no fue revocado al momento del despido. Los datos circularon durante semanas antes de que la empresa lo detectara.</div>
+  </div>
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#F5F3FF;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:1px;margin-bottom:5px;">REPUTACIONAL</div>
+          <div style="font-size:11px;color:#5B21B6;line-height:1.6;">Clientes afectados comenzaron a recibir spam y llamadas fraudulentas. Al asociar el origen con la empresa, iniciaron reclamos públicos en SERNAC y redes sociales. La prensa regional cubrió el caso durante semanas.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#FEF2F2;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#DC2626;letter-spacing:1px;margin-bottom:5px;">LEGAL</div>
+          <div style="font-size:11px;color:#991B1B;line-height:1.6;">Denuncia ante el Ministerio Público por el delito de la Ley 19.223. Demanda civil de un grupo de clientes afectados. Bajo la Ley 21.719, este caso calificaría como infracción grave con potencial multa de hasta 10.000 UTM.</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" style="padding:4px 4px 4px 0;vertical-align:top;">
+        <div style="background:#FFFBEB;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#D97706;letter-spacing:1px;margin-bottom:5px;">OPERACIONAL</div>
+          <div style="font-size:11px;color:#92400E;line-height:1.6;">La empresa debió detener sus operaciones digitales por 72 horas para contener la brecha. Revisión completa de accesos. Contratación de emergencia de empresa forense. El equipo de TI trabajó durante 3 semanas sin normalidad.</div>
+        </div>
+      </td>
+      <td width="50%" style="padding:4px 0 4px 4px;vertical-align:top;">
+        <div style="background:#F0FDF4;border-radius:6px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;color:#16A34A;letter-spacing:1px;margin-bottom:5px;">FINANCIERO</div>
+          <div style="font-size:11px;color:#166534;line-height:1.6;">Costos de respuesta de emergencia, honorarios legales, pérdida de ventas durante la interrupción y provisión para demandas civiles. Sin seguro de ciberseguridad, el impacto fue absorbido completamente por la empresa.</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <hr style="border:none;border-top:1px solid #E2E8F0;margin:20px 0;"/>
+
+  <!-- Patrón común -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:16px;">El patrón que se repite en todos los casos</div>
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+    <tr><td style="padding:10px 0;border-bottom:1px solid #F1F5F9;">
+      <table cellpadding="0" cellspacing="0"><tr>
+        <td style="width:34px;vertical-align:top;padding-top:2px;"><div style="width:26px;height:26px;border-radius:50%;background:#EF4444;text-align:center;line-height:26px;font-size:10px;font-weight:800;color:#fff;">1</div></td>
+        <td style="padding-left:12px;">
+          <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:2px;">La brecha no fue el problema real — la falta de controles sí</div>
+          <div style="font-size:11px;color:#475569;line-height:1.6;">En todos los casos, existían controles básicos que no estaban implementados: accesos sin revocar, transferencias sin base legal, configuraciones por defecto inseguras. La brecha fue el síntoma; la ausencia de cumplimiento, la enfermedad.</div>
+        </td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="padding:10px 0;border-bottom:1px solid #F1F5F9;">
+      <table cellpadding="0" cellspacing="0"><tr>
+        <td style="width:34px;vertical-align:top;padding-top:2px;"><div style="width:26px;height:26px;border-radius:50%;background:#F59E0B;text-align:center;line-height:26px;font-size:10px;font-weight:800;color:#fff;">2</div></td>
+        <td style="padding-left:12px;">
+          <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:2px;">El daño reputacional superó al financiero en todos los casos</div>
+          <div style="font-size:11px;color:#475569;line-height:1.6;">Las multas son cuantificables y pagables. La pérdida de confianza de clientes, empleados y socios comerciales no tiene precio fijo — y en algunos casos no se recuperó completamente ni años después.</div>
+        </td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="padding:10px 0;border-bottom:1px solid #F1F5F9;">
+      <table cellpadding="0" cellspacing="0"><tr>
+        <td style="width:34px;vertical-align:top;padding-top:2px;"><div style="width:26px;height:26px;border-radius:50%;background:#8B5CF6;text-align:center;line-height:26px;font-size:10px;font-weight:800;color:#fff;">3</div></td>
+        <td style="padding-left:12px;">
+          <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:2px;">La respuesta tardía multiplicó el daño</div>
+          <div style="font-size:11px;color:#475569;line-height:1.6;">Las organizaciones que detectaron tarde, comunicaron mal o no tenían protocolo documentado acumularon infracciones adicionales. El plazo de 72 horas para notificar no es negociable — y sin protocolo previo, es imposible de cumplir.</div>
+        </td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="padding:10px 0;">
+      <table cellpadding="0" cellspacing="0"><tr>
+        <td style="width:34px;vertical-align:top;padding-top:2px;"><div style="width:26px;height:26px;border-radius:50%;background:#10B981;text-align:center;line-height:26px;font-size:10px;font-weight:800;color:#fff;">4</div></td>
+        <td style="padding-left:12px;">
+          <div style="font-size:12px;font-weight:700;color:#1E293B;margin-bottom:2px;">Las empresas cumplidas salieron mejor paradas — incluso cuando tuvieron incidentes</div>
+          <div style="font-size:11px;color:#475569;line-height:1.6;">Organizaciones que tenían programas de cumplimiento certificados, protocolos documentados y notificaron a tiempo recibieron sanciones atenuadas. La Ley 21.719 también contempla el cumplimiento proactivo como atenuante explícito.</div>
+        </td>
+      </tr></table>
+    </td></tr>
+  </table>
+
+  <hr style="border:none;border-top:1px solid #E2E8F0;margin:20px 0;"/>
+
+  <!-- Lo que esto significa para Chile -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00D4AA;margin-bottom:12px;">Lo que esto significa para su organización en Chile</div>
+
+  <div style="background:#FFF7ED;border-radius:8px;padding:14px 18px;margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:700;color:#D97706;margin-bottom:5px;">La Agencia publicará las sanciones — y duran 5 años en el registro</div>
+    <div style="font-size:12px;color:#92400E;line-height:1.6;">La Ley 21.719 crea un Registro Nacional de Sanciones y Cumplimiento. Cualquier infracción quedará publicada y visible durante 5 años. Sus clientes, proveedores, socios y competidores podrán consultarlo. El daño reputacional no es hipotético — está diseñado en la ley.</div>
+  </div>
+
+  <div style="background:#FEF2F2;border-radius:8px;padding:14px 18px;margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:700;color:#DC2626;margin-bottom:5px;">La multa máxima puede ser 4% de sus ingresos anuales</div>
+    <div style="font-size:12px;color:#991B1B;line-height:1.6;">Para empresas reincidentes en infracciones graves o gravísimas, la Agencia puede aplicar el porcentaje sobre ingresos en lugar del tope de UTM — lo que resulte mayor. Para una empresa con $500MM en ventas, eso son $20MM en riesgo solo por reincidencia.</div>
+  </div>
+
+  <div style="background:#EFF6FF;border-radius:8px;padding:14px 18px;margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:700;color:#1D4ED8;margin-bottom:5px;">La suspensión de operaciones es una sanción accesoria real</div>
+    <div style="font-size:12px;color:#1E3A8A;line-height:1.6;">En casos de infracciones gravísimas reiteradas en 24 meses, la Agencia puede suspender las operaciones de tratamiento de datos hasta por 30 días. Para una empresa que depende de su CRM, su e-commerce o sus sistemas de RRHH, 30 días de suspensión equivale a un daño operacional devastador.</div>
+  </div>
+
+  <!-- CTA -->
+  <div style="background:#080C1F;border-radius:8px;padding:24px 20px;text-align:center;">
+    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">No espere a ser el próximo caso de estudio</div>
+    <div style="font-size:13px;color:#94A3B8;line-height:1.6;margin-bottom:18px;max-width:460px;margin-left:auto;margin-right:auto;">ShellTI evalúa el estado de cumplimiento de su organización antes de que la Agencia lo haga. Diagnóstico GAP, implementación técnica y legal, EPD como servicio y capacitación certificada — todo lo que necesita para llegar preparado a diciembre 2026.</div>
+    <a href="https://shellti.com/#contacto" style="display:inline-block;background:#00D4AA;color:#080C1F;font-size:13px;font-weight:800;padding:12px 28px;border-radius:4px;text-decoration:none;letter-spacing:.5px;">SOLICITAR DIAGNÓSTICO →</a>
+    <div style="font-size:11px;color:#475569;margin-top:12px;">contacto@shellti.com · www.shellti.com</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="background:#080C1F;padding:20px 32px;border-top:2px solid #00D4AA;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="font-size:13px;color:#94A3B8;"><strong style="color:#fff;">ShellTI</strong> · Compliance Consulting<br><span style="font-size:11px;">ShellTI Insights · Edición #005</span></div>
+  </div>
+  <div style="height:1px;background:#1E2D50;margin-bottom:12px;"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:11px;color:#475569;"><a href="https://www.shellti.com" style="color:#00D4AA;text-decoration:none;">www.shellti.com</a> · <a href="mailto:contacto@shellti.com" style="color:#00D4AA;text-decoration:none;">contacto@shellti.com</a></div>
+    <div style="font-size:10px;color:#334155;">© 2026 ShellTI</div>
+  </div>
+  <div style="margin-top:12px;font-size:10px;color:#334155;text-align:center;">Recibiste este email porque te suscribiste a ShellTI Insights. <a href="{{unsubscribe}}" style="color:#475569;text-decoration:none;">Cancelar suscripción</a></div>
+</div>
+
+</div>
+</body>
+</html>
