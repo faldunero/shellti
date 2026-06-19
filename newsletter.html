@@ -274,7 +274,7 @@
   <div class="hero-meta">
     <div class="hero-stat"><strong>8</strong><small>ediciones publicadas</small></div>
     <div class="hero-divider"></div>
-    <div class="hero-stat"><strong>Mensual</strong><small>frecuencia de publicacion</small></div>
+    <div class="hero-stat"><strong>Periodica</strong><small>frecuencia de publicacion</small></div>
     <div class="hero-divider"></div>
     <div class="hero-stat"><strong>Acceso libre</strong><small>descarga en PDF</small></div>
   </div>
@@ -293,7 +293,7 @@
 
     <div class="card" data-search="001 overview ley 21719 introduccion cfo cio hr compliance alert" onclick="openModal('Newsletter/newsletter_shellti_001.html','Insights #001 — Ley 21.719 overview completo')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_001.html" loading="lazy" title="Newsletter 001" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_001.html" loading="eager" title="Newsletter 001" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#001</div>
       </div>
@@ -312,7 +312,7 @@
 
     <div class="card" data-search="002 buenas practicas tratamiento datos guia operaciones dia a dia" onclick="openModal('Newsletter/newsletter_shellti_002.html','Insights #002 — Buenas practicas del tratamiento')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_002.html" loading="lazy" title="Newsletter 002" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_002.html" loading="eager" title="Newsletter 002" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#002</div>
       </div>
@@ -331,7 +331,7 @@
 
     <div class="card" data-search="003 gdpr europa comparacion analisis global diferencias similitudes" onclick="openModal('Newsletter/newsletter_shellti_003.html','Insights #003 — Ley 21.719 vs GDPR Europa')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_003.html" loading="lazy" title="Newsletter 003" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_003.html" loading="eager" title="Newsletter 003" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#003</div>
       </div>
@@ -350,7 +350,7 @@
 
     <div class="card" data-search="004 pymes pequenas medianas empresas gracia diciembre 2027" onclick="openModal('Newsletter/newsletter_shellti_004.html','Insights #004 — Ley 21.719 para PYMEs')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_004.html" loading="lazy" title="Newsletter 004" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_004.html" loading="eager" title="Newsletter 004" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#004</div>
       </div>
@@ -369,7 +369,7 @@
 
     <div class="card" data-search="005 casos reales vulneracion meta tiktok hm retail chile brechas multas" onclick="openModal('Newsletter/newsletter_shellti_005.html','Insights #005 — Casos reales de vulneracion')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_005.html" loading="lazy" title="Newsletter 005" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_005.html" loading="eager" title="Newsletter 005" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#005</div>
       </div>
@@ -388,7 +388,7 @@
 
     <div class="card" data-search="006 iso nist gdpr cobit normas marcos buenas practicas proteccion datos" onclick="openModal('Newsletter/newsletter_shellti_006.html','Insights #006 — Buenas practicas segun ISO NIST y Ley 21.719')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_006.html" loading="lazy" title="Newsletter 006" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_006.html" loading="eager" title="Newsletter 006" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#006</div>
       </div>
@@ -408,7 +408,7 @@
   </div>
     <div class="card" data-search="007 ciberseguridad phishing malware ransomware suplantacion estadisticas ibm fortinet sophos ley 21719" onclick="openModal('Newsletter/newsletter_shellti_007.html','Insights #007 — Ciberseguridad en cifras: lo que los datos revelan sobre los ataques')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_007.html" loading="lazy" title="Newsletter 007" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_007.html" loading="eager" title="Newsletter 007" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#007</div>
       </div>
@@ -427,7 +427,7 @@
 
     <div class="card" data-search="008 banca financiero banco chile bancoestado santander swift ransomware historia ataques cmf sanciones ley 21719 fraude" onclick="openModal('Newsletter/newsletter_shellti_008.html','Insights #008 — Banca chilena bajo ataque: historia, datos y cumplimiento')">
       <div class="card-thumb">
-        <iframe src="Newsletter/newsletter_shellti_008.html" loading="lazy" title="Newsletter 008" scrolling="no"></iframe>
+        <iframe src="Newsletter/newsletter_shellti_008.html" loading="eager" title="Newsletter 008" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
         <div class="card-issue-badge">#008</div>
       </div>
@@ -478,11 +478,25 @@
   // THUMBNAIL SCALING
   function setThumbScales() {
     document.querySelectorAll('.card-thumb').forEach(function(t) {
-      t.style.setProperty('--thumb-scale', t.offsetWidth / 640);
+      var scale = t.offsetWidth / 640;
+      if (scale > 0) t.style.setProperty('--thumb-scale', scale);
     });
   }
   setThumbScales();
+  setTimeout(setThumbScales, 500);
+  setTimeout(setThumbScales, 1500);
   window.addEventListener('resize', setThumbScales);
+
+  // Recalcular cuando cada iframe termina de cargar (fix para cards lazy fuera del viewport inicial)
+  document.querySelectorAll('.card-thumb iframe').forEach(function(iframe) {
+    iframe.addEventListener('load', function() {
+      var thumb = iframe.closest('.card-thumb');
+      if (thumb) {
+        var scale = thumb.offsetWidth / 640;
+        if (scale > 0) thumb.style.setProperty('--thumb-scale', scale);
+      }
+    });
+  });
 
   // SEARCH
   var searchInput = document.getElementById('search-input');
