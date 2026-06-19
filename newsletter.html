@@ -55,7 +55,7 @@
 
     /* THUMBNAIL */
     .card-thumb { position: relative; width: 100%; height: 200px; overflow: hidden; background: #0A0F28; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
-    .card-thumb iframe { position: absolute; top: 0; left: 0; width: 640px; height: 860px; transform-origin: top left; transform: scale(var(--thumb-scale, 0.47)); pointer-events: none; border: none; }
+    .card-thumb iframe { position: absolute; top: 0; left: 0; width: 640px; height: 900px; transform-origin: top left; transform: scale(0.47); pointer-events: none; border: none; }
     .card-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, #0F1730 100%); z-index: 2; }
     .card-issue-badge { position: absolute; top: 12px; right: 12px; z-index: 3; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); background: rgba(6,10,24,0.9); border: 1px solid rgba(0,212,170,0.4); padding: 4px 9px; border-radius: 20px; backdrop-filter: blur(4px); }
 
@@ -405,7 +405,6 @@
       </div>
     </div>
 
-  </div>
     <div class="card" data-search="007 ciberseguridad phishing malware ransomware suplantacion estadisticas ibm fortinet sophos ley 21719" onclick="openModal('Newsletter/newsletter_shellti_007.html','Insights #007 — Ciberseguridad en cifras: lo que los datos revelan sobre los ataques')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_007.html" loading="eager" title="Newsletter 007" scrolling="no"></iframe>
@@ -475,28 +474,7 @@
 </div>
 
 <script>
-  // THUMBNAIL SCALING
-  function setThumbScales() {
-    document.querySelectorAll('.card-thumb').forEach(function(t) {
-      var scale = t.offsetWidth / 640;
-      if (scale > 0) t.style.setProperty('--thumb-scale', scale);
-    });
-  }
-  setThumbScales();
-  setTimeout(setThumbScales, 500);
-  setTimeout(setThumbScales, 1500);
-  window.addEventListener('resize', setThumbScales);
-
-  // Recalcular cuando cada iframe termina de cargar (fix para cards lazy fuera del viewport inicial)
-  document.querySelectorAll('.card-thumb iframe').forEach(function(iframe) {
-    iframe.addEventListener('load', function() {
-      var thumb = iframe.closest('.card-thumb');
-      if (thumb) {
-        var scale = thumb.offsetWidth / 640;
-        if (scale > 0) thumb.style.setProperty('--thumb-scale', scale);
-      }
-    });
-  });
+  // Scale fijo en CSS
 
   // SEARCH
   var searchInput = document.getElementById('search-input');
