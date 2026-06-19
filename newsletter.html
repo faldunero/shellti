@@ -6,361 +6,103 @@
   <title>ShellTI Insights — Archivo de newsletters</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --navy:    #080C1F;
-      --navy-2:  #0D1535;
-      --navy-3:  #060A18;
-      --teal:    #00D4AA;
-      --blue:    #00B4D8;
-      --text:    #E8EAF0;
-      --muted:   #8A9BB5;
-      --faint:   #4A5568;
-      --border:  rgba(255,255,255,0.06);
-      --teal-glow: rgba(0,212,170,0.08);
+      --navy:   #080C1F;
+      --navy2:  #0D1535;
+      --navy3:  #060A18;
+      --teal:   #00D4AA;
+      --blue:   #00B4D8;
+      --text:   #E8EAF0;
+      --muted:  #8A9BB5;
+      --faint:  #4A5568;
+      --border: rgba(255,255,255,0.08);
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--navy-3);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
+    body { background: var(--navy3); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
     /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(6,10,24,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-    }
-    .nav-brand {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none;
-    }
-    .nav-logo {
-      width: 32px; height: 32px;
-      background: linear-gradient(135deg, var(--teal), var(--blue));
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px; font-weight: 700;
-      color: var(--navy);
-    }
-    .nav-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px; font-weight: 700;
-      color: #fff;
-    }
-    .nav-name span {
-      font-weight: 400; color: var(--muted); margin-left: 6px;
-    }
-    .nav-back {
-      font-size: 12px; color: var(--faint);
-      text-decoration: none;
-      letter-spacing: 0.3px;
-      transition: color 0.2s;
-    }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(6,10,24,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo { width: 32px; height: 32px; background: linear-gradient(135deg, var(--teal), var(--blue)); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--navy); }
+    .nav-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+    .nav-name span { font-weight: 400; color: var(--muted); margin-left: 6px; }
+    .nav-back { font-size: 12px; color: var(--faint); text-decoration: none; transition: color 0.2s; }
     .nav-back:hover { color: var(--teal); }
 
     /* HERO */
-    .hero {
-      padding: 72px 40px 56px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-eyebrow {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 14px;
-    }
-    .hero h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.8px;
-      line-height: 1.15;
-      margin-bottom: 16px;
-    }
-    .hero h1 span {
-      background: linear-gradient(90deg, var(--teal), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-sub {
-      font-size: 15px; color: var(--muted);
-      max-width: 520px; line-height: 1.65;
-    }
-    .hero-meta {
-      display: flex; align-items: center; gap: 24px;
-      margin-top: 28px; flex-wrap: wrap;
-    }
-    .hero-stat {
-      display: flex; flex-direction: column;
-    }
-    .hero-stat strong {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px; font-weight: 700;
-      color: #fff; line-height: 1;
-    }
-    .hero-stat small {
-      font-size: 11px; color: var(--faint);
-      letter-spacing: 0.5px; margin-top: 3px;
-    }
-    .hero-divider {
-      width: 1px; height: 32px;
-      background: var(--border);
-    }
+    .hero { padding: 64px 40px 48px; max-width: 1100px; margin: 0 auto; }
+    .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+    .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: #fff; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 14px; }
+    .hero h1 span { background: linear-gradient(90deg, var(--teal), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 15px; color: var(--muted); max-width: 500px; line-height: 1.65; }
+    .hero-meta { display: flex; align-items: center; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+    .hero-stat strong { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: #fff; line-height: 1; display: block; }
+    .hero-stat small { font-size: 11px; color: var(--faint); letter-spacing: 0.5px; margin-top: 3px; display: block; }
+    .hero-divider { width: 1px; height: 28px; background: var(--border); }
+
+    /* SEARCH */
+    .search-wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px 32px; }
+    .search-box { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; max-width: 420px; transition: border-color 0.2s; }
+    .search-box:focus-within { border-color: rgba(0,212,170,0.4); }
+    .search-icon { color: var(--faint); font-size: 14px; flex-shrink: 0; }
+    .search-box input { background: none; border: none; outline: none; color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; width: 100%; }
+    .search-box input::placeholder { color: var(--faint); }
+    .search-hint { font-size: 11px; color: var(--faint); margin-top: 8px; }
+    #no-results { display: none; font-size: 13px; color: var(--faint); padding: 24px 0; }
 
     /* GRID */
-    .grid-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 40px 80px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
+    .grid-section { max-width: 1100px; margin: 0 auto; padding: 0 40px 80px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 
     /* CARD */
-    .card {
-      background: var(--navy-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
-      cursor: pointer;
-    }
-    .card:hover {
-      border-color: rgba(0,212,170,0.3);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,170,0.1);
-    }
+    .card { background: #0F1730; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s; cursor: pointer; }
+    .card:hover { border-color: rgba(0,212,170,0.45); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,170,0.12); }
+    .card.hidden { display: none; }
 
-    /* THUMBNAIL — iframe scaled down */
-    .card-thumb {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
-      background: var(--navy);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .card-thumb iframe {
-      position: absolute;
-      top: 0; left: 0;
-      width: 680px;  /* newsletter natural width */
-      height: 860px;
-      transform-origin: top left;
-      transform: scale(var(--thumb-scale, 0.44));
-      pointer-events: none;
-      border: none;
-    }
-    .card-thumb-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 50%, var(--navy-2) 100%);
-      z-index: 2;
-    }
-    .card-issue-badge {
-      position: absolute;
-      top: 12px; right: 12px;
-      z-index: 3;
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--teal);
-      background: rgba(8,12,31,0.85);
-      border: 1px solid rgba(0,212,170,0.3);
-      padding: 4px 9px;
-      border-radius: 20px;
-      backdrop-filter: blur(4px);
-    }
+    /* THUMBNAIL */
+    .card-thumb { position: relative; width: 100%; height: 200px; overflow: hidden; background: #0A0F28; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+    .card-thumb iframe { position: absolute; top: 0; left: 0; width: 640px; height: 860px; transform-origin: top left; transform: scale(var(--thumb-scale, 0.47)); pointer-events: none; border: none; }
+    .card-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, #0F1730 100%); z-index: 2; }
+    .card-issue-badge { position: absolute; top: 12px; right: 12px; z-index: 3; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); background: rgba(6,10,24,0.9); border: 1px solid rgba(0,212,170,0.4); padding: 4px 9px; border-radius: 20px; backdrop-filter: blur(4px); }
 
     /* CARD BODY */
-    .card-body {
-      padding: 20px 22px 16px;
-      flex: 1;
-      display: flex; flex-direction: column;
-    }
-    .card-tag {
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 8px;
-    }
-    .card-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px; font-weight: 600;
-      color: #fff;
-      line-height: 1.35;
-      margin-bottom: 8px;
-      letter-spacing: -0.2px;
-    }
-    .card-desc {
-      font-size: 12px; color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
+    .card-body { padding: 18px 20px 14px; flex: 1; display: flex; flex-direction: column; }
+    .card-tag { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 7px; }
+    .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #FFFFFF; line-height: 1.35; margin-bottom: 7px; letter-spacing: -0.2px; }
+    .card-desc { font-size: 12px; color: #A0AEC0; line-height: 1.6; flex: 1; }
 
     /* CARD ACTIONS */
-    .card-actions {
-      display: flex; gap: 8px;
-      padding: 14px 22px 18px;
-      border-top: 1px solid var(--border);
-    }
-    .btn-open {
-      flex: 1;
-      background: linear-gradient(135deg, var(--teal), var(--blue));
-      color: var(--navy);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px; font-weight: 700;
-      padding: 9px 14px;
-      border-radius: 7px;
-      border: none;
-      cursor: pointer;
-      letter-spacing: 0.2px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      transition: opacity 0.2s;
-    }
+    .card-actions { display: flex; gap: 8px; padding: 12px 20px 16px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .btn-open { flex: 1; background: linear-gradient(135deg, var(--teal), var(--blue)); color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; padding: 9px 14px; border-radius: 7px; border: none; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; transition: opacity 0.2s; }
     .btn-open:hover { opacity: 0.88; }
-    .btn-pdf {
-      background: transparent;
-      color: var(--faint);
-      font-size: 12px; font-weight: 500;
-      padding: 9px 12px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      letter-spacing: 0.2px;
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 5px;
-      transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
-    }
-    .btn-pdf:hover {
-      color: var(--text);
-      border-color: rgba(255,255,255,0.15);
-    }
+    .btn-pdf { background: rgba(255,255,255,0.05); color: #A0AEC0; font-size: 12px; font-weight: 500; padding: 9px 12px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s, border-color 0.2s, background 0.2s; white-space: nowrap; }
+    .btn-pdf:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
 
     /* MODAL */
-    .modal-backdrop {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(6px);
-      align-items: center; justify-content: center;
-      padding: 20px;
-    }
+    .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
-    .modal {
-      background: var(--navy-2);
-      border: 1px solid rgba(0,212,170,0.2);
-      border-radius: 16px;
-      width: 100%; max-width: 800px;
-      height: 90vh;
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    }
-    .modal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .modal-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14px; font-weight: 600;
-      color: #fff;
-    }
-    .modal-controls {
-      display: flex; align-items: center; gap: 8px;
-    }
-    .modal-btn {
-      font-size: 12px; font-weight: 600;
-      padding: 7px 14px; border-radius: 7px;
-      border: none; cursor: pointer;
-      letter-spacing: 0.2px;
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 5px;
-    }
-    .modal-btn-pdf {
-      background: rgba(0,212,170,0.1);
-      color: var(--teal);
-      border: 1px solid rgba(0,212,170,0.25);
-    }
+    .modal { background: #0F1730; border: 1px solid rgba(0,212,170,0.25); border-radius: 16px; width: 100%; max-width: 800px; height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.7); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+    .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #fff; }
+    .modal-controls { display: flex; align-items: center; gap: 8px; }
+    .modal-btn { font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 7px; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .modal-btn-pdf { background: rgba(0,212,170,0.1); color: var(--teal); border: 1px solid rgba(0,212,170,0.3); }
     .modal-btn-pdf:hover { background: rgba(0,212,170,0.18); }
-    .modal-btn-close {
-      background: rgba(255,255,255,0.05);
-      color: var(--muted);
-      border: 1px solid var(--border);
-      font-size: 16px; padding: 6px 10px;
-    }
+    .modal-btn-close { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); font-size: 16px; padding: 6px 10px; }
     .modal-btn-close:hover { color: #fff; }
-    .modal iframe {
-      flex: 1;
-      border: none;
-      width: 100%;
-    }
+    .modal iframe { flex: 1; border: none; width: 100%; }
 
-    /* SUBSCRIBE STRIP */
-    .subscribe-strip {
-      max-width: 1100px; margin: 0 auto 60px;
-      padding: 0 40px;
-    }
-    .subscribe-box {
-      background: linear-gradient(135deg, rgba(0,212,170,0.06), rgba(0,180,216,0.03));
-      border: 1px solid rgba(0,212,170,0.18);
-      border-radius: 14px;
-      padding: 32px 36px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 24px; flex-wrap: wrap;
-    }
-    .subscribe-box h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px; font-weight: 700;
-      color: #fff; margin-bottom: 4px;
-    }
-    .subscribe-box p {
-      font-size: 13px; color: var(--muted);
-    }
-    .subscribe-btn {
-      background: linear-gradient(135deg, var(--teal), var(--blue));
-      color: var(--navy);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px; font-weight: 700;
-      padding: 11px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: opacity 0.2s;
-    }
-    .subscribe-btn:hover { opacity: 0.88; }
+    /* SUBSCRIBE */
+    .subscribe-strip { max-width: 1100px; margin: 0 auto 60px; padding: 0 40px; }
+    .subscribe-box { background: linear-gradient(135deg, rgba(0,212,170,0.07), rgba(0,180,216,0.03)); border: 1px solid rgba(0,212,170,0.2); border-radius: 14px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .subscribe-box h3 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .subscribe-box p { font-size: 13px; color: var(--muted); }
+    .subscribe-btn { background: linear-gradient(135deg, var(--teal), var(--blue)); color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; padding: 11px 24px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
 
-    /* RESPONSIVE */
     @media (max-width: 640px) {
-      nav, .hero, .grid-section, .subscribe-strip { padding-left: 20px; padding-right: 20px; }
-      .hero { padding-top: 48px; }
+      nav, .hero, .search-wrap, .grid-section, .subscribe-strip { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 40px; }
       .grid { grid-template-columns: 1fr; }
       .modal { height: 95vh; }
     }
@@ -368,7 +110,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="https://shellti.vercel.app" class="nav-brand">
     <div class="nav-logo">S</div>
@@ -377,35 +118,31 @@
   <a href="https://shellti.vercel.app" class="nav-back">Volver al sitio</a>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">Archivo de ediciones</div>
   <h1>ShellTI <span>Insights</span></h1>
   <p class="hero-sub">Contenido especializado en compliance tecnológico, protección de datos y Ley 21.719 para empresas chilenas.</p>
   <div class="hero-meta">
-    <div class="hero-stat">
-      <strong>6</strong>
-      <small>ediciones publicadas</small>
-    </div>
+    <div class="hero-stat"><strong>6</strong><small>ediciones publicadas</small></div>
     <div class="hero-divider"></div>
-    <div class="hero-stat">
-      <strong>1 dic 2026</strong>
-      <small>vigencia plena Ley 21.719</small>
-    </div>
+    <div class="hero-stat"><strong>1 dic 2026</strong><small>vigencia plena Ley 21.719</small></div>
     <div class="hero-divider"></div>
-    <div class="hero-stat">
-      <strong>20.000 UTM</strong>
-      <small>multa máxima</small>
-    </div>
+    <div class="hero-stat"><strong>20.000 UTM</strong><small>multa máxima</small></div>
   </div>
 </div>
 
-<!-- GRID -->
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">&#9906;</span>
+    <input type="text" id="search-input" placeholder="Buscar por número o tema..." autocomplete="off" />
+  </div>
+  <div class="search-hint">Ejemplo: #003, PYMEs, GDPR, casos reales</div>
+</div>
+
 <div class="grid-section">
   <div class="grid" id="newsletter-grid">
 
-    <!-- 001 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_001.html', 'Insights #001 — Ley 21.719 overview completo')">
+    <div class="card" data-search="001 overview ley 21719 introduccion cfo cio hr compliance alert" onclick="openModal('Newsletter/newsletter_shellti_001.html','Insights #001 — Ley 21.719 overview completo')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_001.html" loading="lazy" title="Newsletter 001" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -418,15 +155,13 @@
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_001.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_001.html', 'ShellTI_Insights_001')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_001.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
-    <!-- 002 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_002.html', 'Insights #002 — Buenas practicas del tratamiento')">
+    <div class="card" data-search="002 buenas practicas tratamiento datos guia operaciones dia a dia" onclick="openModal('Newsletter/newsletter_shellti_002.html','Insights #002 — Buenas practicas del tratamiento')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_002.html" loading="lazy" title="Newsletter 002" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -439,15 +174,13 @@
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_002.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_002.html', 'ShellTI_Insights_002')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_002.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
-    <!-- 003 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_003.html', 'Insights #003 — Ley 21.719 vs GDPR Europa')">
+    <div class="card" data-search="003 gdpr europa comparacion analisis global diferencias similitudes" onclick="openModal('Newsletter/newsletter_shellti_003.html','Insights #003 — Ley 21.719 vs GDPR Europa')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_003.html" loading="lazy" title="Newsletter 003" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -460,15 +193,13 @@
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_003.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_003.html', 'ShellTI_Insights_003')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_003.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
-    <!-- 004 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_004.html', 'Insights #004 — Ley 21.719 para PYMEs')">
+    <div class="card" data-search="004 pymes pequenas medianas empresas gracia diciembre 2027" onclick="openModal('Newsletter/newsletter_shellti_004.html','Insights #004 — Ley 21.719 para PYMEs')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_004.html" loading="lazy" title="Newsletter 004" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -481,15 +212,13 @@
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_004.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_004.html', 'ShellTI_Insights_004')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_004.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
-    <!-- 005 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_005.html', 'Insights #005 — Casos reales de vulneracion')">
+    <div class="card" data-search="005 casos reales vulneracion meta tiktok hm retail chile brechas multas" onclick="openModal('Newsletter/newsletter_shellti_005.html','Insights #005 — Casos reales de vulneracion')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_005.html" loading="lazy" title="Newsletter 005" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -502,15 +231,13 @@
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_005.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_005.html', 'ShellTI_Insights_005')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_005.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
-    <!-- 006 -->
-    <div class="card" onclick="openModal('Newsletter/newsletter_shellti_006.html', 'Insights #006 — Buenas practicas segun ISO, NIST y Ley 21.719')">
+    <div class="card" data-search="006 iso nist gdpr cobit normas marcos buenas practicas proteccion datos" onclick="openModal('Newsletter/newsletter_shellti_006.html','Insights #006 — Buenas practicas segun ISO NIST y Ley 21.719')">
       <div class="card-thumb">
         <iframe src="Newsletter/newsletter_shellti_006.html" loading="lazy" title="Newsletter 006" scrolling="no"></iframe>
         <div class="card-thumb-overlay"></div>
@@ -519,21 +246,20 @@
       <div class="card-body">
         <div class="card-tag">Normas · ISO · NIST · GDPR</div>
         <div class="card-title">Lo que dicen las normas: como proteger datos correctamente</div>
-        <div class="card-desc">ISO 27001, ISO 27701, NIST Privacy Framework, GDPR y Ley 21.719 convergen en principios accionables. 10 buenas practicas documentadas con referencias normativas.</div>
+        <div class="card-desc">ISO 27001, NIST Privacy Framework, GDPR y Ley 21.719 convergen en principios accionables. 10 buenas practicas con referencias normativas específicas.</div>
       </div>
       <div class="card-actions">
         <a class="btn-open" href="Newsletter/newsletter_shellti_006.html" target="_blank" onclick="event.stopPropagation()">Ver newsletter</a>
-        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_006.html', 'ShellTI_Insights_006')">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          PDF
+        <a class="btn-pdf" href="#" onclick="event.stopPropagation(); downloadPDF('Newsletter/newsletter_shellti_006.html')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF
         </a>
       </div>
     </div>
 
   </div>
+  <div id="no-results">No se encontraron newsletters que coincidan con la búsqueda.</div>
 </div>
 
-<!-- SUBSCRIBE STRIP -->
 <div class="subscribe-strip">
   <div class="subscribe-box">
     <div>
@@ -550,7 +276,7 @@
     <div class="modal-header">
       <div class="modal-title" id="modal-title">Newsletter</div>
       <div class="modal-controls">
-        <button class="modal-btn modal-btn-pdf" id="modal-pdf-btn" onclick="downloadPDFModal()">
+        <button class="modal-btn modal-btn-pdf" onclick="downloadPDFModal()">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1v9m0 0L5 7m3 3l3-3M2 12v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Descargar PDF
         </button>
@@ -562,31 +288,41 @@
 </div>
 
 <script>
-  // --- THUMBNAIL SCALING ---
-  // Each card-thumb is 100% wide (grid), natural newsletter width is 680px
+  // THUMBNAIL SCALING
   function setThumbScales() {
-    document.querySelectorAll('.card-thumb').forEach(function(thumb) {
-      var w = thumb.offsetWidth;
-      var scale = w / 680;
-      thumb.style.setProperty('--thumb-scale', scale);
+    document.querySelectorAll('.card-thumb').forEach(function(t) {
+      t.style.setProperty('--thumb-scale', t.offsetWidth / 640);
     });
   }
   setThumbScales();
   window.addEventListener('resize', setThumbScales);
 
-  // --- MODAL ---
-  var currentFile = '';
-  var currentFilename = '';
+  // SEARCH
+  var searchInput = document.getElementById('search-input');
+  var cards = document.querySelectorAll('.card');
+  var noResults = document.getElementById('no-results');
 
+  searchInput.addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    var visible = 0;
+    cards.forEach(function(card) {
+      var data = (card.getAttribute('data-search') || '') + ' ' + card.innerText.toLowerCase();
+      var match = !q || data.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    noResults.style.display = (q && visible === 0) ? 'block' : 'none';
+  });
+
+  // MODAL
+  var currentFile = '';
   function openModal(file, title) {
     currentFile = file;
-    currentFilename = title;
     document.getElementById('modal-iframe').src = file;
     document.getElementById('modal-title').textContent = title;
     document.getElementById('modal-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-
   function closeModal(e) {
     if (e && e.target !== document.getElementById('modal-backdrop')) return;
     document.getElementById('modal-backdrop').classList.remove('open');
@@ -594,33 +330,16 @@
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      document.getElementById('modal-backdrop').classList.remove('open');
-      document.getElementById('modal-iframe').src = '';
-      document.body.style.overflow = '';
-    }
+    if (e.key === 'Escape') closeModal();
   });
 
-  // --- PDF DOWNLOAD ---
-  // Opens the newsletter in a new tab and triggers print-to-PDF via window.print()
-  function downloadPDF(file, filename) {
+  // PDF
+  function downloadPDF(file) {
     var win = window.open(file, '_blank');
     if (!win) { alert('Permita popups para descargar el PDF.'); return; }
-    win.addEventListener('load', function() {
-      setTimeout(function() {
-        win.focus();
-        win.print();
-      }, 800);
-    });
+    win.addEventListener('load', function() { setTimeout(function() { win.focus(); win.print(); }, 800); });
   }
-
-  function downloadPDFModal() {
-    if (!currentFile) return;
-    downloadPDF(currentFile, currentFilename);
-  }
-
-  // Inject print styles into opened newsletters for clean PDF output
-  // (print styles are handled by the browser's print dialog)
+  function downloadPDFModal() { if (currentFile) downloadPDF(currentFile); }
 </script>
 </body>
 </html>
