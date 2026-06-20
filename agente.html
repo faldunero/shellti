@@ -418,6 +418,12 @@
  letter-spacing:0.3px;
  }
 
+ .diag-btn{width:100%;background:linear-gradient(135deg,rgba(0,212,170,0.12),rgba(0,180,216,0.08));border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:10px 14px;color:var(--teal);font-size:12px;font-family:'Space Grotesk',sans-serif;font-weight:600;cursor:pointer;text-align:left;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+ .diag-btn:hover{background:linear-gradient(135deg,rgba(0,212,170,0.2),rgba(0,180,216,0.12));border-color:rgba(0,212,170,0.5);color:#fff;}
+ .diag-btn .diag-icon{width:22px;height:22px;background:rgba(0,212,170,0.15);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+ .diag-divider{height:1px;background:var(--border);margin:14px 0 12px;}
+ .msg-bubble.diag-bubble{background:linear-gradient(135deg,rgba(0,212,170,0.06),rgba(0,180,216,0.03));border-color:rgba(0,212,170,0.2);}
+
  /* ── ERROR TOAST ── */
  .error-toast{
  background:rgba(239,68,68,0.1);
@@ -465,7 +471,14 @@
  <!-- SIDEBAR -->
  <aside class="sidebar">
  <div class="sidebar-head">
- <h3>Temas frecuentes</h3>
+ <button class="diag-btn" onclick="startDiagnostico()">
+        <div class="diag-icon">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v6m0 0l-2-2m2 2l2-2M1 9h2a2 2 0 002 2h6a2 2 0 002-2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="11" width="14" height="4" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        Diagnostico rapido
+      </button>
+      <div class="diag-divider"></div>
+      <h3>Temas frecuentes</h3>
 
  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin:4px 0 6px;font-family:'JetBrains Mono',monospace;">Ley 21.719</div>
  <button class="topic-btn" onclick="sendQuick('¿Qué es el RAT y cómo se construye?')">
@@ -555,6 +568,7 @@
  <h2>Agente experto en <span>compliance tecnológico</span></h2>
  <p>Especializado en Ley 21.719, ISO 27001:2022, DS 662/2025, Ley Fintech 21.521 y Ley de Delitos Económicos 21.595. Explico, diagnostico y genero documentos de compliance.</p>
  <div class="welcome-chips">
+ <div class="chip" onclick="startDiagnostico()" style="border-color:rgba(0,212,170,0.35);color:var(--teal);">Diagnostico rapido de mi empresa</div>
  <div class="chip" onclick="sendQuick('¿Qué obliga la Ley 21.719 a una empresa como la mía?')">¿Qué me obliga la Ley 21.719?</div>
  <div class="chip" onclick="sendQuick('¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?')">Plazos clave dic 2026</div>
  <div class="chip" onclick="sendQuick('Genera un checklist de cumplimiento de la Ley 21.719 para una PYME')">Checklist para PYMEs</div>
@@ -842,6 +856,110 @@ function renderMarkdown(text) {
  return '<p>' + html + '</p>';
 }
 
+
+// ── MODO DIAGNÓSTICO RÁPIDO ──────────────────────────────────────────────
+function startDiagnostico() {
+  hideWelcome();
+  messages = [];
+
+  // Mostrar mensaje de inicio del agente
+  const intro = `Vamos a hacer un diagnóstico rápido de su organización frente a la Ley 21.719 y los marcos relacionados.
+
+Necesito 3 datos básicos:
+
+**1.** ¿En qué sector opera su empresa? (ej: retail, salud, fintech, servicios, manufactura, educación)
+**2.** ¿Cuántas personas trabajan en la organización?
+**3.** ¿Manejan datos de clientes, empleados o pacientes en sistemas digitales?
+
+Con eso le entrego en segundos las 5 obligaciones más urgentes que probablemente tiene pendientes antes del 1 de diciembre de 2026.`;
+
+  appendMessage('assistant', intro);
+  messages.push({ role: 'assistant', content: intro });
+
+  // Activar modo diagnóstico en system prompt
+  window._diagMode = true;
+  document.getElementById('msg-input').placeholder = 'Describa su empresa (sector, tamaño, tipo de datos)...';
+  document.getElementById('msg-input').focus();
+}
+
+// Override sendMessage para diagnóstico
+const _origSend = sendMessage;
+async function sendMessage() {
+  if (window._diagMode && messages.length <= 2) {
+    // Primera respuesta del usuario en modo diagnóstico
+    const input = document.getElementById('msg-input').value.trim();
+    if (!input) return;
+
+    document.getElementById('msg-input').value = '';
+    document.getElementById('msg-input').style.height = 'auto';
+    appendMessage('user', input);
+    messages.push({ role: 'user', content: input });
+
+    isLoading = true;
+    document.getElementById('send-btn').disabled = true;
+    appendTyping();
+
+    const diagPrompt = `El usuario acaba de dar esta información sobre su empresa para un diagnóstico rápido: "${input}"
+
+Basándote en eso, genera un diagnóstico estructurado con exactamente este formato:
+
+TITULO: Diagnóstico rápido — [nombre o tipo de empresa detectado]
+
+Luego lista las 5 OBLIGACIONES MÁS URGENTES bajo la Ley 21.719 que esta organización probablemente tiene pendientes antes del 1 de diciembre de 2026. Para cada una indica:
+- Nivel de riesgo: CRÍTICO, ALTO o MEDIO
+- Qué es la obligación (1 línea)
+- Por qué aplica a esta empresa específicamente (1-2 líneas)
+- El artículo exacto de la Ley 21.719 u otro marco aplicable
+
+Al final, agrega un párrafo breve indicando que ShellTI puede acompañar el proceso y proporciona el link shellti.com
+
+Sé específico para el sector y tamaño mencionado. No generes respuestas genéricas.`;
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: [
+            ...messages.slice(0, -1),
+            { role: 'user', content: diagPrompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Error al generar el diagnóstico');
+      }
+
+      const data = await response.json();
+      removeTyping();
+
+      const text = data.text || '';
+      appendMessage('assistant', text);
+      messages.push({ role: 'assistant', content: text });
+
+      // Salir del modo diagnóstico — continuar como chat normal
+      window._diagMode = false;
+      document.getElementById('msg-input').placeholder = 'Pregunte sobre la Ley 21.719, su empresa y sus obligaciones...';
+
+    } catch(err) {
+      removeTyping();
+      showError('Error al generar el diagnóstico: ' + err.message);
+      messages.pop();
+    } finally {
+      isLoading = false;
+      document.getElementById('send-btn').disabled = false;
+    }
+
+  } else {
+    window._diagMode = false;
+    document.getElementById('msg-input').placeholder = 'Pregunte sobre la Ley 21.719, su empresa y sus obligaciones...';
+    return _origSend();
+  }
+}
+
 // Countdown dinámico
 (function() {
   function updateCountdown() {
@@ -866,6 +984,7 @@ function clearChat() {
  <h2>Agente experto en <span>compliance tecnológico</span></h2>
  <p>Especializado en Ley 21.719, ISO 27001:2022, DS 662/2025, Ley Fintech 21.521 y Ley de Delitos Económicos 21.595. Explico, diagnostico y genero documentos de compliance.</p>
  <div class="welcome-chips">
+ <div class="chip" onclick="startDiagnostico()" style="border-color:rgba(0,212,170,0.35);color:var(--teal);">Diagnostico rapido de mi empresa</div>
  <div class="chip" onclick="sendQuick('¿Qué obliga la Ley 21.719 a una empresa como la mía?')">¿Qué me obliga la Ley 21.719?</div>
  <div class="chip" onclick="sendQuick('¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?')">Plazos clave dic 2026</div>
  <div class="chip" onclick="sendQuick('Genera un checklist de cumplimiento de la Ley 21.719 para una PYME')">Checklist para PYMEs</div>
