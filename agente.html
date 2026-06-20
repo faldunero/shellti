@@ -585,6 +585,9 @@
           rows="1"
           maxlength="2000"
         ></textarea>
+        <button onclick="clearChat()" title="Nueva conversación" style="width:32px;height:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;color:var(--faint);" onmouseover="this.style.borderColor='rgba(239,68,68,0.4)';this.style.color='#EF4444'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--faint)'">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
         <button id="send-btn" onclick="sendMessage()" title="Enviar">
           <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="#080C1F"/>
