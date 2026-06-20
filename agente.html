@@ -1038,33 +1038,41 @@ const URL_ITIL      = 'https://www.axelos.com/certifications/itil-service-manage
 const URL_PMI       = 'https://www.pmi.org/pmbok-guide-standards';
 
 function renderMarkdown(text) {
- // Basic markdown rendering
- let html = text
- // Escape HTML
- .replace(/&/g, '&amp;')
- .replace(/</g, '&lt;')
- .replace(/>/g, '&gt;')
- // Headers
- .replace(/^### (.+)$/gm, '<h3>$1</h3>')
- // Bold
- .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
- // Italic / emphasis with *
- .replace(/\*([^*]+)\*/g, '<em>$1</em>')
- // Code inline
- .replace(/`([^`]+)`/g, '<code>$1</code>')
- // Art. references
-    .replace(/\b(Art\.?\s*\d+\s*(?:bis|ter)?)\b/gi, function(m){return '<a href="'+BCN_LEY_21719+'" target="_blank" rel="noopener" class="art-tag" title="Ver en BCN">'+m+'</a>';})
-    .replace(/\bLey\s*21[\.\s]?719\b/gi, function(m){return '<a href="'+BCN_LEY_21719+'" target="_blank" rel="noopener" class="art-tag" title="Ver Ley 21.719 en BCN">'+m+'</a>';})
-    .replace(/\bLey\s*21[\.\s]?521\b/gi, function(m){return '<a href="'+BCN_LEY_21521+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver Ley 21.521 en BCN">'+m+'</a>';})
-    .replace(/\bLey\s*21[\.\s]?595\b/gi, function(m){return '<a href="'+BCN_LEY_21595+'" target="_blank" rel="noopener" class="art-tag art-tag-red" title="Ver Ley 21.595 en BCN">'+m+'</a>';})
-    .replace(/\bDS\s*662\b/gi, function(m){return '<a href="'+BCN_DS662+'" target="_blank" rel="noopener" class="art-tag" title="Ver DS 662 en BCN">'+m+'</a>';})
-    .replace(/\bISO\s*27001(?::2022)?\b/gi, function(m){return '<a href="'+BCN_ISO+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver ISO 27001">'+m+'</a>';})
-    .replace(/\bBasilea\s*(?:III|3)?\b/gi, function(m){return '<a href="'+URL_BASILEA+'" target="_blank" rel="noopener" class="art-tag art-tag-yellow" title="Ver Basilea III — BIS">'+m+'</a>';})
-    .replace(/\bBCBS(?:\s*239)?\b/gi, function(m){return '<a href="'+URL_BASILEA+'" target="_blank" rel="noopener" class="art-tag art-tag-yellow" title="Ver BCBS — BIS">'+m+'</a>';})
-    .replace(/\bITIL\s*(?:4|v4)?\b/gi, function(m){return '<a href="'+URL_ITIL+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver ITIL 4 — Axelos">'+m+'</a>';})
-    .replace(/\bPMBOK\s*(?:7|v7)?\b/gi, function(m){return '<a href="'+URL_PMI+'" target="_blank" rel="noopener" class="art-tag art-tag-pink" title="Ver PMBOK — PMI">'+m+'</a>';})
-    .replace(/\bPMI\b/gi, function(m){return '<a href="'+URL_PMI+'" target="_blank" rel="noopener" class="art-tag art-tag-pink" title="Ver PMI">'+m+'</a>';})
- // Unordered lists
+  // ── Step 1: Replace known marcos with placeholders BEFORE HTML escaping ──
+  const pills = [];
+  function pill(label, url, cls) {
+    const idx = pills.length;
+    pills.push('<a href="' + url + '" target="_blank" rel="noopener" class="art-tag ' + cls + '">' + label + '</a>');
+    return '\x00PILL' + idx + '\x00';
+  }
+
+  text = text
+    .replace(/\bLey\s*21[\.\s]?719\b/gi,        m => pill(m, BCN_LEY_21719,  ''))
+    .replace(/\bLey\s*21[\.\s]?521\b/gi,        m => pill(m, BCN_LEY_21521,  'art-tag-blue'))
+    .replace(/\bLey\s*21[\.\s]?595\b/gi,        m => pill(m, BCN_LEY_21595,  'art-tag-red'))
+    .replace(/\bDS\s*662\b/gi,                   m => pill(m, BCN_DS662,       ''))
+    .replace(/\bISO\s*27001(?::2022)?\b/gi,      m => pill(m, BCN_ISO,         'art-tag-blue'))
+    .replace(/\bBCBS(?:\s*239)?\b/gi,            m => pill(m, URL_BASILEA,     'art-tag-yellow'))
+    .replace(/\bBasilea\s*(?:III|3)?\b/gi,       m => pill(m, URL_BASILEA,     'art-tag-yellow'))
+    .replace(/\bITIL\s*(?:4|v4)?\b/gi,          m => pill(m, URL_ITIL,        'art-tag-blue'))
+    .replace(/\bPMBOK\s*(?:7|v7)?\b/gi,         m => pill(m, URL_PMI,         'art-tag-pink'))
+    .replace(/\bPMI\b/gi,                        m => pill(m, URL_PMI,         'art-tag-pink'))
+    .replace(/\b(Art\.?\s*\d+\s*(?:bis|ter)?)\b/gi, m => pill(m, BCN_LEY_21719, ''));
+
+  // ── Step 2: Escape HTML in the remaining text ──
+  let html = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // Headers
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    // Code inline
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Unordered lists
  .replace(/^\s*[-•]\s+(.+)$/gm, '<li>$1</li>')
  // Ordered lists
  .replace(/^\s*\d+\.\s+(.+)$/gm, '<li>$1</li>')
@@ -1075,7 +1083,10 @@ function renderMarkdown(text) {
  // Single newlines
  .replace(/\n/g, '<br/>');
 
- return '<p>' + html + '</p>';
+  // ── Step 3: Restore pill HTML ──
+  html = html.replace(/\x00PILL(\d+)\x00/g, (_, i) => pills[+i]);
+
+  return '<p>' + html + '</p>';
 }
 
 
