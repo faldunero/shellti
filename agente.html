@@ -478,6 +478,10 @@
         Diagnostico rapido
       </button>
       <div class="diag-divider"></div>
+      <button class="btn-agendar" onclick="agendarLlamada('')" style="width:100%;margin-bottom:10px;text-align:center;">
+        Contactar consultor
+      </button>
+      <div class="diag-divider"></div>
       <h3>Temas frecuentes</h3>
 
  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin:4px 0 6px;font-family:'JetBrains Mono',monospace;">Ley 21.719</div>
@@ -857,6 +861,38 @@ function renderMarkdown(text) {
 }
 
 
+
+// ── ESCALACIÓN A CONSULTOR ───────────────────────────────────────────────
+function agendarLlamada(context) {
+  const subject = encodeURIComponent('Consulta ShellTI — Ley 21.719 y compliance tecnológico');
+  const body = encodeURIComponent(
+    'Estimado equipo de ShellTI,\n\n' +
+    'Me contacto desde el agente de compliance en shellti.com para solicitar una reunión.\n\n' +
+    (context ? 'Contexto de mi consulta:\n' + context + '\n\n' : '') +
+    'Quedo atento a su respuesta para coordinar una llamada.\n\n' +
+    'Saludos,'
+  );
+  window.open('mailto:contacto@shellti.com?subject=' + subject + '&body=' + body, '_blank');
+}
+
+function insertEscalationBar(context) {
+  const container = document.getElementById('messages');
+  const bar = document.createElement('div');
+  bar.className = 'escalation-bar';
+  const safeCtx = JSON.stringify(context || '');
+  bar.innerHTML =
+    '<div class="escalation-text">' +
+      '<strong>Necesita orientacion personalizada?</strong>' +
+      ' Un consultor ShellTI puede revisar su caso especifico.' +
+    '</div>' +
+    '<a class="btn-agendar" onclick="agendarLlamada(' + safeCtx + ')">' +
+      'Contactar consultor' +
+    '</a>';
+  container.appendChild(bar);
+  container.scrollTop = container.scrollHeight;
+}
+
+
 // ── MODO DIAGNÓSTICO RÁPIDO ──────────────────────────────────────────────
 function startDiagnostico() {
   hideWelcome();
@@ -1034,6 +1070,17 @@ async function sendMessage() {
  removeTyping();
  appendMessage('assistant', assistantText);
  messages.push({ role: 'assistant', content: assistantText });
+
+
+    // Mostrar barra de escalación si la respuesta sugiere complejidad
+    const triggerWords = ['recomendamos validar','abogado','consultor','asesoría especializada',
+      'caso específico','requiere análisis','shellti puede acompañar','contacta','contacte',
+      'escapa de mi ámbito','fuera de mi alcance','alto riesgo','crítico','shellti.com'];
+    const lowerText = assistantText.toLowerCase();
+    if (triggerWords.some(w => lowerText.includes(w))) {
+      const lastUser = messages.filter(m => m.role === 'user').slice(-1)[0]?.content || '';
+      insertEscalationBar(lastUser.slice(0, 200));
+    }
 
  // Keep context window manageable (last 12 messages)
  if (messages.length > 12) {
