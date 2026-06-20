@@ -192,12 +192,315 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 .sidebar-cta p{font-size:.78rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:.8rem}
 .sidebar-cta a{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:var(--deep);font-weight:800;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:10px;border-radius:2px;transition:box-shadow .2s,transform .2s}
 .sidebar-cta a:hover{box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-2px)}
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;width:100%;z-index:300;
+  height:68px;padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(2,6,23,0.95);
+  backdrop-filter:blur(28px) saturate(200%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{
+  height:42px;width:42px;object-fit:contain;
+  image-rendering:crisp-edges;
+  filter:
+    drop-shadow(0 0 10px rgba(0,212,255,0.85))
+    drop-shadow(0 0 22px rgba(0,212,255,0.5))
+    drop-shadow(0 0 5px rgba(52,211,153,0.7))
+    brightness(1.25) saturate(1.5) contrast(1.1);
+  transition:filter .3s;
+}
+.nav-logo:hover img{filter:drop-shadow(0 0 16px rgba(0,212,255,1)) drop-shadow(0 0 40px rgba(0,212,255,0.7)) brightness(1.35) saturate(1.6) contrast(1.15)}
+.nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
+.nav-brand-name span{color:var(--cyan)}
+.nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{border:1px solid var(--cyan)!important;color:var(--cyan)!important;padding:8px 20px;border-radius:2px;box-shadow:0 0 12px rgba(0,212,255,0.18);transition:background .2s,box-shadow .2s!important}
+.nav-cta:hover{background:rgba(0,212,255,0.1)!important;box-shadow:0 0 28px rgba(0,212,255,0.35)!important}
+
+.nav-dropdown{position:relative}
+.nav-dropdown>a{display:flex;align-items:center;gap:5px;cursor:pointer}
+.nav-dropdown>a .dd-arrow{font-size:.5rem;transition:transform .25s;display:inline-block;opacity:.7}
+.nav-dropdown:hover>a .dd-arrow{transform:rotate(180deg)}
+/* Bridge: invisible area that connects nav item to dropdown, preventing hover loss */
+.nav-dropdown::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px;z-index:499}
+.dd-menu{
+  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);
+  background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);
+  border:1px solid rgba(0,212,255,0.22);border-radius:4px;
+  min-width:720px;padding:1.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .22s ease,visibility .22s ease,transform .22s ease;
+  box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 40px rgba(0,212,255,0.08);
+  z-index:500;
+}
+.dd-menu::before{
+  content:'';position:absolute;top:-5px;left:50%;
+  width:10px;height:10px;background:#030c20;
+  border-left:1px solid rgba(0,212,255,0.22);border-top:1px solid rgba(0,212,255,0.22);
+  transform:translateX(-50%) rotate(45deg);
+}
+.nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.dd-col-title{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--green);margin-bottom:.75rem;white-space:nowrap;
+  padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,0.15);
+  display:flex;align-items:center;gap:6px;
+}
+.dd-col-title::before{content:'';width:12px;height:1px;background:var(--green)}
+.dd-link{
+  display:block;padding:.45rem .5rem;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.8px;
+  color:var(--muted);text-decoration:none;border-radius:2px;
+  transition:color .18s,background .18s,padding-left .18s;white-space:nowrap;
+}
+.dd-link:hover{color:var(--cyan);background:rgba(0,212,255,0.06);padding-left:.85rem}
+
+/* Hamburger — reset nativo completo */
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  cursor:pointer;background:none;border:none;outline:none;
+  -webkit-appearance:none;appearance:none;
+  padding:6px;margin:0;width:36px;height:36px;
+  border-radius:0;box-shadow:none;
+  -webkit-tap-highlight-color:transparent;
+  z-index:401;position:relative;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;
+  background:var(--cyan);border-radius:2px;
+  transition:transform .3s ease,opacity .3s ease;
+  pointer-events:none;
+}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── SIDE DRAWER ── */
+/* Overlay oscuro detrás del drawer */
+.drawer-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(2,6,23,0.72);
+  backdrop-filter:blur(4px);
+  z-index:398;
+  opacity:0;transition:opacity .3s ease;
+}
+.drawer-overlay.open{display:block;opacity:1}
+
+/* Panel lateral */
+.drawer{
+  position:fixed;top:0;left:0;bottom:0;
+  width:min(300px, 82vw);
+  background:linear-gradient(160deg,#030c20 0%,#020a1a 60%,#040e24 100%);
+  border-right:1px solid rgba(0,212,255,0.18);
+  z-index:399;
+  display:flex;flex-direction:column;
+  transform:translateX(-100%);
+  transition:transform .32s cubic-bezier(0.32,0,0.08,1);
+  box-shadow:8px 0 40px rgba(0,0,0,0.5);
+}
+.drawer.open{transform:translateX(0)}
+
+/* Línea cyan top */
+.drawer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,0.2));
+}
+
+/* Header del drawer */
+.drawer-head{
+  height:68px;padding:0 1.25rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(0,212,255,0.08);
+  flex-shrink:0;
+}
+.drawer-head-brand{display:flex;align-items:center;gap:8px;text-decoration:none}
+.drawer-head-brand img{
+  height:32px;width:32px;object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(0,212,255,0.7)) brightness(1.2);
+}
+.drawer-head-name{font-weight:800;font-size:1rem;color:var(--silver);letter-spacing:-.5px}
+.drawer-head-name span{color:var(--cyan)}
+.drawer-close{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;line-height:1;
+  transition:all .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.drawer-close:hover{background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.35);color:#FF6B6B}
+
+/* Items del drawer */
+.drawer-nav{
+  flex:1;overflow-y:auto;padding:.5rem 0;
+  display:flex;flex-direction:column;  /* apila verticalmente */
+}
+.drawer-item{
+  display:flex;flex-direction:row;align-items:center;gap:14px;
+  width:100%;box-sizing:border-box;    /* ancho completo */
+  padding:.9rem 1.25rem;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background .18s,padding-left .18s;
+}
+.drawer-item:hover{background:rgba(0,212,255,0.06);padding-left:1.5rem}
+.drawer-item:hover .drawer-item-icon{color:var(--cyan);border-color:rgba(0,212,255,0.25)}
+.drawer-item:hover .drawer-item-label{color:var(--silver)}
+.drawer-item-icon{
+  width:34px;height:34px;border-radius:4px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);flex-shrink:0;transition:all .18s;
+}
+.drawer-item-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.drawer-item-label{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);transition:color .18s;white-space:nowrap;
+}
+.drawer-item-hint{font-size:.65rem;color:rgba(148,163,184,0.38);letter-spacing:.2px}
+
+/* Footer del drawer — solo CTA, sin tagline */
+.drawer-footer{
+  padding:1.1rem 1.25rem 1.4rem;
+  border-top:1px solid rgba(0,212,255,0.08);
+  flex-shrink:0;
+}
+.drawer-cta{
+  display:block;width:100%;padding:13px;text-align:center;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);font-weight:800;font-size:.78rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  border-radius:3px;text-decoration:none;
+  transition:box-shadow .2s,transform .2s;
+  font-family:'JetBrains Mono',monospace;
+}
+.drawer-cta:hover{box-shadow:0 0 24px rgba(0,212,255,0.45);transform:translateY(-1px)}
+
+
+footer{
+  padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--deep);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{display:flex;align-items:center;gap:12px}
+.footer-logo img{
+  height:32px;object-fit:contain;
+  filter:drop-shadow(0 0 10px rgba(0,212,255,.65)) drop-shadow(0 0 22px rgba(0,212,255,.35)) brightness(1.2) saturate(1.4);
+}
+.footer-logo span{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;color:var(--muted)}
+footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted);text-align:right}
+@media(max-width:960px){footer{flex-direction:column;align-items:flex-start;padding:1.5rem}}
+@media(max-width:768px){footer{padding:1.2rem}}
 </style>
 </head>
 <body>
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+<!-- ════════ SIDE DRAWER ════════ -->
+<aside class="drawer" id="sideDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="drawer-head">
+    <a href="../index.html" class="drawer-head-brand" onclick="closeDrawer()">
+      <img src="../imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
+      <div class="drawer-head-name">Shell<span>TI</span></div>
+    </a>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Cerrar menú">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="drawer-nav" role="navigation" aria-label="Navegación principal">
+    <a href="../index.html#nosotros" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Nosotros</span>
+        <span class="drawer-item-hint">Quiénes somos</span>
+      </div>
+    </a>
+    <a href="../index.html#staffing" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Staffing</span>
+        <span class="drawer-item-hint">Células de desarrollo</span>
+      </div>
+    </a>
+    <a href="../index.html#compliance" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Compliance</span>
+        <span class="drawer-item-hint">Ley 21.719 · ISO 27001</span>
+      </div>
+    </a>
+    <a href="../index.html#triangulo" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 19h20L12 2z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Resiliencia</span>
+        <span class="drawer-item-hint">ISO · NIST · FAPI</span>
+      </div>
+    </a>
+    <a href="../index.html#metodologia" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Metodología</span>
+        <span class="drawer-item-hint">Nuestro proceso</span>
+      </div>
+    </a>
+    <a href="../newsletter.html" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true"><a href="../recursos.html" class="drawer-item">#9993;</div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Insights</span>
+        <span class="drawer-item-hint">Newsletter · Archivo</span>
+      </div>
+    </a>
+    <a href="../recursos.html" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Recursos</span>
+        <span class="drawer-item-hint">ISO · NIST · Ley 21.719</span>
+      </div>
+    </a>
+    <a href="../index.html#contacto" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Contacto</span>
+        <span class="drawer-item-hint">Agendar consulta</span>
+      </div>
+    </a>
+  </div>
+    <a href="../diagnostico.html" class="drawer-cta">Assessment Gratuito &rarr;</a>
+  </div>
+</aside>
+
+<!-- ════════ NAVBAR ════════ -->
 <nav>
   <a href="../index.html" class="nav-logo">
-    <img src="../imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI">
+    <img src="../imagenes/webp/lobo_shellti.webp" alt="ShellTI">
     <div>
       <div class="nav-brand-name">Shell<span>TI</span></div>
       <div class="nav-brand-sub">.com · Digital Ecosystems</div>
@@ -210,43 +513,45 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
     <li><a href="../index.html#triangulo">Resiliencia</a></li>
     <li><a href="../index.html#metodologia">Metodología</a></li>
     <li class="nav-dropdown">
-      <a href="../recursos.html" class="active">Recursos <span class="dd-arrow">▼</span></a>
+      <a href="../recursos.html">Recursos <span class="dd-arrow">▼</span></a>
       <div class="dd-menu">
         <div>
           <div class="dd-col-title">Marcos y Estándares</div>
-          <a href="iso-27001.html" class="dd-link">ISO 27001</a>
-          <a href="nist-csf-2-0.html" class="dd-link">NIST CSF 2.0</a>
-          <a href="cis-controls.html" class="dd-link">CIS Controls</a>
-          <a href="owasp.html" class="dd-link">OWASP</a>
+          <a href="recursos/iso-27001.html" class="dd-link">ISO 27001</a>
+          <a href="recursos/nist-csf-2-0.html" class="dd-link">NIST CSF 2.0</a>
+          <a href="recursos/cis-controls.html" class="dd-link">CIS Controls</a>
+          <a href="recursos/owasp.html" class="dd-link">OWASP</a>
         </div>
         <div>
           <div class="dd-col-title">Legislación</div>
-          <a href="ley-21719.html" class="dd-link">Ley N° 21.719</a>
-          <a href="anci.html" class="dd-link">ANCI</a>
-          <a href="proteccion-datos.html" class="dd-link">Protección de Datos</a>
+          <a href="recursos/ley-21719.html" class="dd-link">Ley N° 21.719</a>
+          <a href="recursos/anci.html" class="dd-link">ANCI</a>
+          <a href="recursos/proteccion-datos.html" class="dd-link">Protección de Datos</a>
         </div>
         <div>
           <div class="dd-col-title">Contenido</div>
           <a href="../blog.html" class="dd-link">Blog</a>
           <a href="../news.html" class="dd-link">News</a>
-          <a href="../recursos.html#guias" class="dd-link">Guías</a>
-          <a href="../recursos.html#casos" class="dd-link">Casos de Uso</a>
+          <a href="recursos.html#guias" class="dd-link">Guías</a>
+          <a href="recursos.html#casos" class="dd-link">Casos de Uso</a>
         </div>
         <div>
           <div class="dd-col-title">Descargas</div>
-          <a href="../recursos.html#checklists" class="dd-link">Checklists</a>
-          <a href="../recursos.html#plantillas" class="dd-link">Plantillas</a>
-          <a href="../recursos.html#documentos" class="dd-link">Docs de Referencia</a>
+          <a href="recursos.html#checklists" class="dd-link">Checklists</a>
+          <a href="recursos.html#plantillas" class="dd-link">Plantillas</a>
+          <a href="recursos.html#documentos" class="dd-link">Docs de Referencia</a>
         </div>
       </div>
     </li>
+    <li><a href="../newsletter.html">Insights</a></li>
     <li><a href="../index.html#contacto">Contacto</a></li>
-    <li><a href="../diagnostico.html" class="nav-cta">Assessment Gratis</a></li>
   </ul>
-  <button class="hamburger" id="burger" type="button" aria-label="Abrir menú">
+  <button class="hamburger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sideDrawer">
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+
 <div class="breadcrumb">
   <a href="../index.html">Inicio</a><span class="breadcrumb-sep">/</span>
   <a href="../recursos.html">Recursos</a><span class="breadcrumb-sep">/</span>
@@ -380,12 +685,12 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 <footer>
   <div class="footer-logo">
     <a href="https://shellti.com" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
-      <img src="../imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI Logo" />
+      <img src="../imagenes/webp/lobo_shellti.webp" alt="ShellTI Logo" />
       <span>ShellTI</span>
     </a>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
-    <a href="https://www.linkedin.com/company/122454230/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;transition:color .2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">
+    <a href="https://www.linkedin.com/company/122454230/" target="_blank" rel="noopener noreferrer" aria-label="ShellTI en LinkedIn" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;transition:color .2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       LinkedIn
     </a>
@@ -472,6 +777,52 @@ document.querySelectorAll('#nistQuizContainer .quiz-q-wrap').forEach((wrap,qIdx)
   wrap.querySelectorAll('.quiz-opt').forEach((opt,optIdx)=>{ opt.addEventListener('click',()=>nistSelectOpt(qIdx,optIdx)); });
 });
 nistUpdateProgress();
+
+// ── SIDE DRAWER ──────────────────────────────
+const burger       = document.getElementById('burger');
+const drawer       = document.getElementById('sideDrawer');
+const drawerOverlay= document.getElementById('drawerOverlay');
+const drawerClose  = document.getElementById('drawerClose');
+
+function openDrawer(){
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('open');
+  burger.classList.add('active');
+  burger.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
+  drawerClose.focus();
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('open');
+  burger.classList.remove('active');
+  burger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+  burger.focus();
+}
+
+burger.addEventListener('click', openDrawer);
+drawerClose.addEventListener('click', closeDrawer);
+drawerOverlay.addEventListener('click', closeDrawer);
+
+// Cerrar al hacer clic en cualquier link del drawer
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+// Cerrar con Escape
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+});
+
+// Swipe left para cerrar
+(function(){
+  var sx=0, sy=0;
+  drawer.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  drawer.addEventListener('touchend',   e=>{
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = Math.abs(e.changedTouches[0].clientY - sy);
+    if(dx < -50 && dy < 60) closeDrawer();
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
