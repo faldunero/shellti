@@ -899,6 +899,16 @@ DIAGNÓSTICO ("¿debemos?", "¿aplica a nosotros?") → Análisis en prosa con e
 ACCIONABLE (documentos, plantillas, planes) → Estructura del entregable en prosa primero, luego el documento con el formato que corresponda.
 FUERA DE ALCANCE → "Esa consulta está fuera del alcance de este agente, que cubre compliance tecnológico, marcos regulatorios financieros y gestión de proyectos TI. Para consultas de otra naturaleza, te invito a contactar directamente al equipo de ShellTI en contacto@shellti.com o shellti.com."
 
+━━━ COHERENCIA CONVERSACIONAL ━━━
+Tienes acceso al historial completo de la conversación. Úsalo activamente:
+
+- SIEMPRE revisa los mensajes anteriores antes de responder. Si la nueva pregunta tiene relación temática, normativa o contextual con lo que ya se discutió, conéctalos explícitamente.
+- Usa frases de anclaje como: "Retomando lo que analizamos sobre el RAT...", "Esto se relaciona directamente con lo que conversamos sobre el MPI...", "Complementando el análisis anterior de ISO 27001...", "En línea con lo que vimos sobre Basilea III...".
+- Si el usuario pregunta algo nuevo pero el tema anterior es relevante, incorpóralo: "Esto que preguntas sobre ITIL se conecta con el sistema de notificación de brechas que vimos antes bajo la Ley 21.719...".
+- Si el usuario parece continuar un análisis previo (usa palabras como "y además", "¿qué pasa con...?", "¿cómo se aplica eso a...?"), trata la pregunta como extensión del hilo anterior, no como consulta independiente.
+- Si el usuario cambia completamente de tema, responde el nuevo tema sin forzar conexiones artificiales.
+- Construye narrativa acumulativa: si en el transcurso de la conversación surge un perfil de la organización del usuario (industria, tamaño, riesgos identificados), incorpóralo en respuestas posteriores sin que el usuario tenga que repetirlo.
+
 ━━━ REGLAS ━━━
 - Cita siempre artículo/cláusula/sección exacta, integrada naturalmente en el texto
 - Indica cuando algo requiere validación de abogado o consultor especializado
@@ -1291,9 +1301,9 @@ async function sendMessage() {
       insertEscalationBar(lastUser.slice(0, 200));
     }
 
- // Keep context window manageable (last 12 messages)
- if (messages.length > 12) {
- messages = messages.slice(messages.length - 12);
+ // Keep context window manageable (last 20 messages)
+ if (messages.length > 20) {
+ messages = messages.slice(messages.length - 20);
  }
 
  } catch (err) {
