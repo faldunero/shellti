@@ -425,6 +425,14 @@
  .msg-bubble.diag-bubble{background:linear-gradient(135deg,rgba(0,212,170,0.06),rgba(0,180,216,0.03));border-color:rgba(0,212,170,0.2);}
 
  .acc-group{margin-bottom:4px;}
+.acc-parent{margin-bottom:6px;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;}
+.acc-parent-header{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;cursor:pointer;transition:background 0.18s;user-select:none;background:rgba(255,255,255,0.03);}
+.acc-parent-header:hover{background:rgba(255,255,255,0.06);}
+.acc-parent-label{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:6px;}
+.acc-parent-arrow{font-size:8px;color:rgba(255,255,255,0.3);transition:transform 0.25s;}
+.acc-parent-header.open .acc-parent-arrow{transform:rotate(180deg);}
+.acc-parent-body{overflow:hidden;max-height:0;transition:max-height 0.35s ease;padding:0 6px;}
+.acc-parent-body.open{max-height:1200px;}
  .acc-header{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;cursor:pointer;transition:background 0.18s;user-select:none;border:1px solid transparent;}
  .acc-header:hover{background:rgba(255,255,255,0.04);border-color:var(--border);}
  .acc-header.open{background:rgba(255,255,255,0.05);border-color:var(--border);}
@@ -459,7 +467,7 @@
 <!-- HEADER -->
 <header>
  <a href="https://shellti.com" class="brand">
-  <img src="imagenes/webp/logo_shellti.webp" alt="ShellTI" style="height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,0.85)) drop-shadow(0 0 22px rgba(0,212,255,0.5)) brightness(1.25) saturate(1.5) contrast(1.1);" />
+  <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,0.85)) drop-shadow(0 0 22px rgba(0,212,255,0.5)) brightness(1.25) saturate(1.5) contrast(1.1);" />
   <div class="brand-name">Shell<span>TI</span></div>
  </a>
  <div class="header-badge">10 marcos · Compliance TI</div>
@@ -494,135 +502,146 @@
       <div class="diag-divider"></div>
       <h3>Temas frecuentes</h3>
 
-      <!-- ① REGULATORIO CHILE -->
-      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:6px 10px 4px;margin-top:4px;">① Regulatorio Chile</div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:var(--teal);">Ley 21.719</span>
-          <span class="acc-arrow">&#9660;</span>
+      <!-- ① REGULATORIO CHILE — acordeón padre -->
+      <div class="acc-parent">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
+          <span class="acc-parent-label">① Regulatorio Chile</span>
+          <span class="acc-parent-arrow">&#9660;</span>
         </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es el RAT y cómo se construye?')">RAT — Registro de Actividades<span class="topic-tag">Doc</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cuándo es obligatorio designar un DPO?')">DPO — Encargado de Protección<span class="topic-tag">Rol</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué derechos ARCOP tienen los titulares?')">Derechos ARCOP<span class="topic-tag">Legal</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo debo notificar una brecha de datos a la APDP?')">Notificación de brechas<span class="topic-tag">Incidente</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo debe ser un consentimiento válido bajo la Ley 21.719?')">Consentimiento válido<span class="topic-tag">Legal</span></button>
-        </div>
-      </div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#FBB924;">DS 662 — MPI</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?')">MPI — Qué es y para qué sirve<span class="topic-tag">DS 662</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué beneficio legal da tener un MPI certificado ante la APDP?')">Beneficio de certificar el MPI<span class="topic-tag">DS 662</span></button>
-        </div>
-      </div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#00B4D8;">Ley 21.521 — Fintech</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?')">Obligaciones Ley Fintech<span class="topic-tag">CMF</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué es el Sistema de Finanzas Abiertas (SFA) y qué exige la NCG 514?')">SFA y NCG 514<span class="topic-tag">API</span></button>
-        </div>
-      </div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#EF4444;">Ley 21.595 — Delitos Económicos</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?')">Delitos informáticos<span class="topic-tag">Penal</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué debe incluir un MPD para sistemas tecnológicos?')">MPD tecnológico<span class="topic-tag">Penal</span></button>
-        </div>
-      </div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#A78BFA;">Código del Trabajo</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué dice el Código del Trabajo chileno sobre el acceso a datos y correos de empleados?')">Datos de empleados<span class="topic-tag">Laboral</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué límites tiene el empleador para monitorear a sus trabajadores según la ley laboral chilena?')">Monitoreo de trabajadores<span class="topic-tag">Laboral</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona el Código del Trabajo con la Ley 21.719 en el manejo de datos de empleados?')">Trabajo + Ley 21.719<span class="topic-tag">Laboral</span></button>
-        </div>
-      </div>
-
-      <!-- ② ESTÁNDARES INTERNACIONALES -->
-      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:6px 10px 4px;margin-top:8px;">② Estándares Internacionales</div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:var(--blue);">ISO 27001:2022</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?')">SGSI — Sistema de Gestión<span class="topic-tag">ISO</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cuáles son los cambios principales entre ISO 27001:2013 e ISO 27001:2022?')">Cambios vs versión 2013<span class="topic-tag">ISO</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué es la Declaración de Aplicabilidad (SoA) en ISO 27001?')">Declaración de Aplicabilidad<span class="topic-tag">ISO</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona ISO 27001:2022 con la Ley 21.719?')">ISO 27001 + Ley 21.719<span class="topic-tag">ISO</span></button>
+        <div class="acc-parent-body">
+          <div class="acc-group" style="margin-top:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:var(--teal);">Ley 21.719</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es el RAT y cómo se construye?')">RAT — Registro de Actividades<span class="topic-tag">Doc</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cuándo es obligatorio designar un DPO?')">DPO — Encargado de Protección<span class="topic-tag">Rol</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué derechos ARCOP tienen los titulares?')">Derechos ARCOP<span class="topic-tag">Legal</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo debo notificar una brecha de datos a la APDP?')">Notificación de brechas<span class="topic-tag">Incidente</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo debe ser un consentimiento válido bajo la Ley 21.719?')">Consentimiento válido<span class="topic-tag">Legal</span></button>
+            </div>
+          </div>
+          <div class="acc-group">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#FBB924;">DS 662 — MPI</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?')">MPI — Qué es y para qué sirve<span class="topic-tag">DS 662</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué beneficio legal da tener un MPI certificado ante la APDP?')">Beneficio de certificar el MPI<span class="topic-tag">DS 662</span></button>
+            </div>
+          </div>
+          <div class="acc-group">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#00B4D8;">Ley 21.521 — Fintech</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?')">Obligaciones Ley Fintech<span class="topic-tag">CMF</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué es el Sistema de Finanzas Abiertas (SFA) y qué exige la NCG 514?')">SFA y NCG 514<span class="topic-tag">API</span></button>
+            </div>
+          </div>
+          <div class="acc-group">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#EF4444;">Ley 21.595 — Delitos Económicos</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?')">Delitos informáticos<span class="topic-tag">Penal</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué debe incluir un MPD para sistemas tecnológicos?')">MPD tecnológico<span class="topic-tag">Penal</span></button>
+            </div>
+          </div>
+          <div class="acc-group" style="margin-bottom:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#A78BFA;">Código del Trabajo</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué dice el Código del Trabajo chileno sobre el acceso a datos y correos de empleados?')">Datos de empleados<span class="topic-tag">Laboral</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué límites tiene el empleador para monitorear a sus trabajadores según la ley laboral chilena?')">Monitoreo de trabajadores<span class="topic-tag">Laboral</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona el Código del Trabajo con la Ley 21.719 en el manejo de datos de empleados?')">Trabajo + Ley 21.719<span class="topic-tag">Laboral</span></button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#FCD34D;">Basilea III / BCBS</span>
-          <span class="acc-arrow">&#9660;</span>
+      <!-- ② ESTÁNDARES INTERNACIONALES — acordeón padre -->
+      <div class="acc-parent">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
+          <span class="acc-parent-label">② Estándares Internacionales</span>
+          <span class="acc-parent-arrow">&#9660;</span>
         </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es Basilea III y cómo aplica a bancos e instituciones financieras en Chile?')">Basilea III — qué es y a quién aplica<span class="topic-tag">Riesgo</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cuáles son los pilares de Basilea III y qué implican en gestión de riesgo operacional?')">Pilares de Basilea III<span class="topic-tag">Capital</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona Basilea III con la ciberseguridad y el riesgo tecnológico?')">Basilea III y riesgo TI<span class="topic-tag">Cyber</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué exige el BCBS 239 en gestión y reporte de datos de riesgo?')">BCBS 239 — Gestión de datos<span class="topic-tag">BCBS</span></button>
+        <div class="acc-parent-body">
+          <div class="acc-group" style="margin-top:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:var(--blue);">ISO 27001:2022</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?')">SGSI — Sistema de Gestión<span class="topic-tag">ISO</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cuáles son los cambios principales entre ISO 27001:2013 e ISO 27001:2022?')">Cambios vs versión 2013<span class="topic-tag">ISO</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué es la Declaración de Aplicabilidad (SoA) en ISO 27001?')">Declaración de Aplicabilidad<span class="topic-tag">ISO</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona ISO 27001:2022 con la Ley 21.719?')">ISO 27001 + Ley 21.719<span class="topic-tag">ISO</span></button>
+            </div>
+          </div>
+          <div class="acc-group">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#FCD34D;">Basilea III / BCBS</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es Basilea III y cómo aplica a bancos e instituciones financieras en Chile?')">Basilea III — qué es y a quién aplica<span class="topic-tag">Riesgo</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cuáles son los pilares de Basilea III y qué implican en gestión de riesgo operacional?')">Pilares de Basilea III<span class="topic-tag">Capital</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo se relaciona Basilea III con la ciberseguridad y el riesgo tecnológico?')">Basilea III y riesgo TI<span class="topic-tag">Cyber</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué exige el BCBS 239 en gestión y reporte de datos de riesgo?')">BCBS 239 — Gestión de datos<span class="topic-tag">BCBS</span></button>
+            </div>
+          </div>
+          <div class="acc-group" style="margin-bottom:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#34D399;">GDPR — Unión Europea</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Cuáles son los principios del GDPR y cómo se comparan con la Ley 21.719?')">Principios GDPR vs Ley 21.719<span class="topic-tag">GDPR</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué empresas chilenas deben cumplir el GDPR europeo?')">¿A quién aplica el GDPR?<span class="topic-tag">GDPR</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué son las SCCs y cómo se usan para transferir datos a Europa?')">SCCs — Transferencias Europa<span class="topic-tag">GDPR</span></button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#34D399;">GDPR — Unión Europea</span>
-          <span class="acc-arrow">&#9660;</span>
+      <!-- ③ GESTIÓN Y OPERACIONES TI — acordeón padre -->
+      <div class="acc-parent">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
+          <span class="acc-parent-label">③ Gestión y Operaciones TI</span>
+          <span class="acc-parent-arrow">&#9660;</span>
         </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Cuáles son los principios del GDPR y cómo se comparan con la Ley 21.719?')">Principios GDPR vs Ley 21.719<span class="topic-tag">GDPR</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué empresas chilenas deben cumplir el GDPR europeo?')">¿A quién aplica el GDPR?<span class="topic-tag">GDPR</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué son las SCCs y cómo se usan para transferir datos a Europa?')">SCCs — Transferencias Europa<span class="topic-tag">GDPR</span></button>
-        </div>
-      </div>
-
-      <!-- ③ GESTIÓN Y OPERACIONES TI -->
-      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:6px 10px 4px;margin-top:8px;">③ Gestión y Operaciones TI</div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#60A5FA;">ITIL 4</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es ITIL 4 y cómo se diferencia de ITIL v3 en la gestión de servicios TI?')">ITIL 4 — qué es y diferencias<span class="topic-tag">ITSM</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cuáles son las 4 dimensiones y el Sistema de Valor del Servicio de ITIL 4?')">SVS y 4 dimensiones<span class="topic-tag">SVS</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo se integra ITIL 4 con ISO 27001 y marcos de ciberseguridad?')">ITIL 4 + ISO 27001<span class="topic-tag">Integración</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué prácticas de ITIL 4 son más relevantes para gestión de incidentes de seguridad?')">Gestión de incidentes en ITIL 4<span class="topic-tag">Incidente</span></button>
-        </div>
-      </div>
-
-      <div class="acc-group">
-        <div class="acc-header" onclick="toggleAcc(this)">
-          <span class="acc-label" style="color:#F472B6;">PMI / PMBOK</span>
-          <span class="acc-arrow">&#9660;</span>
-        </div>
-        <div class="acc-body">
-          <button class="topic-btn" onclick="sendQuick('¿Qué es el PMBOK 7 y cuáles son sus principios de gestión de proyectos?')">PMBOK 7 — principios clave<span class="topic-tag">PMI</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo se aplica la gestión de riesgos del PMI en proyectos de ciberseguridad o compliance?')">Riesgos PMI en proyectos TI<span class="topic-tag">Riesgo</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Qué diferencia hay entre PMBOK, PRINCE2 y metodologías ágiles para proyectos de compliance?')">PMBOK vs PRINCE2 vs Ágil<span class="topic-tag">Métodos</span></button>
-          <button class="topic-btn" onclick="sendQuick('¿Cómo estructuro un proyecto de implementación ISO 27001 usando el estándar PMI?')">Proyecto ISO 27001 con PMI<span class="topic-tag">Impl.</span></button>
+        <div class="acc-parent-body">
+          <div class="acc-group" style="margin-top:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#60A5FA;">ITIL 4</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es ITIL 4 y cómo se diferencia de ITIL v3 en la gestión de servicios TI?')">ITIL 4 — qué es y diferencias<span class="topic-tag">ITSM</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cuáles son las 4 dimensiones y el Sistema de Valor del Servicio de ITIL 4?')">SVS y 4 dimensiones<span class="topic-tag">SVS</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo se integra ITIL 4 con ISO 27001 y marcos de ciberseguridad?')">ITIL 4 + ISO 27001<span class="topic-tag">Integración</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué prácticas de ITIL 4 son más relevantes para gestión de incidentes de seguridad?')">Gestión de incidentes en ITIL 4<span class="topic-tag">Incidente</span></button>
+            </div>
+          </div>
+          <div class="acc-group" style="margin-bottom:6px;">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              <span class="acc-label" style="color:#F472B6;">PMI / PMBOK</span>
+              <span class="acc-arrow">&#9660;</span>
+            </div>
+            <div class="acc-body">
+              <button class="topic-btn" onclick="sendQuick('¿Qué es el PMBOK 7 y cuáles son sus principios de gestión de proyectos?')">PMBOK 7 — principios clave<span class="topic-tag">PMI</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo se aplica la gestión de riesgos del PMI en proyectos de ciberseguridad o compliance?')">Riesgos PMI en proyectos TI<span class="topic-tag">Riesgo</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Qué diferencia hay entre PMBOK, PRINCE2 y metodologías ágiles para proyectos de compliance?')">PMBOK vs PRINCE2 vs Ágil<span class="topic-tag">Métodos</span></button>
+              <button class="topic-btn" onclick="sendQuick('¿Cómo estructuro un proyecto de implementación ISO 27001 usando el estándar PMI?')">Proyecto ISO 27001 con PMI<span class="topic-tag">Impl.</span></button>
+            </div>
+          </div>
         </div>
       </div>
       <div style="height:16px;"></div>
@@ -635,7 +654,7 @@
 
    <!-- Welcome screen -->
    <div class="welcome" id="welcome">
-    <div class="welcome-icon"><img src="imagenes/webp/logo_shellti.webp" alt="ShellTI" style="height:220px;width:220px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,212,255,0.9)) drop-shadow(0 0 28px rgba(0,212,255,0.5)) brightness(1.3) saturate(1.5);" /></div>
+    <div class="welcome-icon"><img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:220px;width:220px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,212,255,0.9)) drop-shadow(0 0 28px rgba(0,212,255,0.5)) brightness(1.3) saturate(1.5);" /></div>
     <h2>Agente experto en <span>compliance tecnológico</span></h2>
    </div>
 
@@ -1136,6 +1155,13 @@ function toggleAcc(header) {
   body.classList.toggle('open', !isOpen);
 }
 
+function toggleAccParent(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
 // ── ESCALACIÓN A CONSULTOR ───────────────────────────────────────────────
 function agendarLlamada(context) {
   const subject = encodeURIComponent('Consulta ShellTI — Ley 21.719 y compliance tecnológico');
@@ -1292,7 +1318,7 @@ function clearChat() {
  // Re-inject welcome screen
  container.innerHTML = `
  <div class="welcome" id="welcome">
- <div class="welcome-icon"><img src="imagenes/webp/logo_shellti.webp" alt="ShellTI" style="height:220px;width:220px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,212,255,0.9)) drop-shadow(0 0 28px rgba(0,212,255,0.5)) brightness(1.3) saturate(1.5);" /></div>
+ <div class="welcome-icon"><img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:220px;width:220px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,212,255,0.9)) drop-shadow(0 0 28px rgba(0,212,255,0.5)) brightness(1.3) saturate(1.5);" /></div>
  <h2>Agente experto en <span>compliance tecnológico</span></h2>
  
  <div class="welcome-chips">
