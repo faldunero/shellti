@@ -2149,16 +2149,19 @@ const diagModal=document.getElementById('diagModal');
 const closeModal=document.getElementById('closeModal');
 const closeModalBtn=document.getElementById('closeModalBtn');
 
-// Show modal on page load (after 1.5 seconds)
+// Show modal once per browser session
 window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    diagModal.classList.add('active');
-  },1500);
+  if(!sessionStorage.getItem('diag_modal_shown')){
+    setTimeout(()=>{
+      diagModal.classList.add('active');
+    },1500);
+  }
 });
 
 // Close modal handlers
 function closeModalFunc(){
   diagModal.classList.remove('active');
+  sessionStorage.setItem('diag_modal_shown','1');
 }
 
 closeModal.addEventListener('click',closeModalFunc);
