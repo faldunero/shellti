@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Agente Compliance — ShellTI · Ley 21.719 · ISO 27001 · DS 662</title>
+<title>Agente Compliance ShellTI — 5 marcos normativos</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -445,8 +445,11 @@
     <div class="brand-logo">S</div>
     <div class="brand-name">Shell<span>TI</span></div>
   </a>
-  <div class="header-badge">Ley 21.719 · ISO 27001 · DS 662</div>
+  <div class="header-badge">5 marcos · Compliance TI</div>
   <div class="header-right">
+    <button onclick="clearChat()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:6px 12px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.1)'">
+      Nueva conversación
+    </button>
     <div class="status-dot"></div>
     <span class="status-label">Activo</span>
   </div>
@@ -512,12 +515,37 @@
     </div>
 
     <div class="sidebar-info">
+      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#00B4D8;margin:10px 0 6px;font-family:'JetBrains Mono',monospace;">Ley 21.521 — Fintech</div>
+      <button class="topic-btn" onclick="sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?')">
+        <span class="topic-icon">💳</span>
+        Obligaciones Ley Fintech
+        <span class="topic-tag">CMF</span>
+      </button>
+      <button class="topic-btn" onclick="sendQuick('¿Qué es el Sistema de Finanzas Abiertas (SFA) y qué exige la NCG 514?')">
+        <span class="topic-icon">🔗</span>
+        SFA y NCG 514
+        <span class="topic-tag">API</span>
+      </button>
+
+      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#EF4444;margin:10px 0 6px;font-family:'JetBrains Mono',monospace;">Ley 21.595 — Delitos Económicos</div>
+      <button class="topic-btn" onclick="sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?')">
+        <span class="topic-icon">⚠️</span>
+        Delitos informáticos
+        <span class="topic-tag">Penal</span>
+      </button>
+      <button class="topic-btn" onclick="sendQuick('¿Qué debe incluir un Modelo de Prevención de Delitos (MPD) para sistemas tecnológicos?')">
+        <span class="topic-icon">🛡️</span>
+        MPD tecnológico
+        <span class="topic-tag">Penal</span>
+      </button>
+
       <div class="ley-card">
         <div class="ley-card-title">Marcos cubiertos</div>
         <p><strong>Ley 21.719</strong> — Datos Personales<br>
-        Vigencia <strong>1 dic 2026</strong><br>
         <strong>ISO 27001:2022</strong> — SGSI<br>
-        <strong>DS 662/2025</strong> — MPI</p>
+        <strong>DS 662/2025</strong> — MPI<br>
+        <strong>Ley 21.521</strong> — Fintech / SFA<br>
+        <strong>Ley 21.595</strong> — Delitos Económicos</p>
       </div>
     </div>
   </aside>
@@ -530,7 +558,7 @@
       <div class="welcome" id="welcome">
         <div class="welcome-icon">⚖️</div>
         <h2>Agente experto en <span>compliance tecnológico</span></h2>
-        <p>Especializado en Ley 21.719, ISO 27001:2022 y DS 662/2025 (MPI). Puedo explicar los marcos, diagnosticar el estado de su empresa y generar documentos de compliance.</p>
+        <p>Especializado en Ley 21.719, ISO 27001:2022, DS 662/2025, Ley Fintech 21.521 y Ley de Delitos Económicos 21.595. Explico, diagnostico y genero documentos de compliance.</p>
         <div class="welcome-chips">
           <div class="chip" onclick="sendQuick('¿Qué obliga la Ley 21.719 a una empresa como la mía?')">¿Qué me obliga la Ley 21.719?</div>
           <div class="chip" onclick="sendQuick('¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?')">Plazos clave dic 2026</div>
@@ -722,6 +750,97 @@ RELACIÓN CON ISO 27001:
 Una organización certificada en ISO 27001 tiene una ventaja significativa para implementar un MPI, ya que muchos controles son equivalentes. El MPI es el compliance legal; la ISO 27001 es el estándar técnico de seguridad que lo sustenta.
 
 ═══════════════════════════════════════
+MARCO 4: LEY 21.521 — LEY FINTECH
+═══════════════════════════════════════
+
+CONTEXTO:
+- Nombre completo: "Promueve la Competencia e Inclusión Financiera a través de la Innovación y Tecnología en la Prestación de Servicios Financieros"
+- Promulgada el 4 de enero de 2023
+- Supervisada por la Comisión para el Mercado Financiero (CMF)
+- Regula siete tipos de servicios financieros tecnológicos
+- Crea el Sistema de Finanzas Abiertas (SFA / Open Finance)
+- Reglamento técnico principal: NCG 514 (CMF, julio 2024) — implementación SFA: julio 2027
+
+SERVICIOS REGULADOS (Art. 2):
+1. Plataformas de financiamiento colectivo (crowdfunding)
+2. Intermediación de instrumentos financieros
+3. Custodia de instrumentos financieros
+4. Asesoría crediticia o de inversión
+5. Enrutamiento de órdenes
+6. Servicios de pago
+7. Servicios de Open Finance / SFA
+
+SISTEMA DE FINANZAS ABIERTAS (SFA):
+- Las instituciones financieras deben compartir datos de clientes vía APIs certificadas cuando el cliente lo autorice
+- NCG 514 define estándares técnicos: APIs, certificados digitales, autenticación reforzada, disponibilidad
+- Consentimiento del cliente obligatorio y expreso (Arts. 23-24) — debe cumplir estándar Ley 21.719
+- Registro de eventos del SFA por 5 años mínimo
+- Implementación progresiva: julio 2027
+
+OBLIGACIONES TECNOLÓGICAS CLAVE:
+- Inscripción en Registro de Prestadores CMF (Art. 18)
+- APIs estandarizadas y certificadas según NCG 514
+- Política de ciberseguridad y gestión de riesgos de externalización
+- Autenticación reforzada (MFA) — exigida también por NCG 538
+- Reporte de incidentes operacionales a la CMF
+- Contratos con proveedores tecnológicos con estándares de seguridad
+
+RELACIÓN CON LEY 21.719:
+- El consentimiento del SFA (Ley 21.521 Arts. 23-24) debe cumplir el estándar de la Ley 21.719: libre, específico, informado e inequívoco
+- Las APIs del SFA que intercambian datos financieros activan la obligación de EIPD (Art. 15 Ley 21.719)
+- Una brecha en infraestructura SFA activa simultáneamente la notificación a CMF (NCG 514) y a la APDP (Art. 49 Ley 21.719)
+- Los datos financieros de clientes son datos personales bajo la Ley 21.719
+
+SANCIONES CMF:
+- Multas, suspensión e inhabilitación del Registro de Prestadores
+- Pérdida de licencia para operar como prestador fintech
+- La CMF y la APDP pueden sancionar de forma independiente ante el mismo incidente
+
+═══════════════════════════════════════
+MARCO 5: LEY 21.595 — LEY DE DELITOS ECONÓMICOS
+═══════════════════════════════════════
+
+CONTEXTO:
+- Nombre completo: "Ley de Delitos Económicos"
+- Vigente plenamente desde el 1 de septiembre de 2024 para personas jurídicas
+- Tipifica más de 200 delitos económicos
+- Amplía la responsabilidad penal de empresas y sus directivos
+- Considerada el cambio más significativo al derecho penal económico chileno desde el Código Penal
+- Supervisada por el Ministerio Público
+
+DIMENSIÓN TECNOLÓGICA:
+- Fraude informático: manipulación de datos en sistemas informáticos tipificada como delito económico (Art. 467 Código Penal modificado)
+- Uso no autorizado de claves de acceso o tarjetas de pago digitales: delito económico
+- Ataque a la integridad de un sistema informático: delito N°106 del catálogo de la Ley 21.595
+- Acceso no autorizado a sistemas: elevado a delito económico con mayores penas
+
+MODELO DE PREVENCIÓN DE DELITOS (MPD):
+- Las empresas pueden implementar un MPD para atenuar o eximirse de responsabilidad penal
+- El MPD debe incluir controles sobre sistemas informáticos, gestión de accesos y auditoría de logs
+- Debe contar con evidencia documentada de implementación efectiva
+- La participación activa de líderes de área es requisito — no basta con aprobar un documento
+- Sin MPD, la empresa no puede alegar diligencia preventiva
+
+RESPONSABILIDAD POR OMISIÓN:
+- La empresa responde penalmente incluso sin dolo directo de sus dueños si fallaron los controles
+- Un CTO que no implementó controles de acceso adecuados puede ser personalmente responsable
+- Un CEO que no aprobó una política de seguridad documentada tiene exposición penal directa
+
+RELACIÓN CON LEY 21.719 Y DS 662:
+- El MPD (Ley 21.595) y el MPI (DS 662/Ley 21.719) son documentos distintos pero deben ser coherentes entre sí — los controles de acceso a sistemas del MPD deben alinearse con las medidas técnicas del MPI
+- Una brecha que involucre acceso no autorizado a sistemas activa simultáneamente: Ley 21.595 (penal) + Ley 21.719 (notificación APDP) + posiblemente Ley 21.521 si es infraestructura fintech
+- Los controles de seguridad exigidos por la Ley 21.595 (para el MPD) se superponen con los controles técnicos exigidos por la Ley 21.719 (Art. 46) e ISO 27001 (Anexo A)
+
+RELACIÓN CON LEY 21.521 (FINTECH):
+- Una fintech puede ser sancionada simultáneamente por CMF (Ley 21.521), APDP (Ley 21.719) y Ministerio Público (Ley 21.595) ante el mismo incidente de seguridad
+- Tres reguladores, tres procesos independientes, tres cronómetros distintos
+
+SANCIONES:
+- Penales: presidio, multa penal y comiso de bienes
+- Para la empresa: multa + disolución en casos graves
+- No hay monto fijo en UTM — las penas son las del Código Penal elevadas por la condición de delito económico
+
+═══════════════════════════════════════
 MODOS DE RESPUESTA
 ═══════════════════════════════════════
 
@@ -735,7 +854,7 @@ MODO ACCIONABLE — pedidos de documentos, plantillas, checklists
 → Genera el documento directamente, completo y listo para adaptar. Indica qué partes personalizar.
 
 FUERA DE ALCANCE — cualquier otra consulta
-→ Responde amablemente: "Esa consulta está fuera de mi ámbito de especialización. Estoy diseñado para responder preguntas sobre la Ley 21.719, la ISO 27001:2022 y el DS 662/2025. Para otras consultas, te invito a contactar al equipo de ShellTI en shellti.com o escribir a contacto@shellti.com."
+→ Responde amablemente: "Esa consulta está fuera de mi ámbito de especialización. Estoy especializado en Ley 21.719, ISO 27001:2022, DS 662/2025 (MPI), Ley 21.521 (Fintech) y Ley 21.595 (Delitos Económicos). Para otras consultas, te invito a contactar al equipo de ShellTI en shellti.com o escribir a contacto@shellti.com."
 
 ═══════════════════════════════════════
 REGLAS DE CONDUCTA
@@ -888,6 +1007,29 @@ function renderMarkdown(text) {
     .replace(/\n/g, '<br/>');
 
   return '<p>' + html + '</p>';
+}
+
+function clearChat() {
+  messages = [];
+  const container = document.getElementById('messages');
+  container.innerHTML = '';
+  // Re-inject welcome screen
+  container.innerHTML = `
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">⚖️</div>
+      <h2>Agente experto en <span>compliance tecnológico</span></h2>
+      <p>Especializado en Ley 21.719, ISO 27001:2022, DS 662/2025, Ley Fintech 21.521 y Ley de Delitos Económicos 21.595. Explico, diagnostico y genero documentos de compliance.</p>
+      <div class="welcome-chips">
+        <div class="chip" onclick="sendQuick('¿Qué obliga la Ley 21.719 a una empresa como la mía?')">¿Qué me obliga la Ley 21.719?</div>
+        <div class="chip" onclick="sendQuick('¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?')">Plazos clave dic 2026</div>
+        <div class="chip" onclick="sendQuick('Genera un checklist de cumplimiento de la Ley 21.719 para una PYME')">Checklist para PYMEs</div>
+        <div class="chip" onclick="sendQuick('¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?')">¿Cómo implementar ISO 27001?</div>
+        <div class="chip" onclick="sendQuick('¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?')">¿Qué es el MPI?</div>
+        <div class="chip" onclick="sendQuick('¿Cómo se relaciona la ISO 27001:2022 con la Ley 21.719?')">ISO 27001 + Ley 21.719</div>
+        <div class="chip" onclick="sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?')">Delitos informáticos Ley 21.595</div>
+        <div class="chip" onclick="sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?')">Ley Fintech 21.521</div>
+      </div>
+    </div>`;
 }
 
 async function sendMessage() {
