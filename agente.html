@@ -77,6 +77,9 @@
  background:rgba(0,212,170,0.06);
  }
  .header-right{display:flex;align-items:center;gap:12px}
+ .countdown{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:7px;padding:5px 12px;}
+ .countdown-num{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#EF4444;line-height:1;}
+ .countdown-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(239,68,68,0.6);line-height:1.3;}
  .status-dot{
  width:7px;height:7px;border-radius:50%;
  background:var(--teal);
@@ -331,17 +334,11 @@
  border-bottom:1px solid var(--border);
  padding-bottom:4px;
  }
- .msg-bubble .art-tag{
- display:inline-block;
- font-family:'JetBrains Mono',monospace;
- font-size:10px;font-weight:600;
- letter-spacing:0.5px;
- background:rgba(251,191,36,0.1);
- color:#FBB924;
- border:1px solid rgba(251,191,36,0.25);
- padding:2px 7px;border-radius:4px;
- margin-right:4px;
- }
+ .msg-bubble .art-tag,.art-tag{display:inline;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(251,191,36,0.1);color:#FBB924;border:1px solid rgba(251,191,36,0.25);padding:1px 6px;border-radius:4px;text-decoration:none;cursor:pointer;transition:background 0.15s;}
+ .art-tag:hover{background:rgba(251,191,36,0.2);}
+ .art-tag-blue{background:rgba(0,180,216,0.1)!important;color:var(--blue)!important;border-color:rgba(0,180,216,0.25)!important;}
+ .art-tag-red{background:rgba(239,68,68,0.1)!important;color:#EF4444!important;border-color:rgba(239,68,68,0.25)!important;}
+
 
  /* Mode badge */
  .mode-badge{
@@ -451,6 +448,10 @@
  </a>
  <div class="header-badge">5 marcos · Compliance TI</div>
  <div class="header-right">
+  <div class="countdown" title="Días hasta vigencia plena Ley 21.719">
+   <div class="countdown-num" id="days-counter">164</div>
+   <div class="countdown-label">días para<br>1 dic 2026</div>
+  </div>
  <button onclick="clearChat()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:6px 12px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.1)'">
  Nueva conversación
  </button>
@@ -798,6 +799,13 @@ function removeTyping() {
  if (el) el.remove();
 }
 
+// URLs fuentes normativas
+const BCN_LEY_21719 = 'https://www.bcn.cl/leychile/navegar?idNorma=1207037';
+const BCN_LEY_21521 = 'https://www.bcn.cl/leychile/navegar?idNorma=1179495';
+const BCN_LEY_21595 = 'https://www.bcn.cl/leychile/navegar?idNorma=1190016';
+const BCN_DS662     = 'https://www.bcn.cl/leychile/navegar?idNorma=1214891';
+const BCN_ISO       = 'https://www.iso.org/standard/27001';
+
 function renderMarkdown(text) {
  // Basic markdown rendering
  let html = text
@@ -814,7 +822,12 @@ function renderMarkdown(text) {
  // Code inline
  .replace(/`([^`]+)`/g, '<code>$1</code>')
  // Art. references
- .replace(/\b(Art\.\s*\d+[°\s]?\s*(?:bis|ter)?)\b/gi, '<span class="art-tag">$1</span>')
+    .replace(/\b(Art\.?\s*\d+\s*(?:bis|ter)?)\b/gi, function(m){return '<a href="'+BCN_LEY_21719+'" target="_blank" rel="noopener" class="art-tag" title="Ver en BCN">'+m+'</a>';})
+    .replace(/\bLey\s*21[\.\s]?719\b/gi, function(m){return '<a href="'+BCN_LEY_21719+'" target="_blank" rel="noopener" class="art-tag" title="Ver Ley 21.719 en BCN">'+m+'</a>';})
+    .replace(/\bLey\s*21[\.\s]?521\b/gi, function(m){return '<a href="'+BCN_LEY_21521+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver Ley 21.521 en BCN">'+m+'</a>';})
+    .replace(/\bLey\s*21[\.\s]?595\b/gi, function(m){return '<a href="'+BCN_LEY_21595+'" target="_blank" rel="noopener" class="art-tag art-tag-red" title="Ver Ley 21.595 en BCN">'+m+'</a>';})
+    .replace(/\bDS\s*662\b/gi, function(m){return '<a href="'+BCN_DS662+'" target="_blank" rel="noopener" class="art-tag" title="Ver DS 662 en BCN">'+m+'</a>';})
+    .replace(/\bISO\s*27001(?::2022)?\b/gi, function(m){return '<a href="'+BCN_ISO+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver ISO 27001">'+m+'</a>';})
  // Unordered lists
  .replace(/^\s*[-•]\s+(.+)$/gm, '<li>$1</li>')
  // Ordered lists
@@ -828,6 +841,19 @@ function renderMarkdown(text) {
 
  return '<p>' + html + '</p>';
 }
+
+// Countdown dinámico
+(function() {
+  function updateCountdown() {
+    const target = new Date('2026-12-01T00:00:00-03:00');
+    const now    = new Date();
+    const days   = Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)));
+    const el     = document.getElementById('days-counter');
+    if (el) el.textContent = days;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+})();
 
 function clearChat() {
  messages = [];
