@@ -223,24 +223,115 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 </style>
 </head>
 <body>
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
 
-<!-- NAVBAR -->
+<!-- ════════ SIDE DRAWER ════════ -->
+<aside class="drawer" id="sideDrawer" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="drawer-head">
+    <a href="#" class="drawer-head-brand" onclick="closeDrawer()">
+      <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
+      <div class="drawer-head-name">Shell<span>TI</span></div>
+    </a>
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="Cerrar menú">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="drawer-nav" role="navigation" aria-label="Navegación principal">
+    <a href="#nosotros" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Nosotros</span>
+        <span class="drawer-item-hint">Quiénes somos</span>
+      </div>
+    </a>
+    <a href="#staffing" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Staffing</span>
+        <span class="drawer-item-hint">Células de desarrollo</span>
+      </div>
+    </a>
+    <a href="#compliance" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Compliance</span>
+        <span class="drawer-item-hint">Ley 21.719 · ISO 27001</span>
+      </div>
+    </a>
+    <a href="#triangulo" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 19h20L12 2z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Resiliencia</span>
+        <span class="drawer-item-hint">ISO · NIST · FAPI</span>
+      </div>
+    </a>
+    <a href="#metodologia" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Metodología</span>
+        <span class="drawer-item-hint">Nuestro proceso</span>
+      </div>
+    </a>
+    <a href="newsletter.html" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true"><a href="recursos.html" class="drawer-item">#9993;</div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Insights</span>
+        <span class="drawer-item-hint">Newsletter · Archivo</span>
+      </div>
+    </a>
+    <a href="recursos.html" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Recursos</span>
+        <span class="drawer-item-hint">ISO · NIST · Ley 21.719</span>
+      </div>
+    </a>
+    <a href="#contacto" class="drawer-item">
+      <div class="drawer-item-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="drawer-item-text">
+        <span class="drawer-item-label">Contacto</span>
+        <span class="drawer-item-hint">Agendar consulta</span>
+      </div>
+    </a>
+  </div>
+    <a href="diagnostico.html" class="drawer-cta">Assessment Gratuito &rarr;</a>
+  </div>
+</aside>
+
+<!-- ════════ NAVBAR ════════ -->
 <nav>
-  <a href="index.html" class="nav-logo">
-    <img src="imagenes/webp/Logo_sin_fondo.webp" alt="ShellTI">
+  <a href="#" class="nav-logo">
+    <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI">
     <div>
       <div class="nav-brand-name">Shell<span>TI</span></div>
       <div class="nav-brand-sub">.com · Digital Ecosystems</div>
     </div>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html#nosotros">Nosotros</a></li>
-    <li><a href="index.html#staffing">Staffing</a></li>
-    <li><a href="index.html#compliance">Compliance</a></li>
-    <li><a href="index.html#triangulo">Resiliencia</a></li>
-    <li><a href="index.html#metodologia">Metodología</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#staffing">Staffing</a></li>
+    <li><a href="#compliance">Compliance</a></li>
+    <li><a href="#triangulo">Resiliencia</a></li>
+    <li><a href="#metodologia">Metodología</a></li>
     <li class="nav-dropdown">
-      <a href="recursos.html" class="active">Recursos <span class="dd-arrow">▼</span></a>
+      <a href="recursos.html">Recursos <span class="dd-arrow">▼</span></a>
       <div class="dd-menu">
         <div>
           <div class="dd-col-title">Marcos y Estándares</div>
@@ -259,24 +350,28 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
           <div class="dd-col-title">Contenido</div>
           <a href="blog.html" class="dd-link">Blog</a>
           <a href="news.html" class="dd-link">News</a>
-          <a href="#guias" class="dd-link">Guías</a>
-          <a href="#casos" class="dd-link">Casos de Uso</a>
+          <a href="recursos.html#guias" class="dd-link">Guías</a>
+          <a href="recursos.html#casos" class="dd-link">Casos de Uso</a>
         </div>
         <div>
           <div class="dd-col-title">Descargas</div>
-          <a href="#checklists" class="dd-link">Checklists</a>
-          <a href="#plantillas" class="dd-link">Plantillas</a>
-          <a href="#documentos" class="dd-link">Docs de Referencia</a>
+          <a href="recursos.html#checklists" class="dd-link">Checklists</a>
+          <a href="recursos.html#plantillas" class="dd-link">Plantillas</a>
+          <a href="recursos.html#documentos" class="dd-link">Docs de Referencia</a>
         </div>
       </div>
     </li>
-    <li><a href="index.html#contacto">Contacto</a></li>
-    <li><a href="diagnostico.html" class="nav-cta">Assessment Gratis</a></li>
+    <li><a href="newsletter.html">Insights</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
-  <button class="hamburger" id="burger" type="button" aria-label="Abrir menú">
+  <button class="hamburger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sideDrawer">
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+
+<!-- NAVBAR -->
+
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
@@ -620,6 +715,52 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 <script>
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.08});
 document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+// ── SIDE DRAWER ──────────────────────────────
+const burger       = document.getElementById('burger');
+const drawer       = document.getElementById('sideDrawer');
+const drawerOverlay= document.getElementById('drawerOverlay');
+const drawerClose  = document.getElementById('drawerClose');
+
+function openDrawer(){
+  drawer.classList.add('open');
+  drawerOverlay.classList.add('open');
+  burger.classList.add('active');
+  burger.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
+  drawerClose.focus();
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  drawerOverlay.classList.remove('open');
+  burger.classList.remove('active');
+  burger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+  burger.focus();
+}
+
+burger.addEventListener('click', openDrawer);
+drawerClose.addEventListener('click', closeDrawer);
+drawerOverlay.addEventListener('click', closeDrawer);
+
+// Cerrar al hacer clic en cualquier link del drawer
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+// Cerrar con Escape
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+});
+
+// Swipe left para cerrar
+(function(){
+  var sx=0, sy=0;
+  drawer.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  drawer.addEventListener('touchend',   e=>{
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = Math.abs(e.changedTouches[0].clientY - sy);
+    if(dx < -50 && dy < 60) closeDrawer();
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
