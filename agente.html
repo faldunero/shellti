@@ -1033,6 +1033,9 @@ const BCN_LEY_21521 = 'https://www.bcn.cl/leychile/navegar?idNorma=1187323';
 const BCN_LEY_21595 = 'https://www.bcn.cl/leychile/navegar?idNorma=1195119';
 const BCN_DS662     = 'https://www.bcn.cl/leychile/navegar?idNorma=1214891';
 const BCN_ISO       = 'https://www.iso.org/standard/27001';
+const URL_BASILEA   = 'https://www.bis.org/bcbs/basel3.htm';
+const URL_ITIL      = 'https://www.axelos.com/certifications/itil-service-management';
+const URL_PMI       = 'https://www.pmi.org/pmbok-guide-standards';
 
 function renderMarkdown(text) {
  // Basic markdown rendering
@@ -1056,6 +1059,11 @@ function renderMarkdown(text) {
     .replace(/\bLey\s*21[\.\s]?595\b/gi, function(m){return '<a href="'+BCN_LEY_21595+'" target="_blank" rel="noopener" class="art-tag art-tag-red" title="Ver Ley 21.595 en BCN">'+m+'</a>';})
     .replace(/\bDS\s*662\b/gi, function(m){return '<a href="'+BCN_DS662+'" target="_blank" rel="noopener" class="art-tag" title="Ver DS 662 en BCN">'+m+'</a>';})
     .replace(/\bISO\s*27001(?::2022)?\b/gi, function(m){return '<a href="'+BCN_ISO+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver ISO 27001">'+m+'</a>';})
+    .replace(/\bBasilea\s*(?:III|3)?\b/gi, function(m){return '<a href="'+URL_BASILEA+'" target="_blank" rel="noopener" class="art-tag art-tag-yellow" title="Ver Basilea III — BIS">'+m+'</a>';})
+    .replace(/\bBCBS(?:\s*239)?\b/gi, function(m){return '<a href="'+URL_BASILEA+'" target="_blank" rel="noopener" class="art-tag art-tag-yellow" title="Ver BCBS — BIS">'+m+'</a>';})
+    .replace(/\bITIL\s*(?:4|v4)?\b/gi, function(m){return '<a href="'+URL_ITIL+'" target="_blank" rel="noopener" class="art-tag art-tag-blue" title="Ver ITIL 4 — Axelos">'+m+'</a>';})
+    .replace(/\bPMBOK\s*(?:7|v7)?\b/gi, function(m){return '<a href="'+URL_PMI+'" target="_blank" rel="noopener" class="art-tag art-tag-pink" title="Ver PMBOK — PMI">'+m+'</a>';})
+    .replace(/\bPMI\b/gi, function(m){return '<a href="'+URL_PMI+'" target="_blank" rel="noopener" class="art-tag art-tag-pink" title="Ver PMI">'+m+'</a>';})
  // Unordered lists
  .replace(/^\s*[-•]\s+(.+)$/gm, '<li>$1</li>')
  // Ordered lists
