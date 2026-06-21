@@ -2413,14 +2413,16 @@ diagModal.addEventListener('click',(e)=>{
 </script>
 
 <!-- ════ MODALES TERRENO ════ -->
-<div class="modal-overlay" id="terrenoModal">
-  <div class="modal-tech">
-    <div class="modal-tech-header">
-      <div class="modal-tech-tag" id="terrenoModalTag">Concepto Técnico</div>
-      <h3 class="modal-tech-title" id="terrenoModalTitle">Cargando...</h3>
-      <button class="modal-close" onclick="closeTerrenoModal()" aria-label="Cerrar">&times;</button>
+<div class="info-modal-overlay" id="terrenoModal">
+  <div class="info-modal">
+    <button class="info-modal-close" onclick="closeTerrenoModal()" aria-label="Cerrar">&times;</button>
+    <span class="info-modal-tag" id="terrenoModalTag">Concepto Técnico</span>
+    <h3 class="info-modal-title" id="terrenoModalTitle">Cargando...</h3>
+    <p class="info-modal-desc" id="terrenoModalDesc"></p>
+    <ul class="info-modal-points" id="terrenoModalPoints"></ul>
+    <div class="info-modal-footer">
+      <button class="info-modal-btn" onclick="closeTerrenoModal()">CERRAR</button>
     </div>
-    <div class="modal-tech-body" id="terrenoModalBody"></div>
   </div>
 </div>
 
@@ -2429,65 +2431,38 @@ var TERRENO_DATA = {
   'live-deploy': {
     tag: 'Despliegue en Producción',
     title: 'Live Code <span>Deployment</span>',
-    body: `
-      <div class='ref-block'>
-        <span class='ref-badge ley'>Qué es</span>
-        <p class='ref-text'>El <strong>Live Code Deployment</strong> es la capacidad de desplegar nuevo código, configuraciones o actualizaciones directamente en el ambiente de producción en tiempo real, sin interrumpir la operación del sistema. En ShellTI esto significa que nuestros ingenieros pueden aplicar un cambio mientras el sistema está corriendo y los usuarios lo están usando.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge iso'>Cómo lo hacemos</span>
-        <p class='ref-text'>Utilizamos técnicas como <strong>Blue-Green Deployment</strong> (dos ambientes idénticos, se activa el nuevo sin downtime), <strong>Canary Releases</strong> (el cambio llega primero al 5-10% de usuarios) y <strong>Feature Flags</strong> (funcionalidades que se activan o desactivan sin redesplegar). Cada despliegue está automatizado con pipelines CI/CD y cada paso queda registrado con timestamp, autor y resultado.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge riesgo'>Por qué importa para tu empresa</span>
-        <p class='ref-text'>Significa <strong>cero tiempo de inactividad</strong> en actualizaciones críticas de seguridad o cumplimiento. Si mañana se publica un parche urgente relacionado con la Ley 21.719, lo aplicamos sin apagar el sistema. La trazabilidad de cada despliegue también permite demostrar diligencia ante una auditoría.</p>
-      </div>
-      <div class='impact-pill impact-medium'>Disponibilidad continua · Rollback automático · Audit trail completo</div>
-    `
+    desc: 'Capacidad de actualizar código en producción en tiempo real, sin interrumpir la operación ni generar downtime para los usuarios.',
+    points: [
+      'Blue-Green Deployment: dos ambientes idénticos; el nuevo se activa sin apagar el anterior.',
+      'Canary Releases: el cambio llega primero al 5-10% de usuarios para validar antes de escalar.',
+      'Feature Flags: funcionalidades que se activan o desactivan sin necesidad de redesplegar.',
+      'Cada despliegue queda registrado con timestamp, autor y resultado — evidencia ante auditoría.',
+      'Parches de seguridad críticos (Ley 21.719, ISO 27001) se aplican sin ventana de mantención.'
+    ]
   },
   'api-orch': {
     tag: 'Integración de Sistemas',
     title: 'API <span>Orchestration</span>',
-    body: `
-      <div class='ref-block'>
-        <span class='ref-badge ley'>Qué es</span>
-        <p class='ref-text'>La <strong>Orquestación de APIs</strong> es la coordinación centralizada de múltiples servicios o sistemas a través de sus interfaces de programación (APIs). En lugar de que cada sistema hable directamente con todos los demás en un caos de conexiones punto a punto, un orquestador dirige el flujo: recibe una solicitud, llama a los servicios necesarios en el orden correcto y devuelve una respuesta unificada.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge iso'>Cómo lo hacemos</span>
-        <p class='ref-text'>Implementamos <strong>API Gateways</strong> (punto de entrada único con autenticación, rate limiting y logging), <strong>Service Mesh</strong> para comunicación segura entre microservicios, y patrones como <strong>Saga Pattern</strong> para transacciones distribuidas. Cada llamada entre sistemas queda registrada, lo que permite rastrear exactamente qué sistema accedió a qué dato y cuándo.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge riesgo'>Relación con Ley 21.719</span>
-        <p class='ref-text'>Cuando datos personales fluyen entre sistemas (un CRM que llama a un sistema de pagos que llama a un sistema de reportes), la orquestación permite saber <strong>exactamente qué datos personales viajaron, entre qué sistemas y con qué autorización</strong>. Esto es fundamental para cumplir el Art. 14 bis de la Ley 21.719 sobre el Registro de Actividades de Tratamiento (RAT).</p>
-      </div>
-      <div class='impact-pill impact-medium'>Control total del flujo de datos · Trazabilidad entre sistemas · Base del RAT</div>
-    `
+    desc: 'Coordinación centralizada de múltiples servicios a través de sus APIs. Un orquestador dirige el flujo de datos entre sistemas, garantizando orden, autenticación y trazabilidad en cada llamada.',
+    points: [
+      'API Gateway: punto de entrada único con autenticación, rate limiting y logging centralizado.',
+      'Service Mesh: comunicación cifrada y monitoreable entre microservicios internos.',
+      'Saga Pattern: transacciones distribuidas con rollback coordinado ante fallos.',
+      'Cada llamada entre sistemas queda registrada — base del Registro de Actividades de Tratamiento (RAT) exigido por el Art. 14 bis de la Ley 21.719.',
+      'Control total sobre qué dato personal viajó, entre qué sistemas y con qué autorización.'
+    ]
   },
   'audit-log': {
     tag: 'Trazabilidad y Cumplimiento',
     title: 'Audit <span>Log</span>',
-    body: `
-      <div class='ref-block'>
-        <span class='ref-badge ley'>Qué es</span>
-        <p class='ref-text'>Un <strong>Audit Log</strong> (o registro de auditoría) es un registro inmutable, cronológico y detallado de todas las acciones que ocurren en un sistema: quién accedió a qué, qué cambió, cuándo exactamente y desde dónde. Cada evento queda sellado con timestamp, identidad del actor, tipo de acción y el estado anterior y posterior del dato afectado.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge iso'>ISO 27001:2022 — Control A.8.15</span>
-        <p class='ref-text'>El control A.8.15 de ISO 27001:2022 exige <strong>registro y monitoreo de eventos</strong> en sistemas que procesan información sensible. Los logs deben incluir: identidad del usuario, actividad realizada, fecha/hora, origen (IP/dispositivo), éxito o fallo. Deben estar protegidos contra modificación o eliminación y retenerse según política definida.</p>
-      </div>
-      <div class='modal-divider'></div>
-      <div class='ref-block'>
-        <span class='ref-badge ley'>Ley 21.719 — Art. 14 quater</span>
-        <p class='ref-text'>El deber de seguridad de la Ley 21.719 exige adoptar medidas técnicas apropiadas al riesgo. El Audit Log es la evidencia objetiva que demuestra que esas medidas existen y funcionan. Ante una brecha o una solicitud de derechos ARCOP, el log permite responder: <strong>quién accedió a los datos del titular, cuándo y con qué finalidad</strong>. Sin log, no hay prueba de cumplimiento.</p>
-      </div>
-      <div class='impact-pill impact-critical'>Evidencia ante auditoría · Requisito ISO 27001 A.8.15 · Base para respuesta a brechas</div>
-    `
+    desc: 'Registro inmutable y cronológico de todas las acciones en el sistema: quién accedió a qué, qué cambió, cuándo y desde dónde. Cada evento queda sellado y protegido contra modificación.',
+    points: [
+      'Contiene: identidad del actor, acción realizada, timestamp, IP/dispositivo, éxito o fallo.',
+      'ISO 27001:2022 Control A.8.15: exige registro y monitoreo de eventos en sistemas con información sensible.',
+      'Ley 21.719 Art. 14 quater: el log es la evidencia objetiva del deber de seguridad cumplido.',
+      'Ante una brecha, permite responder en las 72 horas legales con datos precisos sobre qué se comprometió.',
+      'Sin Audit Log no existe prueba de cumplimiento ante la APDP ni ante una auditoría ISO.'
+    ]
   }
 };
 
@@ -2496,7 +2471,9 @@ function openTerrenoModal(key) {
   if (!d) return;
   document.getElementById('terrenoModalTag').textContent = d.tag;
   document.getElementById('terrenoModalTitle').innerHTML = d.title;
-  document.getElementById('terrenoModalBody').innerHTML = d.body;
+  document.getElementById('terrenoModalDesc').textContent = d.desc;
+  var ul = document.getElementById('terrenoModalPoints');
+  ul.innerHTML = d.points.map(function(p){ return '<li>' + p + '</li>'; }).join('');
   document.getElementById('terrenoModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
