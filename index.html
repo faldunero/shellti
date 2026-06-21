@@ -221,8 +221,8 @@ nav{
   position:fixed;top:68px;left:50%;transform:translateX(-50%);
   background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);
   border:1px solid rgba(0,212,255,0.22);border-radius:4px;
-  width:min(580px,calc(100vw - 2rem));padding:1.25rem 1.5rem;
-  display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem 2rem;
+  width:min(760px,calc(100vw - 2rem));padding:1.25rem 1.5rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1.5rem;
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .22s ease,visibility .22s ease;
   box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.08);
@@ -1459,9 +1459,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         </div>
         <div class="dd-col">
           <div class="dd-col-title">Contenido</div>
-          <a href="blog.html" class="dd-link">Blog</a>
-          <a href="news.html" class="dd-link">News</a>
-          <a href="recursos.html#guias" class="dd-link">Guías</a>
+          <a href="recursos/blog.html" class="dd-link">Blog</a>
+          <a href="recursos/news.html" class="dd-link">News</a>
+          <a href="recursos/biblioteca.html" class="dd-link">Guías</a>
           <a href="recursos.html#casos" class="dd-link">Casos de Uso</a>
         </div>
         <div>
@@ -2767,6 +2767,32 @@ document.getElementById('terrenoModal').addEventListener('click', function(e) {
   window.addEventListener('mouseup',onUp);
   window.addEventListener('touchend',onUp);
 })();
+</script>
+<script>
+function toggleDD(e) {
+  var li = document.getElementById('recursosDropdown');
+  var menu = li.querySelector('.dd-menu');
+  if (!menu) return;
+  var isVisible = menu.style.opacity === '1';
+  if (isVisible) {
+    menu.style.opacity = '0';
+    menu.style.visibility = 'hidden';
+    menu.style.pointerEvents = 'none';
+  } else {
+    e.preventDefault();
+    menu.style.opacity = '1';
+    menu.style.visibility = 'visible';
+    menu.style.pointerEvents = 'auto';
+  }
+  document.addEventListener('click', function closeDD(ev) {
+    if (!li.contains(ev.target)) {
+      menu.style.opacity = '0';
+      menu.style.visibility = 'hidden';
+      menu.style.pointerEvents = 'none';
+      document.removeEventListener('click', closeDD);
+    }
+  });
+}
 </script>
 </body>
 </html>
