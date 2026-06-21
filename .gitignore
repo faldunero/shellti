@@ -2,3 +2,4 @@
 imagenes/.DS_Store
 imagenes/video.mp4
 *.mp4
+node_modules/
