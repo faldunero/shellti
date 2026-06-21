@@ -1300,6 +1300,34 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
   .ck-modal-head,.ck-modal-body,.ck-modal-foot{padding-left:1.25rem;padding-right:1.25rem}
   #ck-float{bottom:1rem;right:1rem;font-size:.55rem}
 }
+
+/* ═══ HERO CAROUSEL ═══ */
+.hero-carousel{position:relative;overflow:hidden;width:100%;min-height:100vh;display:flex;flex-direction:column;}
+.carousel-track{display:flex;width:100%;height:100%;transition:none;}
+.carousel-slide{min-width:100%;position:relative;display:flex;align-items:stretch;}
+.carousel-slide--hero{min-height:100vh;}
+.carousel-slide--section{min-height:100vh;align-items:center;justify-content:center;overflow:hidden;}
+.slide-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
+.slide-overlay{position:absolute;inset:0;}
+.slide-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem;width:100%;}
+.slide-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1rem;}
+.slide-title{font-size:clamp(2rem,5vw,4rem);font-weight:800;color:#fff;line-height:1.1;max-width:800px;margin:0 auto .75rem;}
+.slide-title span{background:linear-gradient(90deg,var(--cyan),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.slide-sub{font-size:clamp(.85rem,1.5vw,1.05rem);color:rgba(255,255,255,.6);max-width:520px;margin:0 auto;}
+
+/* Controles */
+.carousel-nav{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:10;}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);border:none;cursor:pointer;transition:all .3s;padding:0;}
+.carousel-dot.active{background:var(--cyan);box-shadow:0 0 10px rgba(0,212,255,.7);width:24px;border-radius:4px;}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(2,6,23,.6);border:1px solid rgba(0,212,255,.2);color:var(--cyan);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px);}
+.carousel-btn:hover{background:rgba(0,212,255,.12);border-color:var(--cyan);box-shadow:0 0 16px rgba(0,212,255,.3);}
+.carousel-btn--prev{left:1.5rem;}
+.carousel-btn--next{right:1.5rem;}
+@media(max-width:768px){.carousel-btn{display:none;}}
+
+/* SVG art backgrounds */
+.slide-art{position:absolute;inset:0;opacity:.18;pointer-events:none;}
+
 </style>
 </head>
 <body>
@@ -1452,39 +1480,212 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </nav>
 
 <!-- ════════ HERO ════════ -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="grid-lines"></div>
-  <div class="hero-inner">
-    <div class="hero-layout">
-      <div>
-        <p class="overline">ShellTI · Technology Consultancy</p>
-        <h1 class="hero-title">Ciberseguridad y<br><em>Cumplimiento</em><br><span class="tc">Ley 21.719</span> Chile</h1>
-        <p class="hero-sub">Diseñamos el tejido lógico que sustenta la operatividad y resiliencia de organizaciones de alta complejidad. Especialistas en <strong style="color:var(--green);text-shadow:0 0 14px rgba(52,211,153,.4)">Ley N° 21.719</strong>.</p>
-        <div class="badges">
-          <span class="badge" data-modal="api-first">API-First</span>
-          <span class="badge" data-modal="zero-trust">Zero Trust</span>
-          <span class="badge" data-modal="cloud-native">Cloud Native</span>
-          <span class="badge" data-modal="iso27001">ISO 27001</span>
-          <span class="badge" data-modal="nist-csf">NIST CSF</span>
-          <span class="badge g" data-modal="ley21719">Ley 21.719</span>
-        </div>
-        <div class="actions">
-          <a href="diagnostico.html" class="btn-cta">Assessment Gratis →</a>
-          <a href="#nosotros" class="btn-ghost">Conocer más</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="wolf-wrap">
-          <div class="wolf-ring"></div>
-          <div class="wolf-ring"></div>
-          <div class="wolf-ring"></div>
-          <div class="wolf-disc">
-            <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI The Tech Alpha">
+<section id="hero" style="padding:0;min-height:100vh;position:relative;">
+  <div class="hero-carousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- SLIDE 01: Hero original -->
+      <div class="carousel-slide carousel-slide--hero">
+        <div class="hero-bg"></div>
+        <div class="grid-lines"></div>
+        <div class="hero-inner" style="width:100%;">
+          <div class="hero-layout">
+            <div>
+              <p class="overline">ShellTI · Technology Consultancy</p>
+              <h1 class="hero-title">Ciberseguridad y<br><em>Cumplimiento</em><br><span class="tc">Ley 21.719</span> Chile</h1>
+              <p class="hero-sub">Diseñamos el tejido lógico que sustenta la operatividad y resiliencia de organizaciones de alta complejidad. Especialistas en <strong style="color:var(--green);text-shadow:0 0 14px rgba(52,211,153,.4)">Ley N° 21.719</strong>.</p>
+              <div class="badges">
+                <span class="badge" data-modal="api-first">API-First</span>
+                <span class="badge" data-modal="zero-trust">Zero Trust</span>
+                <span class="badge" data-modal="cloud-native">Cloud Native</span>
+                <span class="badge" data-modal="iso27001">ISO 27001</span>
+                <span class="badge" data-modal="nist-csf">NIST CSF</span>
+                <span class="badge g" data-modal="ley21719">Ley 21.719</span>
+              </div>
+              <div class="actions">
+                <a href="diagnostico.html" class="btn-cta">Assessment Gratis →</a>
+                <a href="#nosotros" class="btn-ghost">Conocer más</a>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <div class="wolf-wrap">
+                <div class="wolf-ring"></div>
+                <div class="wolf-ring"></div>
+                <div class="wolf-ring"></div>
+                <div class="wolf-disc">
+                  <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI The Tech Alpha">
+                </div>
+                <p class="wolf-label">The Tech Alpha</p>
+              </div>
+            </div>
           </div>
-          <p class="wolf-label">The Tech Alpha</p>
         </div>
       </div>
+      <!-- SLIDE 02: Quiénes Somos -->
+      <div class="carousel-slide carousel-slide--section">
+        <div class="slide-bg" style="background:radial-gradient(ellipse 120% 80% at 60% 40%, rgba(0,180,216,0.18) 0, transparent 65%), var(--deep2);"></div>
+        <svg class="slide-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Red de nodos conectados — Ingeniería de Ecosistemas -->
+          <circle cx="720" cy="450" r="90" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity=".6"/>
+          <circle cx="720" cy="450" r="180" fill="none" stroke="#00D4FF" stroke-width=".8" opacity=".3"/>
+          <circle cx="720" cy="450" r="270" fill="none" stroke="#00D4FF" stroke-width=".5" opacity=".2"/>
+          <g stroke="#00D4FF" stroke-width="1" opacity=".5">
+            <line x1="720" y1="450" x2="400" y2="200"/><circle cx="400" cy="200" r="6" fill="#00D4FF" opacity=".8"/>
+            <line x1="720" y1="450" x2="1050" y2="220"/><circle cx="1050" cy="220" r="6" fill="#00D4FF" opacity=".8"/>
+            <line x1="720" y1="450" x2="1100" y2="600"/><circle cx="1100" cy="600" r="6" fill="#34D399" opacity=".8"/>
+            <line x1="720" y1="450" x2="340" y2="680"/><circle cx="340" cy="680" r="6" fill="#34D399" opacity=".8"/>
+            <line x1="720" y1="450" x2="720" y2="150"/><circle cx="720" cy="150" r="6" fill="#00D4FF" opacity=".8"/>
+            <line x1="720" y1="450" x2="720" y2="750"/><circle cx="720" cy="750" r="6" fill="#34D399" opacity=".8"/>
+            <line x1="400" y1="200" x2="1050" y2="220" stroke-dasharray="4 6" opacity=".3"/>
+            <line x1="1050" y1="220" x2="1100" y2="600" stroke-dasharray="4 6" opacity=".3"/>
+            <line x1="1100" y1="600" x2="340" y2="680" stroke-dasharray="4 6" opacity=".3"/>
+            <line x1="340" y1="680" x2="400" y2="200" stroke-dasharray="4 6" opacity=".3"/>
+          </g>
+          <circle cx="720" cy="450" r="12" fill="#00D4FF" opacity=".9"/>
+          <circle cx="720" cy="450" r="4" fill="#fff"/>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(180deg,rgba(2,6,23,.3) 0,rgba(2,6,23,.55) 100%);"></div>
+        <div class="slide-content">
+          <p class="slide-num">01 · Quiénes Somos</p>
+          <h2 class="slide-title">Ingeniería de Sistemas <span>Conectados</span></h2>
+          <p class="slide-sub">Infraestructura lógica que constituye el sistema nervioso de las organizaciones modernas.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 03: Staffing -->
+      <div class="carousel-slide carousel-slide--section">
+        <div class="slide-bg" style="background:radial-gradient(ellipse 100% 70% at 30% 60%, rgba(52,211,153,0.15) 0, transparent 60%), var(--deep3);"></div>
+        <svg class="slide-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid de personas / células -->
+          <g fill="none" stroke="#34D399" stroke-width="1">
+            <rect x="480" y="280" width="120" height="120" rx="4" opacity=".5"/>
+            <rect x="660" y="280" width="120" height="120" rx="4" opacity=".7"/>
+            <rect x="840" y="280" width="120" height="120" rx="4" opacity=".5"/>
+            <rect x="480" y="460" width="120" height="120" rx="4" opacity=".4"/>
+            <rect x="660" y="460" width="120" height="120" rx="4" opacity=".9"/>
+            <rect x="840" y="460" width="120" height="120" rx="4" opacity=".4"/>
+            <rect x="570" y="640" width="120" height="120" rx="4" opacity=".3"/>
+            <rect x="750" y="640" width="120" height="120" rx="4" opacity=".3"/>
+          </g>
+          <!-- Iconos persona simplificados -->
+          <g fill="#34D399">
+            <circle cx="720" cy="320" r="18" opacity=".8"/>
+            <path d="M690 380 Q690 355 720 355 Q750 355 750 380 Z" opacity=".8"/>
+            <circle cx="540" cy="320" r="14" opacity=".5"/>
+            <path d="M515 375 Q515 353 540 353 Q565 353 565 375 Z" opacity=".5"/>
+            <circle cx="900" cy="320" r="14" opacity=".5"/>
+            <path d="M875 375 Q875 353 900 353 Q925 353 925 375 Z" opacity=".5"/>
+          </g>
+          <!-- Líneas de conexión jerárquica -->
+          <g stroke="#34D399" stroke-width="1" opacity=".3">
+            <line x1="720" y1="500" x2="540" y2="500"/>
+            <line x1="720" y1="500" x2="900" y2="500"/>
+            <line x1="720" y1="460" x2="720" y2="400"/>
+          </g>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(180deg,rgba(2,6,23,.3) 0,rgba(2,6,23,.55) 100%);"></div>
+        <div class="slide-content">
+          <p class="slide-num">02 · Staffing</p>
+          <h2 class="slide-title">Células de Desarrollo & <span>Outsourcing TI</span></h2>
+          <p class="slide-sub">Equipos especializados que operan como extensión de tu organización con trazabilidad total.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 04: Compliance Ley 21.719 -->
+      <div class="carousel-slide carousel-slide--section">
+        <div class="slide-bg" style="background:radial-gradient(ellipse 120% 80% at 70% 30%, rgba(0,212,255,0.12) 0, transparent 60%), radial-gradient(ellipse 80% 60% at 20% 80%, rgba(52,211,153,0.1) 0, transparent 55%), var(--deep2);"></div>
+        <svg class="slide-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Escudo / candado de compliance -->
+          <path d="M720 180 L820 230 L820 380 Q820 460 720 500 Q620 460 620 380 L620 230 Z" fill="none" stroke="#00D4FF" stroke-width="2" opacity=".6"/>
+          <path d="M720 200 L800 242 L800 375 Q800 445 720 482 Q640 445 640 375 L640 242 Z" fill="rgba(0,212,255,0.06)" stroke="#00D4FF" stroke-width="1" opacity=".5"/>
+          <!-- Candado interior -->
+          <rect x="695" y="330" width="50" height="40" rx="4" fill="none" stroke="#34D399" stroke-width="1.5" opacity=".8"/>
+          <path d="M705 330 L705 315 Q705 295 720 295 Q735 295 735 315 L735 330" fill="none" stroke="#34D399" stroke-width="1.5" opacity=".8"/>
+          <circle cx="720" cy="352" r="5" fill="#34D399" opacity=".8"/>
+          <!-- Rays de protección -->
+          <g stroke="#00D4FF" stroke-width=".8" opacity=".2">
+            <line x1="720" y1="180" x2="720" y2="80"/><line x1="820" y1="230" x2="920" y2="170"/><line x1="820" y1="380" x2="940" y2="400"/><line x1="720" y1="500" x2="720" y2="600"/><line x1="620" y1="380" x2="500" y2="400"/><line x1="620" y1="230" x2="520" y2="170"/>
+          </g>
+          <!-- Texto 21.719 decorativo -->
+          <text x="720" y="700" text-anchor="middle" font-family="monospace" font-size="80" fill="#00D4FF" opacity=".06" font-weight="800">21.719</text>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(180deg,rgba(2,6,23,.3) 0,rgba(2,6,23,.6) 100%);"></div>
+        <div class="slide-content">
+          <p class="slide-num">03 · Compliance</p>
+          <h2 class="slide-title">Cumplimiento <span>Ley 21.719</span></h2>
+          <p class="slide-sub">Protección de datos personales. Diagnóstico, implementación y certificación bajo la ley chilena.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 05: Resiliencia -->
+      <div class="carousel-slide carousel-slide--section">
+        <div class="slide-bg" style="background:radial-gradient(ellipse 100% 80% at 50% 50%, rgba(168,85,247,0.12) 0, transparent 65%), var(--deep3);"></div>
+        <svg class="slide-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Triángulo de resiliencia -->
+          <polygon points="720,150 1050,650 390,650" fill="none" stroke="#A855F7" stroke-width="2" opacity=".6"/>
+          <polygon points="720,250 950,600 490,600" fill="rgba(168,85,247,0.04)" stroke="#A855F7" stroke-width="1" opacity=".4"/>
+          <polygon points="720,350 850,565 590,565" fill="rgba(168,85,247,0.06)" stroke="#A855F7" stroke-width="1" opacity=".35"/>
+          <!-- Vértices -->
+          <circle cx="720" cy="150" r="10" fill="#00D4FF" opacity=".9"/><text x="720" y="130" text-anchor="middle" font-family="monospace" font-size="11" fill="#00D4FF" opacity=".7">SEGURIDAD</text>
+          <circle cx="1050" cy="650" r="10" fill="#34D399" opacity=".9"/><text x="1060" y="680" text-anchor="middle" font-family="monospace" font-size="11" fill="#34D399" opacity=".7">COMPLIANCE</text>
+          <circle cx="390" cy="650" r="10" fill="#A855F7" opacity=".9"/><text x="380" y="680" text-anchor="middle" font-family="monospace" font-size="11" fill="#A855F7" opacity=".7">TECNOLOGÍA</text>
+          <!-- Centro -->
+          <circle cx="720" cy="480" r="20" fill="none" stroke="#fff" stroke-width="1" opacity=".3"/>
+          <circle cx="720" cy="480" r="6" fill="#fff" opacity=".5"/>
+          <!-- Líneas internas -->
+          <g stroke="rgba(255,255,255,.1)" stroke-width=".8">
+            <line x1="720" y1="150" x2="720" y2="480"/><line x1="1050" y1="650" x2="720" y2="480"/><line x1="390" y1="650" x2="720" y2="480"/>
+          </g>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(180deg,rgba(2,6,23,.3) 0,rgba(2,6,23,.55) 100%);"></div>
+        <div class="slide-content">
+          <p class="slide-num">04 · Resiliencia</p>
+          <h2 class="slide-title">El Triángulo de <span>Resiliencia</span></h2>
+          <p class="slide-sub">Seguridad, compliance y tecnología como vértices inseparables del ecosistema digital.</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 06: Metodología -->
+      <div class="carousel-slide carousel-slide--section">
+        <div class="slide-bg" style="background:radial-gradient(ellipse 100% 70% at 40% 50%, rgba(0,212,255,0.1) 0, transparent 60%), var(--deep2);"></div>
+        <svg class="slide-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- CAP Theorem — 3 círculos solapados -->
+          <circle cx="660" cy="370" r="160" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity=".5"/>
+          <circle cx="780" cy="370" r="160" fill="none" stroke="#34D399" stroke-width="1.5" opacity=".5"/>
+          <circle cx="720" cy="490" r="160" fill="none" stroke="#FFD93D" stroke-width="1.5" opacity=".5"/>
+          <!-- Labels -->
+          <text x="570" y="330" text-anchor="middle" font-family="monospace" font-size="12" fill="#00D4FF" opacity=".8">CONSISTENCIA</text>
+          <text x="870" y="330" text-anchor="middle" font-family="monospace" font-size="12" fill="#34D399" opacity=".8">DISPONIBILIDAD</text>
+          <text x="720" y="700" text-anchor="middle" font-family="monospace" font-size="12" fill="#FFD93D" opacity=".8">TOLERANCIA</text>
+          <!-- Centro CAP -->
+          <circle cx="720" cy="430" r="35" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="720" y="435" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff" opacity=".7">CAP</text>
+          <!-- Circuit Breaker hint -->
+          <path d="M300 600 L380 600 L400 570 L420 630 L440 600 L520 600" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity=".4"/>
+          <path d="M920 600 L1000 600 L1020 570 L1040 630 L1060 600 L1140 600" fill="none" stroke="#34D399" stroke-width="1.5" opacity=".4"/>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(180deg,rgba(2,6,23,.3) 0,rgba(2,6,23,.55) 100%);"></div>
+        <div class="slide-content">
+          <p class="slide-num">05 · Metodología</p>
+          <h2 class="slide-title">Ingeniería de <span>Resiliencia</span></h2>
+          <p class="slide-sub">Teorema CAP y Circuit Breaker aplicados. Consistencia, disponibilidad y tolerancia en equilibrio.</p>
+        </div>
+      </div>
+
+    </div><!-- /carousel-track -->
+
+    <!-- Botones prev/next -->
+    <button class="carousel-btn carousel-btn--prev" id="carouselPrev" aria-label="Anterior">&#8592;</button>
+    <button class="carousel-btn carousel-btn--next" id="carouselNext" aria-label="Siguiente">&#8594;</button>
+
+    <!-- Dots -->
+    <div class="carousel-nav">
+      <button class="carousel-dot active" aria-label="Slide 1"></button>
+      <button class="carousel-dot" aria-label="Slide 2"></button>
+      <button class="carousel-dot" aria-label="Slide 3"></button>
+      <button class="carousel-dot" aria-label="Slide 4"></button>
+      <button class="carousel-dot" aria-label="Slide 5"></button>
+      <button class="carousel-dot" aria-label="Slide 6"></button>
     </div>
   </div>
 </section>
@@ -2409,6 +2610,51 @@ diagModal.addEventListener('click',(e)=>{
     ckApply(saved);
     ckShowFloat();
   }
+})();
+</script>
+<script>
+/* ═══ HERO CAROUSEL JS ═══ */
+(function(){
+  const track  = document.getElementById('carouselTrack');
+  const dots   = document.querySelectorAll('.carousel-dot');
+  const total  = dots.length;
+  let   cur    = 0;
+  let   timer  = null;
+  let   paused = false;
+
+  function goTo(n, animate){
+    cur = (n + total) % total;
+    track.style.transition = animate === false ? 'none' : 'transform .7s cubic-bezier(.77,0,.18,1)';
+    track.style.transform  = `translateX(-${cur * 100}%)`;
+    dots.forEach((d,i) => d.classList.toggle('active', i === cur));
+  }
+
+  function next(){ goTo(cur + 1, true); }
+  function prev(){ goTo(cur - 1, true); }
+
+  function startAuto(){
+    clearInterval(timer);
+    timer = setInterval(() => { if(!paused) next(); }, 6000);
+  }
+
+  document.getElementById('carouselPrev').addEventListener('click', () => { prev(); startAuto(); });
+  document.getElementById('carouselNext').addEventListener('click', () => { next(); startAuto(); });
+  dots.forEach((d,i) => d.addEventListener('click', () => { goTo(i, true); startAuto(); }));
+
+  // Pausa al hover
+  track.parentElement.addEventListener('mouseenter', () => paused = true);
+  track.parentElement.addEventListener('mouseleave', () => paused = false);
+
+  // Swipe touch
+  let tx = 0;
+  track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ dx < 0 ? next() : prev(); startAuto(); }
+  }, {passive:true});
+
+  goTo(0, false);
+  startAuto();
 })();
 </script>
 </body>
