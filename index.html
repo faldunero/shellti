@@ -218,13 +218,13 @@ nav{
 /* Bridge: invisible area that connects nav item to dropdown, preventing hover loss */
 .nav-dropdown::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px;z-index:499}
 .dd-menu{
-  position:fixed;top:68px;left:50%;transform:translateX(-50%);
+  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);
   background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);
   border:1px solid rgba(0,212,255,0.22);border-radius:4px;
   width:min(760px,calc(100vw - 2rem));padding:1.25rem 1.5rem;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1.5rem;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem 2rem;
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .22s ease,visibility .22s ease;
+  transition:opacity .22s ease,visibility .22s ease,transform .22s ease;
   box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.08);
   z-index:500;
 }
@@ -234,7 +234,7 @@ nav{
   border-left:1px solid rgba(0,212,255,0.22);border-top:1px solid rgba(0,212,255,0.22);
   transform:translateX(-50%) rotate(45deg);
 }
-.nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;}
+.nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);}
 .dd-col{display:flex;flex-direction:column;}
 .dd-col-title{
   font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;
@@ -1459,9 +1459,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         </div>
         <div class="dd-col">
           <div class="dd-col-title">Contenido</div>
-          <a href="recursos/blog.html" class="dd-link">Blog</a>
-          <a href="recursos/news.html" class="dd-link">News</a>
-          <a href="recursos/biblioteca.html" class="dd-link">Guías</a>
+          <a href="blog.html" class="dd-link">Blog</a>
+          <a href="news.html" class="dd-link">News</a>
+          <a href="recursos.html#guias" class="dd-link">Guías</a>
           <a href="recursos.html#casos" class="dd-link">Casos de Uso</a>
         </div>
         <div>

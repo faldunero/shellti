@@ -69,7 +69,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .dd-arrow{font-size:.5rem;transition:transform .25s;opacity:.7;display:inline-block}
 .nav-dropdown:hover>a .dd-arrow{transform:rotate(180deg)}
 .nav-dropdown::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px;z-index:499}
-.dd-menu{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);border:1px solid rgba(0,212,255,0.22);border-radius:4px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1.5rem;width:min(760px,calc(100vw - 2rem));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s,visibility .22s,transform .22s;box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 40px rgba(0,212,255,0.08);z-index:500}
+.dd-menu{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);border:1px solid rgba(0,212,255,0.22);border-radius:4px;width:min(760px,calc(100vw - 2rem));padding:1.25rem 1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1.5rem;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s,visibility .22s,transform .22s;box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 40px rgba(0,212,255,0.08);z-index:500}
 .dd-menu::before{content:'';position:absolute;top:-5px;left:50%;width:10px;height:10px;background:#030c20;border-left:1px solid rgba(0,212,255,0.22);border-top:1px solid rgba(0,212,255,0.22);transform:translateX(-50%) rotate(45deg)}
 .nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 .dd-col-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,0.15);display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -220,6 +220,131 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
   footer{padding:1.2rem}
   .footer-logo span{display:none}
 }
+
+/* Hamburger — reset nativo completo */
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  cursor:pointer;background:none;border:none;outline:none;
+  -webkit-appearance:none;appearance:none;
+  padding:6px;margin:0;width:36px;height:36px;
+  border-radius:0;box-shadow:none;
+  -webkit-tap-highlight-color:transparent;
+  z-index:401;position:relative;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;
+  background:var(--cyan);border-radius:2px;
+  transition:transform .3s ease,opacity .3s ease;
+  pointer-events:none;
+}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── SIDE DRAWER ── */
+/* Overlay oscuro detrás del drawer */
+.drawer-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(2,6,23,0.72);
+  backdrop-filter:blur(4px);
+  z-index:398;
+  opacity:0;transition:opacity .3s ease;
+}
+.drawer-overlay.open{display:block;opacity:1}
+
+/* Panel lateral */
+.drawer{
+  position:fixed;top:0;left:0;bottom:0;
+  width:min(300px, 82vw);
+  background:linear-gradient(160deg,#030c20 0%,#020a1a 60%,#040e24 100%);
+  border-right:1px solid rgba(0,212,255,0.18);
+  z-index:399;
+  display:flex;flex-direction:column;
+  transform:translateX(-100%);
+  transition:transform .32s cubic-bezier(0.32,0,0.08,1);
+  box-shadow:8px 0 40px rgba(0,0,0,0.5);
+}
+.drawer.open{transform:translateX(0)}
+
+/* Línea cyan top */
+.drawer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,0.2));
+}
+
+/* Header del drawer */
+.drawer-head{
+  height:68px;padding:0 1.25rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(0,212,255,0.08);
+  flex-shrink:0;
+}
+.drawer-head-brand{display:flex;align-items:center;gap:8px;text-decoration:none}
+.drawer-head-brand img{
+  height:32px;width:32px;object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(0,212,255,0.7)) brightness(1.2);
+}
+.drawer-head-name{font-weight:800;font-size:1rem;color:var(--silver);letter-spacing:-.5px}
+.drawer-head-name span{color:var(--cyan)}
+.drawer-close{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;line-height:1;
+  transition:all .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.drawer-close:hover{background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.35);color:#FF6B6B}
+
+/* Items del drawer */
+.drawer-nav{
+  flex:1;overflow-y:auto;padding:.5rem 0;
+  display:flex;flex-direction:column;  /* apila verticalmente */
+}
+.drawer-item{
+  display:flex;flex-direction:row;align-items:center;gap:14px;
+  width:100%;box-sizing:border-box;    /* ancho completo */
+  padding:.9rem 1.25rem;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background .18s,padding-left .18s;
+}
+.drawer-item:hover{background:rgba(0,212,255,0.06);padding-left:1.5rem}
+.drawer-item:hover .drawer-item-icon{color:var(--cyan);border-color:rgba(0,212,255,0.25)}
+.drawer-item:hover .drawer-item-label{color:var(--silver)}
+.drawer-item-icon{
+  width:34px;height:34px;border-radius:4px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);flex-shrink:0;transition:all .18s;
+}
+.drawer-item-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.drawer-item-label{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);transition:color .18s;white-space:nowrap;
+}
+.drawer-item-hint{font-size:.65rem;color:rgba(148,163,184,0.38);letter-spacing:.2px}
+
+/* Footer del drawer — solo CTA, sin tagline */
+.drawer-footer{
+  padding:1.1rem 1.25rem 1.4rem;
+  border-top:1px solid rgba(0,212,255,0.08);
+  flex-shrink:0;
+}
+.drawer-cta{
+  display:block;width:100%;padding:13px;text-align:center;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan2));
+  color:var(--deep);font-weight:800;font-size:.78rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  border-radius:3px;text-decoration:none;
+  transition:box-shadow .2s,transform .2s;
+  font-family:'JetBrains Mono',monospace;
+}
+.drawer-cta:hover{box-shadow:0 0 24px rgba(0,212,255,0.45);transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -312,7 +437,6 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
     </a>
   </div>
     <a href="../diagnostico.html" class="drawer-cta">Assessment Gratuito &rarr;</a>
-  </div>
 </aside>
 
 <!-- ════════ NAVBAR ════════ -->
@@ -371,7 +495,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
-  <a href="index.html">Inicio</a>
+  <a href="../index.html">Inicio</a>
   <span class="breadcrumb-sep">/</span>
   <span class="breadcrumb-current">Recursos</span>
 </div>
@@ -433,7 +557,7 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
         </div>
       </a>
       <!-- Contenido -->
-      <a href="recursos/blog.html" class="cat-card">
+      <a href="blog.html" class="cat-card">
         <div class="cat-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
