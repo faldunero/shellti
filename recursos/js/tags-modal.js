@@ -592,7 +592,7 @@
 #tm-points{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.5rem;}
 #tm-points li{display:flex;align-items:flex-start;gap:.7rem;
   color:#94A3B8;font-size:.84rem;line-height:1.65;font-weight:300;}
-#tm-points li::before{content:'▸';font-size:.75rem;flex-shrink:0;margin-top:.18rem;}
+#tm-points li::before{content:'▸';font-size:.75rem;flex-shrink:0;margin-top:.18rem;color:var(--tm-accent,#00D4FF);}
 #tm-footer{padding-top:1.1rem;border-top:1px solid rgba(0,212,255,0.1);display:flex;justify-content:flex-end;}
 #tm-btn{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1.5px;
   text-transform:uppercase;border:1px solid rgba(0,212,255,0.4);color:#00D4FF;
@@ -647,9 +647,8 @@
       li.style.setProperty('--tc', c.text);
     });
     // Aplicar color a bullets con pseudo, lo hacemos con un span
-    ul.innerHTML = d.points.map(p =>
-      `<li><span style="color:${c.text};flex-shrink:0;margin-top:.18rem;font-size:.75rem;">▸</span><span>${p}</span></li>`
-    ).join('');
+    ul.innerHTML = d.points.map(p => `<li>${p}</li>`).join('');
+    document.getElementById('tm-points').style.setProperty('--tm-accent', c.text);
     document.getElementById('tm-btn').style.color = c.text;
     document.getElementById('tm-btn').style.borderColor = c.border;
     document.getElementById('tm-btn').style.background = c.bg;
