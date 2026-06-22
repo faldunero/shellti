@@ -89,7 +89,7 @@
 </style>
 <div class="guard-box">
   <div class="guard-logo">
-    <img src="/lobo_shellti.webp" onerror="this.style.display='none'">
+    <img src="https://shellti.com/lobo_shellti.webp" onerror="this.style.display='none'">
     <span>ShellTI · Acceso Restringido</span>
   </div>
   <h2 class="guard-title">Área Premium</h2>
