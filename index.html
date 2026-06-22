@@ -634,12 +634,12 @@ h1.hero-title em{
 
 /* HERO WOLF VISUAL */
 .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;padding:50px}
-.wolf-wrap{position:relative;width:350px;height:350px;display:flex;align-items:center;justify-content:center}
-.wolf-ring{position:absolute;border-radius:50%;animation:rpulse 3s ease-in-out infinite}
-.wolf-ring:nth-child(1){inset:-28px;border:1px solid rgba(0,212,255,0.2);animation-delay:0s}
-.wolf-ring:nth-child(2){inset:-60px;border:1px solid rgba(0,212,255,0.11);animation-delay:.7s}
-.wolf-ring:nth-child(3){inset:-96px;border:1px solid rgba(52,211,153,0.08);animation-delay:1.4s}
-.wolf-disc{
+.mascot-wrap{position:relative;width:350px;height:350px;display:flex;align-items:center;justify-content:center}
+.mascot-ring{position:absolute;border-radius:50%;animation:rpulse 3s ease-in-out infinite}
+.mascot-ring:nth-child(1){inset:-28px;border:1px solid rgba(0,212,255,0.2);animation-delay:0s}
+.mascot-ring:nth-child(2){inset:-60px;border:1px solid rgba(0,212,255,0.11);animation-delay:.7s}
+.mascot-ring:nth-child(3){inset:-96px;border:1px solid rgba(52,211,153,0.08);animation-delay:1.4s}
+.mascot-disc{
   width:290px;height:290px;border-radius:50%;
   background:radial-gradient(circle at 38% 38%,rgba(0,212,255,0.13) 0%,rgba(2,6,23,0.97) 65%);
   border:1px solid rgba(0,212,255,0.3);
@@ -648,7 +648,7 @@ h1.hero-title em{
   animation:float 4.5s ease-in-out infinite;position:relative;z-index:1;
 }
 /* Hero wolf: maximum blizzard glow */
-.wolf-disc img{
+.mascot-disc img{
   width:200px;height:200px;object-fit:contain;
   image-rendering:crisp-edges;
   filter:
@@ -658,7 +658,7 @@ h1.hero-title em{
     drop-shadow(0 0 8px rgba(52,211,153,0.7))
     brightness(1.25) saturate(1.55) contrast(1.12);
 }
-.wolf-label{
+.mascot-label{
   position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);
   font-family:'JetBrains Mono',monospace;font-size:.6rem;
   letter-spacing:4px;color:var(--muted);text-transform:uppercase;white-space:nowrap;
@@ -998,9 +998,9 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:
 /* ── Tablet landscape / small desktop ── */
 @media(max-width:1100px){
   .hero-layout{grid-template-columns:1fr 420px;gap:40px}
-  .wolf-wrap{width:300px;height:300px}
-  .wolf-disc{width:240px;height:240px}
-  .wolf-disc img{width:160px;height:160px}
+  .mascot-wrap{width:300px;height:300px}
+  .mascot-disc{width:240px;height:240px}
+  .mascot-disc img{width:160px;height:160px}
   .tri-grid{grid-template-columns:1fr 1fr}
   .contact-grid{gap:48px}
 }
@@ -1475,6 +1475,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
     <li><a href="newsletter.html">Insights</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
+  <a href="/admin.html" style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(148,163,184,0.35);text-decoration:none;padding:5px 10px;border:1px solid rgba(148,163,184,0.15);transition:all .2s;white-space:nowrap;margin-left:.5rem" onmouseover="this.style.color='rgba(0,212,255,0.7)';this.style.borderColor='rgba(0,212,255,0.3)'" onmouseout="this.style.color='rgba(148,163,184,0.35)';this.style.borderColor='rgba(148,163,184,0.15)'">Admin</a>
   <button class="hamburger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sideDrawer">
     <span></span><span></span><span></span>
   </button>
@@ -1507,14 +1508,14 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         </div>
       </div>
       <div class="hero-visual">
-        <div class="wolf-wrap">
-          <div class="wolf-ring"></div>
-          <div class="wolf-ring"></div>
-          <div class="wolf-ring"></div>
-          <div class="wolf-disc">
-            <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI The Tech Alpha">
+        <div class="mascot-wrap">
+          <div class="mascot-ring"></div>
+          <div class="mascot-ring"></div>
+          <div class="mascot-ring"></div>
+          <div class="mascot-disc">
+            <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI">
           </div>
-          <p class="wolf-label">The Tech Alpha</p>
+          
         </div>
             </div>
           </div>
@@ -1704,6 +1705,16 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
           <span class="c-slide-cta">Ver sección &rarr;</span>
         </div>
       </a>
+      <a class="carousel-slide" href="#nosotros" onclick="event.preventDefault();document.getElementById('nosotros').scrollIntoView({behavior:'smooth'});return false;" style="text-decoration:none;">
+        <div class="c-slide-bg" style="background-image:url('https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=1440');background-size:cover;background-position:center;background-color:#020d1a;"></div>
+        <div class="c-slide-overlay" style="background:rgba(2,6,23,0.55);"></div>
+        <div class="c-slide-content">
+          <p class="c-slide-num">06 &middot; ShellTI</p>
+          <h2 class="c-slide-title">Inteligencia, <em>Lealtad</em> y Precisión</h2>
+          <p class="c-slide-sub">Los valores que definen nuestra forma de trabajar: atención al detalle, compromiso total y resultados que perduran.</p>
+          <span class="c-slide-cta">Conocer ShellTI &rarr;</span>
+        </div>
+      </a>
     </div>
     <button class="carousel-btn carousel-btn--prev" id="carouselPrev" aria-label="Anterior">&#8592;</button>
     <button class="carousel-btn carousel-btn--next" id="carouselNext" aria-label="Siguiente">&#8594;</button>
@@ -1714,6 +1725,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
       <button class="carousel-dot" aria-label="Compliance"></button>
       <button class="carousel-dot" aria-label="Resiliencia"></button>
       <button class="carousel-dot" aria-label="Metodología"></button>
+      <button class="carousel-dot" aria-label="ShellTI"></button>
     </div>
   </div>
 </section>
@@ -1727,7 +1739,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         <h2 class="sec-title">Ingeniería de<br>Sistemas <span class="tc">Conectados</span></h2>
         <p>En <strong>ShellTI</strong>, conceptualizamos y desplegamos la infraestructura lógica que constituye el sistema nervioso de las organizaciones modernas. Nuestra identidad se fundamenta en la <strong>Ingeniería de Ecosistemas Conectados</strong>, donde la resiliencia sistémica y la seguridad proactiva son complementarios.</p>
         <p>Basamos nuestro diseño en la <strong>Ley de Conway</strong>: las organizaciones deben reflejar sus objetivos en su software. Transicionamos estructuras monolíticas hacia <strong>microservicios desacoplados</strong>, permitiendo evolución incremental.</p>
-        <p>El lobo — nuestro símbolo — representa la <strong>inteligencia colectiva</strong>, la agilidad y la protección del ecosistema digital de nuestros clientes.</p>
+        <p>Nuestro símbolo representa la <strong>inteligencia colectiva</strong>, la agilidad y la protección del ecosistema digital de nuestros clientes.</p>
       </div>
       <div>
         <div class="info-box blue">
