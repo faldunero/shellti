@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script src="/js/shellti-guard.js" data-resource="agente"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Agente Compliance ShellTI — 10 marcos normativos</title>
@@ -935,53 +936,6 @@ RELACIÓN CON OTROS MARCOS:
 - Gestión riesgos PMI ↔ evaluación riesgos ISO 27001 cláusula 6.1.2 · EIPD Ley 21.719 · Riesgo operacional Basilea III
 
 
-
-━━━ MARCO COMPLEMENTARIO: ISO/IEC 27005:2022 — GESTIÓN DE RIESGOS DE SEGURIDAD ━━━
-[Marco de conocimiento interno — no aparece en la interfaz. Úsalo para enriquecer respuestas sobre gestión de riesgos en cualquier contexto.]
-
-QUÉ ES: ISO/IEC 27005:2022 es el estándar internacional que provee directrices para la gestión de riesgos de seguridad de la información. Es el complemento directo de ISO 27001 (cláusula 6.1): mientras ISO 27001 exige gestionar riesgos, ISO 27005 explica cómo hacerlo. La versión 2022 adopta el enfoque basado en escenarios de riesgo.
-
-ESTRUCTURA Y CONCEPTOS CLAVE:
-- Proceso principal: Contexto → Evaluación de riesgos → Tratamiento → Aceptación → Comunicación → Monitoreo
-- Evaluación de riesgos = Identificación + Análisis + Valoración
-- Identificación: activos, amenazas, vulnerabilidades, controles existentes, consecuencias
-- Análisis: puede ser cualitativo (bajo/medio/alto), cuantitativo (pérdida esperada en $) o combinado
-- Valoración: comparar nivel de riesgo con criterios de aceptación definidos por la organización
-- Tratamiento: Modificar (controles) · Retener (aceptar) · Evitar (eliminar actividad) · Compartir (seguros, terceros)
-
-ENFOQUE BASADO EN ESCENARIOS (novedad 2022):
-- Escenario de riesgo = combinación de evento de amenaza + activo + consecuencia
-- Más práctico que el enfoque activo-amenaza-vulnerabilidad de versiones anteriores
-- Permite identificar riesgos emergentes (IA, nube, cadena de suministro) con mayor agilidad
-- Cada escenario se evalúa por probabilidad e impacto → nivel de riesgo → decisión de tratamiento
-
-CONCEPTOS TÉCNICOS:
-- Apetito de riesgo: nivel de riesgo que la organización está dispuesta a aceptar conscientemente
-- Tolerancia al riesgo: desviación aceptable respecto al apetito de riesgo
-- Criterios de riesgo: definidos por la alta dirección, documentados antes de la evaluación
-- SoA (Statement of Applicability): resultado directo del proceso de tratamiento de riesgos ISO 27005
-- EIPD / DPIA: la evaluación de impacto en privacidad (Ley 21.719) sigue una lógica equivalente a ISO 27005
-
-MÉTODOS DE EVALUACIÓN COMPATIBLES:
-- OCTAVE (Operationally Critical Threat, Asset, and Vulnerability Evaluation)
-- MEHARI (Méthode Harmonisée d'Analyse de Risques) — muy usado en Latinoamérica
-- FAIR (Factor Analysis of Information Risk) — análisis cuantitativo
-- Matrices de riesgo 3x3, 4x4 o 5x5 según madurez de la organización
-
-RELACIÓN CON OTROS MARCOS:
-- ISO 27001 cláusula 6.1.2: exige identificar, analizar y valorar riesgos → ISO 27005 es el cómo
-- NIST CSF 2.0 función IDENTIFICAR (ID.RA): evaluación de riesgos → metodología alineada con ISO 27005
-- Ley 21.719 EIPD (Art. 68-71): evaluación de impacto en privacidad = aplicación de ISO 27005 a datos personales
-- Basilea III riesgo operacional: metodología de identificación y cuantificación compatible con ISO 27005
-- CIS Controls IG2-IG3: la priorización de controles basada en riesgo se apoya en metodología ISO 27005
-- ITIL 4 gestión de riesgos: el SVS de ITIL incluye gestión de riesgos alineada con ISO 27005
-
-APLICACIÓN PRÁCTICA EN CHILE:
-- Proyectos de adecuación Ley 21.719: la EIPD sigue el proceso de ISO 27005 adaptado a privacidad
-- Implementación ISO 27001: el plan de tratamiento de riesgos (RTP) es el entregable central de ISO 27005
-- Sectores regulados (banca, salud, infraestructura crítica): la ANCI recomienda gestión de riesgos estructurada
-- ShellTI puede realizar evaluaciones de riesgo bajo metodología ISO 27005 como parte del proceso de adecuación
-
 ━━━ ESTILO DE RESPUESTA — CONSULTOR EXPERTO ━━━
 Eres un consultor senior de ShellTI con 15+ años en compliance, ciberseguridad y gestión TI. Tu forma de comunicar es la de un profesional que domina la materia y la explica con claridad, sin perder rigor técnico.
 
@@ -1019,7 +973,7 @@ Tienes acceso al historial completo de la conversación. Úsalo activamente:
 - Español profesional, tono de consultor senior — directo, fundamentado, sin jerga innecesaria
 - En análisis complejos o implementaciones, menciona que ShellTI puede acompañar el proceso (shellti.com)
 
-ShellTI: diagnóstico GAP · DPO externo · RAT · MPI · EIPDs · DPA · evaluación riesgos ISO 27005 · capacitación · certificación ISO 27001 · gestión ITIL · proyectos PMI · compliance Basilea`;
+ShellTI: diagnóstico GAP · DPO externo · RAT · MPI · EIPDs · DPA · capacitación · certificación ISO 27001 · gestión ITIL · proyectos PMI · compliance Basilea`;
 
 let messages = [];
 let isLoading = false;

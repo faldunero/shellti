@@ -1,306 +1,254 @@
-/**
- * shellti-guard.js — ShellTI Access Guard
- * 
- * Incluir en cualquier página de shellti.com que requiera autenticación.
- * 
- * USO:
- *   <script src="/js/shellti-guard.js" data-resource="agente"></script>
- * 
- * El atributo data-resource debe coincidir con el id del recurso en admin:
- *   agente | diagnostico | recursos | scanner
- * 
- * El guard valida el token contra el servidor de autenticación y verifica
- * que el usuario tenga acceso al recurso específico de esta página.
- * Si no tiene acceso, muestra un overlay bloqueando la página.
- */
+/* ═══════════════════════════════════════════════════════════════
+   SHELLTI GUARD — v1.0
+   Protege páginas de shellti.com validando token contra el Scanner.
+   Uso: <script src="/js/shellti-guard.js" data-resource="agente"></script>
+   Recursos válidos: agente | diagnostico | biblioteca | scanner
+═══════════════════════════════════════════════════════════════ */
 
 (function () {
-  // ── Configuración ─────────────────────────────────────────────────────────
-  const AUTH_SERVER  = 'https://shellti-scanner.up.railway.app'; // URL de tu servidor
-  const VALIDATE_URL = AUTH_SERVER + '/auth/validate';
-  const REQUEST_URL  = AUTH_SERVER + '/auth/request';
-  const TOKEN_KEY    = 'shellti_token';
 
-  // Detectar qué recurso protege esta página
-  const scriptTag    = document.currentScript;
-  const RESOURCE_ID  = scriptTag ? scriptTag.getAttribute('data-resource') : null;
+  const SCANNER_URL = 'https://web-production-372660.up.railway.app';
+  const TOKEN_KEY   = 'shellti_token';
 
-  // ── Leer token ────────────────────────────────────────────────────────────
+  /* ── Obtener recurso requerido desde el script tag ────────── */
+  const scriptEl   = document.currentScript ||
+    document.querySelector('script[data-resource]');
+  const RESOURCE   = scriptEl ? scriptEl.getAttribute('data-resource') : null;
+
+  /* ── Helpers ──────────────────────────────────────────────── */
   function getToken() {
-    const params   = new URLSearchParams(window.location.search);
-    const urlToken = params.get('token');
+    // 1. Intentar desde URL (?token=xxx)
+    const urlToken = new URLSearchParams(window.location.search).get('token');
     if (urlToken) {
       localStorage.setItem(TOKEN_KEY, urlToken);
-      params.delete('token');
-      const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-      window.history.replaceState({}, '', clean);
+      // Limpiar token de la URL sin recargar
+      const url = new URL(window.location.href);
+      url.searchParams.delete('token');
+      window.history.replaceState({}, '', url.toString());
       return urlToken;
     }
-    return localStorage.getItem(TOKEN_KEY);
+    // 2. Desde localStorage
+    return localStorage.getItem(TOKEN_KEY) || null;
   }
 
-  // ── Overlay de bloqueo ────────────────────────────────────────────────────
-  function showOverlay(mode, data) {
-    // Oscurecer la página inmediatamente
-    document.body.style.overflow = 'hidden';
+  function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+  }
 
-    const overlay = document.createElement('div');
-    overlay.id = 'shellti-guard-overlay';
-    overlay.style.cssText = [
-      'position:fixed', 'inset:0', 'z-index:999999',
-      'background:rgba(2,6,23,0.97)',
-      'display:flex', 'align-items:center', 'justify-content:center',
-      'font-family:\'Plus Jakarta Sans\',\'JetBrains Mono\',sans-serif',
-      'padding:24px'
-    ].join(';');
+  /* ── Overlay de carga ─────────────────────────────────────── */
+  function showLoading() {
+    // Ocultar el body hasta validar — evita flash de contenido
+    document.documentElement.style.visibility = 'hidden';
+  }
 
-    const RESOURCE_NAMES = {
-      agente:      'Agente Compliance',
-      diagnostico: 'Diagnóstico Ley 21.719',
-      recursos:    'Biblioteca de Recursos',
-      scanner:     'Scanner Web'
+  function hideLoading() {
+    document.documentElement.style.visibility = 'visible';
+  }
+
+  /* ── Pantalla de solicitud de acceso ─────────────────────── */
+  function showRequestForm(reason) {
+    hideLoading();
+    document.body.innerHTML = `
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  body{background:#020617;color:#E2E8F0;font-family:'Inter',sans-serif;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+  .guard-box{max-width:480px;width:100%;border:1px solid rgba(0,212,255,0.2);
+    background:linear-gradient(135deg,rgba(4,13,30,0.98),rgba(6,15,28,0.98));padding:2.5rem;border-radius:4px}
+  .guard-logo{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+  .guard-logo img{width:36px;height:36px}
+  .guard-logo span{font-family:'JetBrains Mono',monospace;font-size:.75rem;
+    letter-spacing:2px;color:#00D4FF;text-transform:uppercase}
+  .guard-title{font-size:1.35rem;font-weight:700;margin-bottom:.5rem}
+  .guard-sub{font-size:.85rem;color:#64748B;margin-bottom:2rem;line-height:1.6}
+  .guard-notice{font-family:'JetBrains Mono',monospace;font-size:.62rem;
+    letter-spacing:1px;color:#F59E0B;background:rgba(245,158,11,0.08);
+    border:1px solid rgba(245,158,11,0.25);padding:8px 14px;border-radius:2px;
+    margin-bottom:1.75rem;text-transform:uppercase}
+  label{display:block;font-family:'JetBrains Mono',monospace;font-size:.6rem;
+    letter-spacing:1.5px;text-transform:uppercase;color:#64748B;margin-bottom:.4rem;margin-top:1rem}
+  input,textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,212,255,0.15);
+    color:#E2E8F0;padding:10px 14px;font-family:'Inter',sans-serif;font-size:.85rem;
+    border-radius:2px;outline:none;transition:border-color .2s}
+  input:focus,textarea:focus{border-color:rgba(0,212,255,0.5)}
+  textarea{resize:vertical;min-height:80px}
+  .guard-btn{width:100%;margin-top:1.5rem;background:rgba(0,212,255,0.1);
+    border:1px solid rgba(0,212,255,0.4);color:#00D4FF;padding:12px;
+    font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;
+    text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s}
+  .guard-btn:hover{background:rgba(0,212,255,0.18)}
+  .guard-btn:disabled{opacity:.5;cursor:not-allowed}
+  .guard-msg{margin-top:1rem;font-size:.8rem;text-align:center;min-height:1.2rem}
+  .guard-msg.ok{color:#34D399}
+  .guard-msg.err{color:#EF4444}
+  .guard-back{margin-top:1.25rem;text-align:center}
+  .guard-back a{font-family:'JetBrains Mono',monospace;font-size:.6rem;
+    letter-spacing:1px;color:#64748B;text-decoration:none;text-transform:uppercase}
+  .guard-back a:hover{color:#00D4FF}
+</style>
+<div class="guard-box">
+  <div class="guard-logo">
+    <img src="/lobo_shellti.webp" onerror="this.style.display='none'">
+    <span>ShellTI · Acceso Restringido</span>
+  </div>
+  <h2 class="guard-title">Área Premium</h2>
+  <p class="guard-sub">${reason || 'Esta herramienta requiere autorización. Completa el formulario y recibirás acceso por email una vez aprobado.'}</p>
+  <div class="guard-notice">⚡ Acceso sujeto a aprobación del equipo ShellTI</div>
+
+  <form id="guardForm">
+    <label>Nombre completo</label>
+    <input type="text" id="g-name" required placeholder="Felipe Aldunero">
+
+    <label>Empresa</label>
+    <input type="text" id="g-company" required placeholder="Empresa S.A.">
+
+    <label>Email corporativo</label>
+    <input type="email" id="g-email" required placeholder="nombre@empresa.cl">
+
+    <label>¿Por qué necesitas acceso?</label>
+    <textarea id="g-reason" required placeholder="Brevemente, describe tu caso de uso..."></textarea>
+
+    <button type="submit" class="guard-btn" id="guardSubmit">SOLICITAR ACCESO →</button>
+  </form>
+  <p class="guard-msg" id="guardMsg"></p>
+  <div class="guard-back"><a href="/">← Volver al inicio</a></div>
+</div>
+<script>
+document.getElementById('guardForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('guardSubmit');
+  const msg = document.getElementById('guardMsg');
+  btn.disabled = true;
+  btn.textContent = 'ENVIANDO...';
+  msg.textContent = '';
+  msg.className = 'guard-msg';
+  try {
+    const res = await fetch('${SCANNER_URL}/auth/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:    document.getElementById('g-name').value.trim(),
+        company: document.getElementById('g-company').value.trim(),
+        email:   document.getElementById('g-email').value.trim(),
+        reason:  document.getElementById('g-reason').value.trim()
+      })
+    });
+    const data = await res.json();
+    if (data.id || data.success !== false) {
+      msg.className = 'guard-msg ok';
+      msg.textContent = 'Solicitud enviada. Recibirás un email cuando sea aprobada.';
+      document.getElementById('guardForm').style.display = 'none';
+    } else {
+      throw new Error(data.error || 'Error al enviar');
+    }
+  } catch(err) {
+    msg.className = 'guard-msg err';
+    msg.textContent = err.message || 'Error de conexión. Intenta nuevamente.';
+    btn.disabled = false;
+    btn.textContent = 'SOLICITAR ACCESO →';
+  }
+});
+</script>`;
+  }
+
+  /* ── Pantalla de acceso expirado ──────────────────────────── */
+  function showExpired(type) {
+    hideLoading();
+    const messages = {
+      EXPIRED:  { title: 'Acceso expirado',         sub: 'Tu período de acceso ha finalizado. Contacta al equipo ShellTI para renovar.' },
+      NO_SCANS: { title: 'Consultas agotadas',       sub: 'Has utilizado todas tus consultas disponibles. Contacta al equipo ShellTI.' },
+      NO_ACCESS:{ title: 'Sin acceso a este recurso',sub: 'Tu cuenta no tiene acceso a esta herramienta. Contacta a contacto@shellti.com.' }
     };
-    const resourceName = RESOURCE_NAMES[RESOURCE_ID] || 'este recurso';
-
-    if (mode === 'request') {
-      // Formulario de solicitud de acceso
-      overlay.innerHTML = `
-        <div style="
-          background:linear-gradient(145deg,#030c1f,#020a1a);
-          border:1px solid rgba(0,212,255,0.3);
-          border-radius:8px;
-          padding:2.5rem;
-          max-width:420px;
-          width:100%;
-          position:relative;
-          box-shadow:0 0 60px rgba(0,212,255,0.1);
-        ">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00D4FF,transparent);border-radius:8px 8px 0 0;"></div>
-          
-          <div style="text-align:center;margin-bottom:1.5rem;">
-            <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:60px;filter:drop-shadow(0 0 12px rgba(0,212,255,0.8));margin-bottom:1rem;" onerror="this.style.display='none'" />
-            <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#00D4FF;margin-bottom:.4rem;">Acceso restringido</div>
-            <h2 style="color:#E2E8F0;font-size:1.2rem;font-weight:700;margin:0 0 .4rem;">Solicitar acceso</h2>
-            <p style="color:#94A3B8;font-size:.82rem;margin:0;">a <strong style="color:#E2E8F0;">${resourceName}</strong></p>
-          </div>
-
-          <div id="guard-form" style="display:flex;flex-direction:column;gap:10px;">
-            <input id="guard-name"    type="text"  placeholder="Nombre completo" style="${inputStyle()}" />
-            <input id="guard-company" type="text"  placeholder="Empresa" style="${inputStyle()}" />
-            <input id="guard-email"   type="email" placeholder="Email corporativo" style="${inputStyle()}" />
-            <textarea id="guard-reason" placeholder="¿Para qué necesita acceso? (opcional)" rows="2" style="${inputStyle()}resize:vertical;"></textarea>
-            <button onclick="guardSubmitRequest()" style="${btnStyle()}">SOLICITAR ACCESO</button>
-          </div>
-
-          <div id="guard-sent" style="display:none;text-align:center;padding:1rem 0;">
-            <div style="font-size:2rem;margin-bottom:.5rem;">✓</div>
-            <p style="color:#34D399;font-weight:700;margin:0 0 .4rem;">Solicitud enviada</p>
-            <p style="color:#94A3B8;font-size:.82rem;margin:0;">Recibirás un email con tu enlace de acceso una vez que sea aprobado.</p>
-          </div>
-
-          <div id="guard-err" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#FF6B6B;font-size:.75rem;border-radius:2px;"></div>
-
-          <p style="text-align:center;margin:1rem 0 0;font-size:.7rem;color:#475569;">
-            ¿Ya tienes acceso? 
-            <a href="#" onclick="guardShowTokenForm();return false;" style="color:#00D4FF;">Ingresa tu token</a>
-          </p>
-        </div>`;
-
-    } else if (mode === 'token') {
-      // Formulario para ingresar token manualmente
-      overlay.innerHTML = `
-        <div style="
-          background:linear-gradient(145deg,#030c1f,#020a1a);
-          border:1px solid rgba(0,212,255,0.3);
-          border-radius:8px;
-          padding:2.5rem;
-          max-width:400px;
-          width:100%;
-          position:relative;
-          box-shadow:0 0 60px rgba(0,212,255,0.1);
-        ">
-          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00D4FF,transparent);border-radius:8px 8px 0 0;"></div>
-          <div style="text-align:center;margin-bottom:1.5rem;">
-            <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:60px;filter:drop-shadow(0 0 12px rgba(0,212,255,0.8));margin-bottom:1rem;" onerror="this.style.display='none'" />
-            <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#00D4FF;margin-bottom:.4rem;">Acceso restringido</div>
-            <h2 style="color:#E2E8F0;font-size:1.2rem;font-weight:700;margin:0;">Ingresa tu token</h2>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <input id="guard-token-input" type="text" placeholder="Token de acceso" style="${inputStyle()}font-family:'JetBrains Mono',monospace;" />
-            <button onclick="guardSubmitToken()" style="${btnStyle()}">ACCEDER</button>
-          </div>
-          <div id="guard-err" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#FF6B6B;font-size:.75rem;border-radius:2px;"></div>
-          <p style="text-align:center;margin:1rem 0 0;font-size:.7rem;color:#475569;">
-            <a href="#" onclick="guardShowRequestForm();return false;" style="color:#00D4FF;">Solicitar acceso</a>
-          </p>
-        </div>`;
-
-    } else if (mode === 'denied') {
-      // Acceso denegado — token válido pero sin permiso para este recurso
-      overlay.innerHTML = `
-        <div style="
-          background:linear-gradient(145deg,#030c1f,#020a1a);
-          border:1px solid rgba(255,107,107,0.3);
-          border-radius:8px;
-          padding:2.5rem;
-          max-width:400px;
-          width:100%;
-          text-align:center;
-          box-shadow:0 0 60px rgba(255,107,107,0.08);
-        ">
-          <div style="font-size:2.5rem;margin-bottom:.75rem;">🔒</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#FF6B6B;margin-bottom:.5rem;">Sin acceso</div>
-          <h2 style="color:#E2E8F0;font-size:1.1rem;font-weight:700;margin:0 0 .5rem;">No tienes permiso</h2>
-          <p style="color:#94A3B8;font-size:.82rem;margin:0 0 1.5rem;">Tu cuenta no incluye acceso a <strong style="color:#E2E8F0;">${resourceName}</strong>. Contacta al administrador para ampliar tu acceso.</p>
-          <a href="mailto:contacto@shellti.com" style="display:inline-block;padding:10px 24px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;border-radius:2px;">CONTACTAR SHELLTI</a>
-          <p style="margin:1rem 0 0;font-size:.7rem;color:#475569;">
-            <a href="#" onclick="localStorage.removeItem('${TOKEN_KEY}');location.reload();return false;" style="color:#475569;">Usar otra cuenta</a>
-          </p>
-        </div>`;
-
-    } else if (mode === 'expired') {
-      overlay.innerHTML = `
-        <div style="
-          background:linear-gradient(145deg,#030c1f,#020a1a);
-          border:1px solid rgba(255,217,61,0.3);
-          border-radius:8px;
-          padding:2.5rem;
-          max-width:400px;
-          width:100%;
-          text-align:center;
-        ">
-          <div style="font-size:2rem;margin-bottom:.75rem;">⏰</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#FFD93D;margin-bottom:.5rem;">Acceso expirado</div>
-          <p style="color:#94A3B8;font-size:.82rem;margin:0 0 1.5rem;">Tu acceso a ${resourceName} ha expirado. Contacta al administrador para renovarlo.</p>
-          <a href="mailto:contacto@shellti.com" style="display:inline-block;padding:10px 24px;background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;border-radius:2px;">CONTACTAR SHELLTI</a>
-          <p style="margin:1rem 0 0;font-size:.7rem;color:#475569;">
-            <a href="#" onclick="localStorage.removeItem('${TOKEN_KEY}');location.reload();return false;" style="color:#475569;">Usar otra cuenta</a>
-          </p>
-        </div>`;
-    }
-
-    document.body.appendChild(overlay);
+    const m = messages[type] || messages.EXPIRED;
+    document.body.innerHTML = `
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#020617;color:#E2E8F0;font-family:'Inter',sans-serif;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+  .exp-box{max-width:420px;text-align:center;border:1px solid rgba(239,68,68,0.25);
+    background:rgba(4,13,30,0.98);padding:2.5rem;border-radius:4px}
+  .exp-icon{font-size:2.5rem;margin-bottom:1.25rem}
+  .exp-title{font-size:1.2rem;font-weight:700;margin-bottom:.75rem}
+  .exp-sub{font-size:.85rem;color:#64748B;line-height:1.7;margin-bottom:2rem}
+  .exp-btn{display:inline-block;background:rgba(0,212,255,0.1);
+    border:1px solid rgba(0,212,255,0.35);color:#00D4FF;padding:10px 28px;
+    font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1.5px;
+    text-transform:uppercase;text-decoration:none;border-radius:2px}
+  .exp-back{margin-top:1rem;display:block;font-family:'JetBrains Mono',monospace;
+    font-size:.58rem;color:#64748B;text-decoration:none;letter-spacing:1px}
+</style>
+<div class="exp-box">
+  <div class="exp-icon">⏱</div>
+  <h2 class="exp-title">${m.title}</h2>
+  <p class="exp-sub">${m.sub}</p>
+  <a href="mailto:contacto@shellti.com" class="exp-btn">CONTACTAR SHELLTI</a>
+  <a href="/" class="exp-back">← Volver al inicio</a>
+</div>`;
   }
 
-  function inputStyle() {
-    return 'width:100%;padding:10px 14px;background:rgba(3,9,24,0.95);border:1px solid rgba(0,212,255,0.15);color:#E2E8F0;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:.85rem;border-radius:2px;outline:none;box-sizing:border-box;';
-  }
-
-  function btnStyle() {
-    return 'width:100%;padding:13px;background:linear-gradient(135deg,#00D4FF,#00b8e6);border:none;color:#020617;font-weight:800;font-family:\'JetBrains Mono\',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;';
-  }
-
-  // ── Funciones globales para el overlay ───────────────────────────────────
-  window.guardShowRequestForm = function() {
-    const ov = document.getElementById('shellti-guard-overlay');
-    if (ov) { ov.remove(); document.body.style.overflow = 'hidden'; }
-    showOverlay('request');
-  };
-
-  window.guardShowTokenForm = function() {
-    const ov = document.getElementById('shellti-guard-overlay');
-    if (ov) { ov.remove(); document.body.style.overflow = 'hidden'; }
-    showOverlay('token');
-  };
-
-  window.guardSubmitToken = async function() {
-    const token = (document.getElementById('guard-token-input')?.value || '').trim();
-    if (!token) return;
-    localStorage.setItem(TOKEN_KEY, token);
-    location.reload();
-  };
-
-  window.guardSubmitRequest = async function() {
-    const name    = document.getElementById('guard-name')?.value.trim();
-    const company = document.getElementById('guard-company')?.value.trim();
-    const email   = document.getElementById('guard-email')?.value.trim();
-    const reason  = document.getElementById('guard-reason')?.value.trim();
-    const errEl   = document.getElementById('guard-err');
-
-    if (!name || !email) {
-      if (errEl) { errEl.textContent = 'Nombre y email son requeridos'; errEl.style.display = 'block'; }
-      return;
-    }
-
-    try {
-      const res = await fetch(REQUEST_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, company, email, reason: (reason || '') + (RESOURCE_ID ? ` [recurso: ${RESOURCE_ID}]` : '') })
-      });
-      const data = await res.json();
-      if (data.id || data.success) {
-        document.getElementById('guard-form').style.display = 'none';
-        document.getElementById('guard-sent').style.display = 'block';
-      } else {
-        if (errEl) { errEl.textContent = data.error || 'Error al enviar'; errEl.style.display = 'block'; }
-      }
-    } catch(e) {
-      if (errEl) { errEl.textContent = 'Error de conexión con el servidor'; errEl.style.display = 'block'; }
-    }
-  };
-
-  // ── Validar token ─────────────────────────────────────────────────────────
-  async function validate(token) {
-    try {
-      const res  = await fetch(VALIDATE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, strict: false })
-      });
-      return await res.json();
-    } catch(e) {
-      return null;
-    }
-  }
-
-  // ── Init ──────────────────────────────────────────────────────────────────
-  async function init() {
+  /* ── Validación principal ─────────────────────────────────── */
+  async function validate() {
+    showLoading();
     const token = getToken();
 
     if (!token) {
-      showOverlay('request');
+      showRequestForm();
       return;
     }
 
-    const data = await validate(token);
+    try {
+      const res  = await fetch(`${SCANNER_URL}/auth/validate`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ token, strict: true })
+      });
+      const data = await res.json();
 
-    if (!data || !data.valid) {
-      localStorage.removeItem(TOKEN_KEY);
-      showOverlay('request');
-      return;
-    }
-
-    if (data.expired) {
-      showOverlay('expired');
-      return;
-    }
-
-    // Verificar acceso al recurso específico
-    if (RESOURCE_ID) {
-      const allowed = data.resources || [];
-      if (!allowed.includes(RESOURCE_ID)) {
-        showOverlay('denied');
+      if (!data.valid) {
+        clearToken();
+        showRequestForm('Tu sesión no es válida o ha expirado. Solicita un nuevo acceso.');
         return;
       }
-    }
 
-    // ✅ Acceso concedido — no hay overlay, la página se muestra normalmente
-    // Exponer datos de sesión por si la página los necesita
-    window.shelltiSession = {
-      name:      data.name,
-      email:     data.email,
-      expiresAt: data.expiresAt,
-      resources: data.resources || [],
-      canScan:   data.canScan
-    };
+      // Verificar expiración
+      if (data.expired) {
+        clearToken();
+        showExpired('EXPIRED');
+        return;
+      }
+
+      // Verificar consultas (solo relevante para scanner, no para agente/diagnostico)
+      if (data.scansDone && RESOURCE === 'scanner') {
+        showExpired('NO_SCANS');
+        return;
+      }
+
+      // Verificar acceso al recurso específico
+      if (RESOURCE && data.resources && data.resources.length > 0) {
+        if (!data.resources.includes(RESOURCE)) {
+          showExpired('NO_ACCESS');
+          return;
+        }
+      }
+
+      // Todo OK — mostrar la página
+      hideLoading();
+
+    } catch (err) {
+      console.warn('[shellti-guard] Error de conexión con el scanner:', err.message);
+      // En caso de error de red, permitir acceso si hay token guardado
+      // (modo degradado — no bloquear por problemas de conectividad)
+      hideLoading();
+    }
   }
 
-  // Ejecutar al cargar el DOM
+  /* ── Ejecutar antes de que el DOM esté listo ──────────────── */
+  showLoading();
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', validate);
   } else {
-    init();
+    validate();
   }
 
 })();
