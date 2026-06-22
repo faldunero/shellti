@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShellTI Scanner · Solicitar Acceso</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#020617;--cyan:#00D4FF;--green:#34D399;--silver:#E2E8F0;--muted:#94A3B8;--border:rgba(0,212,255,0.13);--card:rgba(3,9,24,0.93);--danger:#FF6B6B;--ok:#34D399;--warn:#F59E0B}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:48px 48px}
+.card{position:relative;z-index:1;width:100%;max-width:520px;background:var(--card);border:1px solid var(--border);padding:48px 44px 40px}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,0.2))}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:20px}
+.title{font-size:2rem;font-weight:800;color:var(--silver);letter-spacing:-.5px;line-height:1.15;margin-bottom:10px}
+.desc{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:28px}
+.notice{display:flex;align-items:center;gap:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);padding:12px 16px;margin-bottom:28px;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;text-transform:uppercase;color:var(--warn)}
+.notice-icon{font-size:.9rem;flex-shrink:0}
+.divider{height:1px;background:var(--border);margin-bottom:24px}
+.field{margin-bottom:16px}
+.label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+input,textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--silver);font-family:'JetBrains Mono',monospace;font-size:.82rem;padding:11px 14px;outline:none;transition:border-color .2s;resize:none}
+input:focus,textarea:focus{border-color:rgba(0,212,255,0.5)}
+input::placeholder,textarea::placeholder{color:rgba(148,163,184,0.5)}
+.btn-row{display:flex;gap:8px;margin-top:8px}
+.btn-submit{flex:1;background:linear-gradient(135deg,var(--cyan),#00b8e6);color:var(--deep);border:none;font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;cursor:pointer;transition:opacity .2s}
+.btn-submit:hover{opacity:.9}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.btn-clear{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;padding:13px 18px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-clear:hover{color:var(--danger);border-color:rgba(255,107,107,0.4)}
+.msg{display:none;margin-top:14px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:.7rem;line-height:1.6;text-align:center}
+.msg.ok{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--ok)}
+.msg.err{background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:var(--danger)}
+.msg.visible{display:block}
+.back-link{margin-top:24px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase}
+.back-link a{color:rgba(148,163,184,0.5);text-decoration:none;transition:color .2s}
+.back-link a:hover{color:var(--cyan)}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="eyebrow">ShellTI · Scanner · Acceso Restringido</div>
+  <div class="title">Solicitar Acceso</div>
+  <div class="desc">El Scanner ShellTI es una herramienta de auditoría de datos y ciberseguridad. Completa el formulario y el equipo ShellTI revisará tu solicitud.</div>
+
+  <div class="notice">
+    <span class="notice-icon">⚡</span>
+    Acceso sujeto a aprobación del equipo ShellTI
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label class="label">Nombre completo</label>
+    <input type="text" id="name" placeholder="Juan Pérez" />
+  </div>
+  <div class="field">
+    <label class="label">Empresa / Organización</label>
+    <input type="text" id="company" placeholder="Mi Empresa SpA" />
+  </div>
+  <div class="field">
+    <label class="label">Email corporativo</label>
+    <input type="email" id="email" placeholder="juan@empresa.cl" />
+  </div>
+  <div class="field">
+    <label class="label">Motivo de la solicitud</label>
+    <textarea id="reason" rows="3" placeholder="Ej: Auditar el sitio web de nuestra empresa previo a certificación ISO 27001..."></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-submit" id="submitBtn" onclick="submitRequest()">Enviar solicitud →</button>
+    <button class="btn-clear" onclick="clearForm()">✕ Limpiar</button>
+  </div>
+  <div class="msg" id="msg"></div>
+
+  <div class="back-link"><a href="https://shellti.com/">← Volver al inicio</a></div>
+</div>
+
+<script>
+(function() {
+  const token = localStorage.getItem('shellti_token');
+  if (token) {
+    fetch('https://web-production-372660.up.railway.app/auth/validate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ token })
+    })
+    .then(r => r.json())
+    .then(d => { if (d.valid) window.location.href = '/dashboard.html?token=' + token; })
+    .catch(() => {});
+  }
+})();
+
+function clearForm() {
+  ['name','company','email','reason'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('msg').className = 'msg';
+  document.getElementById('msg').textContent = '';
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+  document.getElementById('name').focus();
+}
+
+async function submitRequest() {
+  const name    = document.getElementById('name').value.trim();
+  const company = document.getElementById('company').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const reason  = document.getElementById('reason').value.trim();
+  const btn     = document.getElementById('submitBtn');
+  if (!name || !company || !email || !reason) { showMsg('Por favor completa todos los campos.', 'err'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Email inválido.', 'err'); return; }
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  try {
+    const res  = await fetch('https://web-production-372660.up.railway.app/auth/request', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, company, email, reason })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showMsg('✓ Solicitud enviada. Recibirás un email cuando sea aprobada.', 'ok');
+      setTimeout(() => { clearForm(); showMsg('✓ Solicitud enviada. Recibirás un email cuando sea aprobada.', 'ok'); }, 2000);
+    } else {
+      showMsg(data.error || 'Error al enviar la solicitud.', 'err');
+      btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+    }
+  } catch(e) {
+    showMsg('Error de conexión. Intenta nuevamente.', 'err');
+    btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+  }
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text; el.className = `msg ${type} visible`;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && document.activeElement.tagName !== 'TEXTAREA') submitRequest();
+});
+</script>
+</body>
+</html>

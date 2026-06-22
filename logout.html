@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShellTI · Cerrando sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#020617;--cyan:#00D4FF;--silver:#E2E8F0;--muted:#94A3B8;--border:rgba(0,212,255,0.13);--card:rgba(3,9,24,0.93)}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:48px 48px}
+.card{position:relative;z-index:1;width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);padding:48px 44px 40px;text-align:center}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,0.2))}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:24px}
+.spinner{width:32px;height:32px;border:2px solid rgba(0,212,255,0.15);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.title{font-size:1.5rem;font-weight:800;color:var(--silver);letter-spacing:-.5px;margin-bottom:10px}
+.desc{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="eyebrow">ShellTI · Scanner</div>
+  <div class="spinner"></div>
+  <div class="title">Cerrando sesión</div>
+  <div class="desc">Limpiando datos locales...</div>
+</div>
+<script>
+localStorage.removeItem('shellti_token');
+localStorage.removeItem('shellti_audit');
+localStorage.removeItem('shellti_perf');
+localStorage.removeItem('shellti_shared_url');
+localStorage.removeItem('shellti_autorun_perf');
+localStorage.removeItem('shellti_cleared');
+setTimeout(() => { window.location.href = 'https://shellti.com/'; }, 1200);
+</script>
+</body>
+</html>
