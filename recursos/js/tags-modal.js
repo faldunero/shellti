@@ -556,7 +556,75 @@
         'La responsabilidad proactiva exige documentar el cumplimiento, no solo cumplir.',
         'ShellTI acompaña a empresas en el camino de adecuación a la Ley 21.719.'
       ]
-    }
+    },
+
+    /* ── Aliases para filter-btn (blog/biblioteca) ─────── */
+    'ISO 27001': {
+      color: 'cyan',
+      title: 'ISO/IEC 27001:2022',
+      subtitle: 'Sistema de Gestión de Seguridad de la Información',
+      desc: 'Estándar internacional más adoptado para proteger la información. Define los requisitos para establecer, implementar, mantener y mejorar un SGSI certificable. Adoptado por más de 70.000 organizaciones en 150 países.',
+      points: [
+        'Aplicable a cualquier organización, independiente de tamaño o sector.',
+        '93 controles organizados en 4 categorías: Organizacional, Personas, Físico, Tecnológico.',
+        'Certificación válida por 3 años con auditorías anuales de seguimiento.',
+        'Complementa directamente la Ley 21.719 en la gestión de datos personales.',
+        'ShellTI acompaña el proceso completo: GAP analysis, implementación y preparación para auditoría.'
+      ]
+    },
+    'NIST CSF': {
+      color: 'cyan',
+      title: 'NIST Cybersecurity Framework 2.0',
+      subtitle: 'Marco de Referencia en Ciberseguridad',
+      desc: 'Marco voluntario desarrollado por el NIST de EE.UU. para gestionar y reducir el riesgo de ciberseguridad. La versión 2.0 (2024) agrega la función Governar y amplía el alcance a organizaciones de cualquier tamaño y sector.',
+      points: [
+        '6 funciones: Governar, Identificar, Proteger, Detectar, Responder, Recuperar.',
+        'No es prescriptivo: se adapta al contexto, tamaño y madurez de cada organización.',
+        'Ampliamente usado en sectores críticos: banca, salud, energía, gobierno.',
+        'Mapeable a ISO 27001, CIS Controls, COBIT y otros marcos.',
+        'Referencia recomendada por la ANCI para operadores de infraestructura crítica en Chile.'
+      ]
+    },
+    'CIS Controls': {
+      color: 'cyan',
+      title: 'CIS Critical Security Controls v8',
+      subtitle: '18 Controles Priorizados de Seguridad',
+      desc: 'Conjunto de 18 controles y 153 salvaguardas desarrollado por el Center for Internet Security. Diseñado para ser práctico, priorizado por datos reales de ataques y aplicable a organizaciones de cualquier tamaño mediante 3 Grupos de Implementación.',
+      points: [
+        'IG1 (56 salvaguardas): higiene básica para toda organización.',
+        'IG2 (74 adicionales): para empresas con equipo TI dedicado.',
+        'IG3 (23 adicionales): para organizaciones con madurez avanzada.',
+        'Basado en evidencia: cada control ataca los vectores de ataque más frecuentes.',
+        'Mapeable a NIST CSF, ISO 27001 y regulaciones sectoriales.'
+      ]
+    },
+    'OWASP': {
+      color: 'cyan',
+      title: 'OWASP — Open Web Application Security Project',
+      subtitle: 'Seguridad de Aplicaciones Web',
+      desc: 'Fundación sin fines de lucro que produce guías, herramientas y estándares de seguridad de aplicaciones de uso libre y global. Su Top 10 es la referencia más citada para vulnerabilidades web críticas.',
+      points: [
+        'OWASP Top 10:2021 — las 10 vulnerabilidades más críticas en aplicaciones web.',
+        'WSTG — guía completa de testing de seguridad web con +400 casos de prueba.',
+        'ASVS — estándar de verificación de seguridad para aplicaciones.',
+        'ZAP — herramienta gratuita de escaneo dinámico (DAST) para desarrollo y QA.',
+        'Referencia obligatoria en contratos de pentesting y auditorías de seguridad.'
+      ]
+    },
+    'ANCI': {
+      color: 'cyan',
+      title: 'Agencia Nacional de Ciberseguridad',
+      subtitle: 'Ley 21.663 — Chile',
+      desc: 'Organismo técnico del Estado chileno creado por la Ley Marco de Ciberseguridad (21.663). Regula, supervisa y coordina la ciberseguridad nacional, incluyendo la protección de infraestructura crítica y la operación del CSIRT Nacional.',
+      points: [
+        'Autoridad competente en ciberseguridad para el sector público y privado.',
+        'Administra el CSIRT Nacional: punto central de respuesta a incidentes.',
+        'Registra y supervisa a operadores de infraestructura crítica.',
+        'Emite directivas técnicas de obligatorio cumplimiento para entidades reguladas.',
+        'Coordina con la APDP (Ley 21.719) en incidentes que involucren datos personales.'
+      ]
+    },
+
   };
 
   /* ── HTML del modal ─────────────────────────────────── */
@@ -664,8 +732,8 @@
   function init() {
     injectStyles();
     injectHTML();
-    // Hacer clicables todos los htag que tengan datos
-    document.querySelectorAll('.htag, [class*="htag"]').forEach(function(el) {
+    // Hacer clicables htag, filter-btn y rc-badge que tengan datos
+    document.querySelectorAll('.htag, [class*="htag"], .filter-btn, .rc-badge').forEach(function(el) {
       const key = el.textContent.trim();
       if (TAG_DATA[key]) {
         el.classList.add('tm-clickable');
