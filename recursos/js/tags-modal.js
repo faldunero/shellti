@@ -559,6 +559,19 @@
     },
 
     /* ── Aliases para filter-btn (blog/biblioteca) ─────── */
+    'NIST CSF 2.0': {
+      color: 'cyan',
+      title: 'NIST Cybersecurity Framework 2.0',
+      subtitle: 'Marco de Referencia en Ciberseguridad',
+      desc: 'Marco voluntario desarrollado por el NIST de EE.UU. para gestionar y reducir el riesgo de ciberseguridad. La versión 2.0 (2024) agrega la función Governar y amplía el alcance a organizaciones de cualquier tamaño y sector.',
+      points: [
+        '6 funciones: Governar, Identificar, Proteger, Detectar, Responder, Recuperar.',
+        'No es prescriptivo: se adapta al contexto, tamaño y madurez de cada organización.',
+        'Ampliamente usado en sectores críticos: banca, salud, energía, gobierno.',
+        'Mapeable a ISO 27001, CIS Controls, COBIT y otros marcos.',
+        'Referencia recomendada por la ANCI para operadores de infraestructura crítica en Chile.'
+      ]
+    },
     'ISO 27001': {
       color: 'cyan',
       title: 'ISO/IEC 27001:2022',
@@ -733,7 +746,7 @@
     injectStyles();
     injectHTML();
     // Hacer clicables htag, filter-btn y rc-badge que tengan datos
-    document.querySelectorAll('.htag, [class*="htag"], .filter-btn, .rc-badge').forEach(function(el) {
+    document.querySelectorAll('.htag, [class*="htag"], .filter-btn, .rc-badge, .cat-link').forEach(function(el) {
       const key = el.textContent.trim();
       if (TAG_DATA[key]) {
         el.classList.add('tm-clickable');
