@@ -38,56 +38,21 @@
  }
 
  /* ── HEADER ── */
- header{
- background:rgba(6,10,24,0.95);
- backdrop-filter:blur(16px);
- border-bottom:1px solid var(--border);
- padding:0 24px;
- height:56px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- flex-shrink:0;
- position:relative;
- z-index:10;
- }
+ /* NAV */
+ nav.shellti-nav{position:relative;z-index:10;flex-shrink:0;background:rgba(2,6,23,0.97);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+ .nav-top{display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:54px}
+ .nav-brand-text{font-weight:800;font-size:1.1rem;color:#E2E8F0;letter-spacing:-.5px}
+ .nav-brand-text span{color:#00D4FF}
+ .nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:2px;color:#94A3B8;text-transform:uppercase}
+ .nav-tabs{display:flex;align-items:center;height:54px;gap:0}
+ .nav-tab-lnk{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:100%;display:flex;align-items:center;text-decoration:none;color:#94A3B8;border-bottom:2px solid transparent;transition:color .2s}
+ .nav-tab-lnk:hover{color:#00D4FF}
+ .nav-tab-lnk.active{color:#00D4FF;border-bottom-color:#00D4FF}
+ .nav-right-btns{display:flex;align-items:center;gap:12px}
+ .nav-tag-badge{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;border:1px solid rgba(0,212,255,0.3);color:#00D4FF;padding:3px 10px;background:rgba(0,212,255,0.07)}
+ .btn-salir{background:transparent;border:1px solid rgba(255,107,107,0.3);color:rgba(255,107,107,0.7);font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all .2s}
+ .btn-salir:hover{border-color:rgba(255,107,107,0.7);color:#FF6B6B}
  .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
- .brand-logo{
- width:30px;height:30px;
- background:linear-gradient(135deg,var(--teal),var(--blue));
- border-radius:7px;
- display:flex;align-items:center;justify-content:center;
- font-family:'Space Grotesk',sans-serif;
- font-size:13px;font-weight:700;
- color:var(--navy);
- flex-shrink:0;
- }
- .brand-name{
- font-family:'Space Grotesk',sans-serif;
- font-size:15px;font-weight:700;
- color:#fff;letter-spacing:-0.3px;
- }
- .brand-name span{color:var(--teal)}
- .header-badge{
- font-family:'JetBrains Mono',monospace;
- font-size:10px;font-weight:500;
- letter-spacing:1.5px;text-transform:uppercase;
- color:var(--teal);
- border:1px solid rgba(0,212,170,0.25);
- padding:4px 10px;border-radius:20px;
- background:rgba(0,212,170,0.06);
- }
- .header-right{display:flex;align-items:center;gap:12px}
- .countdown{display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:7px;padding:5px 12px;}
- .countdown-num{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#EF4444;line-height:1;}
- .countdown-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(239,68,68,0.6);line-height:1.3;}
- .status-dot{
- width:7px;height:7px;border-radius:50%;
- background:var(--teal);
- box-shadow:0 0 6px rgba(0,212,170,0.8);
- animation:pulse 2s ease-in-out infinite;
- }
- @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
  .status-label{
  font-size:11px;color:var(--muted);
  font-family:'JetBrains Mono',monospace;
@@ -483,24 +448,27 @@
 <body>
 
 <!-- HEADER -->
-<header>
- <a href="https://shellti.com" class="brand">
-  <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,0.85)) drop-shadow(0 0 22px rgba(0,212,255,0.5)) brightness(1.25) saturate(1.5) contrast(1.1);" />
-  <div class="brand-name">Shell<span>TI</span></div>
- </a>
- <div class="header-badge">10 marcos · Compliance TI</div>
- <div class="header-right">
-  <div class="countdown" title="Días hasta vigencia plena Ley 21.719">
-   <div class="countdown-num" id="days-counter">164</div>
-   <div class="countdown-label">días para<br>1 dic 2026</div>
+<nav class="shellti-nav">
+ <div class="nav-top">
+  <a href="https://shellti.com" class="brand">
+   <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:36px;width:36px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(0,212,255,0.8)) brightness(1.2);" />
+   <div>
+    <div class="nav-brand-text">Shell<span>TI</span></div>
+    <div class="nav-brand-sub">Scanner · Auditoría de Datos</div>
+   </div>
+  </a>
+  <div class="nav-tabs">
+   <a href="/dashboard.html" class="nav-tab-lnk">Auditoría</a>
+   <a href="/performance.html" class="nav-tab-lnk">Performance</a>
+   <a href="/agente.html" class="nav-tab-lnk active">Agente</a>
+   <a href="/herramientas.html" class="nav-tab-lnk">Herramientas</a>
   </div>
- <button onclick="clearChat()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:6px 12px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.1)'">
- Nueva conversación
- </button>
- <div class="status-dot"></div>
- <span class="status-label">Activo</span>
+  <div class="nav-right-btns">
+   <div class="nav-tag-badge">Herramienta Interna</div>
+   <button class="btn-salir" onclick="window.location.href='/logout.html'">Salir →</button>
+  </div>
  </div>
-</header>
+</nav>
 
 <div class="layout">
 
@@ -512,6 +480,9 @@
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v6m0 0l-2-2m2 2l2-2M1 9h2a2 2 0 002 2h6a2 2 0 002-2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="11" width="14" height="4" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
         </div>
         Diagnostico rapido
+      </button>
+      <button onclick="clearChat()" style="width:100%;margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:7px 12px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        Nueva conversación
       </button>
       <div class="diag-divider"></div>
       <button class="btn-agendar" onclick="agendarLlamada('')" style="width:100%;margin-bottom:10px;text-align:center;">
