@@ -575,14 +575,18 @@ nav{
 }
 .hero-bg{
   position:absolute;inset:0;
+  background-image:url('https://images.pexels.com/photos/1181354/pexels-photo-1181354.jpeg?auto=compress&cs=tinysrgb&w=1440');
+  background-size:cover;background-position:center;
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.075) 0%,transparent 60%),
-    radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.055) 0%,transparent 60%),
-    radial-gradient(ellipse 500px 400px at 50% 50%,rgba(0,212,255,0.028) 0%,transparent 70%),
-    var(--deep);
+    radial-gradient(ellipse 1100px 900px at 80% 15%, rgba(0,212,255,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 700px 600px at 5%  85%, rgba(52,211,153,0.05) 0%,transparent 60%),
+    rgba(2,6,23,0.82);
 }
 .grid-lines{
-  position:absolute;inset:0;opacity:.028;
+  position:absolute;inset:0;z-index:1;opacity:.028;
   background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
   background-size:55px 55px;pointer-events:none;
 }
