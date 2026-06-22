@@ -676,6 +676,8 @@ nav{
     <div style="display:flex;align-items:center;height:54px;gap:0">
       <a href="dashboard.html" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:100%;display:flex;align-items:center;text-decoration:none;color:var(--cyan);border-bottom:2px solid var(--cyan)">Auditoría</a>
       <a href="performance.html" id="perfTabLink" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:100%;display:flex;align-items:center;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;transition:color .2s" onclick="goToPerf(event)">Performance</a>
+      <a id="agenteTabLink" href="#" onclick="goToAgente(event)" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:100%;display:flex;align-items:center;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;transition:color .2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Agente</a>
+      <a id="herramientasTabLink" href="#" onclick="goToHerramientas(event)" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0 18px;height:100%;display:flex;align-items:center;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;transition:color .2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">Herramientas</a>
     </div>
     <div class="nav-right" style="display:flex;align-items:center;gap:12px">
       <button class="btn-export" id="btnExport" style="display:none" onclick="exportPDF()">⬇ PDF</button>
@@ -1108,7 +1110,19 @@ function goToPerf(e) {
     const hasResult = document.getElementById('dashboard').classList.contains('visible');
     if (hasResult && u) localStorage.setItem('shellti_autorun_perf', '1');
   } catch(e2) {}
-  window.location.href = '/performance.html'';
+  window.location.href = '/performance.html';
+}
+
+function goToAgente(e) {
+  e.preventDefault();
+  const token = getToken();
+  window.location.href = '/agente.html' + (token ? '?token=' + token : '');
+}
+
+function goToHerramientas(e) {
+  e.preventDefault();
+  const token = getToken();
+  window.location.href = '/herramientas.html' + (token ? '?token=' + token : '');
 }
 
 function syncUrlToPerf(e) {
