@@ -4,918 +4,447 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agente Ley Karin — ShellTI</title>
-  <meta name="description" content="Asistente especializado en Ley Karin (Ley 21.643): evaluación de situaciones, guía de denuncia, canales oficiales y generación de documentos." />
+  <meta name="description" content="Asistente especializado en Ley Karin (Ley 21.643)." />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" href="/imagenes/webp/lobo_shellti.webp" type="image/webp" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
   <style>
-    /* ── TOKENS ── */
     :root {
-      --bg:        #020617;
-      --surface:   #0b1120;
-      --border:    #1e2d45;
-      --cyan:      #00D4FF;
-      --cyan-dim:  rgba(0,212,255,.12);
-      --cyan-glow: rgba(0,212,255,.06);
-      --emerald:   #34D399;
-      --amber:     #FBBF24;
-      --red:       #F87171;
-      --text:      #e2e8f0;
-      --muted:     #64748b;
-      --sans:      'Plus Jakarta Sans', sans-serif;
-      --mono:      'JetBrains Mono', monospace;
-      --radius:    10px;
-      --nav-h:     62px;
+      --bg:         #020617;
+      --surface:    #080f1e;
+      --surface2:   #0b1425;
+      --border:     #162032;
+      --border2:    #1e2d45;
+      --cyan:       #00D4FF;
+      --cyan-dim:   rgba(0,212,255,.1);
+      --cyan-glow:  rgba(0,212,255,.05);
+      --emerald:    #34D399;
+      --amber:      #FBBF24;
+      --red:        #F87171;
+      --text:       #e2e8f0;
+      --text2:      #94a3b8;
+      --muted:      #475569;
+      --sans:       "Plus Jakarta Sans", sans-serif;
+      --mono:       "JetBrains Mono", monospace;
+      --r:          8px;
+      --nav-h:      60px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── NAVBAR ── */
+    /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       height: var(--nav-h);
-      background: rgba(2,6,23,.92);
+      background: rgba(2,6,23,.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; z-index: 1000;
     }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 1rem;
+    .nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); font-weight: 700; font-size: .92rem; }
+    .nav-brand img { height: 30px; filter: drop-shadow(0 0 6px var(--cyan)); }
+    .nav-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .65rem; font-family: var(--mono); color: var(--cyan);
+      border: 1px solid rgba(0,212,255,.2); background: var(--cyan-glow);
+      padding: 3px 10px; border-radius: 20px; letter-spacing: .04em;
     }
+    .nav-pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
 
-    .nav-logo img {
-      height: 34px;
-      width: auto;
-      filter: drop-shadow(0 0 6px var(--cyan));
+    /* LAYOUT */
+    main { flex: 1; margin-top: var(--nav-h); display: grid; grid-template-columns: 264px 1fr; height: calc(100vh - var(--nav-h)); }
+
+    /* SIDEBAR */
+    .sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
+
+    .sb-section { padding: 16px 14px 10px; border-bottom: 1px solid var(--border); }
+    .sb-label { font-size: .58rem; font-family: var(--mono); color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+
+    /* Quick buttons */
+    .qbtn {
+      display: block; width: 100%; text-align: left;
+      padding: 8px 10px; margin-bottom: 4px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: var(--r); color: var(--text2);
+      font-family: var(--sans); font-size: .74rem; cursor: pointer;
+      transition: all .14s; line-height: 1.35;
     }
+    .qbtn:hover { border-color: var(--cyan); color: var(--text); background: var(--cyan-glow); }
+    .qbtn .ql { display: block; font-size: .58rem; font-family: var(--mono); color: var(--muted); margin-bottom: 2px; }
 
-    .nav-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: .7rem;
-      font-family: var(--mono);
-      color: var(--cyan);
-      border: 1px solid var(--cyan-dim);
-      background: var(--cyan-glow);
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: .04em;
-    }
+    /* EVALUADOR */
+    .eval-section { padding: 16px 14px; }
+    .eval-desc { font-size: .71rem; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
 
-    .nav-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--cyan);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50%      { opacity: .3; }
-    }
-
-    /* ── MAIN LAYOUT ── */
-    main {
-      flex: 1;
-      margin-top: var(--nav-h);
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      grid-template-rows: auto 1fr;
-      height: calc(100vh - var(--nav-h));
-    }
-
-    /* ── SIDEBAR ── */
-    .sidebar {
-      grid-row: 1 / 3;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar-header {
-      padding: 20px 18px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .sidebar-header h2 {
-      font-size: .8rem;
-      font-family: var(--mono);
-      color: var(--cyan);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .sidebar-header p {
-      font-size: .75rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .sidebar-section {
-      padding: 14px 18px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .sidebar-section-title {
-      font-size: .65rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .quick-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 8px 12px;
-      margin-bottom: 4px;
-      background: transparent;
+    .eval-card {
+      display: grid; grid-template-columns: 20px 1fr auto;
+      align-items: start; gap: 9px;
+      padding: 9px 10px; margin-bottom: 5px;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: .78rem;
-      cursor: pointer;
-      transition: all .15s;
-      line-height: 1.35;
+      border-left: 3px solid transparent;
+      border-radius: var(--r);
+      cursor: pointer; transition: all .15s;
+      background: transparent;
     }
+    .eval-card:hover { border-color: var(--border2); background: rgba(255,255,255,.02); }
+    .eval-card.active { border-color: var(--border2); border-left-color: var(--cyan); background: var(--cyan-glow); }
+    .eval-card.active.w-high { border-left-color: var(--red); }
+    .eval-card.active.w-med  { border-left-color: var(--amber); }
+    .eval-card.active.w-low  { border-left-color: var(--emerald); }
 
-    .quick-btn:hover {
-      border-color: var(--cyan);
-      background: var(--cyan-glow);
-      color: var(--cyan);
+    .eval-check {
+      width: 14px; height: 14px; border-radius: 3px;
+      border: 1.5px solid var(--border2);
+      margin-top: 2px; flex-shrink: 0;
+      transition: all .14s;
     }
+    .eval-card.active .eval-check { background: var(--cyan); border-color: var(--cyan); }
 
-    .quick-btn .qb-icon {
-      display: block;
-      font-size: .65rem;
-      color: var(--muted);
-      margin-bottom: 1px;
-      font-family: var(--mono);
+    .eval-card-title { font-size: .73rem; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 2px; }
+    .eval-card-desc  { font-size: .63rem; color: var(--muted); line-height: 1.3; }
+
+    .eval-tag {
+      font-size: .55rem; font-family: var(--mono); padding: 2px 5px; border-radius: 3px;
+      margin-top: 2px; white-space: nowrap; letter-spacing: .02em;
     }
+    .eval-tag.high { background: rgba(248,113,113,.1); color: var(--red);     border: 1px solid rgba(248,113,113,.2); }
+    .eval-tag.med  { background: rgba(251,191,36,.1);  color: var(--amber);   border: 1px solid rgba(251,191,36,.2); }
+    .eval-tag.low  { background: rgba(52,211,153,.1);  color: var(--emerald); border: 1px solid rgba(52,211,153,.2); }
 
-    /* Evaluador rápido */
-    .evaluator {
-      padding: 14px 18px;
+    /* Resultado evaluador */
+    .eval-result {
+      margin-top: 10px; padding: 10px 12px;
+      border: 1px solid var(--border2);
+      border-radius: var(--r); background: var(--surface2);
+      display: none;
     }
+    .eval-result.show { display: block; }
+    .eval-bar-track { height: 3px; background: var(--border2); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+    .eval-bar-fill  { height: 100%; border-radius: 2px; transition: width .4s ease, background .3s; }
+    .eval-bar-fill.low    { background: var(--emerald); }
+    .eval-bar-fill.medium { background: var(--amber); }
+    .eval-bar-fill.high   { background: var(--red); }
+    .eval-result-level { font-size: .62rem; font-family: var(--mono); letter-spacing: .06em; margin-bottom: 4px; }
+    .eval-result-level.low    { color: var(--emerald); }
+    .eval-result-level.medium { color: var(--amber); }
+    .eval-result-level.high   { color: var(--red); }
+    .eval-result-text { font-size: .68rem; color: var(--muted); line-height: 1.5; }
 
-    .eval-label {
-      font-size: .65rem;
-      font-family: var(--mono);
-      color: var(--muted);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    .eval-btn {
+      width: 100%; margin-top: 10px; padding: 9px;
+      background: transparent; border: 1px solid rgba(0,212,255,.25);
+      border-radius: var(--r); color: var(--cyan);
+      font-family: var(--sans); font-weight: 600; font-size: .74rem;
+      cursor: pointer; transition: all .14s;
     }
+    .eval-btn:hover { background: var(--cyan-glow); border-color: var(--cyan); }
 
-    .eval-options {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+    /* CHAT AREA */
+    .chat-wrapper { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+    .chat-head {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
     }
-
-    .eval-opt {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: .75rem;
-      color: var(--text);
-      cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      transition: all .15s;
-      user-select: none;
+    .chat-head-title { font-size: .95rem; font-weight: 700; margin-bottom: 2px; }
+    .chat-head-sub   { font-size: .7rem; color: var(--muted); }
+    .chat-tags { display: flex; gap: 5px; align-items: center; }
+    .ctag {
+      font-size: .6rem; font-family: var(--mono); padding: 3px 8px;
+      border-radius: 20px; border: 1px solid;
     }
+    .ctag-cyan   { color: var(--cyan);    border-color: rgba(0,212,255,.25);  background: var(--cyan-glow); }
+    .ctag-green  { color: var(--emerald); border-color: rgba(52,211,153,.2);  background: rgba(52,211,153,.05); }
+    .ctag-amber  { color: var(--amber);   border-color: rgba(251,191,36,.2);  background: rgba(251,191,36,.05); }
 
-    .eval-opt input[type="checkbox"] {
-      accent-color: var(--cyan);
-      margin-top: 1px;
-      flex-shrink: 0;
+    /* Clear button */
+    .clear-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: transparent; border: 1px solid var(--border2);
+      border-radius: var(--r); color: var(--muted);
+      font-size: .65rem; font-family: var(--mono); padding: 5px 10px;
+      cursor: pointer; transition: all .14s; letter-spacing: .04em;
     }
-
-    .eval-opt:hover {
-      border-color: var(--border);
-      background: var(--cyan-glow);
-    }
-
-    .eval-result-btn {
-      margin-top: 10px;
-      width: 100%;
-      padding: 8px;
-      background: var(--cyan);
-      color: var(--bg);
-      border: none;
-      border-radius: var(--radius);
-      font-family: var(--sans);
-      font-weight: 600;
-      font-size: .78rem;
-      cursor: pointer;
-      transition: opacity .15s;
-    }
-
-    .eval-result-btn:hover { opacity: .85; }
-
-    /* ── CHAT AREA ── */
-    .chat-wrapper {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .chat-header {
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .chat-header-left h1 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .chat-header-left p {
-      font-size: .72rem;
-      color: var(--muted);
-    }
-
-    .header-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: .65rem;
-      font-family: var(--mono);
-      padding: 3px 9px;
-      border-radius: 20px;
-      border: 1px solid;
-    }
-
-    .tag-cyan   { color: var(--cyan);    border-color: rgba(0,212,255,.3);  background: var(--cyan-glow); }
-    .tag-green  { color: var(--emerald); border-color: rgba(52,211,153,.3); background: rgba(52,211,153,.06); }
-    .tag-amber  { color: var(--amber);   border-color: rgba(251,191,36,.3); background: rgba(251,191,36,.06); }
+    .clear-btn:hover { border-color: rgba(248,113,113,.4); color: var(--red); background: rgba(248,113,113,.05); }
+    .clear-btn svg { flex-shrink: 0; }
 
     /* Messages */
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      scroll-behavior: smooth;
-    }
+    .messages { flex: 1; overflow-y: auto; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .messages::-webkit-scrollbar { width: 3px; }
+    .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-    .messages::-webkit-scrollbar { width: 4px; }
-    .messages::-webkit-scrollbar-track { background: transparent; }
-    .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-    /* Message bubbles */
-    .msg {
-      display: flex;
-      gap: 10px;
-      max-width: 820px;
-    }
-
-    .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+    .msg { display: flex; gap: 8px; max-width: 780px; }
+    .msg.user      { flex-direction: row-reverse; align-self: flex-end; }
     .msg.assistant { align-self: flex-start; }
 
-    .msg-avatar {
-      width: 30px; height: 30px;
-      border-radius: 50%;
+    .msg-av {
+      width: 26px; height: 26px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: .7rem;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 2px;
+      font-size: .6rem; font-weight: 700; flex-shrink: 0; margin-top: 3px;
     }
+    .msg.user      .msg-av { background: var(--cyan-dim); color: var(--cyan); }
+    .msg.assistant .msg-av { background: rgba(52,211,153,.1); color: var(--emerald); }
 
-    .msg.user    .msg-avatar { background: var(--cyan-dim);  color: var(--cyan); }
-    .msg.assistant .msg-avatar { background: rgba(52,211,153,.12); color: var(--emerald); }
+    .msg-bubble { padding: 10px 14px; border-radius: var(--r); font-size: .83rem; line-height: 1.65; }
+    .msg.user      .msg-bubble { background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.15); }
+    .msg.assistant .msg-bubble { background: var(--surface); border: 1px solid var(--border); }
+    .msg-bubble strong { color: var(--cyan); }
 
-    .msg-bubble {
-      padding: 12px 16px;
-      border-radius: var(--radius);
-      font-size: .85rem;
-      line-height: 1.6;
-      max-width: 100%;
+    .doc-block {
+      margin-top: 10px; background: rgba(2,6,23,.8);
+      border: 1px solid var(--border2); border-radius: 6px;
+      padding: 12px; font-family: var(--mono); font-size: .72rem;
+      white-space: pre-wrap; color: #94a3b8; position: relative;
     }
-
-    .msg.user .msg-bubble {
-      background: var(--cyan-dim);
-      border: 1px solid rgba(0,212,255,.2);
-      color: var(--text);
+    .doc-copy {
+      position: absolute; top: 7px; right: 7px;
+      background: var(--border2); border: none; color: var(--muted);
+      font-size: .6rem; padding: 3px 7px; border-radius: 3px;
+      cursor: pointer; font-family: var(--mono); transition: all .14s;
     }
+    .doc-copy:hover { background: var(--cyan-dim); color: var(--cyan); }
 
-    .msg.assistant .msg-bubble {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .msg-bubble strong { color: var(--cyan); font-weight: 600; }
-    .msg-bubble em     { color: var(--emerald); font-style: normal; font-weight: 500; }
-
-    .msg-bubble ul, .msg-bubble ol {
-      margin: 8px 0 8px 18px;
-    }
-
-    .msg-bubble li { margin-bottom: 4px; }
-
-    .msg-bubble .doc-block {
-      margin-top: 12px;
-      background: rgba(2,6,23,.6);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 14px;
-      font-family: var(--mono);
-      font-size: .75rem;
-      white-space: pre-wrap;
-      color: #94a3b8;
-      position: relative;
-    }
-
-    .msg-bubble .doc-copy {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: var(--border);
-      border: none;
-      color: var(--muted);
-      font-size: .65rem;
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: var(--mono);
-      transition: all .15s;
-    }
-
-    .msg-bubble .doc-copy:hover { background: var(--cyan-dim); color: var(--cyan); }
-
-    /* Typing indicator */
-    .typing-indicator {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 14px 16px;
-    }
-
-    .typing-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--muted);
-      animation: bounce 1.2s infinite;
-    }
-
+    /* Typing */
+    .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
+    .typing-dot  { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: tdot 1.2s infinite; }
     .typing-dot:nth-child(2) { animation-delay: .2s; }
     .typing-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes tdot { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
 
-    @keyframes bounce {
-      0%,80%,100% { transform: translateY(0); }
-      40%          { transform: translateY(-6px); }
-    }
+    /* Welcome */
+    .welcome { max-width: 560px; margin: auto; text-align: center; padding: 32px 20px; }
+    .welcome-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.2); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .welcome h2  { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .welcome p   { font-size: .8rem; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+    .welcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; text-align: left; }
+    .wcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; cursor: pointer; transition: all .14s; }
+    .wcard:hover { border-color: var(--cyan); background: var(--cyan-glow); }
+    .wcard-title { font-size: .75rem; font-weight: 600; margin-bottom: 3px; }
+    .wcard-desc  { font-size: .65rem; color: var(--muted); line-height: 1.35; }
 
-    /* Input bar */
-    .input-bar {
-      padding: 14px 24px 18px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
-    }
+    /* Disclaimer */
+    .disclaimer { padding: 6px 20px; border-top: 1px solid rgba(251,191,36,.15); background: rgba(251,191,36,.04); font-size: .67rem; color: var(--amber); flex-shrink: 0; }
 
-    .input-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
+    /* Input */
+    .input-wrap { padding: 12px 20px 16px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+    .input-row  { display: flex; gap: 8px; align-items: flex-end; }
     .input-row textarea {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: .85rem;
-      padding: 10px 14px;
-      resize: none;
-      outline: none;
-      min-height: 44px;
-      max-height: 140px;
-      line-height: 1.5;
-      transition: border-color .15s;
+      flex: 1; background: var(--bg); border: 1px solid var(--border2);
+      border-radius: var(--r); color: var(--text); font-family: var(--sans);
+      font-size: .83rem; padding: 9px 13px; resize: none; outline: none;
+      min-height: 40px; max-height: 130px; line-height: 1.5; transition: border-color .14s;
     }
-
     .input-row textarea:focus { border-color: var(--cyan); }
     .input-row textarea::placeholder { color: var(--muted); }
-
     .send-btn {
-      width: 44px; height: 44px;
-      border-radius: var(--radius);
-      background: var(--cyan);
-      border: none;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: opacity .15s;
+      width: 40px; height: 40px; border-radius: var(--r);
+      background: var(--cyan); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: opacity .14s;
     }
-
     .send-btn:hover { opacity: .85; }
-    .send-btn:disabled { opacity: .4; cursor: default; }
+    .send-btn:disabled { opacity: .35; cursor: default; }
+    .input-hint { font-size: .63rem; color: var(--muted); margin-top: 5px; }
 
-    .send-btn svg { color: var(--bg); }
-
-    .input-hint {
-      font-size: .68rem;
-      color: var(--muted);
-      margin-top: 6px;
-      padding-left: 2px;
-    }
-
-    /* ── WELCOME ── */
-    .welcome {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .welcome-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      background: var(--cyan-dim);
-      border: 1px solid rgba(0,212,255,.3);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      font-size: 1.4rem;
-    }
-
-    .welcome h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .welcome p {
-      font-size: .85rem;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .welcome-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      text-align: left;
-    }
-
-    .welcome-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      cursor: pointer;
-      transition: all .15s;
-    }
-
-    .welcome-card:hover {
-      border-color: var(--cyan);
-      background: var(--cyan-glow);
-    }
-
-    .welcome-card .wc-title {
-      font-size: .78rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-      color: var(--text);
-    }
-
-    .welcome-card .wc-desc {
-      font-size: .7rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    /* ── DISCLAIMER ── */
-    .disclaimer-bar {
-      background: rgba(251,191,36,.06);
-      border-top: 1px solid rgba(251,191,36,.2);
-      padding: 6px 24px;
-      font-size: .68rem;
-      color: var(--amber);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    /* ── ACCESS GUARD ── */
+    /* Overlay */
     #access-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,.97);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    #access-overlay .overlay-icon {
-      width: 52px; height: 52px;
-      background: var(--cyan-dim);
-      border: 1px solid rgba(0,212,255,.3);
-      border-radius: 14px;
+      position: fixed; inset: 0; background: rgba(2,6,23,.97);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 4px;
+      z-index: 9999; flex-direction: column; gap: 10px;
     }
-
-    #access-overlay h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    #access-overlay p {
-      font-size: .8rem;
-      color: var(--muted);
-      text-align: center;
-      max-width: 280px;
-    }
-
-    #access-overlay a {
-      margin-top: 6px;
-      color: var(--cyan);
-      font-size: .78rem;
-      text-decoration: none;
-    }
-
+    .overlay-box { text-align: center; }
+    .overlay-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.2); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    #access-overlay h2 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+    #access-overlay p  { font-size: .78rem; color: var(--muted); max-width: 260px; text-align: center; }
+    #access-overlay a  { margin-top: 12px; display: inline-block; color: var(--cyan); font-size: .75rem; text-decoration: none; }
     #access-overlay a:hover { text-decoration: underline; }
 
-    /* ── MOBILE ── */
+    /* Mobile */
     @media (max-width: 768px) {
-      main {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-      }
-
-      .sidebar {
-        grid-row: unset;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height .3s ease;
-      }
-
-      .sidebar.open { max-height: 400px; overflow-y: auto; }
-
-      .mobile-sidebar-toggle {
-        display: flex;
-      }
-
-      .chat-header { padding: 12px 16px; }
-      .messages    { padding: 14px 16px; }
-      .input-bar   { padding: 10px 16px 14px; }
-
-      .welcome-cards { grid-template-columns: 1fr; }
+      main { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
     }
-
-    @media (min-width: 769px) {
-      .mobile-sidebar-toggle { display: none; }
-    }
-
-    .mobile-sidebar-toggle {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: .72rem;
-      cursor: pointer;
-      align-items: center;
-      gap: 4px;
-      font-family: var(--sans);
-    }
-
-    .mobile-sidebar-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
-
-    /* ── FORMAT HELPERS ── */
-    .alert-box {
-      border-radius: 6px;
-      padding: 10px 14px;
-      margin: 8px 0;
-      font-size: .82rem;
-    }
-
-    .alert-red    { background: rgba(248,113,113,.08); border-left: 3px solid var(--red); }
-    .alert-green  { background: rgba(52,211,153,.08);  border-left: 3px solid var(--emerald); }
-    .alert-amber  { background: rgba(251,191,36,.08);  border-left: 3px solid var(--amber); }
-    .alert-cyan   { background: var(--cyan-glow);      border-left: 3px solid var(--cyan); }
   </style>
 </head>
 <body>
 
-<!-- ACCESS OVERLAY -->
 <div id="access-overlay">
-  <div class="overlay-icon">🔒</div>
-  <h2>Acceso restringido</h2>
-  <p>Verifica tu acceso para utilizar el Agente Ley Karin.</p>
-  <a href="/leykarin-acceso.html">Solicitar acceso</a>
+  <div class="overlay-box">
+    <div class="overlay-icon">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h2>Acceso restringido</h2>
+    <p>Verifica tu acceso para utilizar el Agente Ley Karin.</p>
+    <a href="/leykarin-acceso.html">Solicitar acceso</a>
+  </div>
 </div>
 
-<!-- NAVBAR -->
 <nav>
-  <a href="/" class="nav-logo">
+  <a href="/" class="nav-brand">
     <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
     ShellTI
   </a>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <button class="mobile-sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-      ☰ Herramientas
-    </button>
-    <span class="nav-badge">Ley Karin · IA</span>
-  </div>
+  <span class="nav-pill">Ley Karin &middot; IA</span>
 </nav>
 
-<!-- MAIN -->
 <main>
-
   <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar">
 
-    <div class="sidebar-header">
-      <h2>Acciones rápidas</h2>
-      <p>Selecciona una acción o escribe directamente.</p>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Consultas frecuentes</div>
-
-      <button class="quick-btn" onclick="sendQuick('¿Qué es la Ley Karin y a quién protege?')">
-        <span class="qb-icon">LEY 21.643</span>
-        ¿Qué es la Ley Karin?
+    <div class="sb-section">
+      <div class="sb-label">Consultas frecuentes</div>
+      <button class="qbtn" onclick="sendQuick('\u00bfQu\u00e9 es la Ley Karin y a qui\u00e9n protege?\')">
+        <span class="ql">LEY 21.643</span>\u00bfQu\u00e9 es la Ley Karin?
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Qué diferencia hay entre acoso laboral, acoso sexual y violencia en el trabajo según la Ley Karin?')">
-        <span class="qb-icon">DEFINICIONES</span>
-        Tipos de conductas que cubre
+      <button class="qbtn" onclick="sendQuick('\u00bfQu\u00e9 diferencia hay entre acoso laboral, acoso sexual y violencia en el trabajo seg\u00fan la Ley Karin?\')">
+        <span class="ql">DEFINICIONES</span>Tipos de conductas cubiertas
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Cuáles son los plazos del procedimiento de denuncia bajo la Ley Karin?')">
-        <span class="qb-icon">PLAZOS</span>
-        Plazos del procedimiento
+      <button class="qbtn" onclick="sendQuick('\u00bfCu\u00e1les son los plazos del procedimiento de denuncia bajo la Ley Karin?\')">
+        <span class="ql">PLAZOS</span>Plazos del procedimiento
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Cuáles son los canales oficiales para denunciar bajo la Ley Karin? (Inspección del Trabajo, empleador, etc.)')">
-        <span class="qb-icon">CANALES</span>
-        Canales de denuncia
+      <button class="qbtn" onclick="sendQuick('\u00bfCu\u00e1les son los canales oficiales para denunciar bajo la Ley Karin?\')">
+        <span class="ql">CANALES</span>D\u00f3nde y c\u00f3mo denunciar
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Qué medidas de resguardo puede tomar el empleador durante la investigación?')">
-        <span class="qb-icon">RESGUARDO</span>
-        Medidas de protección
+      <button class="qbtn" onclick="sendQuick('\u00bfQu\u00e9 medidas de resguardo puede tomar el empleador durante la investigaci\u00f3n?\')">
+        <span class="ql">PROTECCI\u00d3N</span>Medidas de resguardo
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Cuáles son las obligaciones del empleador bajo la Ley Karin?')">
-        <span class="qb-icon">EMPLEADOR</span>
-        Obligaciones del empleador
+      <button class="qbtn" onclick="sendQuick('\u00bfCu\u00e1les son las obligaciones del empleador bajo la Ley Karin?\')">
+        <span class="ql">EMPLEADOR</span>Obligaciones del empleador
       </button>
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Documentos</div>
-
-      <button class="quick-btn" onclick="sendQuick('Necesito una carta de denuncia formal por acoso laboral bajo la Ley Karin. Por favor genera un modelo con los campos necesarios.')">
-        <span class="qb-icon">GENERAR DOCUMENTO</span>
-        Carta de denuncia (modelo)
+    <div class="sb-section">
+      <div class="sb-label">Documentos</div>
+      <button class="qbtn" onclick="sendQuick('Genera un modelo de carta de denuncia formal por acoso laboral bajo la Ley Karin con todos los campos necesarios.\')">
+        <span class="ql">GENERAR</span>Carta de denuncia
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('Genera un formulario de registro de incidente de acoso o violencia laboral según los requisitos de la Ley Karin.')">
-        <span class="qb-icon">GENERAR DOCUMENTO</span>
-        Formulario de incidente
+      <button class="qbtn" onclick="sendQuick('Genera un formulario de registro de incidente de acoso laboral seg\u00fan los requisitos de la Ley Karin.\')">
+        <span class="ql">GENERAR</span>Formulario de incidente
       </button>
-
-      <button class="quick-btn" onclick="sendQuick('¿Qué debe incluir el protocolo de prevención de acoso laboral que exige la Ley Karin?')">
-        <span class="qb-icon">PROTOCOLO</span>
-        Checklist protocolo de prevención
+      <button class="qbtn" onclick="sendQuick('\u00bfQu\u00e9 debe incluir el protocolo de prevenci\u00f3n de acoso que exige la Ley Karin? Dame un checklist.\')">
+        <span class="ql">PROTOCOLO</span>Checklist protocolo de prevenci\u00f3n
       </button>
     </div>
 
-    <!-- Evaluador rápido -->
-    <div class="evaluator">
+    <div class="eval-section">
+      <div class="sb-label">Evaluador de situaci\u00f3n</div>
+      <p class="eval-desc">Selecciona los elementos presentes en la situaci\u00f3n para obtener una orientaci\u00f3n inicial.</p>
 
-      <div class="eval-header">
-        <div class="eval-header-title">Evaluador de situación</div>
-        <p class="eval-header-desc">Selecciona los elementos que describen tu situación para obtener una orientación inicial.</p>
+      <div class="eval-card w-high" onclick="toggleEval(this,'ev1')">
+        <div class="eval-check" id="ec1"></div>
+        <div><div class="eval-card-title">Conducta repetida</div><div class="eval-card-desc">Ocurre m\u00e1s de una vez o es sostenida en el tiempo</div></div>
+        <span class="eval-tag high">Alta</span>
+      </div>
+      <div class="eval-card w-high" onclick="toggleEval(this,'ev2')">
+        <div class="eval-check" id="ec2"></div>
+        <div><div class="eval-card-title">Relaci\u00f3n laboral</div><div class="eval-card-desc">Jefatura, compa\u00f1ero u otro trabajador de la empresa</div></div>
+        <span class="eval-tag high">Alta</span>
+      </div>
+      <div class="eval-card w-high" onclick="toggleEval(this,'ev3')">
+        <div class="eval-check" id="ec3"></div>
+        <div><div class="eval-card-title">Afecta dignidad o salud</div><div class="eval-card-desc">Da\u00f1o f\u00edsico, ps\u00edquico o al ambiente de trabajo</div></div>
+        <span class="eval-tag high">Alta</span>
+      </div>
+      <div class="eval-card w-med" onclick="toggleEval(this,'ev4')">
+        <div class="eval-check" id="ec4"></div>
+        <div><div class="eval-card-title">Connotaci\u00f3n sexual</div><div class="eval-card-desc">Conductas o comentarios de naturaleza sexual no consentidos</div></div>
+        <span class="eval-tag med">Media</span>
+      </div>
+      <div class="eval-card w-med" onclick="toggleEval(this,'ev5')">
+        <div class="eval-check" id="ec5"></div>
+        <div><div class="eval-card-title">Agresi\u00f3n f\u00edsica o verbal</div><div class="eval-card-desc">Violencia directa ejercida en el lugar de trabajo</div></div>
+        <span class="eval-tag med">Media</span>
+      </div>
+      <div class="eval-card w-low" onclick="toggleEval(this,'ev6')">
+        <div class="eval-check" id="ec6"></div>
+        <div><div class="eval-card-title">Quejas previas ignoradas</div><div class="eval-card-desc">El empleador no tom\u00f3 medidas ante reportes anteriores</div></div>
+        <span class="eval-tag low">Agrav.</span>
       </div>
 
-      <div class="eval-criteria">
-
-        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev1')" data-id="ev1">
-          <div class="eval-card-icon">🔁</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Conducta repetida</div>
-            <div class="eval-card-desc">Ocurre más de una vez o es sostenida</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
-        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev2')" data-id="ev2">
-          <div class="eval-card-icon">👥</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Relación laboral</div>
-            <div class="eval-card-desc">Jefatura, compañero u otro trabajador</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
-        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev3')" data-id="ev3">
-          <div class="eval-card-icon">🧠</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Afecta dignidad o salud</div>
-            <div class="eval-card-desc">Daño físico, psíquico o al ambiente laboral</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
-        <div class="eval-card w-med" onclick="toggleEvalCard(this, 'ev4')" data-id="ev4">
-          <div class="eval-card-icon">⚠️</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Connotación sexual</div>
-            <div class="eval-card-desc">Conductas o comentarios no consentidos</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
-        <div class="eval-card w-med" onclick="toggleEvalCard(this, 'ev5')" data-id="ev5">
-          <div class="eval-card-icon">🚨</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Agresión física o verbal</div>
-            <div class="eval-card-desc">Violencia directa en el lugar de trabajo</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
-        <div class="eval-card w-low" onclick="toggleEvalCard(this, 'ev6')" data-id="ev6">
-          <div class="eval-card-icon">📋</div>
-          <div class="eval-card-body">
-            <div class="eval-card-title">Quejas previas ignoradas</div>
-            <div class="eval-card-desc">El empleador no actuó ante reportes anteriores</div>
-          </div>
-          <div class="eval-card-check">✓</div>
-        </div>
-
+      <div class="eval-result" id="evalResult">
+        <div class="eval-bar-track"><div class="eval-bar-fill" id="evalFill" style="width:0%"></div></div>
+        <div class="eval-result-level" id="evalLevel"></div>
+        <div class="eval-result-text"  id="evalText"></div>
       </div>
 
-      <!-- Resultado dinámico -->
-      <div class="eval-result-panel" id="evalResultPanel">
-        <div class="eval-result-bar-wrap">
-          <div class="eval-result-bar-track">
-            <div class="eval-result-bar-fill" id="evalBarFill" style="width:0%"></div>
-          </div>
-          <div class="eval-result-bar-labels">
-            <span>Indicios iniciales</span>
-            <span>Alta probabilidad</span>
-          </div>
-        </div>
-        <div class="eval-result-body">
-          <div class="eval-result-level" id="evalResultLevel"></div>
-          <div class="eval-result-text" id="evalResultText"></div>
-        </div>
-      </div>
-
-      <div class="eval-action-wrap">
-        <button class="eval-result-btn" onclick="evaluarSituacion()">Consultar al agente →</button>
-      </div>
-
+      <button class="eval-btn" onclick="evaluarSituacion()">Consultar al agente &rarr;</button>
     </div>
 
   </aside>
 
   <!-- CHAT -->
   <div class="chat-wrapper">
-
-    <div class="chat-header">
-      <div class="chat-header-left">
-        <h1>Agente Ley Karin</h1>
-        <p>Ley 21.643 · Acoso laboral, sexual y violencia en el trabajo</p>
+    <div class="chat-head">
+      <div>
+        <div class="chat-head-title">Agente Ley Karin</div>
+        <div class="chat-head-sub">Ley 21.643 &middot; Acoso laboral, sexual y violencia en el trabajo</div>
       </div>
-      <div class="header-tags">
-        <span class="tag tag-cyan">Ley 21.643</span>
-        <span class="tag tag-green">Denuncias</span>
-        <span class="tag tag-amber">Documentos</span>
+      <div class="chat-tags">
+        <span class="ctag ctag-cyan">Ley 21.643</span>
+        <span class="ctag ctag-green">Denuncias</span>
+        <span class="ctag ctag-amber">Documentos</span>
+        <button class="clear-btn" onclick="clearChat()" title="Limpiar conversaci\u00f3n">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Limpiar
+        </button>
       </div>
     </div>
 
     <div class="messages" id="messages">
-      <!-- Welcome state -->
-      <div class="welcome" id="welcome-screen">
-        <div class="welcome-icon">⚖️</div>
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
         <h2>Agente Ley Karin</h2>
         <p>Asistente especializado en la Ley 21.643. Puedo ayudarte a entender la ley, evaluar situaciones, guiar el proceso de denuncia y generar documentos.</p>
-
-        <div class="welcome-cards">
-          <div class="welcome-card" onclick="sendQuick('¿Qué es la Ley Karin y cuál es su objetivo principal?')">
-            <div class="wc-title">¿Qué es la Ley Karin?</div>
-            <div class="wc-desc">Origen, alcance y a quién protege la Ley 21.643</div>
+        <div class="welcome-grid">
+          <div class="wcard" onclick="sendQuick('\u00bfQu\u00e9 es la Ley Karin y cu\u00e1l es su objetivo principal?\')">
+            <div class="wcard-title">\u00bfQu\u00e9 es la Ley Karin?</div>
+            <div class="wcard-desc">Origen, alcance y a qui\u00e9n protege la Ley 21.643</div>
           </div>
-          <div class="welcome-card" onclick="sendQuick('¿Cómo sé si la situación que estoy viviendo califica como acoso laboral bajo la Ley Karin?')">
-            <div class="wc-title">¿Califica mi situación?</div>
-            <div class="wc-desc">Evalúa si los hechos configuran una conducta sancionable</div>
+          <div class="wcard" onclick="sendQuick('\u00bfC\u00f3mo s\u00e9 si la situaci\u00f3n que estoy viviendo califica como acoso laboral bajo la Ley Karin?\')">
+            <div class="wcard-title">\u00bfCalifica mi situaci\u00f3n?</div>
+            <div class="wcard-desc">Eval\u00faa si los hechos configuran una conducta sancionable</div>
           </div>
-          <div class="welcome-card" onclick="sendQuick('Explícame paso a paso cómo iniciar un proceso de denuncia por acoso laboral bajo la Ley Karin.')">
-            <div class="wc-title">Guía de denuncia</div>
-            <div class="wc-desc">Pasos, plazos y canales para presentar una denuncia</div>
+          <div class="wcard" onclick="sendQuick('Expl\u00edcame paso a paso c\u00f3mo iniciar un proceso de denuncia por acoso laboral bajo la Ley Karin.\')">
+            <div class="wcard-title">Gu\u00eda de denuncia</div>
+            <div class="wcard-desc">Pasos, plazos y canales para presentar una denuncia</div>
           </div>
-          <div class="welcome-card" onclick="sendQuick('Genera un modelo de carta de denuncia por acoso laboral para presentar ante el empleador o la Inspección del Trabajo.')">
-            <div class="wc-title">Generar documento</div>
-            <div class="wc-desc">Carta de denuncia, formulario de incidente, protocolo</div>
+          <div class="wcard" onclick="sendQuick('Genera un modelo de carta de denuncia por acoso laboral para presentar ante el empleador o la Inspecci\u00f3n del Trabajo.\')">
+            <div class="wcard-title">Generar documento</div>
+            <div class="wcard-desc">Carta de denuncia, formulario de incidente, protocolo</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="disclaimer-bar">
-      ⚠️ Este agente entrega orientación general. Para casos individuales, consulta a un abogado o dirígete a la Inspección del Trabajo.
+    <div class="disclaimer">
+      Aviso: Este agente entrega orientaci\u00f3n general. Para casos individuales, consulta a un abogado o dir\u00edgete a la Inspecci\u00f3n del Trabajo.
     </div>
 
-    <div class="input-bar">
+    <div class="input-wrap">
       <div class="input-row">
-        <textarea
-          id="userInput"
-          placeholder="Escribe tu consulta sobre la Ley Karin..."
-          rows="1"
-          onkeydown="handleKey(event)"
-          oninput="autoResize(this)"
-        ></textarea>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Enviar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
+        <textarea id="userInput" placeholder="Escribe tu consulta sobre la Ley Karin..." rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <div class="input-hint">Shift+Enter para salto de línea · Enter para enviar</div>
+      <div class="input-hint">Shift+Enter para salto de l\u00ednea &middot; Enter para enviar</div>
     </div>
-
   </div>
 </main>
 
-<!-- Guard Ley Karin -->
 <script src="/leykarin-guard.js"></script>
 
 <script>
-/* ─────────────────────────────────────────
-   SYSTEM PROMPT — Ley Karin
-───────────────────────────────────────── */
 const SYSTEM_PROMPT = `Eres el Agente Ley Karin de ShellTI, un asistente especializado en la Ley 21.643 de Chile, conocida como "Ley Karin", que modifica el Código del Trabajo y otros cuerpos legales para fortalecer la protección frente al acoso laboral, acoso sexual y violencia en el trabajo.
 
 CONTEXTO LEGAL QUE DOMINAS:
@@ -988,277 +517,188 @@ Eres un recurso de orientación profesional de ShellTI. Actúa con rigor, empat�
 
 LÍMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.643 (Ley Karin), acoso laboral, acoso sexual, violencia en el trabajo, derechos laborales asociados, y procesos de denuncia en Chile. Si el usuario pregunta sobre temas no relacionados (política, tecnología, entretenimiento, otros países, temas personales no laborales, etc.), responde educadamente que tu especialidad es exclusivamente la Ley Karin y el ámbito del acoso y violencia en el trabajo en Chile, y redirige la conversación ofreciendo ayuda en ese ámbito.`;
 
-/* ─────────────────────────────────────────
-   ESTADO
-───────────────────────────────────────── */
-let history = [];
-let isLoading = false;
+var history   = [];
+var isLoading = false;
 
-/* ─────────────────────────────────────────
-   GUARD: espera a shellti-guard
-───────────────────────────────────────── */
-window.addEventListener('shellti-guard-ok', () => {
-  document.getElementById('access-overlay').style.display = 'none';
+/* Guard */
+window.addEventListener('shellti-guard-ok', function() {
+  var o = document.getElementById('access-overlay');
+  if (o) o.style.display = 'none';
 });
-
-// Si shellti-guard no está disponible (desarrollo local), ocultar overlay
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-  document.getElementById('access-overlay').style.display = 'none';
+  var o = document.getElementById('access-overlay');
+  if (o) o.style.display = 'none';
 }
 
-/* ─────────────────────────────────────────
-   UI HELPERS
-───────────────────────────────────────── */
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
+/* Helpers */
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 130) + 'px'; }
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+function scrollBot() { var m = document.getElementById('messages'); m.scrollTop = m.scrollHeight; }
+
+function clearChat() {
+  if (history.length === 0) return;
+  history = [];
+  var msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  var w = document.createElement('div');
+  w.className = 'welcome'; w.id = 'welcome';
+  w.innerHTML = document.querySelector('.welcome') ? '' : '';
+  // Rebuild welcome
+  msgs.innerHTML = `<div class="welcome" id="welcome">
+    <div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <h2>Agente Ley Karin</h2>
+    <p>Conversaci\u00f3n reiniciada. \u00bfEn qu\u00e9 puedo ayudarte?</p>
+  </div>`;
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
-}
-
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-}
-
-function scrollToBottom() {
-  const msgs = document.getElementById('messages');
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-/* ─────────────────────────────────────────
-   RENDER
-───────────────────────────────────────── */
-function parseContent(text) {
-  // Detectar bloque de documento
-  let html = text;
-
-  // Bloque DOCUMENTO GENERADO
-  html = html.replace(/DOCUMENTO GENERADO[:\s]*([\s\S]*?)(?=\n\n[A-Z]|$)/g, (_, doc) => {
-    const clean = doc.trim();
-    return `<div class="doc-block" id="docBlock_${Date.now()}"><button class="doc-copy" onclick="copyDoc(this)">Copiar</button>${escapeHtml(clean)}</div>`;
+/* Render */
+function parseContent(raw) {
+  var html = raw;
+  html = html.replace(/```[\w]*\n?([\s\S]*?)```/g, function(_, code) {
+    var id = 'doc_' + Date.now() + Math.random().toString(36).slice(2,6);
+    return '<div class="doc-block" id="' + id + '"><button class="doc-copy" onclick="copyDoc(this)">Copiar</button>' + esc(code.trim()) + '</div>';
   });
-
-  // Bloques de código genéricos
-  html = html.replace(/```[\w]*\n?([\s\S]*?)```/g, (_, code) => {
-    return `<div class="doc-block" id="docBlock_${Date.now()}"><button class="doc-copy" onclick="copyDoc(this)">Copiar</button>${escapeHtml(code.trim())}</div>`;
+  html = html.replace(/DOCUMENTO GENERADO[:\s]*([\s\S]*?)(?=\n\n[A-Z]|$)/g, function(_, doc) {
+    var id = 'doc_' + Date.now() + Math.random().toString(36).slice(2,6);
+    return '<div class="doc-block" id="' + id + '"><button class="doc-copy" onclick="copyDoc(this)">Copiar</button>' + esc(doc.trim()) + '</div>';
   });
-
-  // Negritas y cursivas
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-
-  // Saltos de línea
   html = html.replace(/\n/g, '<br>');
-
   return html;
 }
 
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function copyDoc(btn) {
-  const block = btn.parentElement;
-  const text = block.innerText.replace('Copiar', '').trim();
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '¡Copiado!';
-    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  var text = btn.parentElement.innerText.replace('Copiar','').trim();
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copiado'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 2000);
   });
 }
 
-function appendMessage(role, content) {
-  // Ocultar welcome
-  const welcome = document.getElementById('welcome-screen');
-  if (welcome) welcome.style.display = 'none';
-
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-
-  const avatar = document.createElement('div');
-  avatar.className = 'msg-avatar';
-  avatar.textContent = role === 'user' ? 'TÚ' : 'LK';
-
-  const bubble = document.createElement('div');
+function appendMsg(role, content) {
+  var w = document.getElementById('welcome');
+  if (w) w.style.display = 'none';
+  var msgs = document.getElementById('messages');
+  var div = document.createElement('div');
+  div.className = 'msg ' + role;
+  var av = document.createElement('div');
+  av.className = 'msg-av';
+  av.textContent = role === 'user' ? 'TU' : 'LK';
+  var bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
   bubble.innerHTML = parseContent(content);
-
-  div.appendChild(avatar);
-  div.appendChild(bubble);
+  div.appendChild(av); div.appendChild(bubble);
   msgs.appendChild(div);
-  scrollToBottom();
+  scrollBot();
   return bubble;
 }
 
 function showTyping() {
-  const msgs = document.getElementById('messages');
-  const welcome = document.getElementById('welcome-screen');
-  if (welcome) welcome.style.display = 'none';
-
-  const div = document.createElement('div');
-  div.className = 'msg assistant';
-  div.id = 'typing-indicator';
-
-  const avatar = document.createElement('div');
-  avatar.className = 'msg-avatar';
-  avatar.textContent = 'LK';
-
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  bubble.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
-
-  div.appendChild(avatar);
-  div.appendChild(bubble);
-  msgs.appendChild(div);
-  scrollToBottom();
+  var w = document.getElementById('welcome');
+  if (w) w.style.display = 'none';
+  var msgs = document.getElementById('messages');
+  var div = document.createElement('div');
+  div.className = 'msg assistant'; div.id = 'typing';
+  var av = document.createElement('div'); av.className = 'msg-av'; av.textContent = 'LK';
+  var bubble = document.createElement('div'); bubble.className = 'msg-bubble';
+  bubble.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  div.appendChild(av); div.appendChild(bubble);
+  msgs.appendChild(div); scrollBot();
 }
 
-function removeTyping() {
-  const t = document.getElementById('typing-indicator');
-  if (t) t.remove();
-}
+function removeTyping() { var t = document.getElementById('typing'); if (t) t.remove(); }
 
-/* ─────────────────────────────────────────
-   SEND MESSAGE
-───────────────────────────────────────── */
-async function sendMessage(customText) {
+/* Send */
+async function sendMessage(custom) {
   if (isLoading) return;
-
-  const input = document.getElementById('userInput');
-  const text = (customText || input.value).trim();
+  var input = document.getElementById('userInput');
+  var text  = (custom || input.value).trim();
   if (!text) return;
-
-  input.value = '';
-  input.style.height = 'auto';
-
-  appendMessage('user', text);
+  input.value = ''; input.style.height = 'auto';
+  appendMsg('user', text);
   history.push({ role: 'user', content: text });
-
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
   showTyping();
-
   try {
-    const response = await fetch('/api/chat', {
+    var res  = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: SYSTEM_PROMPT,
-        messages: history.slice(-20)
-      })
+      body: JSON.stringify({ system: SYSTEM_PROMPT, messages: history.slice(-20) })
     });
-
-    const data = await response.json();
+    var data = await res.json();
     removeTyping();
-
-    const reply = data.text || 'No se pudo obtener respuesta.';
+    var reply = data.text || 'No se pudo obtener respuesta.';
     history.push({ role: 'assistant', content: reply });
-    appendMessage('assistant', reply);
-
-  } catch (err) {
+    appendMsg('assistant', reply);
+  } catch(e) {
     removeTyping();
-    appendMessage('assistant', '**Error de conexión.** Por favor intenta nuevamente en unos momentos.');
-    console.error(err);
+    appendMsg('assistant', 'Error de conexi\u00f3n. Por favor intenta nuevamente.');
   }
-
   isLoading = false;
   document.getElementById('sendBtn').disabled = false;
-  input.focus();
+  document.getElementById('userInput').focus();
 }
 
+function sendQuick(text) { sendMessage(text); }
 
-
-/* ── Evaluador ── */
-var evalState = {};
+/* Evaluador */
+var evalState   = {};
 var evalWeights = { ev1:28, ev2:28, ev3:28, ev4:16, ev5:16, ev6:10 };
+var evalLabels  = { ev1:'conducta repetida o sostenida en el tiempo', ev2:'hay relaci\u00f3n laboral (empleador, compa\u00f1ero u otro trabajador)', ev3:'afecta la dignidad, salud f\u00edsica o ps\u00edquica, o el ambiente de trabajo', ev4:'existe connotaci\u00f3n sexual no consentida', ev5:'se produjo agresi\u00f3n f\u00edsica o verbal grave', ev6:'quejas internas previas fueron ignoradas por el empleador' };
 
-function toggleEvalCard(card, id) {
+function toggleEval(card, id) {
   evalState[id] = !evalState[id];
-  if (evalState[id]) {
-    card.classList.add('selected');
-  } else {
-    card.classList.remove('selected');
+  card.classList.toggle('active', evalState[id]);
+  var check = card.querySelector('.eval-check');
+  if (check) {
+    check.style.background = evalState[id] ? 'var(--cyan)' : '';
+    check.style.borderColor = evalState[id] ? 'var(--cyan)' : '';
   }
-  renderEvalResult();
+  updateEvalResult();
 }
 
-function renderEvalResult() {
+function updateEvalResult() {
   var selected = Object.keys(evalState).filter(function(k){ return evalState[k]; });
-  var panel  = document.getElementById('evalResultPanel');
-  var fill   = document.getElementById('evalBarFill');
-  var level  = document.getElementById('evalResultLevel');
-  var text   = document.getElementById('evalResultText');
-
-  if (!selected.length) {
-    panel.classList.remove('show');
-    return;
-  }
-
+  var panel    = document.getElementById('evalResult');
+  var fill     = document.getElementById('evalFill');
+  var lvl      = document.getElementById('evalLevel');
+  var txt      = document.getElementById('evalText');
+  if (!selected.length) { panel.classList.remove('show'); return; }
   panel.classList.add('show');
-
   var score = 0;
-  selected.forEach(function(k){ score += evalWeights[k] || 0; });
-  var pct = Math.min(Math.round(score), 100);
-
+  selected.forEach(function(k){ score += evalWeights[k]||0; });
+  var pct = Math.min(score, 100);
   fill.style.width = pct + '%';
-
   if (pct >= 65) {
-    fill.className = 'eval-result-bar-fill lvl-high';
-    level.className = 'eval-result-level lvl-high';
-    level.textContent = 'Indicios relevantes de conducta sancionable';
-    text.textContent = 'Los elementos presentes sugieren que la situación podría calificar bajo la Ley Karin. Se recomienda contactar a la Inspección del Trabajo o un abogado laboral.';
+    fill.className = 'eval-bar-fill high';
+    lvl.className  = 'eval-result-level high';
+    lvl.textContent = 'Indicios relevantes de conducta sancionable';
+    txt.textContent = 'Los elementos seleccionados sugieren que la situaci\u00f3n podr\u00eda calificar bajo la Ley Karin. Se recomienda contactar a la Inspecci\u00f3n del Trabajo o un abogado laboral.';
   } else if (pct >= 35) {
-    fill.className = 'eval-result-bar-fill lvl-medium';
-    level.className = 'eval-result-level lvl-medium';
-    level.textContent = 'Situación a evaluar con más antecedentes';
-    text.textContent = 'Algunos elementos están presentes, pero se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin. Consulta al agente para orientación específica.';
+    fill.className = 'eval-bar-fill medium';
+    lvl.className  = 'eval-result-level medium';
+    lvl.textContent = 'Situaci\u00f3n a evaluar con m\u00e1s antecedentes';
+    txt.textContent = 'Algunos elementos est\u00e1n presentes. Se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin. Consulta al agente.';
   } else {
-    fill.className = 'eval-result-bar-fill lvl-low';
-    level.className = 'eval-result-level lvl-low';
-    level.textContent = 'Elementos iniciales, aún no concluyentes';
-    text.textContent = 'Con los elementos seleccionados no es posible determinar una configuración clara. Puedes agregar más detalles o consultarle directamente al agente.';
+    fill.className = 'eval-bar-fill low';
+    lvl.className  = 'eval-result-level low';
+    lvl.textContent = 'Elementos iniciales, a\u00fan no concluyentes';
+    txt.textContent = 'Con los elementos seleccionados no es posible determinar una configuraci\u00f3n clara. Agrega m\u00e1s detalles o consulta directamente al agente.';
   }
 }
 
-function sendQuick(text) {
-  sendMessage(text);
-}
-
-/* ─────────────────────────────────────────
-   EVALUADOR DE SITUACIÓN
-───────────────────────────────────────── */
 function evaluarSituacion() {
-  const checks = {
-    ev1: 'conducta repetida o sostenida en el tiempo',
-    ev2: 'hay relación laboral (empleador, compañero de trabajo u otro trabajador)',
-    ev3: 'afecta la dignidad, salud física o psíquica, o el ambiente de trabajo',
-    ev4: 'existe connotación sexual no deseada',
-    ev5: 'se produjo agresión física o verbal grave',
-    ev6: 'se han ignorado quejas internas previas'
-  };
-
-  const marcados = [];
-  for (const [id, label] of Object.entries(checks)) {
-    if (document.getElementById(id).checked) marcados.push(label);
-  }
-
-  if (marcados.length === 0) {
-    sendMessage('No marqué ningún criterio en el evaluador. ¿Puedes explicarme qué elementos son necesarios para que una situación califique bajo la Ley Karin?');
+  var selected = Object.keys(evalState).filter(function(k){ return evalState[k]; });
+  if (!selected.length) {
+    sendMessage('No seleccion\u00e9 ning\u00fan criterio en el evaluador. \u00bfPuedes explicarme qu\u00e9 elementos son necesarios para que una situaci\u00f3n califique bajo la Ley Karin?');
     return;
   }
-
-  const prompt = `Quiero evaluar si mi situación podría calificar bajo la Ley Karin. Los elementos presentes son:\n${marcados.map((m,i) => `${i+1}. ${m}`).join('\n')}\n\n¿Qué me puedes decir al respecto? ¿Qué tipo de conducta configuraría según estos elementos?`;
+  var items = selected.map(function(k,i){ return (i+1) + '. ' + evalLabels[k]; }).join('\n');
+  var prompt = 'Quiero evaluar si mi situaci\u00f3n podr\u00eda calificar bajo la Ley Karin. Los elementos presentes son:\n' + items + '\n\n\u00bfQu\u00e9 me puedes decir al respecto?';
   sendMessage(prompt);
 }
 </script>
-
 </body>
 </html>
