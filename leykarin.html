@@ -79,7 +79,13 @@
 
     /* CHAT */
     .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
-    .chat-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:10;background:var(--bg)}
+    .chat-head{padding:0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;z-index:10;background:var(--bg)}
+
+    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+    .chat-head-session{padding:4px 20px 5px;border-top:1px solid var(--border);background:rgba(0,212,255,.03);display:none;align-items:center;justify-content:space-between}
+    .chat-head-session.show{display:flex}
+    .chat-head-session-title{font-size:.63rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+    .chat-head-session-date{font-size:.58rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
     .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
     .chat-head-l p{font-size:.68rem;color:var(--muted)}
     .chat-head-r{display:flex;align-items:center;gap:5px}
@@ -277,7 +283,13 @@
       main{grid-template-columns:1fr}
       .sidebar{display:none}
       .chat-head{padding:10px 14px;flex-wrap:wrap;gap:5px}
-      .chat-head-l h1{font-size:.88rem}
+  
+    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+    .chat-head-session{padding:4px 20px 5px;border-top:1px solid var(--border);background:rgba(0,212,255,.03);display:none;align-items:center;justify-content:space-between}
+    .chat-head-session.show{display:flex}
+    .chat-head-session-title{font-size:.63rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+    .chat-head-session-date{font-size:.58rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
+    .chat-head-l h1{font-size:.88rem}
       .chat-head-l p{font-size:.63rem}
       .chat-head-r{gap:4px;flex-wrap:wrap}
       .ctag{font-size:.56rem;padding:2px 7px}
@@ -470,6 +482,7 @@
 
   <div class="chat-wrap">
     <div class="chat-head">
+      <div class="chat-head-top">
       <div class="chat-head-l">
         <h1>Agente Ley Karin</h1>
         <p>Ley 21.643 &middot; Acoso laboral, sexual y violencia en el trabajo</p>
@@ -489,11 +502,11 @@
           Limpiar
         </button>
       </div>
-    </div>
-
-    <div class="session-banner" id="sessionBanner">
-      <span class="session-banner-title" id="sessionTitle"></span>
-      <span class="session-banner-date" id="sessionDate"></span>
+      </div>
+      <div class="chat-head-session" id="sessionBanner">
+        <span class="chat-head-session-title" id="sessionTitle"></span>
+        <span class="chat-head-session-date" id="sessionDate"></span>
+      </div>
     </div>
 
     <div class="messages-wrap"><div class="messages" id="messages">
