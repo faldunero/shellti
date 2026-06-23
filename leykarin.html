@@ -238,6 +238,38 @@
     .den-canal-link:hover{background:var(--cyan-gl);border-color:var(--cyan)}
     .den-disclaimer{margin-top:14px;padding:10px 12px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:var(--r);font-size:.68rem;color:#92742a;line-height:1.5}
 
+
+    /* Scroll to bottom button */
+    .scroll-down-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 20px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all .15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .scroll-down-btn.show { display: flex; }
+    .scroll-down-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-gl); }
+    .scroll-down-btn .unread-dot {
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      display: none;
+    }
+    .scroll-down-btn .unread-dot.show { display: block; }
+    .messages-wrap { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
     @media(max-width:768px){main{grid-template-columns:1fr}.sidebar{display:none}}
   </style>
 </head>
@@ -369,7 +401,7 @@
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#020617" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Evaluar situacion
     </button>
-    <span class="nav-pill">Ley Karin</span>
+    <span class="nav-pill">Ley Karin &middot; IA</span>
   </div>
 </nav>
 
@@ -433,7 +465,7 @@
       <span class="session-banner-date" id="sessionDate"></span>
     </div>
 
-    <div class="messages" id="messages">
+    <div class="messages-wrap"><div class="messages" id="messages">
       <div class="welcome" id="welcome">
         <div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h2>Agente Ley Karin</h2>
@@ -445,6 +477,11 @@
           <div class="wcard" onclick="sq('Genera un modelo de carta de denuncia por acoso laboral para presentar ante el empleador.')"><div class="wcard-t">Generar documento</div><div class="wcard-d">Carta, formulario o protocolo</div></div>
         </div>
       </div>
+    </div>
+      <button class="scroll-down-btn" id="scrollDownBtn" onclick="scrollBot(true)" title="Ir al final">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <span class="unread-dot" id="unreadDot"></span>
+      </button>
     </div>
 
     <div class="disclaimer">Aviso: Este agente entrega orientacion general. Para casos individuales, consulta a un abogado o a la Inspeccion del Trabajo.</div>
@@ -703,7 +740,42 @@ function handleInput(el) {
 }
 function clearInput() { var i=document.getElementById('userInput'); i.value=''; i.style.height='auto'; i.focus(); document.getElementById('clearInputBtn').classList.remove('show'); }
 function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
-function scrollBot() { var m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
+function isNearBottom() {
+  var m = document.getElementById('messages');
+  return m.scrollHeight - m.scrollTop - m.clientHeight < 80;
+}
+
+function scrollBot(force) {
+  var m = document.getElementById('messages');
+  if (force || isNearBottom()) {
+    m.scrollTop = m.scrollHeight;
+    hideScrollBtn();
+  }
+}
+
+function hideScrollBtn() {
+  var btn = document.getElementById('scrollDownBtn');
+  var dot = document.getElementById('unreadDot');
+  if (btn) btn.classList.remove('show');
+  if (dot) dot.classList.remove('show');
+}
+
+function showScrollBtn(hasNew) {
+  var btn = document.getElementById('scrollDownBtn');
+  var dot = document.getElementById('unreadDot');
+  if (btn) btn.classList.add('show');
+  if (dot && hasNew) dot.classList.add('show');
+}
+
+// Listen for manual scroll
+document.addEventListener('DOMContentLoaded', function() {
+  var msgs = document.getElementById('messages');
+  if (msgs) {
+    msgs.addEventListener('scroll', function() {
+      if (isNearBottom()) hideScrollBtn();
+    });
+  }
+});
 function sq(text) { send(text); }
 
 /* ── Welcome ── */
@@ -756,7 +828,13 @@ function appendMsg(role, content, silent) {
   var av=document.createElement('div'); av.className='msg-av'; av.textContent=role==='user'?'TU':'LK';
   var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML=parseContent(content);
   d.appendChild(av); d.appendChild(b); msgs.appendChild(d);
-  if(!silent) scrollBot();
+  if(!silent) {
+    if (isNearBottom()) {
+      scrollBot(false);
+    } else {
+      showScrollBtn(true);
+    }
+  }
 }
 function showTyping() {
   var w=document.getElementById('welcome'); if(w) w.style.display='none';
