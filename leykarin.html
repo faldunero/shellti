@@ -30,12 +30,19 @@
     .nav-pill{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,212,255,.2);background:var(--cyan-gl);padding:3px 10px;border-radius:20px;letter-spacing:.04em}
     .nav-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+    /* User chip */
+    .user-chip{display:none;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 10px 4px 4px;cursor:default}
+    .user-chip.show{display:flex}
+    .user-avatar{width:22px;height:22px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--cyan);flex-shrink:0}
+    .user-name{font-size:.65rem;font-weight:600;color:var(--text2);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+    .user-org{font-size:.58rem;color:var(--muted);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+
     .eval-trigger{display:flex;align-items:center;gap:7px;background:var(--cyan);border:none;border-radius:var(--r);color:var(--bg);font-size:.74rem;font-family:var(--sans);font-weight:700;padding:8px 16px;cursor:pointer;transition:all .15s;box-shadow:0 0 16px rgba(0,212,255,.25)}
     .eval-trigger:hover{opacity:.88;box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-1px)}
-    .eval-trigger svg{flex-shrink:0}
 
     /* LAYOUT */
-    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h))}
+    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative}
 
     /* SIDEBAR */
     .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
@@ -47,21 +54,42 @@
     .qbtn:hover{border-color:var(--cyan);color:var(--text);background:var(--cyan-gl)}
     .ql{display:block;font-size:.57rem;font-family:var(--mono);color:var(--muted);margin-bottom:2px;letter-spacing:.06em}
 
+    /* Historial drawer (sobre sidebar) */
+    .hist-drawer{position:absolute;top:0;left:0;width:252px;height:100%;background:var(--surface2);border-right:1px solid var(--border2);z-index:50;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+    .hist-drawer.open{transform:translateX(0)}
+    .hist-drawer-head{padding:14px 14px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .hist-drawer-head h3{font-size:.82rem;font-weight:700}
+    .hist-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;font-size:.8rem}
+    .hist-close:hover{border-color:var(--red);color:var(--red)}
+    .hist-new-btn{margin:10px 12px 0;padding:8px 10px;background:transparent;border:1px solid rgba(0,212,255,.25);border-radius:var(--r);color:var(--cyan);font-family:var(--sans);font-size:.73rem;font-weight:600;cursor:pointer;transition:all .14s;text-align:left;display:flex;align-items:center;gap:6px}
+    .hist-new-btn:hover{background:var(--cyan-gl);border-color:var(--cyan)}
+    .hist-list{flex:1;overflow-y:auto;padding:8px 0}
+    .hist-list::-webkit-scrollbar{width:3px}
+    .hist-list::-webkit-scrollbar-thumb{background:var(--border2)}
+    .hist-group-label{font-size:.58rem;font-family:var(--mono);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;padding:10px 14px 4px}
+    .hist-item{padding:9px 14px;cursor:pointer;border-left:2px solid transparent;transition:all .14s;position:relative}
+    .hist-item:hover{background:rgba(255,255,255,.03);border-left-color:var(--border2)}
+    .hist-item.active{background:var(--cyan-gl);border-left-color:var(--cyan)}
+    .hist-item-title{font-size:.73rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+    .hist-item-meta{font-size:.6rem;color:var(--muted);font-family:var(--mono)}
+    .hist-item-del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:4px;background:transparent;border:none;color:var(--muted);font-size:.65rem;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .14s}
+    .hist-item:hover .hist-item-del{display:flex}
+    .hist-item-del:hover{background:rgba(248,113,113,.15);color:var(--red)}
+    .hist-empty{padding:20px 14px;font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5}
+
     /* CHAT */
     .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
     .chat-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
     .chat-head-l p{font-size:.68rem;color:var(--muted)}
-    .chat-head-r{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+    .chat-head-r{display:flex;align-items:center;gap:5px}
     .ctag{font-size:.58rem;font-family:var(--mono);padding:3px 8px;border-radius:20px;border:1px solid}
     .ctag-c{color:var(--cyan);border-color:rgba(0,212,255,.2);background:var(--cyan-gl)}
     .ctag-g{color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)}
     .ctag-a{color:var(--amber);border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.05)}
-    .icon-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:.62rem;font-family:var(--mono);padding:4px 9px;cursor:pointer;transition:all .14s;white-space:nowrap}
-    .icon-btn:hover{border-color:rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.05)}
-    .hist-indicator{display:none;align-items:center;gap:4px;font-size:.6rem;font-family:var(--mono);color:var(--emerald);padding:3px 8px;border:1px solid rgba(52,211,153,.2);border-radius:20px;background:rgba(52,211,153,.05)}
-    .hist-indicator.show{display:flex}
-    .hist-dot{width:5px;height:5px;border-radius:50%;background:var(--emerald);animation:blink 2s infinite}
+    .icon-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:.62rem;font-family:var(--mono);padding:5px 10px;cursor:pointer;transition:all .14s;white-space:nowrap}
+    .icon-btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
+    .icon-btn.danger:hover{border-color:rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.05)}
 
     /* Messages */
     .messages{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
@@ -85,6 +113,12 @@
     .typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
     @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 
+    /* Session title */
+    .session-banner{padding:6px 20px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border);display:none;align-items:center;justify-content:space-between;flex-shrink:0}
+    .session-banner.show{display:flex}
+    .session-banner-title{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+    .session-banner-date{font-size:.6rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
+
     /* Welcome */
     .welcome{max-width:540px;margin:auto;text-align:center;padding:28px 20px}
     .welcome-icon{width:46px;height:46px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
@@ -103,7 +137,7 @@
     .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 36px 9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
     .input-row textarea:focus{border-color:var(--cyan)}
     .input-row textarea::placeholder{color:var(--muted)}
-    .clear-input{position:absolute;right:50px;bottom:10px;width:20px;height:20px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;font-size:.7rem;line-height:1}
+    .clear-input{position:absolute;right:50px;bottom:10px;width:20px;height:20px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .14s}
     .clear-input.show{display:flex}
     .clear-input:hover{background:rgba(248,113,113,.2);color:var(--red)}
     .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .14s}
@@ -112,7 +146,7 @@
     .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
 
     /* Toast */
-    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:200;pointer-events:none;white-space:nowrap}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:300;pointer-events:none;white-space:nowrap}
     .toast.show{transform:translateX(-50%) translateY(0)}
     .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
     .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
@@ -185,54 +219,28 @@
 </div>
 
 <div class="modal-overlay" id="evalModal" onclick="closeEvalIfOutside(event)">
-  <div class="modal-box" id="evalModalBox">
+  <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-l">
         <h2>Evaluador de situacion</h2>
-        <p>Selecciona los elementos presentes para obtener una orientacion inicial sobre la Ley Karin.</p>
+        <p>Selecciona los elementos presentes para obtener una orientacion inicial.</p>
       </div>
       <button class="modal-close" onclick="closeEval()">&#x2715;</button>
     </div>
     <div class="modal-body">
-      <div class="eval-card wh" onclick="toggleEval(this,'ev1')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Conducta repetida</div><div class="eval-body-d">Ocurre mas de una vez o es sostenida en el tiempo</div></div>
-        <span class="eval-pill ph">Alta</span>
-      </div>
-      <div class="eval-card wh" onclick="toggleEval(this,'ev2')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Relacion laboral</div><div class="eval-body-d">Jefatura, companero u otro trabajador de la empresa</div></div>
-        <span class="eval-pill ph">Alta</span>
-      </div>
-      <div class="eval-card wh" onclick="toggleEval(this,'ev3')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Afecta dignidad o salud</div><div class="eval-body-d">Dano fisico, psiquico o al ambiente de trabajo</div></div>
-        <span class="eval-pill ph">Alta</span>
-      </div>
-      <div class="eval-card wm" onclick="toggleEval(this,'ev4')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Connotacion sexual</div><div class="eval-body-d">Conductas o comentarios de naturaleza sexual no consentidos</div></div>
-        <span class="eval-pill pm">Media</span>
-      </div>
-      <div class="eval-card wm" onclick="toggleEval(this,'ev5')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Agresion fisica o verbal</div><div class="eval-body-d">Violencia directa ejercida en el lugar de trabajo</div></div>
-        <span class="eval-pill pm">Media</span>
-      </div>
-      <div class="eval-card wl" onclick="toggleEval(this,'ev6')">
-        <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="eval-body-t">Quejas previas ignoradas</div><div class="eval-body-d">El empleador no tomo medidas ante reportes anteriores</div></div>
-        <span class="eval-pill pl">Agrav.</span>
-      </div>
+      <div class="eval-card wh" onclick="toggleEval(this,'ev1')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Conducta repetida</div><div class="eval-body-d">Ocurre mas de una vez o es sostenida en el tiempo</div></div><span class="eval-pill ph">Alta</span></div>
+      <div class="eval-card wh" onclick="toggleEval(this,'ev2')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Relacion laboral</div><div class="eval-body-d">Jefatura, companero u otro trabajador de la empresa</div></div><span class="eval-pill ph">Alta</span></div>
+      <div class="eval-card wh" onclick="toggleEval(this,'ev3')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Afecta dignidad o salud</div><div class="eval-body-d">Dano fisico, psiquico o al ambiente de trabajo</div></div><span class="eval-pill ph">Alta</span></div>
+      <div class="eval-card wm" onclick="toggleEval(this,'ev4')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Connotacion sexual</div><div class="eval-body-d">Conductas o comentarios sexuales no consentidos</div></div><span class="eval-pill pm">Media</span></div>
+      <div class="eval-card wm" onclick="toggleEval(this,'ev5')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Agresion fisica o verbal</div><div class="eval-body-d">Violencia directa en el lugar de trabajo</div></div><span class="eval-pill pm">Media</span></div>
+      <div class="eval-card wl" onclick="toggleEval(this,'ev6')"><div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="eval-body-t">Quejas previas ignoradas</div><div class="eval-body-d">El empleador no tomo medidas ante reportes anteriores</div></div><span class="eval-pill pl">Agrav.</span></div>
       <div class="eval-result" id="evalResult">
         <div class="eval-bar-track"><div class="eval-bar-fill lv-low" id="evalFill" style="width:0%"></div></div>
         <div class="eval-r-level" id="evalLevel"></div>
         <div class="eval-r-text" id="evalText"></div>
       </div>
     </div>
-    <div class="modal-foot">
-      <button class="eval-consult-btn" onclick="evaluarSituacion()">Consultar al agente</button>
-    </div>
+    <div class="modal-foot"><button class="eval-consult-btn" onclick="evaluarSituacion()">Consultar al agente</button></div>
   </div>
 </div>
 
@@ -244,6 +252,10 @@
     ShellTI
   </a>
   <div class="nav-right">
+    <div class="user-chip" id="userChip">
+      <div class="user-avatar" id="userAvatar"></div>
+      <div><div class="user-name" id="userName"></div><div class="user-org" id="userOrg"></div></div>
+    </div>
     <button class="eval-trigger" onclick="openEval()">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#020617" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Evaluar situacion
@@ -253,6 +265,19 @@
 </nav>
 
 <main>
+  <!-- Historial drawer -->
+  <div class="hist-drawer" id="histDrawer">
+    <div class="hist-drawer-head">
+      <h3>Conversaciones</h3>
+      <button class="hist-close" onclick="closeHist()">&#x2715;</button>
+    </div>
+    <button class="hist-new-btn" onclick="newSession()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nueva conversacion
+    </button>
+    <div class="hist-list" id="histList"></div>
+  </div>
+
   <aside class="sidebar">
     <div class="sb-sect">
       <div class="sb-lbl">Consultas frecuentes</div>
@@ -281,12 +306,20 @@
         <span class="ctag ctag-c">Ley 21.643</span>
         <span class="ctag ctag-g">Denuncias</span>
         <span class="ctag ctag-a">Documentos</span>
-        <div class="hist-indicator" id="histIndicator"><div class="hist-dot"></div>Historial cargado</div>
-        <button class="icon-btn" onclick="clearChat()">
+        <button class="icon-btn" onclick="openHist()">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Historial
+        </button>
+        <button class="icon-btn danger" onclick="clearChat()">
           <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
           Limpiar
         </button>
       </div>
+    </div>
+
+    <div class="session-banner" id="sessionBanner">
+      <span class="session-banner-title" id="sessionTitle"></span>
+      <span class="session-banner-date" id="sessionDate"></span>
     </div>
 
     <div class="messages" id="messages">
@@ -297,7 +330,7 @@
         <div class="wgrid">
           <div class="wcard" onclick="sq('Que es la Ley Karin y cual es su objetivo principal?')"><div class="wcard-t">Que es la Ley Karin?</div><div class="wcard-d">Origen, alcance y a quien protege</div></div>
           <div class="wcard" onclick="sq('Como se si la situacion que estoy viviendo califica como acoso laboral bajo la Ley Karin?')"><div class="wcard-t">Califica mi situacion?</div><div class="wcard-d">Evalua si los hechos configuran una conducta sancionable</div></div>
-          <div class="wcard" onclick="sq('Explicame paso a paso como iniciar un proceso de denuncia por acoso laboral bajo la Ley Karin.')"><div class="wcard-t">Guia de denuncia</div><div class="wcard-d">Pasos, plazos y canales para denunciar</div></div>
+          <div class="wcard" onclick="sq('Explicame paso a paso como iniciar un proceso de denuncia por acoso laboral bajo la Ley Karin.')"><div class="wcard-t">Guia de denuncia</div><div class="wcard-d">Pasos, plazos y canales</div></div>
           <div class="wcard" onclick="sq('Genera un modelo de carta de denuncia por acoso laboral para presentar ante el empleador.')"><div class="wcard-t">Generar documento</div><div class="wcard-d">Carta, formulario o protocolo</div></div>
         </div>
       </div>
@@ -309,7 +342,7 @@
       <div class="input-row">
         <textarea id="userInput" placeholder="Escribe tu consulta sobre la Ley Karin..." rows="1"
           onkeydown="handleKey(event)" oninput="handleInput(this)"></textarea>
-        <button class="clear-input" id="clearInputBtn" onclick="clearInput()" title="Limpiar texto">
+        <button class="clear-input" id="clearInputBtn" onclick="clearInput()">
           <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/></svg>
         </button>
         <button class="send-btn" id="sendBtn" onclick="send()">
@@ -326,102 +359,216 @@
 const SP = "Eres el Agente Ley Karin de ShellTI, un asistente especializado en la Ley 21.643 de Chile, conocida como \"Ley Karin\", que modifica el C\u00f3digo del Trabajo y otros cuerpos legales para fortalecer la protecci\u00f3n frente al acoso laboral, acoso sexual y violencia en el trabajo.\n\nCONTEXTO LEGAL QUE DOMINAS:\n\n1. LEY 21.643 (Ley Karin):\n- Vigente desde el 1 de agosto de 2023.\n- Modifica el C\u00f3digo del Trabajo (art\u00edculos 2, 153, 154, 160, 171, 176 y agrega art. 211-A al 211-F).\n- Definiciones clave:\n  * Acoso laboral: conducta que constituya agresi\u00f3n u hostigamiento reiterado, ejercida por el empleador o por uno o m\u00e1s trabajadores, en contra de otro u otros trabajadores, por cualquier medio, que tenga como resultado para el o los afectados su menoscabo, maltrato o humillaci\u00f3n, o bien que amenace o perjudique su situaci\u00f3n laboral o sus oportunidades en el empleo.\n  * Acoso sexual: el que una persona realice en forma indebida, por cualquier medio, requerimientos de car\u00e1cter sexual, no consentidos por quien los recibe y que amenacen o perjudiquen su situaci\u00f3n laboral o sus oportunidades en el empleo.\n  * Violencia en el trabajo: aquella ejercida por terceros ajenos a la relaci\u00f3n laboral que, producto de la relaci\u00f3n laboral que tiene el trabajador con dicho tercero, le provoca un efecto negativo en la salud f\u00edsica o ps\u00edquica del trabajador.\n\n2. OBLIGACIONES DEL EMPLEADOR:\n- Incorporar en el Reglamento Interno un protocolo de prevenci\u00f3n del acoso laboral y sexual y de violencia en el trabajo.\n- Investigar las denuncias dentro de los plazos legales.\n- Adoptar medidas de resguardo para la persona denunciante y denunciada.\n- Notificar a la Inspecci\u00f3n del Trabajo del inicio y resultado de la investigaci\u00f3n.\n- Aplicar sanciones proporcionales si se acredita la conducta.\n\n3. PROCEDIMIENTO DE DENUNCIA:\n- El trabajador puede denunciar ante el empleador (RR.HH., jefe directo o quien corresponda) o directamente ante la Inspecci\u00f3n del Trabajo.\n- Si se denuncia ante el empleador: plazo de 10 d\u00edas h\u00e1biles para iniciar investigaci\u00f3n. La investigaci\u00f3n debe concluir en un plazo m\u00e1ximo de 30 d\u00edas h\u00e1biles desde la denuncia. El empleador debe remitir los antecedentes a la Inspecci\u00f3n del Trabajo al t\u00e9rmino.\n- Si se denuncia ante la Inspecci\u00f3n del Trabajo: el organismo puede llevar la investigaci\u00f3n directamente.\n- Medidas de resguardo que puede adoptar el empleador durante la investigaci\u00f3n: separaci\u00f3n de espacios f\u00edsicos, redistribuci\u00f3n de jornada, trabajo remoto, entre otras.\n- Confidencialidad: es obligatoria durante todo el proceso.\n- Represalias: est\u00e1n expresamente prohibidas. El despido del denunciante durante el proceso puede ser calificado como despido injustificado.\n\n4. CANALES OFICIALES DE DENUNCIA:\n- Inspecci\u00f3n del Trabajo: www.dt.gob.cl \u2014 se puede denunciar presencialmente, por web o al 600 450 4000.\n- Empleador: a trav\u00e9s del Reglamento Interno (canal interno obligatorio desde la ley).\n- SUSESO (Superintendencia de Seguridad Social): en casos con componente de salud laboral o si el trabajador est\u00e1 cubierto por seguro de accidentes del trabajo.\n- Tribunales de Justicia: acci\u00f3n de tutela de derechos fundamentales en el Juzgado de Letras del Trabajo competente.\n- Servicio Civil: para funcionarios p\u00fablicos, existe el procedimiento de la Ley 18.575 y normas del Estatuto Administrativo.\n\n5. SANCIONES:\n- Al trabajador acosador: pueden ir desde amonestaci\u00f3n verbal o escrita, multa de hasta el 25% de la remuneraci\u00f3n, hasta el despido por causal del art. 160 N\u00b01 letra b) o f) del C\u00f3digo del Trabajo (sin derecho a indemnizaci\u00f3n).\n- Al empleador que no cumple con sus obligaciones: multas de la Inspecci\u00f3n del Trabajo de 1 a 20 UTM.\n- Despido indirecto (autodespido): el trabajador afectado que no recibe respuesta o protecci\u00f3n puede invocar el art. 171 del C\u00f3digo del Trabajo.\n\n6. TRABAJADORES PROTEGIDOS:\n- Trabajadores del sector privado regidos por el C\u00f3digo del Trabajo.\n- Funcionarios p\u00fablicos (con reglas espec\u00edficas del Estatuto Administrativo).\n- Trabajadores a honorarios que presten servicios en dependencias del empleador.\n- Trabajadores de empresas contratistas dentro de instalaciones del mandante.\n\nCAPACIDADES DEL AGENTE:\n\nA) RESPONDER PREGUNTAS: Responde con precisi\u00f3n jur\u00eddica y lenguaje claro sobre todos los aspectos de la Ley Karin. Cita los art\u00edculos relevantes cuando sea \u00fatil.\n\nB) EVALUAR SITUACIONES: Cuando el usuario describe una situaci\u00f3n, analiza si los hechos podr\u00edan configurar acoso laboral, acoso sexual o violencia en el trabajo. Indica qu\u00e9 elementos est\u00e1n presentes y cu\u00e1les faltan, sin emitir un juicio definitivo (solo el tribunal o la Inspecci\u00f3n pueden hacerlo). S\u00e9 claro sobre la diferencia entre una conducta grave aislada y la \"reiteraci\u00f3n\" que exige la definici\u00f3n de acoso laboral.\n\nC) GUIAR EL PROCESO DE DENUNCIA: Explica paso a paso el proceso, los plazos, qu\u00e9 documentos reunir (correos, testigos, registros), c\u00f3mo presentar la denuncia y qu\u00e9 esperar en cada etapa.\n\nD) CANALES DE DENUNCIA: Informa con detalle cada canal disponible (empleador, Inspecci\u00f3n del Trabajo, tribunales, SUSESO), sus ventajas y c\u00f3mo acceder a cada uno.\n\nE) GENERAR DOCUMENTOS: Cuando el usuario solicite un modelo de carta de denuncia o formulario, genera un documento formal completo en espa\u00f1ol, con todos los campos necesarios, encabezado formal, estructura legal adecuada, y espacios marcados con [DATO] para que el usuario los complete. Presenta el documento dentro de un bloque de c\u00f3digo claramente delimitado.\n\nFORMATO DE RESPUESTAS:\n- Usa lenguaje preciso pero accesible. No uses jerga innecesaria.\n- Cuando sea \u00fatil, usa listas numeradas o con vi\u00f1etas para estructurar la informaci\u00f3n.\n- Para conceptos clave, usa **negrita**.\n- Para art\u00edculos de ley o t\u00e9rminos t\u00e9cnicos espec\u00edficos, usa *cursiva*.\n- Cuando generes documentos, usa un bloque de preformato claramente marcado como \"DOCUMENTO GENERADO\".\n- S\u00e9 conciso pero completo. No omitas informaci\u00f3n relevante.\n- Siempre recuerda al usuario que para su caso espec\u00edfico debe consultar a un abogado o a la Inspecci\u00f3n del Trabajo.\n- No emitas juicios personales sobre personas o empleadores espec\u00edficos.\n- Responde siempre en espa\u00f1ol.\n\nEres un recurso de orientaci\u00f3n profesional de ShellTI. Act\u00faa con rigor, empat\u00eda y claridad.\n\nL\u00cdMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.643 (Ley Karin), acoso laboral, acoso sexual, violencia en el trabajo, derechos laborales asociados, y procesos de denuncia en Chile. Si el usuario pregunta sobre temas no relacionados (pol\u00edtica, tecnolog\u00eda, entretenimiento, otros pa\u00edses, temas personales no laborales, etc.), responde educadamente que tu especialidad es exclusivamente la Ley Karin y el \u00e1mbito del acoso y violencia en el trabajo en Chile, y redirige la conversaci\u00f3n ofreciendo ayuda en ese \u00e1mbito.";
 const RAILWAY = 'https://web-production-372660.up.railway.app';
 var hist = [], busy = false, currentToken = null;
+var sessions = [], currentSessionId = null;
 var evalSt = {}, evalW = {ev1:28,ev2:28,ev3:28,ev4:16,ev5:16,ev6:10};
 var evalDesc = {ev1:'conducta repetida o sostenida en el tiempo',ev2:'relacion laboral (empleador, companero u otro trabajador)',ev3:'afecta la dignidad, salud fisica o psiquica o el ambiente de trabajo',ev4:'existe connotacion sexual no consentida',ev5:'se produjo agresion fisica o verbal grave',ev6:'quejas internas previas fueron ignoradas'};
 
 /* ── Guard ── */
 window.addEventListener('shellti-guard-ok', function(e) {
-  var o = document.getElementById('access-overlay');
-  if (o) o.style.display = 'none';
-  if (e && e.detail && e.detail.token) {
-    currentToken = e.detail.token;
-    loadHistory();
-  } else {
-    var urlToken = new URLSearchParams(location.search).get('token') || localStorage.getItem('leykarin_token');
-    if (urlToken) { currentToken = urlToken; loadHistory(); }
-  }
+  var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
+  var token = (e && e.detail && e.detail.token) || new URLSearchParams(location.search).get('token') || localStorage.getItem('leykarin_token');
+  if (token) { currentToken = token; loadSessions(); }
 });
 if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
   var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
-}
-
-/* ── Historial ── */
-async function loadHistory() {
-  if (!currentToken) return;
-  try {
-    var res  = await fetch(RAILWAY + '/leykarin/history/load', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({token: currentToken})
-    });
-    var data = await res.json();
-    if (data.history && data.history.length) {
-      hist = data.history;
-      renderHistory(hist);
-      document.getElementById('histIndicator').classList.add('show');
-    }
-  } catch(e) { console.warn('[LK] loadHistory:', e.message); }
-}
-
-async function saveHistory() {
-  if (!currentToken || !hist.length) return;
-  try {
-    await fetch(RAILWAY + '/leykarin/history/save', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({token: currentToken, history: hist.slice(-40)})
-    });
-  } catch(e) { console.warn('[LK] saveHistory:', e.message); }
-}
-
-function renderHistory(messages) {
-  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
-  messages.forEach(function(m) { appendMsg(m.role, m.content, true); });
-  showToast('Historial cargado (' + messages.length + ' mensajes)', 'ok');
+  var tk = new URLSearchParams(location.search).get('token') || localStorage.getItem('leykarin_token');
+  if (tk) { currentToken = tk; }
 }
 
 /* ── Toast ── */
 function showToast(msg, type) {
   var t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast ' + (type||'');
-  void t.offsetWidth;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+  t.textContent = msg; t.className = 'toast '+(type||'');
+  void t.offsetWidth; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
 }
+
+/* ── Sessions ── */
+function genId() { return 'ses_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function dateLabel(iso) {
+  var d = new Date(iso), now = new Date();
+  var diff = Math.floor((now - d) / 86400000);
+  if (diff === 0) return 'Hoy';
+  if (diff === 1) return 'Ayer';
+  if (diff < 7)  return 'Esta semana';
+  return d.toLocaleDateString('es-CL', {day:'numeric', month:'short'});
+}
+
+function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
+}
+
+async function loadSessions() {
+  if (!currentToken) return;
+  try {
+    var res  = await fetch(RAILWAY + '/leykarin/history/load', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken})
+    });
+    var data = await res.json();
+    sessions = Array.isArray(data.sessions) ? data.sessions : [];
+
+    /* Show user info */
+    if (data.user) {
+      var chip = document.getElementById('userChip');
+      var av   = document.getElementById('userAvatar');
+      var nm   = document.getElementById('userName');
+      var org  = document.getElementById('userOrg');
+      av.textContent  = (data.user.name || '?')[0].toUpperCase();
+      nm.textContent  = data.user.name || '';
+      org.textContent = data.user.organization || '';
+      chip.classList.add('show');
+    }
+
+    renderHistList();
+
+    /* Auto-resume last session if recent (< 2h) */
+    if (sessions.length) {
+      var last = sessions[sessions.length - 1];
+      var age  = Date.now() - new Date(last.started_at).getTime();
+      if (age < 7200000 && last.messages && last.messages.length) {
+        loadSession(last.id, true);
+        return;
+      }
+    }
+    startSession();
+  } catch(e) { console.warn('[LK] loadSessions:', e.message); startSession(); }
+}
+
+async function saveSessions() {
+  if (!currentToken) return;
+  try {
+    await fetch(RAILWAY + '/leykarin/history/save', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken, sessions: sessions.slice(-10)})
+    });
+  } catch(e) { console.warn('[LK] saveSessions:', e.message); }
+}
+
+function startSession() {
+  var id = genId();
+  var ses = {id: id, started_at: new Date().toISOString(), preview: '', messages: []};
+  sessions.push(ses);
+  currentSessionId = id;
+  hist = [];
+  showWelcome();
+  updateSessionBanner(ses);
+  renderHistList();
+}
+
+function loadSession(id, silent) {
+  var ses = sessions.find(function(s){ return s.id === id; });
+  if (!ses) return;
+  currentSessionId = id;
+  hist = ses.messages.slice();
+  var msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  if (hist.length) {
+    hist.forEach(function(m){ appendMsg(m.role, m.content, true); });
+    scrollBot();
+  } else {
+    showWelcome();
+  }
+  updateSessionBanner(ses);
+  renderHistList();
+  closeHist();
+  if (!silent) showToast('Conversacion cargada', 'ok');
+}
+
+function deleteSession(id, e) {
+  e.stopPropagation();
+  sessions = sessions.filter(function(s){ return s.id !== id; });
+  if (currentSessionId === id) {
+    if (sessions.length) loadSession(sessions[sessions.length-1].id, true);
+    else startSession();
+  }
+  renderHistList();
+  saveSessions();
+  showToast('Conversacion eliminada', '');
+}
+
+function newSession() { startSession(); closeHist(); }
+
+function updateSessionBanner(ses) {
+  var banner = document.getElementById('sessionBanner');
+  var title  = document.getElementById('sessionTitle');
+  var date   = document.getElementById('sessionDate');
+  if (ses.preview) {
+    title.textContent = ses.preview;
+    date.textContent  = fmtTime(ses.started_at);
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function renderHistList() {
+  var list = document.getElementById('histList');
+  if (!sessions.length) {
+    list.innerHTML = '<div class="hist-empty">Sin conversaciones guardadas.<br>Inicia una nueva consulta.</div>';
+    return;
+  }
+  var groups = {}, order = [];
+  var sorted = sessions.slice().reverse();
+  sorted.forEach(function(s) {
+    var g = dateLabel(s.started_at);
+    if (!groups[g]) { groups[g] = []; order.push(g); }
+    groups[g].push(s);
+  });
+  var html = '';
+  order.forEach(function(g) {
+    html += '<div class="hist-group-label">'+g+'</div>';
+    groups[g].forEach(function(s) {
+      var active = s.id === currentSessionId ? ' active' : '';
+      var preview = s.preview || 'Nueva conversacion';
+      var time = fmtTime(s.started_at);
+      var el = document.createElement('div');
+      el.className = 'hist-item' + active;
+      el.dataset.sid = s.id;
+      el.innerHTML = '<div class="hist-item-title">'+esc(preview)+'</div>'
+        + '<div class="hist-item-meta">'+time+' &middot; '+s.messages.length+' msgs</div>'
+        + '<button class="hist-item-del" title="Eliminar">&#x2715;</button>';
+      el.addEventListener('click', function(){ loadSession(this.dataset.sid, false); });
+      el.querySelector('.hist-item-del').addEventListener('click', function(e){ deleteSession(el.dataset.sid, e); });
+      list.appendChild(el);
+    });
+  });
+  list.innerHTML = html;
+}
+
+/* ── Hist drawer ── */
+function openHist()  { renderHistList(); document.getElementById('histDrawer').classList.add('open'); }
+function closeHist() { document.getElementById('histDrawer').classList.remove('open'); }
 
 /* ── Modal evaluador ── */
 function openEval()  { document.getElementById('evalModal').classList.add('open'); }
 function closeEval() { document.getElementById('evalModal').classList.remove('open'); }
 function closeEvalIfOutside(e) { if (e.target === document.getElementById('evalModal')) closeEval(); }
-
-function toggleEval(card, id) {
-  evalSt[id] = !evalSt[id];
-  card.classList.toggle('active', evalSt[id]);
-  refreshEval();
-}
+function toggleEval(card, id) { evalSt[id] = !evalSt[id]; card.classList.toggle('active', evalSt[id]); refreshEval(); }
 function refreshEval() {
   var sel = Object.keys(evalSt).filter(function(k){ return evalSt[k]; });
   var panel = document.getElementById('evalResult');
-  var fill  = document.getElementById('evalFill');
-  var lvl   = document.getElementById('evalLevel');
-  var txt   = document.getElementById('evalText');
   if (!sel.length) { panel.classList.remove('show'); return; }
   panel.classList.add('show');
   var score = 0; sel.forEach(function(k){ score += evalW[k]||0; });
   var pct = Math.min(score, 100);
-  fill.style.width = pct + '%';
+  document.getElementById('evalFill').style.width = pct + '%';
+  var fill = document.getElementById('evalFill');
+  var lvl  = document.getElementById('evalLevel');
+  var txt  = document.getElementById('evalText');
   if (pct >= 65) {
-    fill.className = 'eval-bar-fill lv-high'; lvl.className = 'eval-r-level lv-high';
-    lvl.textContent = 'Indicios relevantes de conducta sancionable';
-    txt.textContent = 'Los elementos seleccionados sugieren que la situacion podria calificar bajo la Ley Karin. Se recomienda contactar a la Inspeccion del Trabajo o un abogado laboral.';
+    fill.className='eval-bar-fill lv-high'; lvl.className='eval-r-level lv-high';
+    lvl.textContent='Indicios relevantes de conducta sancionable';
+    txt.textContent='Los elementos seleccionados sugieren que la situacion podria calificar bajo la Ley Karin. Se recomienda contactar a la Inspeccion del Trabajo o un abogado laboral.';
   } else if (pct >= 35) {
-    fill.className = 'eval-bar-fill lv-medium'; lvl.className = 'eval-r-level lv-medium';
-    lvl.textContent = 'Situacion a evaluar con mas antecedentes';
-    txt.textContent = 'Algunos elementos estan presentes. Se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin.';
+    fill.className='eval-bar-fill lv-medium'; lvl.className='eval-r-level lv-medium';
+    lvl.textContent='Situacion a evaluar con mas antecedentes';
+    txt.textContent='Algunos elementos estan presentes. Se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin.';
   } else {
-    fill.className = 'eval-bar-fill lv-low'; lvl.className = 'eval-r-level lv-low';
-    lvl.textContent = 'Elementos iniciales, aun no concluyentes';
-    txt.textContent = 'Con los elementos seleccionados no es posible determinar una configuracion clara. Consulta directamente al agente.';
+    fill.className='eval-bar-fill lv-low'; lvl.className='eval-r-level lv-low';
+    lvl.textContent='Elementos iniciales, aun no concluyentes';
+    txt.textContent='Con los elementos seleccionados no es posible determinar una configuracion clara. Consulta directamente al agente.';
   }
 }
 function evaluarSituacion() {
@@ -432,35 +579,52 @@ function evaluarSituacion() {
   closeEval();
 }
 
-/* ── Input helpers ── */
+/* ── Input ── */
 function handleInput(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 130) + 'px';
-  var btn = document.getElementById('clearInputBtn');
-  if (el.value.trim().length > 0) btn.classList.add('show');
-  else btn.classList.remove('show');
+  el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,130)+'px';
+  var b = document.getElementById('clearInputBtn');
+  el.value.trim().length ? b.classList.add('show') : b.classList.remove('show');
 }
-function clearInput() {
-  var inp = document.getElementById('userInput');
-  inp.value = ''; inp.style.height = 'auto'; inp.focus();
-  document.getElementById('clearInputBtn').classList.remove('show');
-}
-function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
-function scrollBot() { var m = document.getElementById('messages'); m.scrollTop = m.scrollHeight; }
+function clearInput() { var i=document.getElementById('userInput'); i.value=''; i.style.height='auto'; i.focus(); document.getElementById('clearInputBtn').classList.remove('show'); }
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
+function scrollBot() { var m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
 function sq(text) { send(text); }
+
+/* ── Welcome ── */
+function showWelcome() {
+  var msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  var w = document.createElement('div'); w.className='welcome'; w.id='welcome';
+  w.innerHTML = '<div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>'
+    + '<h2>Agente Ley Karin</h2>'
+    + '<p>Asistente especializado en la Ley 21.643.</p>'
+    + '<div class="wgrid">'
+    + '<div class="wcard" id="wc1"><div class="wcard-t">Que es la Ley Karin?</div><div class="wcard-d">Origen, alcance y a quien protege</div></div>'
+    + '<div class="wcard" id="wc2"><div class="wcard-t">Califica mi situacion?</div><div class="wcard-d">Evalua si los hechos son sancionables</div></div>'
+    + '<div class="wcard" id="wc3"><div class="wcard-t">Guia de denuncia</div><div class="wcard-d">Pasos, plazos y canales</div></div>'
+    + '<div class="wcard" id="wc4"><div class="wcard-t">Generar documento</div><div class="wcard-d">Carta, formulario o protocolo</div></div>'
+    + '</div>';
+  msgs.appendChild(w);
+  w.querySelector('#wc1').onclick = function(){ sq('Que es la Ley Karin y cual es su objetivo principal?'); };
+  w.querySelector('#wc2').onclick = function(){ sq('Como se si la situacion que estoy viviendo califica como acoso laboral bajo la Ley Karin?'); };
+  w.querySelector('#wc3').onclick = function(){ sq('Explicame paso a paso como iniciar un proceso de denuncia por acoso laboral bajo la Ley Karin.'); };
+  w.querySelector('#wc4').onclick = function(){ sq('Genera un modelo de carta de denuncia por acoso laboral para presentar ante el empleador.'); };
+  document.getElementById('sessionBanner').classList.remove('show');
+}
 
 /* ── Clear chat ── */
 function clearChat() {
-  if (!hist.length) return;
   hist = [];
-  document.getElementById('messages').innerHTML = '<div class="welcome" id="welcome"><div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h2>Conversacion reiniciada</h2><p>Como puedo ayudarte?</p></div>';
-  document.getElementById('histIndicator').classList.remove('show');
-  saveHistory();
+  var ses = sessions.find(function(s){ return s.id === currentSessionId; });
+  if (ses) { ses.messages = []; ses.preview = ''; }
+  showWelcome();
+  saveSessions();
+  renderHistList();
   showToast('Conversacion limpiada', 'ok');
 }
 
 /* ── Render ── */
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function parseContent(raw) {
   var h = raw;
   h = h.replace(/```\w*\n?([\s\S]*?)```/g, function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
@@ -469,25 +633,24 @@ function parseContent(raw) {
   return h;
 }
 function cpDoc(btn) { var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
-
 function appendMsg(role, content, silent) {
-  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
-  var msgs = document.getElementById('messages');
-  var d = document.createElement('div'); d.className = 'msg '+role;
-  var av = document.createElement('div'); av.className = 'msg-av'; av.textContent = role==='user'?'TU':'LK';
-  var b = document.createElement('div'); b.className = 'msg-bubble'; b.innerHTML = parseContent(content);
+  var w=document.getElementById('welcome'); if(w) w.style.display='none';
+  var msgs=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg '+role;
+  var av=document.createElement('div'); av.className='msg-av'; av.textContent=role==='user'?'TU':'LK';
+  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML=parseContent(content);
   d.appendChild(av); d.appendChild(b); msgs.appendChild(d);
-  if (!silent) scrollBot();
+  if(!silent) scrollBot();
 }
 function showTyping() {
-  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
-  var msgs = document.getElementById('messages');
-  var d = document.createElement('div'); d.className = 'msg assistant'; d.id = 'typing';
-  var av = document.createElement('div'); av.className = 'msg-av'; av.textContent = 'LK';
-  var b = document.createElement('div'); b.className = 'msg-bubble'; b.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  var w=document.getElementById('welcome'); if(w) w.style.display='none';
+  var msgs=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg assistant'; d.id='typing';
+  var av=document.createElement('div'); av.className='msg-av'; av.textContent='LK';
+  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
   d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot();
 }
-function removeTyping() { var t = document.getElementById('typing'); if (t) t.remove(); }
+function removeTyping(){ var t=document.getElementById('typing'); if(t) t.remove(); }
 
 /* ── Send ── */
 async function send(custom) {
@@ -495,11 +658,23 @@ async function send(custom) {
   var inp  = document.getElementById('userInput');
   var text = (custom || inp.value).trim();
   if (!text) return;
-  inp.value = ''; inp.style.height = 'auto';
+  inp.value=''; inp.style.height='auto';
   document.getElementById('clearInputBtn').classList.remove('show');
   appendMsg('user', text);
   hist.push({role:'user', content:text});
-  busy = true; document.getElementById('sendBtn').disabled = true;
+
+  /* Update session */
+  var ses = sessions.find(function(s){ return s.id===currentSessionId; });
+  if (ses) {
+    ses.messages = hist.slice();
+    if (!ses.preview) {
+      ses.preview = text.slice(0, 50) + (text.length > 50 ? '...' : '');
+      updateSessionBanner(ses);
+      renderHistList();
+    }
+  }
+
+  busy=true; document.getElementById('sendBtn').disabled=true;
   showTyping();
   try {
     var res  = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:SP, messages:hist.slice(-20)})});
@@ -507,13 +682,14 @@ async function send(custom) {
     removeTyping();
     var reply = data.text || 'No se pudo obtener respuesta.';
     hist.push({role:'assistant', content:reply});
+    if (ses) ses.messages = hist.slice();
     appendMsg('assistant', reply);
-    saveHistory();
+    saveSessions();
   } catch(e) {
     removeTyping();
     appendMsg('assistant', 'Error de conexion. Por favor intenta nuevamente.');
   }
-  busy = false; document.getElementById('sendBtn').disabled = false;
+  busy=false; document.getElementById('sendBtn').disabled=false;
   document.getElementById('userInput').focus();
 }
 </script>
