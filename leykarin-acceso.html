@@ -305,7 +305,7 @@
 
   <div class="page-header">
     <a href="/" class="logo-link">
-      <img src="/lobo_shellti.webp" alt="ShellTI" />
+      <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
       ShellTI
     </a>
     <br />
@@ -412,6 +412,22 @@ async function submitRequest() {
 
     const data = await res.json();
 
+    if (res.status === 409) {
+      if (data.resent) {
+        // Tiene acceso activo — redirigir a pantalla de exito con msg especial
+        document.getElementById('formSection').style.display = 'none';
+        var sc = document.getElementById('successScreen');
+        sc.querySelector('h2').textContent = 'Ya tienes acceso activo';
+        sc.querySelector('p').textContent = 'Te hemos reenviado el enlace de acceso a tu correo electronico.';
+        sc.style.display = 'block';
+      } else {
+        showError(data.error || 'Ya tienes una solicitud pendiente.');
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud';
+      }
+      return;
+    }
+
     if (!res.ok) {
       showError(data.error || 'Error al enviar la solicitud. Intenta nuevamente.');
       btn.disabled = false;
@@ -419,7 +435,6 @@ async function submitRequest() {
       return;
     }
 
-    // Mostrar pantalla de éxito
     document.getElementById('formSection').style.display = 'none';
     document.getElementById('successScreen').style.display = 'block';
 
