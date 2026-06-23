@@ -707,21 +707,22 @@ document.getElementById('resModal').addEventListener('click', e => {
   if (e.target === document.getElementById('resModal')) closeModal();
 });
 
-// ── LEY KARIN ─────────────────────────────────────────────────────────────────
-let allLKRequests = [];
-let allLKUsers    = [];
-let lkFilter      = 'all';
+// ── LEY KARIN ────────────────────────────────────────────────────────────────
+var allLKRequests = [];
+var allLKUsers    = [];
+var lkFilter      = 'all';
+var lkDurSelected = {};
 
 async function loadLK() {
   try {
-    const res  = await fetch(`${RAILWAY}/leykarin/admin/requests`, {headers:{'x-admin-token':adminToken}});
-    const data = await res.json();
+    var res  = await fetch(RAILWAY + '/leykarin/admin/requests', {headers:{'x-admin-token':adminToken}});
+    var data = await res.json();
     allLKRequests = data.requests || [];
     allLKUsers    = data.users    || [];
     renderLKRequests(allLKRequests);
     renderLKUsers(allLKUsers);
-    const pend  = allLKRequests.filter(r => r.status === 'pending').length;
-    const badge = document.getElementById('lk-badge');
+    var pend  = allLKRequests.filter(function(r){ return r.status === 'pending'; }).length;
+    var badge = document.getElementById('lk-badge');
     if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; }
     else            badge.style.display = 'none';
   } catch(e) { console.error('[LK] loadLK:', e.message); }
@@ -729,72 +730,75 @@ async function loadLK() {
 
 function setLKFilter(f, btn) {
   lkFilter = f;
-  document.querySelectorAll('#tab-leykarin .filter-chip').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-leykarin .filter-chip').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   filterLK();
 }
 
 function filterLK() {
-  const q = (document.getElementById('lk-search').value || '').toLowerCase();
-  let filtered = allLKRequests;
-  if (lkFilter !== 'all') filtered = filtered.filter(r => r.status === lkFilter);
-  if (q) filtered = filtered.filter(r =>
-    (r.name||'').toLowerCase().includes(q) ||
-    (r.organization||'').toLowerCase().includes(q) ||
-    (r.email||'').toLowerCase().includes(q)
-  );
+  var q = (document.getElementById('lk-search').value || '').toLowerCase();
+  var filtered = allLKRequests;
+  if (lkFilter !== 'all') filtered = filtered.filter(function(r){ return r.status === lkFilter; });
+  if (q) filtered = filtered.filter(function(r){
+    return (r.name||'').toLowerCase().indexOf(q) > -1 ||
+           (r.organization||'').toLowerCase().indexOf(q) > -1 ||
+           (r.email||'').toLowerCase().indexOf(q) > -1;
+  });
   renderLKRequests(filtered);
 }
 
 function renderLKRequests(requests) {
-  const el = document.getElementById('lk-req-list');
+  var el = document.getElementById('lk-req-list');
   if (!requests.length) { el.innerHTML = '<div class="empty">Sin solicitudes</div>'; return; }
 
-  el.innerHTML = requests.map(r => {
-    const date = new Date(r.createdAt).toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'});
-    const statusTag = r.status === 'pending'
+  el.innerHTML = requests.map(function(r) {
+    var date = new Date(r.createdAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
+    var statusTag = r.status === 'pending'
       ? '<span class="tag tag-pending">Pendiente</span>'
       : r.status === 'approved'
-        ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' · '+r.durationLabel : '') + '</span>'
+        ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' \xb7 ' + r.durationLabel : '') + '</span>'
         : '<span class="tag tag-rejected">Rechazado</span>';
 
-    const contextHtml = r.context
-      ? '<div style="font-size:.75rem;color:var(--muted);margin:6px 0 0;font-style:italic">"' + r.context + '"</div>'
+    var contextHtml = r.context
+      ? '<div style="font-size:.75rem;color:var(--muted);margin:6px 0 0;font-style:italic">' + r.context + '</div>'
       : '';
 
-    const durChips = [
+    var durList = [
       ['1h','1 hora',3600000],['4h','4 horas',14400000],['12h','12 horas',43200000],
-      ['1d','1 día',86400000],['3d','3 días',259200000],['7d','7 días',604800000],['30d','30 días',2592000000]
-    ].map(function(x){ return '<button class="dur-chip" data-ms="'+x[2]+'" data-label="'+x[1]+'" onclick="selectLKDur(this,''+r.id+'')">'+x[0]+'</button>'; }).join('');
+      ['1d','1 d\xeda',86400000],['3d','3 d\xedas',259200000],
+      ['7d','7 d\xedas',604800000],['30d','30 d\xedas',2592000000]
+    ];
+    var durChips = durList.map(function(x) {
+      return '<button class="dur-chip" data-ms="' + x[2] + '" data-label="' + x[1] +
+             '" onclick="selectLKDur(this,\'' + r.id + '\')">' + x[0] + '</button>';
+    }).join('');
 
-    const actions = r.status === 'pending'
-      ? '<div class="req-dur"><span class="dur-lbl">Duración</span>' + durChips + '</div>' +
+    var actions = '';
+    if (r.status === 'pending') {
+      actions = '<div class="req-dur"><span class="dur-lbl">Duración</span>' + durChips + '</div>' +
         '<div style="display:flex;gap:8px;margin-top:10px">' +
-        '<button class="btn-approve" id="lk-approve-'+r.id+'" onclick="approveLK(''+r.id+'')">&#10003; Aprobar</button>' +
-        '<button class="btn-reject" onclick="rejectLK(''+r.id+'')">&#10007; Rechazar</button>' +
-        '</div>'
-      : '';
+        '<button class="btn-approve" id="lk-approve-' + r.id + '" onclick="approveLK(\'' + r.id + '\')">&#10003; Aprobar</button>' +
+        '<button class="btn-reject" onclick="rejectLK(\'' + r.id + '\')">&#10007; Rechazar</button>' +
+        '</div>';
+    }
 
-    return '<div class="req-card" id="lk-card-'+r.id+'">' +
-      '<div class="req-header" onclick="toggleCard('lk-card-'+r.id+'')">' +
+    return '<div class="req-card" id="lk-card-' + r.id + '">' +
+      '<div class="req-header" onclick="toggleCard(\'lk-card-' + r.id + '\')">' +
         '<div style="display:flex;align-items:center;gap:10px">' +
-          '<div class="req-avatar">'+(r.name||'?')[0].toUpperCase()+'</div>' +
-          '<div><div class="req-name">'+r.name+'</div>' +
-          '<div class="req-meta">'+(r.organization||'')+(r.cargo ? ' · '+r.cargo : '')+'</div></div>' +
+          '<div class="req-avatar">' + (r.name||'?')[0].toUpperCase() + '</div>' +
+          '<div><div class="req-name">' + r.name + '</div>' +
+          '<div class="req-meta">' + (r.organization||'') + (r.cargo ? ' \xb7 ' + r.cargo : '') + '</div></div>' +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">' +
-          '<span style="font-size:.7rem;color:var(--muted)">'+r.email+'</span>' +
-          statusTag +
-          '<span style="font-size:.65rem;color:var(--muted)">'+date+'</span>' +
+          '<span style="font-size:.7rem;color:var(--muted)">' + r.email + '</span>' +
+          statusTag + '<span style="font-size:.65rem;color:var(--muted)">' + date + '</span>' +
           '<span class="collapse-icon">&#9662;</span>' +
         '</div>' +
       '</div>' +
-      '<div class="req-body">'+contextHtml+actions+'</div>' +
+      '<div class="req-body">' + contextHtml + actions + '</div>' +
     '</div>';
   }).join('');
 }
-
-var lkDurSelected = {};
 
 function selectLKDur(btn, id) {
   btn.closest('.req-dur').querySelectorAll('.dur-chip').forEach(function(b){ b.classList.remove('active'); });
@@ -803,37 +807,37 @@ function selectLKDur(btn, id) {
 }
 
 async function approveLK(id) {
-  if (!lkDurSelected[id]) { toast('Selecciona una duración', 'warn'); return; }
+  if (!lkDurSelected[id]) { toast('Selecciona una duraci\xf3n', 'warn'); return; }
   var ms = lkDurSelected[id].ms, label = lkDurSelected[id].label;
-  var btn = document.getElementById('lk-approve-'+id);
+  var btn = document.getElementById('lk-approve-' + id);
   if (btn) { btn.disabled = true; btn.textContent = 'Aprobando...'; }
   try {
-    var res = await fetch(RAILWAY+'/leykarin/admin/approve/'+id, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+    var res = await fetch(RAILWAY + '/leykarin/admin/approve/' + id, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-admin-token':adminToken},
       body: JSON.stringify({ durationMs: ms, durationLabel: label })
     });
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
-    toast('Acceso Ley Karin aprobado · Email enviado', 'ok');
+    toast('Acceso Ley Karin aprobado \xb7 Email enviado', 'ok');
     await loadLK();
   } catch(e) {
-    toast('Error: '+e.message, 'err');
-    if (btn) { btn.disabled = false; btn.textContent = '✓ Aprobar'; }
+    toast('Error: ' + e.message, 'err');
+    if (btn) { btn.disabled = false; btn.textContent = '\u2713 Aprobar'; }
   }
 }
 
 async function rejectLK(id) {
-  if (!confirm('¿Rechazar esta solicitud Ley Karin?')) return;
+  if (!confirm('\xbfRechazar esta solicitud Ley Karin?')) return;
   try {
-    var res = await fetch(RAILWAY+'/leykarin/admin/reject/'+id, {
-      method:'POST', headers:{'x-admin-token':adminToken}
+    var res = await fetch(RAILWAY + '/leykarin/admin/reject/' + id, {
+      method: 'POST', headers: {'x-admin-token': adminToken}
     });
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
     toast('Solicitud rechazada', 'ok');
     await loadLK();
-  } catch(e) { toast('Error: '+e.message, 'err'); }
+  } catch(e) { toast('Error: ' + e.message, 'err'); }
 }
 
 function renderLKUsers(users) {
@@ -842,33 +846,32 @@ function renderLKUsers(users) {
   var active = users.filter(function(u){ return u.active && new Date(u.expiresAt) > new Date(); });
   if (!active.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
   el.innerHTML = '<table class="users-table"><thead><tr>' +
-    '<th>Nombre</th><th>Organización</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
+    '<th>Nombre</th><th>Organizaci\xf3n</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
     '</tr></thead><tbody>' +
-    active.map(function(u){
-      var exp = new Date(u.expiresAt).toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'});
-      return '<tr><td>'+u.name+'</td><td>'+(u.organization||'—')+'</td><td>'+(u.cargo||'—')+'</td>' +
-        '<td>'+u.email+'</td>' +
-        '<td style="font-family:var(--mono);font-size:.72rem">'+exp+'</td>' +
-        '<td><button class="btn-reject" style="font-size:.6rem;padding:5px 12px" onclick="revokeLK(''+u.email+'')">Revocar</button></td></tr>';
+    active.map(function(u) {
+      var exp = new Date(u.expiresAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
+      return '<tr><td>' + u.name + '</td><td>' + (u.organization||'\u2014') + '</td><td>' + (u.cargo||'\u2014') + '</td>' +
+        '<td>' + u.email + '</td>' +
+        '<td style="font-family:var(--mono);font-size:.72rem">' + exp + '</td>' +
+        '<td><button class="btn-reject" style="font-size:.6rem;padding:5px 12px" onclick="revokeLK(\'' + u.email + '\')">Revocar</button></td></tr>';
     }).join('') +
     '</tbody></table>';
 }
 
 async function revokeLK(email) {
-  if (!confirm('¿Revocar acceso Ley Karin de '+email+'?')) return;
+  if (!confirm('\xbfRevocar acceso Ley Karin de ' + email + '?')) return;
   try {
-    var res = await fetch(RAILWAY+'/leykarin/admin/revoke', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+    var res = await fetch(RAILWAY + '/leykarin/admin/revoke', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-admin-token':adminToken},
       body: JSON.stringify({ email: email })
     });
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
     toast('Acceso revocado', 'ok');
     await loadLK();
-  } catch(e) { toast('Error: '+e.message, 'err'); }
+  } catch(e) { toast('Error: ' + e.message, 'err'); }
 }
-
 </script>
 </body>
 </html>
