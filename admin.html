@@ -259,6 +259,10 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
         <button class="sb-nav-btn" id="nav-users" onclick="switchTab('users')">
           <span>⬡</span> Usuarios activos
         </button>
+        <button class="sb-nav-btn" id="nav-leykarin" onclick="switchTab('leykarin')">
+          <span>⚖️</span> Ley Karin
+          <span class="sb-badge" id="lk-badge" style="display:none">0</span>
+        </button>
       </div>
     </div>
 
@@ -287,6 +291,26 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
         <div id="users-wrap"></div>
       </div>
 
+      <!-- Tab: Ley Karin -->
+      <div class="tab-panel" id="tab-leykarin">
+        <div class="sec-hd">
+          <div class="sec-title">Solicitudes · Ley Karin</div>
+        </div>
+        <div class="filter-bar">
+          <input type="text" id="lk-search" placeholder="Buscar por nombre, organización o email..." oninput="filterLK()" />
+          <button class="filter-chip active" id="lk-chip-all"      onclick="setLKFilter('all',this)">Todas</button>
+          <button class="filter-chip"        id="lk-chip-pending"  onclick="setLKFilter('pending',this)">Pendientes</button>
+          <button class="filter-chip"        id="lk-chip-approved" onclick="setLKFilter('approved',this)">Aprobadas</button>
+          <button class="filter-chip"        id="lk-chip-rejected" onclick="setLKFilter('rejected',this)">Rechazadas</button>
+        </div>
+        <div id="lk-req-list"></div>
+
+        <div class="sec-hd" style="margin-top:32px">
+          <div class="sec-title">Usuarios activos · Ley Karin</div>
+        </div>
+        <div id="lk-users-wrap"></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -308,7 +332,7 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 
 <script>
 const RAILWAY = 'https://web-production-372660.up.railway.app';
-const RES_OPTIONS = ['agente','diagnostico','biblioteca','scanner','leykarin'];
+const RES_OPTIONS = ['agente','diagnostico','biblioteca','scanner'];
 const DURATIONS = [
   {label:'1h',ms:3600000},{label:'4h',ms:14400000},{label:'12h',ms:43200000},
   {label:'1d',ms:86400000},{label:'3d',ms:259200000},{label:'7d',ms:604800000},{label:'30d',ms:2592000000}
@@ -437,6 +461,7 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('nav-' + tab).classList.add('active');
   if (tab === 'users') loadUsers();
+  if (tab === 'leykarin') loadLK();
 }
 
 // ── FILTER / SEARCH ───────────────────────────────────────────────────────────
@@ -681,6 +706,169 @@ function toast(msg, type) {
 document.getElementById('resModal').addEventListener('click', e => {
   if (e.target === document.getElementById('resModal')) closeModal();
 });
+
+// ── LEY KARIN ─────────────────────────────────────────────────────────────────
+let allLKRequests = [];
+let allLKUsers    = [];
+let lkFilter      = 'all';
+
+async function loadLK() {
+  try {
+    const res  = await fetch(`${RAILWAY}/leykarin/admin/requests`, {headers:{'x-admin-token':adminToken}});
+    const data = await res.json();
+    allLKRequests = data.requests || [];
+    allLKUsers    = data.users    || [];
+    renderLKRequests(allLKRequests);
+    renderLKUsers(allLKUsers);
+    const pend  = allLKRequests.filter(r => r.status === 'pending').length;
+    const badge = document.getElementById('lk-badge');
+    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; }
+    else            badge.style.display = 'none';
+  } catch(e) { console.error('[LK] loadLK:', e.message); }
+}
+
+function setLKFilter(f, btn) {
+  lkFilter = f;
+  document.querySelectorAll('#tab-leykarin .filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterLK();
+}
+
+function filterLK() {
+  const q = (document.getElementById('lk-search').value || '').toLowerCase();
+  let filtered = allLKRequests;
+  if (lkFilter !== 'all') filtered = filtered.filter(r => r.status === lkFilter);
+  if (q) filtered = filtered.filter(r =>
+    (r.name||'').toLowerCase().includes(q) ||
+    (r.organization||'').toLowerCase().includes(q) ||
+    (r.email||'').toLowerCase().includes(q)
+  );
+  renderLKRequests(filtered);
+}
+
+function renderLKRequests(requests) {
+  const el = document.getElementById('lk-req-list');
+  if (!requests.length) { el.innerHTML = '<div class="empty">Sin solicitudes</div>'; return; }
+
+  el.innerHTML = requests.map(r => {
+    const date = new Date(r.createdAt).toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'});
+    const statusTag = r.status === 'pending'
+      ? '<span class="tag tag-pending">Pendiente</span>'
+      : r.status === 'approved'
+        ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' · '+r.durationLabel : '') + '</span>'
+        : '<span class="tag tag-rejected">Rechazado</span>';
+
+    const contextHtml = r.context
+      ? '<div style="font-size:.75rem;color:var(--muted);margin:6px 0 0;font-style:italic">"' + r.context + '"</div>'
+      : '';
+
+    const durChips = [
+      ['1h','1 hora',3600000],['4h','4 horas',14400000],['12h','12 horas',43200000],
+      ['1d','1 día',86400000],['3d','3 días',259200000],['7d','7 días',604800000],['30d','30 días',2592000000]
+    ].map(function(x){ return '<button class="dur-chip" data-ms="'+x[2]+'" data-label="'+x[1]+'" onclick="selectLKDur(this,''+r.id+'')">'+x[0]+'</button>'; }).join('');
+
+    const actions = r.status === 'pending'
+      ? '<div class="req-dur"><span class="dur-lbl">Duración</span>' + durChips + '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:10px">' +
+        '<button class="btn-approve" id="lk-approve-'+r.id+'" onclick="approveLK(''+r.id+'')">&#10003; Aprobar</button>' +
+        '<button class="btn-reject" onclick="rejectLK(''+r.id+'')">&#10007; Rechazar</button>' +
+        '</div>'
+      : '';
+
+    return '<div class="req-card" id="lk-card-'+r.id+'">' +
+      '<div class="req-header" onclick="toggleCard('lk-card-'+r.id+'')">' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+          '<div class="req-avatar">'+(r.name||'?')[0].toUpperCase()+'</div>' +
+          '<div><div class="req-name">'+r.name+'</div>' +
+          '<div class="req-meta">'+(r.organization||'')+(r.cargo ? ' · '+r.cargo : '')+'</div></div>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">' +
+          '<span style="font-size:.7rem;color:var(--muted)">'+r.email+'</span>' +
+          statusTag +
+          '<span style="font-size:.65rem;color:var(--muted)">'+date+'</span>' +
+          '<span class="collapse-icon">&#9662;</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="req-body">'+contextHtml+actions+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+var lkDurSelected = {};
+
+function selectLKDur(btn, id) {
+  btn.closest('.req-dur').querySelectorAll('.dur-chip').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  lkDurSelected[id] = { ms: Number(btn.dataset.ms), label: btn.dataset.label };
+}
+
+async function approveLK(id) {
+  if (!lkDurSelected[id]) { toast('Selecciona una duración', 'warn'); return; }
+  var ms = lkDurSelected[id].ms, label = lkDurSelected[id].label;
+  var btn = document.getElementById('lk-approve-'+id);
+  if (btn) { btn.disabled = true; btn.textContent = 'Aprobando...'; }
+  try {
+    var res = await fetch(RAILWAY+'/leykarin/admin/approve/'+id, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({ durationMs: ms, durationLabel: label })
+    });
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Acceso Ley Karin aprobado · Email enviado', 'ok');
+    await loadLK();
+  } catch(e) {
+    toast('Error: '+e.message, 'err');
+    if (btn) { btn.disabled = false; btn.textContent = '✓ Aprobar'; }
+  }
+}
+
+async function rejectLK(id) {
+  if (!confirm('¿Rechazar esta solicitud Ley Karin?')) return;
+  try {
+    var res = await fetch(RAILWAY+'/leykarin/admin/reject/'+id, {
+      method:'POST', headers:{'x-admin-token':adminToken}
+    });
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Solicitud rechazada', 'ok');
+    await loadLK();
+  } catch(e) { toast('Error: '+e.message, 'err'); }
+}
+
+function renderLKUsers(users) {
+  var el = document.getElementById('lk-users-wrap');
+  if (!users || !users.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
+  var active = users.filter(function(u){ return u.active && new Date(u.expiresAt) > new Date(); });
+  if (!active.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
+  el.innerHTML = '<table class="users-table"><thead><tr>' +
+    '<th>Nombre</th><th>Organización</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
+    '</tr></thead><tbody>' +
+    active.map(function(u){
+      var exp = new Date(u.expiresAt).toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'});
+      return '<tr><td>'+u.name+'</td><td>'+(u.organization||'—')+'</td><td>'+(u.cargo||'—')+'</td>' +
+        '<td>'+u.email+'</td>' +
+        '<td style="font-family:var(--mono);font-size:.72rem">'+exp+'</td>' +
+        '<td><button class="btn-reject" style="font-size:.6rem;padding:5px 12px" onclick="revokeLK(''+u.email+'')">Revocar</button></td></tr>';
+    }).join('') +
+    '</tbody></table>';
+}
+
+async function revokeLK(email) {
+  if (!confirm('¿Revocar acceso Ley Karin de '+email+'?')) return;
+  try {
+    var res = await fetch(RAILWAY+'/leykarin/admin/revoke', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({ email: email })
+    });
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Acceso revocado', 'ok');
+    await loadLK();
+  } catch(e) { toast('Error: '+e.message, 'err'); }
+}
+
 </script>
 </body>
 </html>

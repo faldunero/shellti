@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solicitar acceso — Agente Ley Karin · ShellTI</title>
+  <meta name="description" content="Solicita acceso al Agente Ley Karin de ShellTI para orientación especializada en la Ley 21.643." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/lobo_shellti.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:      #020617;
+      --surface: #0b1120;
+      --border:  #1e2d45;
+      --cyan:    #00D4FF;
+      --cyan-dim: rgba(0,212,255,.12);
+      --cyan-glow: rgba(0,212,255,.06);
+      --emerald: #34D399;
+      --red:     #F87171;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --sans:    'Plus Jakarta Sans', sans-serif;
+      --mono:    'JetBrains Mono', monospace;
+      --radius:  10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+
+    .logo-link img {
+      height: 36px;
+      filter: drop-shadow(0 0 8px var(--cyan));
+    }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .68rem;
+      font-family: var(--mono);
+      color: var(--cyan);
+      border: 1px solid rgba(0,212,255,.25);
+      background: var(--cyan-glow);
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: .05em;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    label span.req {
+      color: var(--cyan);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: .88rem;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+      border-color: var(--cyan);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #334155;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 90px;
+      line-height: 1.5;
+    }
+
+    .field-hint {
+      font-size: .7rem;
+      color: #475569;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--cyan);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      letter-spacing: .03em;
+      transition: opacity .15s;
+      margin-top: 6px;
+    }
+
+    .submit-btn:hover    { opacity: .88; }
+    .submit-btn:disabled { opacity: .4; cursor: default; }
+
+    /* States */
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: .82rem;
+      margin-bottom: 18px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .alert.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: #fca5a5; }
+    .alert.success { background: rgba(52,211,153,.1);  border: 1px solid rgba(52,211,153,.3);  color: var(--emerald); }
+
+    /* Success screen */
+    .success-screen {
+      text-align: center;
+      padding: 10px 0;
+      display: none;
+    }
+
+    .success-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: rgba(52,211,153,.12);
+      border: 1px solid rgba(52,211,153,.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .success-screen h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .success-screen p {
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* Footer note */
+    .footer-note {
+      text-align: center;
+      font-size: .72rem;
+      color: #334155;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    .footer-note a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-note a:hover { color: var(--cyan); }
+
+    /* Confidencialidad */
+    .confidential-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: rgba(0,212,255,.04);
+      border: 1px solid rgba(0,212,255,.12);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 20px;
+    }
+
+    .confidential-box .icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .confidential-box p {
+      font-size: .75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 20px; }
+      body  { padding: 24px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <a href="/" class="logo-link">
+      <img src="/lobo_shellti.webp" alt="ShellTI" />
+      ShellTI
+    </a>
+    <br />
+    <span class="page-badge">⚖️ Ley Karin · Ley 21.643</span>
+    <h1>Solicitar acceso</h1>
+    <p>Completa el formulario para solicitar acceso al Agente Ley Karin. Tu información es confidencial.</p>
+  </div>
+
+  <div class="card">
+
+    <div class="confidential-box">
+      <span class="icon">🔒</span>
+      <p>La información que ingreses es confidencial y solo será utilizada para habilitar tu acceso. No será compartida con terceros.</p>
+    </div>
+
+    <div class="alert error"   id="alertError"></div>
+    <div class="alert success" id="alertSuccess"></div>
+
+    <!-- Formulario -->
+    <div id="formSection">
+      <div class="form-group">
+        <label>Nombre completo <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="Ej: María González" autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label>Organización / Empresa <span class="req">*</span></label>
+        <input type="text" id="organization" placeholder="Ej: Empresa S.A." autocomplete="organization" />
+      </div>
+
+      <div class="form-group">
+        <label>Cargo <span class="req">*</span></label>
+        <input type="text" id="cargo" placeholder="Ej: Encargado/a de RRHH" />
+      </div>
+
+      <div class="form-group">
+        <label>Correo electrónico <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="nombre@empresa.cl" autocomplete="email" />
+        <p class="field-hint">El enlace de acceso será enviado a este correo una vez aprobada la solicitud.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Contexto de la consulta <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
+        <textarea id="context" placeholder="Puedes describir brevemente el contexto de tu consulta. Esta información es confidencial."></textarea>
+        <p class="field-hint">No es necesario incluir nombres ni detalles identificatorios.</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitRequest()">
+        Enviar solicitud
+      </button>
+    </div>
+
+    <!-- Success screen -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✓</div>
+      <h2>Solicitud enviada</h2>
+      <p>Hemos recibido tu solicitud. Una vez revisada, recibirás el enlace de acceso en tu correo electrónico.</p>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    ¿Tienes preguntas? Escríbenos a <a href="mailto:contacto@shellti.com">contacto@shellti.com</a>
+    <br />
+    <a href="/">volver a shellti.com</a>
+  </div>
+
+</div>
+
+<script>
+const RAILWAY = 'https://web-production-372660.up.railway.app';
+
+async function submitRequest() {
+  const name         = document.getElementById('name').value.trim();
+  const organization = document.getElementById('organization').value.trim();
+  const cargo        = document.getElementById('cargo').value.trim();
+  const email        = document.getElementById('email').value.trim();
+  const context      = document.getElementById('context').value.trim();
+
+  hideAlerts();
+
+  if (!name || !organization || !cargo || !email) {
+    showError('Por favor completa todos los campos obligatorios.');
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('Ingresa un correo electrónico válido.');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  try {
+    const res = await fetch(`${RAILWAY}/leykarin/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, organization, cargo, email, context: context || null })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showError(data.error || 'Error al enviar la solicitud. Intenta nuevamente.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud';
+      return;
+    }
+
+    // Mostrar pantalla de éxito
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+
+  } catch(e) {
+    showError('Error de conexión. Por favor intenta nuevamente.');
+    btn.disabled = false;
+    btn.textContent = 'Enviar solicitud';
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('alertError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideAlerts() {
+  document.getElementById('alertError').style.display   = 'none';
+  document.getElementById('alertSuccess').style.display = 'none';
+}
+
+// Enter en inputs
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+    submitRequest();
+  }
+});
+</script>
+
+</body>
+</html>
