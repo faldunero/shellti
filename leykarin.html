@@ -11,198 +11,179 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #020617;
-      --surface:  #080f1e;
-      --surface2: #0b1425;
-      --border:   #162032;
-      --border2:  #1e2d45;
-      --cyan:     #00D4FF;
-      --cyan-dim: rgba(0,212,255,.1);
-      --cyan-gl:  rgba(0,212,255,.05);
-      --emerald:  #34D399;
-      --amber:    #FBBF24;
-      --red:      #F87171;
-      --text:     #e2e8f0;
-      --text2:    #94a3b8;
-      --muted:    #475569;
-      --sans:     "Plus Jakarta Sans", sans-serif;
-      --mono:     "JetBrains Mono", monospace;
-      --r:        8px;
-      --nav-h:    60px;
+      --bg:#020617;--surface:#080f1e;--surface2:#0b1425;
+      --border:#162032;--border2:#1e2d45;
+      --cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);
+      --emerald:#34D399;--amber:#FBBF24;--red:#F87171;
+      --text:#e2e8f0;--text2:#94a3b8;--muted:#475569;
+      --sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;
+      --r:8px;--nav-h:60px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
     /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: rgba(2,6,23,.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 100; }
-    .nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); font-weight: 700; font-size: .92rem; }
-    .nav-brand img { height: 30px; filter: drop-shadow(0 0 6px var(--cyan)); }
-    .nav-right { display: flex; align-items: center; gap: 8px; }
-    .nav-pill { display: inline-flex; align-items: center; gap: 6px; font-size: .65rem; font-family: var(--mono); color: var(--cyan); border: 1px solid rgba(0,212,255,.2); background: var(--cyan-gl); padding: 3px 10px; border-radius: 20px; letter-spacing: .04em; }
-    .nav-pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); animation: blink 2s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
-
-    /* Botón evaluador en nav */
-    .eval-trigger {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--cyan); border: none;
-      border-radius: var(--r); color: var(--bg);
-      font-size: .72rem; font-family: var(--sans); font-weight: 700;
-      padding: 8px 16px; cursor: pointer;
-      transition: all .15s; letter-spacing: .01em;
-      box-shadow: 0 0 16px rgba(0,212,255,.25);
-    }
-    .eval-trigger:hover { opacity: .88; box-shadow: 0 0 22px rgba(0,212,255,.4); transform: translateY(-1px); }
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
+    .nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:.92rem}
+    .nav-brand img{height:30px;filter:drop-shadow(0 0 6px var(--cyan))}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-pill{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,212,255,.2);background:var(--cyan-gl);padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+    .nav-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+    .eval-trigger{display:flex;align-items:center;gap:7px;background:var(--cyan);border:none;border-radius:var(--r);color:var(--bg);font-size:.74rem;font-family:var(--sans);font-weight:700;padding:8px 16px;cursor:pointer;transition:all .15s;box-shadow:0 0 16px rgba(0,212,255,.25)}
+    .eval-trigger:hover{opacity:.88;box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-1px)}
+    .eval-trigger svg{flex-shrink:0}
 
     /* LAYOUT */
-    main { flex: 1; margin-top: var(--nav-h); display: grid; grid-template-columns: 252px 1fr; height: calc(100vh - var(--nav-h)); }
+    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h))}
 
     /* SIDEBAR */
-    .sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
-    .sidebar::-webkit-scrollbar { width: 3px; }
-    .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
-    .sb-sect { padding: 14px 12px 10px; border-bottom: 1px solid var(--border); }
-    .sb-lbl { font-size: .57rem; font-family: var(--mono); color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
-    .qbtn { display: block; width: 100%; text-align: left; padding: 8px 10px; margin-bottom: 4px; background: transparent; border: 1px solid var(--border); border-radius: var(--r); color: var(--text2); font-family: var(--sans); font-size: .73rem; cursor: pointer; transition: all .14s; line-height: 1.35; }
-    .qbtn:hover { border-color: var(--cyan); color: var(--text); background: var(--cyan-gl); }
-    .ql { display: block; font-size: .57rem; font-family: var(--mono); color: var(--muted); margin-bottom: 2px; letter-spacing: .06em; }
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+    .sidebar::-webkit-scrollbar{width:3px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
+    .sb-sect{padding:14px 12px 10px;border-bottom:1px solid var(--border)}
+    .sb-lbl{font-size:.57rem;font-family:var(--mono);color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+    .qbtn{display:block;width:100%;text-align:left;padding:8px 10px;margin-bottom:4px;background:transparent;border:1px solid var(--border);border-radius:var(--r);color:var(--text2);font-family:var(--sans);font-size:.73rem;cursor:pointer;transition:all .14s;line-height:1.35}
+    .qbtn:hover{border-color:var(--cyan);color:var(--text);background:var(--cyan-gl)}
+    .ql{display:block;font-size:.57rem;font-family:var(--mono);color:var(--muted);margin-bottom:2px;letter-spacing:.06em}
 
     /* CHAT */
-    .chat-wrap { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .chat-head { padding: 13px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-    .chat-head-l h1 { font-size: .93rem; font-weight: 700; margin-bottom: 2px; }
-    .chat-head-l p  { font-size: .68rem; color: var(--muted); }
-    .chat-head-r { display: flex; align-items: center; gap: 5px; }
-    .ctag { font-size: .58rem; font-family: var(--mono); padding: 3px 8px; border-radius: 20px; border: 1px solid; }
-    .ctag-c { color: var(--cyan);    border-color: rgba(0,212,255,.2);  background: var(--cyan-gl); }
-    .ctag-g { color: var(--emerald); border-color: rgba(52,211,153,.2); background: rgba(52,211,153,.05); }
-    .ctag-a { color: var(--amber);   border-color: rgba(251,191,36,.2); background: rgba(251,191,36,.05); }
-    .clear-btn { display: flex; align-items: center; gap: 4px; background: transparent; border: 1px solid var(--border2); border-radius: var(--r); color: var(--muted); font-size: .62rem; font-family: var(--mono); padding: 4px 9px; cursor: pointer; transition: all .14s; }
-    .clear-btn:hover { border-color: rgba(248,113,113,.4); color: var(--red); background: rgba(248,113,113,.05); }
+    .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
+    .chat-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
+    .chat-head-l p{font-size:.68rem;color:var(--muted)}
+    .chat-head-r{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+    .ctag{font-size:.58rem;font-family:var(--mono);padding:3px 8px;border-radius:20px;border:1px solid}
+    .ctag-c{color:var(--cyan);border-color:rgba(0,212,255,.2);background:var(--cyan-gl)}
+    .ctag-g{color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)}
+    .ctag-a{color:var(--amber);border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.05)}
+    .icon-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:.62rem;font-family:var(--mono);padding:4px 9px;cursor:pointer;transition:all .14s;white-space:nowrap}
+    .icon-btn:hover{border-color:rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.05)}
+    .hist-indicator{display:none;align-items:center;gap:4px;font-size:.6rem;font-family:var(--mono);color:var(--emerald);padding:3px 8px;border:1px solid rgba(52,211,153,.2);border-radius:20px;background:rgba(52,211,153,.05)}
+    .hist-indicator.show{display:flex}
+    .hist-dot{width:5px;height:5px;border-radius:50%;background:var(--emerald);animation:blink 2s infinite}
 
     /* Messages */
-    .messages { flex: 1; overflow-y: auto; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
-    .messages::-webkit-scrollbar { width: 3px; }
-    .messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-    .msg { display: flex; gap: 8px; max-width: 800px; }
-    .msg.user { flex-direction: row-reverse; align-self: flex-end; }
-    .msg.assistant { align-self: flex-start; }
-    .msg-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .58rem; font-weight: 700; flex-shrink: 0; margin-top: 3px; }
-    .msg.user      .msg-av { background: var(--cyan-dim); color: var(--cyan); }
-    .msg.assistant .msg-av { background: rgba(52,211,153,.1); color: var(--emerald); }
-    .msg-bubble { padding: 10px 14px; border-radius: var(--r); font-size: .82rem; line-height: 1.65; }
-    .msg.user      .msg-bubble { background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.15); }
-    .msg.assistant .msg-bubble { background: var(--surface); border: 1px solid var(--border); }
-    .msg-bubble strong { color: var(--cyan); }
-    .doc-block { margin-top: 10px; background: rgba(2,6,23,.8); border: 1px solid var(--border2); border-radius: 6px; padding: 12px 12px 12px 12px; font-family: var(--mono); font-size: .71rem; white-space: pre-wrap; color: #94a3b8; position: relative; }
-    .doc-copy { position: absolute; top: 7px; right: 7px; background: var(--border2); border: none; color: var(--muted); font-size: .58rem; padding: 3px 7px; border-radius: 3px; cursor: pointer; font-family: var(--mono); transition: all .14s; }
-    .doc-copy:hover { background: var(--cyan-dim); color: var(--cyan); }
-    .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
-    .typing-dot  { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: tdot 1.2s infinite; }
-    .typing-dot:nth-child(2){animation-delay:.2s} .typing-dot:nth-child(3){animation-delay:.4s}
+    .messages{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+    .messages::-webkit-scrollbar{width:3px}
+    .messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+    .msg{display:flex;gap:8px;max-width:800px}
+    .msg.user{flex-direction:row-reverse;align-self:flex-end}
+    .msg.assistant{align-self:flex-start}
+    .msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;flex-shrink:0;margin-top:3px}
+    .msg.user .msg-av{background:var(--cyan-dim);color:var(--cyan)}
+    .msg.assistant .msg-av{background:rgba(52,211,153,.1);color:var(--emerald)}
+    .msg-bubble{padding:10px 14px;border-radius:var(--r);font-size:.82rem;line-height:1.65}
+    .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
+    .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
+    .msg-bubble strong{color:var(--cyan)}
+    .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
+    .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
+    .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
+    .typing-dots{display:flex;gap:4px;padding:4px 0}
+    .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tdot 1.2s infinite}
+    .typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
     @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 
     /* Welcome */
-    .welcome { max-width: 540px; margin: auto; text-align: center; padding: 28px 20px; }
-    .welcome-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.2); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-    .welcome h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-    .welcome p  { font-size: .78rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
-    .wgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; text-align: left; }
-    .wcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; cursor: pointer; transition: all .14s; }
-    .wcard:hover { border-color: var(--cyan); background: var(--cyan-gl); }
-    .wcard-t { font-size: .74rem; font-weight: 600; margin-bottom: 3px; }
-    .wcard-d { font-size: .63rem; color: var(--muted); line-height: 1.35; }
+    .welcome{max-width:540px;margin:auto;text-align:center;padding:28px 20px}
+    .welcome-icon{width:46px;height:46px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .welcome h2{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+    .welcome p{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+    .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left}
+    .wcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .14s}
+    .wcard:hover{border-color:var(--cyan);background:var(--cyan-gl)}
+    .wcard-t{font-size:.74rem;font-weight:600;margin-bottom:3px}
+    .wcard-d{font-size:.63rem;color:var(--muted);line-height:1.35}
 
     /* Disclaimer + Input */
-    .disclaimer { padding: 5px 20px; border-top: 1px solid rgba(251,191,36,.12); background: rgba(251,191,36,.03); font-size: .66rem; color: #92742a; flex-shrink: 0; }
-    .input-wrap { padding: 11px 20px 15px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
-    .input-row { display: flex; gap: 8px; align-items: flex-end; }
-    .input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--r); color: var(--text); font-family: var(--sans); font-size: .82rem; padding: 9px 13px; resize: none; outline: none; min-height: 40px; max-height: 130px; line-height: 1.5; transition: border-color .14s; }
-    .input-row textarea:focus { border-color: var(--cyan); }
-    .input-row textarea::placeholder { color: var(--muted); }
-    .send-btn { width: 40px; height: 40px; border-radius: var(--r); background: var(--cyan); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity .14s; }
-    .send-btn:hover { opacity: .85; }
-    .send-btn:disabled { opacity: .35; cursor: default; }
-    .input-hint { font-size: .61rem; color: var(--muted); margin-top: 5px; }
+    .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
+    .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+    .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
+    .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 36px 9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
+    .input-row textarea:focus{border-color:var(--cyan)}
+    .input-row textarea::placeholder{color:var(--muted)}
+    .clear-input{position:absolute;right:50px;bottom:10px;width:20px;height:20px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;font-size:.7rem;line-height:1}
+    .clear-input.show{display:flex}
+    .clear-input:hover{background:rgba(248,113,113,.2);color:var(--red)}
+    .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .14s}
+    .send-btn:hover{opacity:.85}
+    .send-btn:disabled{opacity:.35;cursor:default}
+    .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
+
+    /* Toast */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:200;pointer-events:none;white-space:nowrap}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
+    .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
 
     /* MODAL EVALUADOR */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(2,6,23,.85); backdrop-filter: blur(6px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 48px rgba(0,0,0,.5); }
-    .modal-box::-webkit-scrollbar { width: 3px; }
-    .modal-box::-webkit-scrollbar-thumb { background: var(--border2); }
-    .modal-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    .modal-head-l h2 { font-size: .95rem; font-weight: 700; margin-bottom: 3px; }
-    .modal-head-l p  { font-size: .72rem; color: var(--muted); line-height: 1.45; }
-    .modal-close { background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all .14s; font-size: .9rem; }
-    .modal-close:hover { border-color: var(--red); color: var(--red); }
-    .modal-body { padding: 16px 20px; }
-    .modal-foot { padding: 0 20px 18px; }
-
-    /* Eval cards en modal */
-    .eval-card { display: grid; grid-template-columns: 14px 1fr auto; align-items: start; gap: 10px; padding: 10px 12px; margin-bottom: 5px; border: 1px solid var(--border); border-left: 3px solid transparent; border-radius: var(--r); cursor: pointer; transition: all .15s; background: transparent; }
-    .eval-card:hover { border-color: var(--border2); background: rgba(255,255,255,.02); }
-    .eval-card.active { border-color: var(--border2); background: var(--cyan-gl); }
-    .eval-card.active.wh { border-left-color: var(--red); }
-    .eval-card.active.wm { border-left-color: var(--amber); }
-    .eval-card.active.wl { border-left-color: var(--emerald); }
-    .eval-chk { width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--border2); margin-top: 2px; transition: all .14s; display: flex; align-items: center; justify-content: center; }
-    .eval-card.active .eval-chk { background: var(--cyan); border-color: var(--cyan); }
-    .eval-chk-mark { display: none; }
-    .eval-card.active .eval-chk-mark { display: block; }
-    .eval-body-t { font-size: .75rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .eval-body-d { font-size: .64rem; color: var(--muted); line-height: 1.3; }
-    .eval-pill { font-size: .55rem; font-family: var(--mono); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
-    .eval-pill.ph { background: rgba(248,113,113,.1); color: var(--red);     border: 1px solid rgba(248,113,113,.2); }
-    .eval-pill.pm { background: rgba(251,191,36,.1);  color: var(--amber);   border: 1px solid rgba(251,191,36,.2); }
-    .eval-pill.pl { background: rgba(52,211,153,.1);  color: var(--emerald); border: 1px solid rgba(52,211,153,.2); }
-
-    /* Resultado en modal */
-    .eval-result { margin-top: 12px; padding: 11px 13px; border: 1px solid var(--border2); border-radius: var(--r); background: var(--surface2); display: none; }
-    .eval-result.show { display: block; }
-    .eval-bar-track { height: 3px; background: var(--border2); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
-    .eval-bar-fill  { height: 100%; border-radius: 2px; transition: width .4s ease, background .3s; background: var(--emerald); }
-    .eval-bar-fill.lv-low    { background: var(--emerald); }
-    .eval-bar-fill.lv-medium { background: var(--amber); }
-    .eval-bar-fill.lv-high   { background: var(--red); }
-    .eval-r-level { font-size: .62rem; font-family: var(--mono); letter-spacing: .06em; margin-bottom: 4px; }
-    .eval-r-level.lv-low    { color: var(--emerald); }
-    .eval-r-level.lv-medium { color: var(--amber); }
-    .eval-r-level.lv-high   { color: var(--red); }
-    .eval-r-text { font-size: .69rem; color: var(--muted); line-height: 1.5; }
-
-    .eval-consult-btn { width: 100%; margin-top: 14px; padding: 11px; background: var(--cyan); color: var(--bg); border: none; border-radius: var(--r); font-family: var(--sans); font-weight: 700; font-size: .8rem; cursor: pointer; transition: opacity .14s; }
-    .eval-consult-btn:hover { opacity: .88; }
+    .modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.85);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+    .modal-box::-webkit-scrollbar{width:3px}
+    .modal-box::-webkit-scrollbar-thumb{background:var(--border2)}
+    .modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .modal-head-l h2{font-size:.95rem;font-weight:700;margin-bottom:3px}
+    .modal-head-l p{font-size:.72rem;color:var(--muted);line-height:1.45}
+    .modal-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .14s;font-size:.85rem;line-height:1}
+    .modal-close:hover{border-color:var(--red);color:var(--red)}
+    .modal-body{padding:14px 20px}
+    .modal-foot{padding:0 20px 18px}
+    .eval-card{display:grid;grid-template-columns:14px 1fr auto;align-items:start;gap:10px;padding:10px 12px;margin-bottom:5px;border:1px solid var(--border);border-left:3px solid transparent;border-radius:var(--r);cursor:pointer;transition:all .15s;background:transparent}
+    .eval-card:hover{border-color:var(--border2);background:rgba(255,255,255,.02)}
+    .eval-card.active{background:var(--cyan-gl)}
+    .eval-card.active.wh{border-left-color:var(--red);border-color:rgba(248,113,113,.2)}
+    .eval-card.active.wm{border-left-color:var(--amber);border-color:rgba(251,191,36,.2)}
+    .eval-card.active.wl{border-left-color:var(--emerald);border-color:rgba(52,211,153,.2)}
+    .eval-chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);margin-top:2px;transition:all .14s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .eval-card.active .eval-chk{background:var(--cyan);border-color:var(--cyan)}
+    .eval-chk-mark{display:none}
+    .eval-card.active .eval-chk-mark{display:block}
+    .eval-body-t{font-size:.75rem;font-weight:600;color:var(--text);margin-bottom:2px}
+    .eval-body-d{font-size:.64rem;color:var(--muted);line-height:1.3}
+    .eval-pill{font-size:.55rem;font-family:var(--mono);padding:2px 6px;border-radius:3px;white-space:nowrap;margin-top:1px}
+    .eval-pill.ph{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+    .eval-pill.pm{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+    .eval-pill.pl{background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2)}
+    .eval-result{margin-top:12px;padding:11px 13px;border:1px solid var(--border2);border-radius:var(--r);background:var(--surface2);display:none}
+    .eval-result.show{display:block}
+    .eval-bar-track{height:3px;background:var(--border2);border-radius:2px;margin-bottom:8px;overflow:hidden}
+    .eval-bar-fill{height:100%;border-radius:2px;transition:width .4s ease,background .3s}
+    .eval-bar-fill.lv-low{background:var(--emerald)}
+    .eval-bar-fill.lv-medium{background:var(--amber)}
+    .eval-bar-fill.lv-high{background:var(--red)}
+    .eval-r-level{font-size:.62rem;font-family:var(--mono);letter-spacing:.06em;margin-bottom:4px}
+    .eval-r-level.lv-low{color:var(--emerald)}
+    .eval-r-level.lv-medium{color:var(--amber)}
+    .eval-r-level.lv-high{color:var(--red)}
+    .eval-r-text{font-size:.69rem;color:var(--muted);line-height:1.5}
+    .eval-consult-btn{width:100%;margin-top:14px;padding:11px;background:var(--cyan);color:var(--bg);border:none;border-radius:var(--r);font-family:var(--sans);font-weight:700;font-size:.8rem;cursor:pointer;transition:opacity .14s}
+    .eval-consult-btn:hover{opacity:.88}
 
     /* Access overlay */
-    #access-overlay { position: fixed; inset: 0; background: rgba(2,6,23,.97); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    .overlay-box { text-align: center; }
-    .overlay-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.2); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-    #access-overlay h2 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
-    #access-overlay p  { font-size: .76rem; color: var(--muted); max-width: 260px; }
-    #access-overlay a  { margin-top: 14px; display: inline-block; color: var(--cyan); font-size: .74rem; text-decoration: none; }
-    #access-overlay a:hover { text-decoration: underline; }
+    #access-overlay{position:fixed;inset:0;background:rgba(2,6,23,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .overlay-box{text-align:center}
+    .overlay-icon{width:48px;height:48px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+    #access-overlay h2{font-size:.95rem;font-weight:700;margin-bottom:6px}
+    #access-overlay p{font-size:.76rem;color:var(--muted);max-width:260px}
+    #access-overlay a{margin-top:14px;display:inline-block;color:var(--cyan);font-size:.74rem;text-decoration:none}
+    #access-overlay a:hover{text-decoration:underline}
 
-    @media (max-width: 768px) {
-      main { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-    }
+    @media(max-width:768px){main{grid-template-columns:1fr}.sidebar{display:none}}
   </style>
 </head>
 <body>
 
 <div id="access-overlay">
   <div class="overlay-box">
-    <div class="overlay-icon">
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    </div>
+    <div class="overlay-icon"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <h2>Acceso restringido</h2>
     <p>Verifica tu acceso para utilizar el Agente Ley Karin.</p>
     <a href="/leykarin-acceso.html">Solicitar acceso</a>
   </div>
 </div>
 
-<!-- MODAL EVALUADOR -->
 <div class="modal-overlay" id="evalModal" onclick="closeEvalIfOutside(event)">
   <div class="modal-box" id="evalModalBox">
     <div class="modal-head">
@@ -213,46 +194,39 @@
       <button class="modal-close" onclick="closeEval()">&#x2715;</button>
     </div>
     <div class="modal-body">
-
       <div class="eval-card wh" onclick="toggleEval(this,'ev1')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Conducta repetida</div><div class="eval-body-d">Ocurre mas de una vez o es sostenida en el tiempo</div></div>
         <span class="eval-pill ph">Alta</span>
       </div>
-
       <div class="eval-card wh" onclick="toggleEval(this,'ev2')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Relacion laboral</div><div class="eval-body-d">Jefatura, companero u otro trabajador de la empresa</div></div>
         <span class="eval-pill ph">Alta</span>
       </div>
-
       <div class="eval-card wh" onclick="toggleEval(this,'ev3')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Afecta dignidad o salud</div><div class="eval-body-d">Dano fisico, psiquico o al ambiente de trabajo</div></div>
         <span class="eval-pill ph">Alta</span>
       </div>
-
       <div class="eval-card wm" onclick="toggleEval(this,'ev4')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Connotacion sexual</div><div class="eval-body-d">Conductas o comentarios de naturaleza sexual no consentidos</div></div>
         <span class="eval-pill pm">Media</span>
       </div>
-
       <div class="eval-card wm" onclick="toggleEval(this,'ev5')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Agresion fisica o verbal</div><div class="eval-body-d">Violencia directa ejercida en el lugar de trabajo</div></div>
         <span class="eval-pill pm">Media</span>
       </div>
-
       <div class="eval-card wl" onclick="toggleEval(this,'ev6')">
         <div class="eval-chk"><svg class="eval-chk-mark" width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="#020617" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="eval-body-t">Quejas previas ignoradas</div><div class="eval-body-d">El empleador no tomo medidas ante reportes anteriores</div></div>
         <span class="eval-pill pl">Agrav.</span>
       </div>
-
       <div class="eval-result" id="evalResult">
         <div class="eval-bar-track"><div class="eval-bar-fill lv-low" id="evalFill" style="width:0%"></div></div>
-        <div class="eval-r-level lv-low" id="evalLevel"></div>
+        <div class="eval-r-level" id="evalLevel"></div>
         <div class="eval-r-text" id="evalText"></div>
       </div>
     </div>
@@ -261,6 +235,8 @@
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <nav>
   <a href="/" class="nav-brand">
@@ -291,7 +267,7 @@
       <div class="sb-lbl">Documentos</div>
       <button class="qbtn" onclick="sq('Genera un modelo de carta de denuncia formal por acoso laboral bajo la Ley Karin con todos los campos necesarios.')"><span class="ql">GENERAR</span>Carta de denuncia</button>
       <button class="qbtn" onclick="sq('Genera un formulario de registro de incidente de acoso laboral segun los requisitos de la Ley Karin.')"><span class="ql">GENERAR</span>Formulario de incidente</button>
-      <button class="qbtn" onclick="sq('Que debe incluir el protocolo de prevencion de acoso que exige la Ley Karin? Dame un checklist.')"><span class="ql">PROTOCOLO</span>Checklist protocolo prevencion</button>
+      <button class="qbtn" onclick="sq('Que debe incluir el protocolo de prevencion de acoso que exige la Ley Karin? Dame un checklist.')"><span class="ql">PROTOCOLO</span>Checklist protocolo</button>
     </div>
   </aside>
 
@@ -305,7 +281,8 @@
         <span class="ctag ctag-c">Ley 21.643</span>
         <span class="ctag ctag-g">Denuncias</span>
         <span class="ctag ctag-a">Documentos</span>
-        <button class="clear-btn" onclick="clearChat()">
+        <div class="hist-indicator" id="histIndicator"><div class="hist-dot"></div>Historial cargado</div>
+        <button class="icon-btn" onclick="clearChat()">
           <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
           Limpiar
         </button>
@@ -314,9 +291,7 @@
 
     <div class="messages" id="messages">
       <div class="welcome" id="welcome">
-        <div class="welcome-icon">
-          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
+        <div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h2>Agente Ley Karin</h2>
         <p>Asistente especializado en la Ley 21.643. Puedo ayudarte a entender la ley, evaluar situaciones, guiar el proceso de denuncia y generar documentos.</p>
         <div class="wgrid">
@@ -333,7 +308,10 @@
     <div class="input-wrap">
       <div class="input-row">
         <textarea id="userInput" placeholder="Escribe tu consulta sobre la Ley Karin..." rows="1"
-          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          onkeydown="handleKey(event)" oninput="handleInput(this)"></textarea>
+        <button class="clear-input" id="clearInputBtn" onclick="clearInput()" title="Limpiar texto">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/></svg>
+        </button>
         <button class="send-btn" id="sendBtn" onclick="send()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -346,19 +324,76 @@
 <script src="/leykarin-guard.js"></script>
 <script>
 const SP = "Eres el Agente Ley Karin de ShellTI, un asistente especializado en la Ley 21.643 de Chile, conocida como \"Ley Karin\", que modifica el C\u00f3digo del Trabajo y otros cuerpos legales para fortalecer la protecci\u00f3n frente al acoso laboral, acoso sexual y violencia en el trabajo.\n\nCONTEXTO LEGAL QUE DOMINAS:\n\n1. LEY 21.643 (Ley Karin):\n- Vigente desde el 1 de agosto de 2023.\n- Modifica el C\u00f3digo del Trabajo (art\u00edculos 2, 153, 154, 160, 171, 176 y agrega art. 211-A al 211-F).\n- Definiciones clave:\n  * Acoso laboral: conducta que constituya agresi\u00f3n u hostigamiento reiterado, ejercida por el empleador o por uno o m\u00e1s trabajadores, en contra de otro u otros trabajadores, por cualquier medio, que tenga como resultado para el o los afectados su menoscabo, maltrato o humillaci\u00f3n, o bien que amenace o perjudique su situaci\u00f3n laboral o sus oportunidades en el empleo.\n  * Acoso sexual: el que una persona realice en forma indebida, por cualquier medio, requerimientos de car\u00e1cter sexual, no consentidos por quien los recibe y que amenacen o perjudiquen su situaci\u00f3n laboral o sus oportunidades en el empleo.\n  * Violencia en el trabajo: aquella ejercida por terceros ajenos a la relaci\u00f3n laboral que, producto de la relaci\u00f3n laboral que tiene el trabajador con dicho tercero, le provoca un efecto negativo en la salud f\u00edsica o ps\u00edquica del trabajador.\n\n2. OBLIGACIONES DEL EMPLEADOR:\n- Incorporar en el Reglamento Interno un protocolo de prevenci\u00f3n del acoso laboral y sexual y de violencia en el trabajo.\n- Investigar las denuncias dentro de los plazos legales.\n- Adoptar medidas de resguardo para la persona denunciante y denunciada.\n- Notificar a la Inspecci\u00f3n del Trabajo del inicio y resultado de la investigaci\u00f3n.\n- Aplicar sanciones proporcionales si se acredita la conducta.\n\n3. PROCEDIMIENTO DE DENUNCIA:\n- El trabajador puede denunciar ante el empleador (RR.HH., jefe directo o quien corresponda) o directamente ante la Inspecci\u00f3n del Trabajo.\n- Si se denuncia ante el empleador: plazo de 10 d\u00edas h\u00e1biles para iniciar investigaci\u00f3n. La investigaci\u00f3n debe concluir en un plazo m\u00e1ximo de 30 d\u00edas h\u00e1biles desde la denuncia. El empleador debe remitir los antecedentes a la Inspecci\u00f3n del Trabajo al t\u00e9rmino.\n- Si se denuncia ante la Inspecci\u00f3n del Trabajo: el organismo puede llevar la investigaci\u00f3n directamente.\n- Medidas de resguardo que puede adoptar el empleador durante la investigaci\u00f3n: separaci\u00f3n de espacios f\u00edsicos, redistribuci\u00f3n de jornada, trabajo remoto, entre otras.\n- Confidencialidad: es obligatoria durante todo el proceso.\n- Represalias: est\u00e1n expresamente prohibidas. El despido del denunciante durante el proceso puede ser calificado como despido injustificado.\n\n4. CANALES OFICIALES DE DENUNCIA:\n- Inspecci\u00f3n del Trabajo: www.dt.gob.cl \u2014 se puede denunciar presencialmente, por web o al 600 450 4000.\n- Empleador: a trav\u00e9s del Reglamento Interno (canal interno obligatorio desde la ley).\n- SUSESO (Superintendencia de Seguridad Social): en casos con componente de salud laboral o si el trabajador est\u00e1 cubierto por seguro de accidentes del trabajo.\n- Tribunales de Justicia: acci\u00f3n de tutela de derechos fundamentales en el Juzgado de Letras del Trabajo competente.\n- Servicio Civil: para funcionarios p\u00fablicos, existe el procedimiento de la Ley 18.575 y normas del Estatuto Administrativo.\n\n5. SANCIONES:\n- Al trabajador acosador: pueden ir desde amonestaci\u00f3n verbal o escrita, multa de hasta el 25% de la remuneraci\u00f3n, hasta el despido por causal del art. 160 N\u00b01 letra b) o f) del C\u00f3digo del Trabajo (sin derecho a indemnizaci\u00f3n).\n- Al empleador que no cumple con sus obligaciones: multas de la Inspecci\u00f3n del Trabajo de 1 a 20 UTM.\n- Despido indirecto (autodespido): el trabajador afectado que no recibe respuesta o protecci\u00f3n puede invocar el art. 171 del C\u00f3digo del Trabajo.\n\n6. TRABAJADORES PROTEGIDOS:\n- Trabajadores del sector privado regidos por el C\u00f3digo del Trabajo.\n- Funcionarios p\u00fablicos (con reglas espec\u00edficas del Estatuto Administrativo).\n- Trabajadores a honorarios que presten servicios en dependencias del empleador.\n- Trabajadores de empresas contratistas dentro de instalaciones del mandante.\n\nCAPACIDADES DEL AGENTE:\n\nA) RESPONDER PREGUNTAS: Responde con precisi\u00f3n jur\u00eddica y lenguaje claro sobre todos los aspectos de la Ley Karin. Cita los art\u00edculos relevantes cuando sea \u00fatil.\n\nB) EVALUAR SITUACIONES: Cuando el usuario describe una situaci\u00f3n, analiza si los hechos podr\u00edan configurar acoso laboral, acoso sexual o violencia en el trabajo. Indica qu\u00e9 elementos est\u00e1n presentes y cu\u00e1les faltan, sin emitir un juicio definitivo (solo el tribunal o la Inspecci\u00f3n pueden hacerlo). S\u00e9 claro sobre la diferencia entre una conducta grave aislada y la \"reiteraci\u00f3n\" que exige la definici\u00f3n de acoso laboral.\n\nC) GUIAR EL PROCESO DE DENUNCIA: Explica paso a paso el proceso, los plazos, qu\u00e9 documentos reunir (correos, testigos, registros), c\u00f3mo presentar la denuncia y qu\u00e9 esperar en cada etapa.\n\nD) CANALES DE DENUNCIA: Informa con detalle cada canal disponible (empleador, Inspecci\u00f3n del Trabajo, tribunales, SUSESO), sus ventajas y c\u00f3mo acceder a cada uno.\n\nE) GENERAR DOCUMENTOS: Cuando el usuario solicite un modelo de carta de denuncia o formulario, genera un documento formal completo en espa\u00f1ol, con todos los campos necesarios, encabezado formal, estructura legal adecuada, y espacios marcados con [DATO] para que el usuario los complete. Presenta el documento dentro de un bloque de c\u00f3digo claramente delimitado.\n\nFORMATO DE RESPUESTAS:\n- Usa lenguaje preciso pero accesible. No uses jerga innecesaria.\n- Cuando sea \u00fatil, usa listas numeradas o con vi\u00f1etas para estructurar la informaci\u00f3n.\n- Para conceptos clave, usa **negrita**.\n- Para art\u00edculos de ley o t\u00e9rminos t\u00e9cnicos espec\u00edficos, usa *cursiva*.\n- Cuando generes documentos, usa un bloque de preformato claramente marcado como \"DOCUMENTO GENERADO\".\n- S\u00e9 conciso pero completo. No omitas informaci\u00f3n relevante.\n- Siempre recuerda al usuario que para su caso espec\u00edfico debe consultar a un abogado o a la Inspecci\u00f3n del Trabajo.\n- No emitas juicios personales sobre personas o empleadores espec\u00edficos.\n- Responde siempre en espa\u00f1ol.\n\nEres un recurso de orientaci\u00f3n profesional de ShellTI. Act\u00faa con rigor, empat\u00eda y claridad.\n\nL\u00cdMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.643 (Ley Karin), acoso laboral, acoso sexual, violencia en el trabajo, derechos laborales asociados, y procesos de denuncia en Chile. Si el usuario pregunta sobre temas no relacionados (pol\u00edtica, tecnolog\u00eda, entretenimiento, otros pa\u00edses, temas personales no laborales, etc.), responde educadamente que tu especialidad es exclusivamente la Ley Karin y el \u00e1mbito del acoso y violencia en el trabajo en Chile, y redirige la conversaci\u00f3n ofreciendo ayuda en ese \u00e1mbito.";
-var hist = [], busy = false, evalSt = {}, evalW = {ev1:28,ev2:28,ev3:28,ev4:16,ev5:16,ev6:10};
-var evalDesc = {ev1:'conducta repetida o sostenida en el tiempo',ev2:'relacion laboral (empleador, companero u otro trabajador)',ev3:'afecta la dignidad, salud fisica o psiquica, o el ambiente de trabajo',ev4:'existe connotacion sexual no consentida',ev5:'se produjo agresion fisica o verbal grave',ev6:'quejas internas previas fueron ignoradas por el empleador'};
+const RAILWAY = 'https://web-production-372660.up.railway.app';
+var hist = [], busy = false, currentToken = null;
+var evalSt = {}, evalW = {ev1:28,ev2:28,ev3:28,ev4:16,ev5:16,ev6:10};
+var evalDesc = {ev1:'conducta repetida o sostenida en el tiempo',ev2:'relacion laboral (empleador, companero u otro trabajador)',ev3:'afecta la dignidad, salud fisica o psiquica o el ambiente de trabajo',ev4:'existe connotacion sexual no consentida',ev5:'se produjo agresion fisica o verbal grave',ev6:'quejas internas previas fueron ignoradas'};
 
-/* Guard */
-window.addEventListener('shellti-guard-ok',function(){ var o=document.getElementById('access-overlay'); if(o) o.style.display='none'; });
-if(location.hostname==='localhost'||location.hostname==='127.0.0.1'){ var o=document.getElementById('access-overlay'); if(o) o.style.display='none'; }
+/* ── Guard ── */
+window.addEventListener('shellti-guard-ok', function(e) {
+  var o = document.getElementById('access-overlay');
+  if (o) o.style.display = 'none';
+  if (e && e.detail && e.detail.token) {
+    currentToken = e.detail.token;
+    loadHistory();
+  } else {
+    var urlToken = new URLSearchParams(location.search).get('token') || localStorage.getItem('leykarin_token');
+    if (urlToken) { currentToken = urlToken; loadHistory(); }
+  }
+});
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
+}
 
-/* Modal evaluador */
+/* ── Historial ── */
+async function loadHistory() {
+  if (!currentToken) return;
+  try {
+    var res  = await fetch(RAILWAY + '/leykarin/history/load', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken})
+    });
+    var data = await res.json();
+    if (data.history && data.history.length) {
+      hist = data.history;
+      renderHistory(hist);
+      document.getElementById('histIndicator').classList.add('show');
+    }
+  } catch(e) { console.warn('[LK] loadHistory:', e.message); }
+}
+
+async function saveHistory() {
+  if (!currentToken || !hist.length) return;
+  try {
+    await fetch(RAILWAY + '/leykarin/history/save', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken, history: hist.slice(-40)})
+    });
+  } catch(e) { console.warn('[LK] saveHistory:', e.message); }
+}
+
+function renderHistory(messages) {
+  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
+  messages.forEach(function(m) { appendMsg(m.role, m.content, true); });
+  showToast('Historial cargado (' + messages.length + ' mensajes)', 'ok');
+}
+
+/* ── Toast ── */
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (type||'');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+/* ── Modal evaluador ── */
 function openEval()  { document.getElementById('evalModal').classList.add('open'); }
 function closeEval() { document.getElementById('evalModal').classList.remove('open'); }
-function closeEvalIfOutside(e) { if(e.target===document.getElementById('evalModal')) closeEval(); }
+function closeEvalIfOutside(e) { if (e.target === document.getElementById('evalModal')) closeEval(); }
 
-/* Evaluador logic */
 function toggleEval(card, id) {
   evalSt[id] = !evalSt[id];
   card.classList.toggle('active', evalSt[id]);
@@ -370,95 +405,115 @@ function refreshEval() {
   var fill  = document.getElementById('evalFill');
   var lvl   = document.getElementById('evalLevel');
   var txt   = document.getElementById('evalText');
-  if(!sel.length){ panel.classList.remove('show'); return; }
+  if (!sel.length) { panel.classList.remove('show'); return; }
   panel.classList.add('show');
-  var score=0; sel.forEach(function(k){ score+=evalW[k]||0; });
-  var pct=Math.min(score,100);
-  fill.style.width=pct+'%';
-  if(pct>=65){
-    fill.className='eval-bar-fill lv-high'; lvl.className='eval-r-level lv-high';
-    lvl.textContent='Indicios relevantes de conducta sancionable';
-    txt.textContent='Los elementos seleccionados sugieren que la situacion podria calificar bajo la Ley Karin. Se recomienda contactar a la Inspeccion del Trabajo o un abogado laboral.';
-  } else if(pct>=35){
-    fill.className='eval-bar-fill lv-medium'; lvl.className='eval-r-level lv-medium';
-    lvl.textContent='Situacion a evaluar con mas antecedentes';
-    txt.textContent='Algunos elementos estan presentes. Se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin.';
+  var score = 0; sel.forEach(function(k){ score += evalW[k]||0; });
+  var pct = Math.min(score, 100);
+  fill.style.width = pct + '%';
+  if (pct >= 65) {
+    fill.className = 'eval-bar-fill lv-high'; lvl.className = 'eval-r-level lv-high';
+    lvl.textContent = 'Indicios relevantes de conducta sancionable';
+    txt.textContent = 'Los elementos seleccionados sugieren que la situacion podria calificar bajo la Ley Karin. Se recomienda contactar a la Inspeccion del Trabajo o un abogado laboral.';
+  } else if (pct >= 35) {
+    fill.className = 'eval-bar-fill lv-medium'; lvl.className = 'eval-r-level lv-medium';
+    lvl.textContent = 'Situacion a evaluar con mas antecedentes';
+    txt.textContent = 'Algunos elementos estan presentes. Se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin.';
   } else {
-    fill.className='eval-bar-fill lv-low'; lvl.className='eval-r-level lv-low';
-    lvl.textContent='Elementos iniciales, aun no concluyentes';
-    txt.textContent='Con los elementos seleccionados no es posible determinar una configuracion clara. Agrega mas detalles o consulta directamente al agente.';
+    fill.className = 'eval-bar-fill lv-low'; lvl.className = 'eval-r-level lv-low';
+    lvl.textContent = 'Elementos iniciales, aun no concluyentes';
+    txt.textContent = 'Con los elementos seleccionados no es posible determinar una configuracion clara. Consulta directamente al agente.';
   }
 }
 function evaluarSituacion() {
   var sel = Object.keys(evalSt).filter(function(k){ return evalSt[k]; });
-  if(!sel.length){ sq('No seleccione ningun criterio. Que elementos son necesarios para que una situacion califique bajo la Ley Karin?'); closeEval(); return; }
+  if (!sel.length) { sq('No seleccione ningun criterio. Que elementos son necesarios para que una situacion califique bajo la Ley Karin?'); closeEval(); return; }
   var items = sel.map(function(k,i){ return (i+1)+'. '+evalDesc[k]; }).join('\n');
   sq('Quiero evaluar si mi situacion podria calificar bajo la Ley Karin. Los elementos presentes son:\n'+items+'\n\nQue me puedes decir al respecto?');
   closeEval();
 }
 
-/* Helpers */
-function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,130)+'px'; }
-function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
-function scrollBot(){ var m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
-function sq(text){ send(text); }
+/* ── Input helpers ── */
+function handleInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 130) + 'px';
+  var btn = document.getElementById('clearInputBtn');
+  if (el.value.trim().length > 0) btn.classList.add('show');
+  else btn.classList.remove('show');
+}
+function clearInput() {
+  var inp = document.getElementById('userInput');
+  inp.value = ''; inp.style.height = 'auto'; inp.focus();
+  document.getElementById('clearInputBtn').classList.remove('show');
+}
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function scrollBot() { var m = document.getElementById('messages'); m.scrollTop = m.scrollHeight; }
+function sq(text) { send(text); }
 
-function clearChat(){
-  if(!hist.length) return;
-  hist=[];
-  document.getElementById('messages').innerHTML='<div class="welcome" id="welcome"><div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h2>Conversacion reiniciada</h2><p>Como puedo ayudarte?</p></div>';
+/* ── Clear chat ── */
+function clearChat() {
+  if (!hist.length) return;
+  hist = [];
+  document.getElementById('messages').innerHTML = '<div class="welcome" id="welcome"><div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h2>Conversacion reiniciada</h2><p>Como puedo ayudarte?</p></div>';
+  document.getElementById('histIndicator').classList.remove('show');
+  saveHistory();
+  showToast('Conversacion limpiada', 'ok');
 }
 
-function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function parseContent(raw){
-  var h=raw;
-  h=h.replace(/```[\w]*\n?([\s\S]*?)```/g,function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
-  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  h=h.replace(/\n/g,'<br>');
+/* ── Render ── */
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function parseContent(raw) {
+  var h = raw;
+  h = h.replace(/```\w*\n?([\s\S]*?)```/g, function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\n/g, '<br>');
   return h;
 }
-function cpDoc(btn){ var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
+function cpDoc(btn) { var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
 
-function appendMsg(role,content){
-  var w=document.getElementById('welcome'); if(w) w.style.display='none';
-  var msgs=document.getElementById('messages');
-  var d=document.createElement('div'); d.className='msg '+role;
-  var av=document.createElement('div'); av.className='msg-av'; av.textContent=role==='user'?'TU':'LK';
-  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML=parseContent(content);
+function appendMsg(role, content, silent) {
+  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
+  var msgs = document.getElementById('messages');
+  var d = document.createElement('div'); d.className = 'msg '+role;
+  var av = document.createElement('div'); av.className = 'msg-av'; av.textContent = role==='user'?'TU':'LK';
+  var b = document.createElement('div'); b.className = 'msg-bubble'; b.innerHTML = parseContent(content);
+  d.appendChild(av); d.appendChild(b); msgs.appendChild(d);
+  if (!silent) scrollBot();
+}
+function showTyping() {
+  var w = document.getElementById('welcome'); if (w) w.style.display = 'none';
+  var msgs = document.getElementById('messages');
+  var d = document.createElement('div'); d.className = 'msg assistant'; d.id = 'typing';
+  var av = document.createElement('div'); av.className = 'msg-av'; av.textContent = 'LK';
+  var b = document.createElement('div'); b.className = 'msg-bubble'; b.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
   d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot();
 }
-function showTyping(){
-  var w=document.getElementById('welcome'); if(w) w.style.display='none';
-  var msgs=document.getElementById('messages');
-  var d=document.createElement('div'); d.className='msg assistant'; d.id='typing';
-  var av=document.createElement('div'); av.className='msg-av'; av.textContent='LK';
-  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot();
-}
-function removeTyping(){ var t=document.getElementById('typing'); if(t) t.remove(); }
+function removeTyping() { var t = document.getElementById('typing'); if (t) t.remove(); }
 
-async function send(custom){
-  if(busy) return;
-  var inp=document.getElementById('userInput');
-  var text=(custom||inp.value).trim();
-  if(!text) return;
-  inp.value=''; inp.style.height='auto';
-  appendMsg('user',text);
-  hist.push({role:'user',content:text});
-  busy=true; document.getElementById('sendBtn').disabled=true;
+/* ── Send ── */
+async function send(custom) {
+  if (busy) return;
+  var inp  = document.getElementById('userInput');
+  var text = (custom || inp.value).trim();
+  if (!text) return;
+  inp.value = ''; inp.style.height = 'auto';
+  document.getElementById('clearInputBtn').classList.remove('show');
+  appendMsg('user', text);
+  hist.push({role:'user', content:text});
+  busy = true; document.getElementById('sendBtn').disabled = true;
   showTyping();
-  try{
-    var res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:SP,messages:hist.slice(-20)})});
-    var data=await res.json();
+  try {
+    var res  = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:SP, messages:hist.slice(-20)})});
+    var data = await res.json();
     removeTyping();
-    var reply=data.text||'No se pudo obtener respuesta.';
-    hist.push({role:'assistant',content:reply});
-    appendMsg('assistant',reply);
-  }catch(e){
+    var reply = data.text || 'No se pudo obtener respuesta.';
+    hist.push({role:'assistant', content:reply});
+    appendMsg('assistant', reply);
+    saveHistory();
+  } catch(e) {
     removeTyping();
-    appendMsg('assistant','Error de conexion. Por favor intenta nuevamente.');
+    appendMsg('assistant', 'Error de conexion. Por favor intenta nuevamente.');
   }
-  busy=false; document.getElementById('sendBtn').disabled=false;
+  busy = false; document.getElementById('sendBtn').disabled = false;
   document.getElementById('userInput').focus();
 }
 </script>
