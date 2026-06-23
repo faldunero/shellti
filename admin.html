@@ -308,7 +308,7 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 
 <script>
 const RAILWAY = 'https://web-production-372660.up.railway.app';
-const RES_OPTIONS = ['agente','diagnostico','biblioteca','scanner'];
+const RES_OPTIONS = ['agente','diagnostico','biblioteca','scanner','leykarin'];
 const DURATIONS = [
   {label:'1h',ms:3600000},{label:'4h',ms:14400000},{label:'12h',ms:43200000},
   {label:'1d',ms:86400000},{label:'3d',ms:259200000},{label:'7d',ms:604800000},{label:'30d',ms:2592000000}
@@ -488,9 +488,9 @@ function reqCard(r) {
       <span class="res-lbl">Acceso</span>
       <div class="res-chips">
         ${RES_OPTIONS.map(opt => `
-          <label class="res-chip ${opt==='agente'?'checked':''}" id="rchip-${r.id}-${opt}" onclick="toggleResChip(this)">
-            <input type="checkbox" ${opt==='agente'?'checked':''} id="rcheck-${r.id}-${opt}"> ${opt}
-          </label>`).join('')}
+          <div class="res-chip ${opt==='agente'?'checked':''}" id="rchip-${r.id}-${opt}" onclick="event.stopPropagation();this.classList.toggle('checked')">
+            ${opt}
+          </div>`).join('')}
       </div>
     </div>
     <div class="scans-row">
@@ -530,10 +530,11 @@ function toggleCard(id) {
   document.getElementById('card-'+id).classList.toggle('open');
 }
 
-function toggleResChip(label) {
+function toggleResChip(e, label) {
+  e.preventDefault();
   label.classList.toggle('checked');
   const cb = label.querySelector('input');
-  cb.checked = !cb.checked;
+  cb.checked = label.classList.contains('checked');
 }
 
 // ── USERS TABLE ───────────────────────────────────────────────────────────────
@@ -584,9 +585,9 @@ function openModal(email, resStr) {
   const current = resStr ? resStr.split(',').filter(Boolean) : [];
   document.getElementById('modal-email').textContent = email;
   document.getElementById('modal-res-chips').innerHTML = RES_OPTIONS.map(opt => `
-    <label class="res-chip ${current.includes(opt)?'checked':''}" onclick="toggleResChip(this)">
-      <input type="checkbox" ${current.includes(opt)?'checked':''}> ${opt}
-    </label>`).join('');
+    <div class="res-chip ${current.includes(opt)?'checked':''}" onclick="event.stopPropagation();this.classList.toggle('checked')">
+      ${opt}
+    </div>`).join('');
   document.getElementById('resModal').classList.add('open');
 }
 
@@ -621,8 +622,8 @@ async function approve(id) {
   const maxScansEl = document.getElementById('maxScans-'+id);
   const maxScans   = maxScansEl?.value ? parseInt(maxScansEl.value) : null;
   const resources  = RES_OPTIONS.filter(r => {
-    const el = document.getElementById('rcheck-'+id+'-'+r);
-    return el?.checked;
+    const el = document.getElementById('rchip-'+id+'-'+r);
+    return el?.classList.contains('checked');
   });
   const btn = document.getElementById('approve-'+id);
   btn.disabled = true; btn.textContent = '...';
