@@ -752,33 +752,70 @@
     <!-- Evaluador rápido -->
     <div class="evaluator">
       <div class="eval-label">Evaluador de situación</div>
-      <p style="font-size:.72rem;color:var(--muted);margin-bottom:10px;line-height:1.4;">Marca las características y evalúa si la situación puede calificar bajo la Ley Karin.</p>
+      <p style="font-size:.72rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">Selecciona los elementos presentes en la situación para obtener una evaluación orientativa.</p>
 
       <div class="eval-options">
-        <label class="eval-opt">
-          <input type="checkbox" id="ev1" />
-          Conducta repetida o sostenida en el tiempo
+        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev1');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck1')">
+          <span class="eval-check" id="evcheck1"></span>
+          <input type="checkbox" id="ev1" style="display:none" onchange="updateEvalCheck(this,'evcheck1')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Conducta repetida</span>
+            <span class="eval-opt-desc">Actos sostenidos en el tiempo, no aislados</span>
+          </span>
+          <span class="eval-weight high">Alta</span>
         </label>
-        <label class="eval-opt">
-          <input type="checkbox" id="ev2" />
-          Hay relación laboral (empleador/empleado/par)
+        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev2');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck2')">
+          <span class="eval-check" id="evcheck2"></span>
+          <input type="checkbox" id="ev2" style="display:none" onchange="updateEvalCheck(this,'evcheck2')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Relación laboral</span>
+            <span class="eval-opt-desc">Empleador, compañero u otro trabajador</span>
+          </span>
+          <span class="eval-weight high">Alta</span>
         </label>
-        <label class="eval-opt">
-          <input type="checkbox" id="ev3" />
-          Afecta dignidad, salud o ambiente de trabajo
+        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev3');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck3')">
+          <span class="eval-check" id="evcheck3"></span>
+          <input type="checkbox" id="ev3" style="display:none" onchange="updateEvalCheck(this,'evcheck3')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Afecta dignidad o salud</span>
+            <span class="eval-opt-desc">Menoscabo físico, psíquico o laboral</span>
+          </span>
+          <span class="eval-weight high">Alta</span>
         </label>
-        <label class="eval-opt">
-          <input type="checkbox" id="ev4" />
-          Existe connotación sexual no deseada
+        <label class="eval-opt" data-weight="med" onclick="var cb=document.getElementById('ev4');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck4')">
+          <span class="eval-check" id="evcheck4"></span>
+          <input type="checkbox" id="ev4" style="display:none" onchange="updateEvalCheck(this,'evcheck4')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Connotación sexual</span>
+            <span class="eval-opt-desc">Requerimientos sexuales no consentidos</span>
+          </span>
+          <span class="eval-weight med">Media</span>
         </label>
-        <label class="eval-opt">
-          <input type="checkbox" id="ev5" />
-          Hubo agresión física o verbal grave
+        <label class="eval-opt" data-weight="med" onclick="var cb=document.getElementById('ev5');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck5')">
+          <span class="eval-check" id="evcheck5"></span>
+          <input type="checkbox" id="ev5" style="display:none" onchange="updateEvalCheck(this,'evcheck5')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Agresión física o verbal</span>
+            <span class="eval-opt-desc">Violencia directa en el trabajo</span>
+          </span>
+          <span class="eval-weight med">Media</span>
         </label>
-        <label class="eval-opt">
-          <input type="checkbox" id="ev6" />
-          Se han ignorado quejas internas previas
+        <label class="eval-opt" data-weight="low" onclick="var cb=document.getElementById('ev6');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck6')">
+          <span class="eval-check" id="evcheck6"></span>
+          <input type="checkbox" id="ev6" style="display:none" onchange="updateEvalCheck(this,'evcheck6')" />
+          <span class="eval-opt-content">
+            <span class="eval-opt-title">Quejas ignoradas</span>
+            <span class="eval-opt-desc">El empleador no tomó medidas previas</span>
+          </span>
+          <span class="eval-weight low">Agrav.</span>
         </label>
+      </div>
+
+      <div class="eval-progress-wrap" id="evalProgress" style="display:none">
+        <div class="eval-progress-bar">
+          <div class="eval-progress-fill" id="evalFill"></div>
+        </div>
+        <div class="eval-progress-label" id="evalLabel"></div>
       </div>
 
       <button class="eval-result-btn" onclick="evaluarSituacion()">Evaluar situación →</button>
@@ -930,7 +967,9 @@ FORMATO DE RESPUESTAS:
 - No emitas juicios personales sobre personas o empleadores específicos.
 - Responde siempre en español.
 
-Eres un recurso de orientación profesional de ShellTI. Actúa con rigor, empatía y claridad.`;
+Eres un recurso de orientación profesional de ShellTI. Actúa con rigor, empatía y claridad.
+
+LÍMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.643 (Ley Karin), acoso laboral, acoso sexual, violencia en el trabajo, derechos laborales asociados, y procesos de denuncia en Chile. Si el usuario pregunta sobre temas no relacionados (política, tecnología, entretenimiento, otros países, temas personales no laborales, etc.), responde educadamente que tu especialidad es exclusivamente la Ley Karin y el ámbito del acoso y violencia en el trabajo en Chile, y redirige la conversación ofreciendo ayuda en ese ámbito.`;
 
 /* ─────────────────────────────────────────
    ESTADO
@@ -1116,6 +1155,56 @@ async function sendMessage(customText) {
   isLoading = false;
   document.getElementById('sendBtn').disabled = false;
   input.focus();
+}
+
+
+function updateEvalCheck(cb, checkId) {
+  var label = cb.closest('.eval-opt');
+  var check = document.getElementById(checkId);
+  if (cb.checked) {
+    label.classList.add('checked');
+  } else {
+    label.classList.remove('checked');
+  }
+  updateEvalProgress();
+}
+
+function updateEvalProgress() {
+  var checked = [];
+  for (var i = 1; i <= 6; i++) {
+    var cb = document.getElementById('ev' + i);
+    if (cb && cb.checked) checked.push(i);
+  }
+
+  var progressWrap = document.getElementById('evalProgress');
+  var fill = document.getElementById('evalFill');
+  var label = document.getElementById('evalLabel');
+
+  if (!checked.length) {
+    progressWrap.style.display = 'none';
+    return;
+  }
+
+  progressWrap.style.display = 'block';
+
+  // Score: ev1,2,3 = 25pts each, ev4,5 = 15pts each, ev6 = 10pts
+  var weights = {1:25, 2:25, 3:25, 4:15, 5:15, 6:10};
+  var score = 0;
+  checked.forEach(function(i){ score += weights[i] || 0; });
+  var pct = Math.min(score, 100);
+
+  fill.style.width = pct + '%';
+
+  if (pct >= 70) {
+    fill.className = 'eval-progress-fill high';
+    label.textContent = 'Alta probabilidad · Consulta a la Inspección del Trabajo';
+  } else if (pct >= 35) {
+    fill.className = 'eval-progress-fill medium';
+    label.textContent = 'Indicios relevantes · Evalúa con un especialista';
+  } else {
+    fill.className = 'eval-progress-fill low';
+    label.textContent = 'Elementos iniciales · Puede requerir más antecedentes';
+  }
 }
 
 function sendQuick(text) {
