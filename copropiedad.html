@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root{--bg:#020617;--surface:#080f1e;--surface2:#0b1425;--border:#162032;--border2:#1e2d45;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--text2:#94a3b8;--muted:#475569;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:8px;--nav-h:60px}
+    :root{--bg:#0d1b2e;--surface:#111e33;--surface2:#142038;--border:#1a2d45;--border2:#243550;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--text2:#94a3b8;--muted:#475569;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:8px;--nav-h:60px}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(13,27,46,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
     .nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:.92rem}
     .nav-brand img{height:30px;filter:drop-shadow(0 0 6px var(--cyan))}
     .nav-right{display:flex;align-items:center;gap:10px}
@@ -80,7 +80,7 @@
     .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
     .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
     .msg-bubble strong{color:var(--cyan)}
-    .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
+    .doc-block{margin-top:10px;background:rgba(13,27,46,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
     .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
     .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
     .typing-dots{display:flex;gap:4px;padding:4px 0}
@@ -91,15 +91,15 @@
     .session-banner.show{display:flex}
     .session-banner-title{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
     .session-banner-date{font-size:.6rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
-    .welcome{max-width:540px;margin:auto;text-align:center;padding:28px 20px}
-    .welcome-icon{width:46px;height:46px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
-    .welcome h2{font-size:1.05rem;font-weight:700;margin-bottom:6px}
-    .welcome p{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
-    .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left}
-    .wcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .14s}
+    .welcome{max-width:520px;width:100%;margin:auto;text-align:center;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .welcome-icon{width:54px;height:54px;border-radius:14px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .welcome h2{font-size:1.15rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+    .welcome p{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;max-width:380px}
+    .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;width:100%}
+    .wcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .14s}
     .wcard:hover{border-color:var(--cyan);background:var(--cyan-gl)}
-    .wcard-t{font-size:.74rem;font-weight:600;margin-bottom:3px}
-    .wcard-d{font-size:.63rem;color:var(--muted);line-height:1.35}
+    .wcard-t{font-size:.78rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+    .wcard-d{font-size:.67rem;color:var(--muted);line-height:1.4}
     .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
     .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
     .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
@@ -117,7 +117,7 @@
     .toast.show{transform:translateX(-50%) translateY(0)}
     .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
     .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
-    #access-overlay{position:fixed;inset:0;background:rgba(2,6,23,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
+    #access-overlay{position:fixed;inset:0;background:rgba(13,27,46,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
     .overlay-box{text-align:center}
     .overlay-icon{width:48px;height:48px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
     #access-overlay h2{font-size:.95rem;font-weight:700;margin-bottom:6px}

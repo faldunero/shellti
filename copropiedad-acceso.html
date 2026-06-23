@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root{--bg:#020617;--surface:#0b1120;--border:#1e2d45;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.12);--cyan-gl:rgba(0,212,255,.06);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--muted:#64748b;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:10px}
+    :root{--bg:#0d1b2e;--surface:#111e33;--border:#243550;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.12);--cyan-gl:rgba(0,212,255,.06);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--muted:#64748b;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:10px}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px}
     body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
@@ -46,6 +46,15 @@
     .footer-note{text-align:center;font-size:.72rem;color:#334155;margin-top:20px;line-height:1.6}
     .footer-note a{color:var(--muted);text-decoration:none}
     .footer-note a:hover{color:var(--cyan)}
+  
+    .pending-screen{text-align:center;padding:10px 0;display:none}
+    .pending-icon{width:56px;height:56px;border-radius:14px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .pending-screen h2{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+    .pending-screen p{font-size:.83rem;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto 16px}
+    .pending-status{display:inline-flex;align-items:center;gap:8px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:8px 16px;font-size:.72rem;font-family:var(--mono);color:#fbbf24}
+    .pending-dot{width:7px;height:7px;border-radius:50%;background:#fbbf24;animation:pulse-dot 1.5s infinite}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+    .pending-tip{margin-top:14px;font-size:.7rem;color:#475569;line-height:1.5}
   </style>
 </head>
 <body>
@@ -96,6 +105,15 @@
       <div class="divider"></div>
       <button class="submit-btn" id="submitBtn" onclick="submitRequest()">Enviar solicitud</button>
     </div>
+
+    <div class="pending-screen" id="pendingScreen">
+      <div class="pending-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#fbbf24" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <h2>Solicitud enviada</h2>
+      <p>Tu solicitud fue recibida y esta siendo revisada. Te avisaremos por correo cuando sea aprobada.</p>
+      <div class="pending-status"><div class="pending-dot"></div><span id="pendingTimer_cp">Esperando aprobacion...</span></div>
+      <p class="pending-tip">El proceso de revision suele tomar entre 1 y 24 horas habiles.<br/>Revisa tu bandeja de entrada y carpeta de spam.</p>
+    </div>
+
     <div class="success-screen" id="successScreen">
       <div class="success-icon">
         <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#34D399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -120,9 +138,40 @@ async function submitRequest() {
     var res=await fetch(RAILWAY+'/copropiedad/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,organization,cargo,email,context:context||null})});
     var data=await res.json();
     if(!res.ok){ showError(data.error||'Error al enviar la solicitud.'); btn.disabled=false; btn.textContent='Enviar solicitud'; return; }
-    document.getElementById('formSection').style.display='none'; document.getElementById('successScreen').style.display='block';
+    document.getElementById('formSection').style.display='none'; document.getElementById('pendingScreen').style.display='block'; cp_startTimer();
   }catch(e){ showError('Error de conexion. Por favor intenta nuevamente.'); btn.disabled=false; btn.textContent='Enviar solicitud'; }
 }
+
+var cp_pendingStart = null;
+function cp_startTimer() {
+  cp_pendingStart = Date.now();
+  localStorage.setItem('cp_pending_since', cp_pendingStart);
+  cp_updateTimer();
+  setInterval(cp_updateTimer, 1000);
+}
+function cp_updateTimer() {
+  var start = cp_pendingStart || Number(localStorage.getItem('cp_pending_since'));
+  if (!start) return;
+  var elapsed = Math.floor((Date.now() - start) / 1000);
+  var h = Math.floor(elapsed / 3600), m = Math.floor((elapsed % 3600) / 60), s = elapsed % 60;
+  var label = 'Esperando aprobacion ';
+  if (h > 0) label += h + 'h ' + m + 'm';
+  else if (m > 0) label += m + 'm ' + s + 's';
+  else label += s + 's';
+  var el = document.getElementById('pendingTimer_cp');
+  if (el) el.textContent = label;
+}
+window.addEventListener('DOMContentLoaded', function() {
+  var since = localStorage.getItem('cp_pending_since');
+  if (since) {
+    cp_pendingStart = Number(since);
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('pendingScreen').style.display = 'block';
+    cp_updateTimer();
+    setInterval(cp_updateTimer, 1000);
+  }
+});
+
 function showError(msg){ var el=document.getElementById('alertError'); el.textContent=msg; el.style.display='block'; }
 document.addEventListener('keydown',function(e){ if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA') submitRequest(); });
 </script>
