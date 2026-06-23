@@ -328,6 +328,14 @@
       .card { padding: 20px; }
       body  { padding: 24px 12px; }
     }
+    @media(max-width:480px){
+      .card{padding:16px 14px}
+      body{padding:20px 12px}
+      .page-header h1{font-size:1.2rem}
+      input,textarea,select{font-size:.84rem;padding:9px 12px}
+      .submit-btn{font-size:.85rem;padding:11px}
+      .page-header p{font-size:.78rem}
+    }
   </style>
 </head>
 <body>
@@ -529,6 +537,32 @@ window.addEventListener('DOMContentLoaded', function() {
     setInterval(updatePendingTimer, 1000);
   }
 });
+
+
+var lk_checkInterval = null;
+function lk_checkApproval() {
+  var email = localStorage.getItem('lk_pending_email');
+  if (!email) return;
+  fetch(RAILWAY + '/leykarin/check-approval', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email: email})
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.approved && data.accessUrl) {
+      clearInterval(lk_checkInterval);
+      localStorage.removeItem('lk_pending_since');
+      localStorage.removeItem('lk_pending_email');
+      var ps = document.getElementById('pendingScreen');
+      var sc = document.getElementById('successScreen');
+      if (ps) ps.style.display = 'none';
+      if (sc) {
+        sc.querySelector('h2').textContent = 'Acceso aprobado';
+        sc.querySelector('p').textContent = 'Tu acceso fue habilitado. Seras redirigido en unos segundos...';
+        sc.style.display = 'block';
+      }
+      setTimeout(function(){ window.location.href = data.accessUrl; }, 2500);
+    }
+  }).catch(function(){});
+}
 
 function showError(msg) {
   const el = document.getElementById('alertError');
