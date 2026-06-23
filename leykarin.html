@@ -316,93 +316,71 @@
       .nav-brand span{display:none}
     }
 
-    /* ═══ MOBILE ══════════════════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      :root { --sb-w: 0px; --nav-h: 48px; }
-
-      /* Nav — logo + user chip + solo icono evaluar */
-      nav { padding: 0 12px; height: var(--nav-h); }
-      .nav-brand span { display: none; }
-      .nav-brand img { height: 24px; }
-      .nav-pill { display: none; }
-      .user-chip { padding: 3px 8px 3px 3px; max-width: 140px; }
-      .user-name { max-width: 80px; font-size: .6rem; }
-      .user-org { display: none; }
-      .user-expiry { display: none; }
-      .user-avatar { width: 20px; height: 20px; font-size: .55rem; }
-
-      /* Evaluar — solo icono en móvil */
-      .eval-trigger { padding: 7px; border-radius: 8px; box-shadow: none; }
-      .eval-trigger span { display: none; }
-      .eval-trigger svg { width: 16px; height: 16px; margin: 0; }
-
-      /* Sidebar oculto */
-      main { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-
-      /* Chat head fijo — una sola fila compacta */
-      .chat-head { left: 0; top: var(--nav-h); }
-      .chat-head-top { padding: 7px 12px; }
-      .chat-head-l h1 { font-size: .78rem; white-space: nowrap; }
-      .chat-head-l p { display: none; }
-      .chat-head-r { gap: 4px; }
-      .chat-head-r .ctag { display: none; }
-      .chat-head-r .ctag-c { display: inline-flex; font-size: .54rem; padding: 2px 6px; }
-      .icon-btn { font-size: .58rem; padding: 4px 6px; }
-      .icon-btn svg { width: 10px; height: 10px; }
-
-      /* Mensajes: top ajustado a header compacto (~40px) */
-      .messages { left: 0; padding: 12px 12px 12px; top: calc(var(--nav-h) + 40px); bottom: 82px; }
-      .msg-bubble { font-size: .79rem; padding: 8px 11px; line-height: 1.55; }
-      .msg-av { width: 20px; height: 20px; font-size: .52rem; margin-top: 2px; }
-      .msg { gap: 6px; max-width: 100%; }
-      .msg.user { max-width: 88%; }
-      .msg.assistant { max-width: 96%; }
-
-      /* Welcome screen */
-      .welcome { padding: 16px 10px; }
-      .welcome-icon { width: 38px; height: 38px; margin-bottom: 8px; }
-      .welcome h2 { font-size: .9rem; margin-bottom: 5px; }
-      .welcome p { font-size: .72rem; margin-bottom: 12px; line-height: 1.5; }
-      .wgrid { grid-template-columns: 1fr; gap: 5px; }
-      .wcard { padding: 9px 11px; }
-      .wcard-t { font-size: .74rem; margin-bottom: 2px; }
-      .wcard-d { font-size: .62rem; }
-
-      /* Disclaimer fijo */
-      .disclaimer { left: 0; bottom: 58px; font-size: .6rem; padding: 3px 12px; line-height: 1.4; }
-
-      /* Input fijo */
-      .input-wrap { left: 0; padding: 7px 10px 8px; }
-      .input-row { gap: 6px; }
-      .input-row textarea { font-size: .79rem; padding: 8px 30px 8px 11px; min-height: 36px; max-height: 100px; }
-      .send-btn { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; }
-      .clear-input { right: 44px; bottom: 9px; width: 18px; height: 18px; }
-      .input-hint { font-size: .56rem; margin-top: 3px; }
-
-      /* Modales bottom sheet */
-      .modal-overlay { align-items: flex-end; padding: 0; }
-      .modal-box { border-radius: 16px 16px 0 0; max-height: 85vh; max-width: 100%; }
-      .den-modal-overlay { align-items: flex-end; padding: 0; }
-      .den-modal { border-radius: 16px 16px 0 0; max-height: 85vh; max-width: 100%; }
-
-      /* Historial */
-      .hist-drawer { width: 100%; }
-
-      /* Doc block */
-      .doc-block { font-size: .68rem; padding: 10px; }
-
-      /* Toast */
-      .toast { font-size: .65rem; padding: 6px 12px; bottom: 90px; }
-
-      /* Scroll btn */
-      .scroll-down-btn { right: 12px; bottom: 90px; }
+    /* ─── TABLET ──────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .chat-head-r .ctag-g, .chat-head-r .ctag-a { display: none; }
     }
 
-    @media (max-width: 375px) {
-      .chat-head-l h1 { font-size: .72rem; }
+    /* ─── MOBILE ──────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root { --sb-w: 0px; --nav-h: 52px; }
+
+      nav { padding: 0 12px; }
+      .nav-brand span { display: none; }
+      .nav-brand img { height: 26px; }
+      .nav-pill { display: none; }
+      .user-org, .user-expiry { display: none; }
+      .user-name { max-width: 80px; font-size: .6rem; }
+      .user-avatar { width: 20px; height: 20px; font-size: .55rem; }
+      .eval-trigger { padding: 7px 8px; box-shadow: none; }
+      .eval-trigger span { display: none; }
+
+      main { grid-template-columns: 1fr; overflow: hidden; }
+      .sidebar { display: none; }
+
+      .chat-head { left: 0 !important; top: var(--nav-h) !important; }
+      .chat-head-top { padding: 8px 12px; }
+      .chat-head-l h1 { font-size: .82rem; white-space: nowrap; }
+      .chat-head-l p { font-size: .6rem; }
+      .chat-head-r { gap: 4px; }
+      .chat-head-r .ctag { display: none; }
+      .chat-head-r .ctag-c { display: inline-flex; font-size: .55rem; padding: 2px 6px; }
+      .icon-btn { font-size: .6rem; padding: 4px 7px; }
+
+      .messages { left: 0 !important; top: calc(var(--nav-h) + 52px) !important; bottom: 86px !important; padding: 12px; }
+      .msg { max-width: 100%; gap: 6px; }
+      .msg.user { max-width: 90%; }
+      .msg-av { width: 22px; height: 22px; font-size: .55rem; }
+      .msg-bubble { font-size: .8rem; padding: 9px 12px; }
+
+      .welcome { padding: 16px 10px; }
+      .welcome-icon { width: 38px; height: 38px; margin-bottom: 8px; }
+      .welcome h2 { font-size: .9rem; }
+      .welcome p { font-size: .73rem; margin-bottom: 12px; }
+      .wgrid { grid-template-columns: 1fr; gap: 6px; }
+      .wcard { padding: 10px 12px; }
+      .wcard-t { font-size: .76rem; }
+      .wcard-d { font-size: .63rem; }
+
+      .disclaimer { left: 0 !important; bottom: 60px !important; font-size: .6rem; padding: 4px 12px; }
+
+      .input-wrap { left: 0 !important; padding: 7px 10px 10px; }
+      .input-row { gap: 6px; }
+      .input-row textarea { font-size: .8rem; padding: 9px 12px; min-height: 38px; max-height: 100px; }
+      .send-btn { width: 38px; height: 38px; flex-shrink: 0; }
+      .clear-input { display: none !important; }
+      .input-hint { font-size: .57rem; }
+
+      .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
+      .modal-box, .den-modal { border-radius: 16px 16px 0 0; max-height: 85vh; max-width: 100%; }
+      .hist-drawer { width: 100%; }
+      .scroll-down-btn { right: 12px; }
+      .toast { bottom: 96px; }
+    }
+
+    @media (max-width: 390px) {
+      .chat-head-l p { display: none; }
       .icon-btn span { display: none; }
-      .messages { top: calc(var(--nav-h) + 38px); }
     }
 
   </style>
@@ -623,7 +601,7 @@
 
     <div class="input-wrap">
       <div class="input-row">
-        <textarea id="userInput" placeholder="Escribe tu consulta sobre la Ley Karin..." rows="1"
+        <textarea id="userInput" placeholder="Escribe aqui tu consulta..." rows="1"
           onkeydown="handleKey(event)" oninput="handleInput(this)"></textarea>
         <button class="clear-input" id="clearInputBtn" onclick="clearInput()">
           <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/></svg>
