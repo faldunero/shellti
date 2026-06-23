@@ -552,7 +552,8 @@ function reqCard(r) {
 }
 
 function toggleCard(id) {
-  document.getElementById('card-'+id).classList.toggle('open');
+  var el = document.getElementById(id) || document.getElementById('card-'+id);
+  if (el) el.classList.toggle('open');
 }
 
 function toggleResChip(e, label) {
