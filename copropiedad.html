@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agente Copropiedad — ShellTI</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/imagenes/webp/lobo_shellti.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#020617;--surface:#080f1e;--surface2:#0b1425;--border:#162032;--border2:#1e2d45;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--text2:#94a3b8;--muted:#475569;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:8px;--nav-h:60px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
+    .nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:.92rem}
+    .nav-brand img{height:30px;filter:drop-shadow(0 0 6px var(--cyan))}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-pill{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,212,255,.2);background:var(--cyan-gl);padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+    .nav-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+    .user-chip{display:none;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 10px 4px 4px}
+    .user-chip.show{display:flex}
+    .user-avatar{width:22px;height:22px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--cyan);flex-shrink:0}
+    .user-name{font-size:.65rem;font-weight:600;color:var(--text2);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+    .user-org{font-size:.58rem;color:var(--muted);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative}
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+    .sidebar::-webkit-scrollbar{width:3px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
+    .sb-sect{padding:14px 12px 10px;border-bottom:1px solid var(--border)}
+    .sb-lbl{font-size:.57rem;font-family:var(--mono);color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+    .qbtn{display:block;width:100%;text-align:left;padding:8px 10px;margin-bottom:4px;background:transparent;border:1px solid var(--border);border-radius:var(--r);color:var(--text2);font-family:var(--sans);font-size:.73rem;cursor:pointer;transition:all .14s;line-height:1.35}
+    .qbtn:hover{border-color:var(--cyan);color:var(--text);background:var(--cyan-gl)}
+    .ql{display:block;font-size:.57rem;font-family:var(--mono);color:var(--muted);margin-bottom:2px;letter-spacing:.06em}
+    .hist-drawer{position:absolute;top:0;left:0;width:252px;height:100%;background:var(--surface2);border-right:1px solid var(--border2);z-index:50;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+    .hist-drawer.open{transform:translateX(0)}
+    .hist-drawer-head{padding:14px 14px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .hist-drawer-head h3{font-size:.82rem;font-weight:700}
+    .hist-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;font-size:.8rem}
+    .hist-close:hover{border-color:var(--red);color:var(--red)}
+    .hist-new-btn{margin:10px 12px 0;padding:8px 10px;background:transparent;border:1px solid rgba(0,212,255,.25);border-radius:var(--r);color:var(--cyan);font-family:var(--sans);font-size:.73rem;font-weight:600;cursor:pointer;transition:all .14s;text-align:left;display:flex;align-items:center;gap:6px}
+    .hist-new-btn:hover{background:var(--cyan-gl);border-color:var(--cyan)}
+    .hist-list{flex:1;overflow-y:auto;padding:8px 0}
+    .hist-list::-webkit-scrollbar{width:3px}
+    .hist-list::-webkit-scrollbar-thumb{background:var(--border2)}
+    .hist-group-label{font-size:.58rem;font-family:var(--mono);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;padding:10px 14px 4px}
+    .hist-item{padding:9px 14px;cursor:pointer;border-left:2px solid transparent;transition:all .14s;position:relative}
+    .hist-item:hover{background:rgba(255,255,255,.03);border-left-color:var(--border2)}
+    .hist-item.active{background:var(--cyan-gl);border-left-color:var(--cyan)}
+    .hist-item-title{font-size:.73rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+    .hist-item-meta{font-size:.6rem;color:var(--muted);font-family:var(--mono)}
+    .hist-item-del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:4px;background:transparent;border:none;color:var(--muted);font-size:.65rem;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .14s}
+    .hist-item:hover .hist-item-del{display:flex}
+    .hist-item-del:hover{background:rgba(248,113,113,.15);color:var(--red)}
+    .hist-empty{padding:20px 14px;font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5}
+    .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
+    .chat-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
+    .chat-head-l p{font-size:.68rem;color:var(--muted)}
+    .chat-head-r{display:flex;align-items:center;gap:5px}
+    .ctag{font-size:.58rem;font-family:var(--mono);padding:3px 8px;border-radius:20px;border:1px solid}
+    .ctag-c{color:var(--cyan);border-color:rgba(0,212,255,.2);background:var(--cyan-gl)}
+    .ctag-g{color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)}
+    .ctag-a{color:var(--amber);border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.05)}
+    .icon-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:.62rem;font-family:var(--mono);padding:5px 10px;cursor:pointer;transition:all .14s;white-space:nowrap}
+    .icon-btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
+    .icon-btn.danger:hover{border-color:rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.05)}
+    .messages{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+    .messages::-webkit-scrollbar{width:3px}
+    .messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+    .msg{display:flex;gap:8px;max-width:800px}
+    .msg.user{flex-direction:row-reverse;align-self:flex-end}
+    .msg.assistant{align-self:flex-start}
+    .msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;flex-shrink:0;margin-top:3px}
+    .msg.user .msg-av{background:var(--cyan-dim);color:var(--cyan)}
+    .msg.assistant .msg-av{background:rgba(52,211,153,.1);color:var(--emerald)}
+    .msg-bubble{padding:10px 14px;border-radius:var(--r);font-size:.82rem;line-height:1.65}
+    .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
+    .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
+    .msg-bubble strong{color:var(--cyan)}
+    .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
+    .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
+    .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
+    .typing-dots{display:flex;gap:4px;padding:4px 0}
+    .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tdot 1.2s infinite}
+    .typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
+    @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+    .session-banner{padding:6px 20px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border);display:none;align-items:center;justify-content:space-between;flex-shrink:0}
+    .session-banner.show{display:flex}
+    .session-banner-title{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+    .session-banner-date{font-size:.6rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
+    .welcome{max-width:540px;margin:auto;text-align:center;padding:28px 20px}
+    .welcome-icon{width:46px;height:46px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .welcome h2{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+    .welcome p{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+    .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left}
+    .wcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .14s}
+    .wcard:hover{border-color:var(--cyan);background:var(--cyan-gl)}
+    .wcard-t{font-size:.74rem;font-weight:600;margin-bottom:3px}
+    .wcard-d{font-size:.63rem;color:var(--muted);line-height:1.35}
+    .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
+    .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+    .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
+    .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 36px 9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
+    .input-row textarea:focus{border-color:var(--cyan)}
+    .input-row textarea::placeholder{color:var(--muted)}
+    .clear-input{position:absolute;right:50px;bottom:10px;width:20px;height:20px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .14s}
+    .clear-input.show{display:flex}
+    .clear-input:hover{background:rgba(248,113,113,.2);color:var(--red)}
+    .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .14s}
+    .send-btn:hover{opacity:.85}
+    .send-btn:disabled{opacity:.35;cursor:default}
+    .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:300;pointer-events:none;white-space:nowrap}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
+    .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
+    #access-overlay{position:fixed;inset:0;background:rgba(2,6,23,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .overlay-box{text-align:center}
+    .overlay-icon{width:48px;height:48px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+    #access-overlay h2{font-size:.95rem;font-weight:700;margin-bottom:6px}
+    #access-overlay p{font-size:.76rem;color:var(--muted);max-width:260px}
+    #access-overlay a{margin-top:14px;display:inline-block;color:var(--cyan);font-size:.74rem;text-decoration:none}
+    #access-overlay a:hover{text-decoration:underline}
+    @media(max-width:768px){main{grid-template-columns:1fr}.sidebar{display:none}}
+  </style>
+</head>
+<body>
+
+<div id="access-overlay">
+  <div class="overlay-box">
+    <div class="overlay-icon"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <h2>Acceso restringido</h2>
+    <p>Verifica tu acceso para utilizar el Agente Copropiedad.</p>
+    <a href="/copropiedad-acceso.html">Solicitar acceso</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
+    ShellTI
+  </a>
+  <div class="nav-right">
+    <div class="user-chip" id="userChip">
+      <div class="user-avatar" id="userAvatar"></div>
+      <div><div class="user-name" id="userName"></div><div class="user-org" id="userOrg"></div></div>
+    </div>
+    <span class="nav-pill">Ley 21.442 &middot; IA</span>
+  </div>
+</nav>
+
+<main>
+  <div class="hist-drawer" id="histDrawer">
+    <div class="hist-drawer-head">
+      <h3>Conversaciones</h3>
+      <button class="hist-close" onclick="closeHist()">&#x2715;</button>
+    </div>
+    <button class="hist-new-btn" onclick="newSession()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nueva conversacion
+    </button>
+    <div class="hist-list" id="histList"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sb-sect">
+      <div class="sb-lbl">Consultas frecuentes</div>
+      <button class="qbtn" onclick="sq('Que es la Ley 21.442 y que cambios introduce respecto a la ley anterior?')"><span class="ql">LEY 21.442</span>Que es la nueva Ley de Copropiedad?</button>
+      <button class="qbtn" onclick="sq('Cuales son los derechos y obligaciones de un copropietario bajo la Ley 21.442?')"><span class="ql">COPROPIETARIOS</span>Derechos y obligaciones</button>
+      <button class="qbtn" onclick="sq('Como se convoca y realiza una asamblea de copropietarios? Cuales son los quorum requeridos?')"><span class="ql">ASAMBLEA</span>Como convocar una asamblea</button>
+      <button class="qbtn" onclick="sq('Cuales son las obligaciones del administrador de un condominio segun la Ley 21.442?')"><span class="ql">ADMINISTRADOR</span>Obligaciones del administrador</button>
+      <button class="qbtn" onclick="sq('Como se puede remover al administrador de un condominio?')"><span class="ql">REMOCION</span>Como remover al administrador</button>
+      <button class="qbtn" onclick="sq('Que son los gastos comunes y como se cobran los morosos?')"><span class="ql">GASTOS COMUNES</span>Gastos comunes y morosidad</button>
+      <button class="qbtn" onclick="sq('Como se resuelven los conflictos entre copropietarios segun la Ley 21.442?')"><span class="ql">CONFLICTOS</span>Resolucion de conflictos</button>
+    </div>
+    <div class="sb-sect">
+      <div class="sb-lbl">Documentos</div>
+      <button class="qbtn" onclick="sq('Genera un modelo de citacion a asamblea ordinaria de copropietarios segun la Ley 21.442.')"><span class="ql">GENERAR</span>Citacion a asamblea</button>
+      <button class="qbtn" onclick="sq('Genera un modelo de acta de asamblea de copropietarios.')"><span class="ql">GENERAR</span>Acta de asamblea</button>
+      <button class="qbtn" onclick="sq('Genera un modelo de carta de cobro de gastos comunes morosos.')"><span class="ql">GENERAR</span>Carta cobranza morosos</button>
+      <button class="qbtn" onclick="sq('Genera un modelo de solicitud de rendicion de cuentas al administrador.')"><span class="ql">GENERAR</span>Solicitud rendicion de cuentas</button>
+    </div>
+    <div class="sb-sect">
+      <div class="sb-lbl">Checklists</div>
+      <button class="qbtn" onclick="sq('Dame un checklist paso a paso para convocar correctamente una asamblea de copropietarios.')"><span class="ql">CHECKLIST</span>Convocar una asamblea</button>
+      <button class="qbtn" onclick="sq('Dame un checklist de las obligaciones del administrador segun la Ley 21.442.')"><span class="ql">CHECKLIST</span>Obligaciones del administrador</button>
+      <button class="qbtn" onclick="sq('Dame un checklist para adecuar el reglamento de copropiedad a la Ley 21.442.')"><span class="ql">CHECKLIST</span>Adecuar reglamento a Ley 21.442</button>
+    </div>
+  </aside>
+
+  <div class="chat-wrap">
+    <div class="chat-head">
+      <div class="chat-head-l">
+        <h1>Agente Copropiedad</h1>
+        <p>Ley 21.442 &middot; Administracion de condominios y edificios en Chile</p>
+      </div>
+      <div class="chat-head-r">
+        <span class="ctag ctag-c">Ley 21.442</span>
+        <span class="ctag ctag-g">Asambleas</span>
+        <span class="ctag ctag-a">Administracion</span>
+        <button class="icon-btn" onclick="openHist()">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Historial
+        </button>
+        <button class="icon-btn danger" onclick="clearChat()">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+          Limpiar
+        </button>
+      </div>
+    </div>
+
+    <div class="session-banner" id="sessionBanner">
+      <span class="session-banner-title" id="sessionTitle"></span>
+      <span class="session-banner-date" id="sessionDate"></span>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="disclaimer">Aviso: Este agente entrega orientacion general. Para casos individuales, consulta a un abogado o a tu municipalidad.</div>
+
+    <div class="input-wrap">
+      <div class="input-row">
+        <textarea id="userInput" placeholder="Escribe tu consulta sobre la Ley de Copropiedad..." rows="1"
+          onkeydown="handleKey(event)" oninput="handleInput(this)"></textarea>
+        <button class="clear-input" id="clearInputBtn" onclick="clearInput()">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/></svg>
+        </button>
+        <button class="send-btn" id="sendBtn" onclick="send()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Shift+Enter para salto de linea &middot; Enter para enviar</div>
+    </div>
+  </div>
+</main>
+
+<script src="/copropiedad-guard.js"></script>
+<script>
+const SP = "Eres el Agente Copropiedad de ShellTI, un asistente especializado en la Ley 21.442 de Chile, conocida como la Nueva Ley de Copropiedad Inmobiliaria, promulgada el 13 de abril de 2022 y cuyo reglamento fue publicado en el Diario Oficial el 9 de enero de 2025.\n\nCONTEXTO LEGAL QUE DOMINAS:\n\n1. LEY 21.442 \u2014 ESTRUCTURA GENERAL:\n- Deroga la antigua Ley 19.537 de 1997.\n- Aplica a todos los condominios acogidos al r\u00e9gimen de copropiedad inmobiliaria en Chile.\n- Reglamento vigente desde enero 2025 (DS aprobado por MINVU).\n- Organismos clave: MINVU (Secretaria Ejecutiva de Condominios), municipalidades, Juzgados de Policia Local.\n\n2. TIPOS DE CONDOMINIOS:\n- Tipo A: Edificaciones en un terreno comun (edificios de departamentos, torres).\n- Tipo B: Sitios urbanizados con terrenos de dominio exclusivo (condominios de casas).\n- Condominios de Vivienda de Interes Publico (VIP): reglas especiales de apoyo municipal.\n\n3. DERECHOS Y OBLIGACIONES DE COPROPIETARIOS (Titulo II):\n- Cada copropietario es dueno exclusivo de su unidad y comunero en los bienes comunes.\n- Derecho a usar bienes comunes segun su destino, sin restringir el uso de los demas.\n- Obligacion de inscribirse en el Registro de Copropietarios.\n- Obligacion de pagar gastos comunes ordinarios y extraordinarios.\n- Obligacion de pagar al Fondo Comun de Reserva (minimo 5% de los gastos comunes ordinarios).\n- Mora en gastos comunes: genera intereses y puede suspenderse el suministro de servicios no esenciales.\n- No se puede prohibir la tenencia de mascotas dentro de la unidad; si se pueden restringir bienes comunes.\n- El reglamento de copropiedad debe regularse conforme a la Ley 20.609 (no discriminacion).\n\n4. REGLAMENTO DE COPROPIEDAD:\n- Instrumento principal de administracion del condominio.\n- Debe estar inscrito en el Conservador de Bienes Raices.\n- Contenido obligatorio: uso de bienes comunes, derechos y deberes de copropietarios, quorum de asambleas, facultades del comite, sanciones, entre otros.\n- Clausulas nulas absolutamente: las que contravengan la ley o el reglamento del DS.\n- Plazo para adecuar reglamentos existentes: 1 ano desde publicacion del reglamento del DS (enero 2025), es decir hasta enero 2026.\n- No puede prohibir ingreso de empresas de telecomunicaciones.\n- Debe regular arriendo temporal (Airbnb) para que no perjudique a residentes permanentes.\n\n5. ORGANOS DE ADMINISTRACION (Titulo IV):\na) ASAMBLEA DE COPROPIETARIOS:\n- Organo decisorio maximo.\n- Sesiones ordinarias: al menos 1 vez al ano. Sesiones extraordinarias: cuando las circunstancias lo exijan.\n- Pueden realizarse presencialmente, de forma tele\u00admatica o mixta.\n- Citacion: con al menos 5 dias de anticipacion para ordinarias, 3 dias para extraordinarias.\n- Quorum constitucion sesion ordinaria 1a citacion: 33% de los derechos del condominio. 2a citacion: con los que asistan.\n- Quorum adopcion de acuerdos ordinarios: mayoria de los asistentes.\n- Acuerdos que requieren quorum especial (2/3 de los derechos): enajenacion de bienes comunes, modificacion del reglamento, autorizacion al administrador para contratar ciertos montos, entre otros.\n- Acuerdos que requieren quorum calificado (mayoria de todos los derechos): disolucion del regimen de copropiedad.\n- Arrendatarios: pueden participar con voz pero sin voto, salvo autorizacion escrita del copropietario.\n\nb) COMITE DE ADMINISTRACION:\n- Organo ejecutivo elegido por la asamblea.\n- Minimo 3 integrantes, duracion maxima 3 anos, reelegibles.\n- Preside el comite y actua como representante legal del condominio ante terceros.\n- Puede designar o remover al administrador.\n- Fija la remuneracion del administrador.\n- Puede sesionar de forma tele\u00admatica.\n\nc) ADMINISTRADOR:\n- Persona natural o juridica designada por la asamblea o el comite.\n- Debe inscribirse en el Registro Nacional de Administradores de Condominios (MINVU), obligatorio.\n- Obligaciones: cobrar gastos comunes, mantener cuentas corrientes del condominio, convocar asambleas, mantener el plan de emergencia actualizado, rendir cuentas documentadas, llevar el Registro de Copropietarios.\n- Rendicion de cuentas: documentada, al menos 1 vez al ano en asamblea ordinaria.\n- Puede ser removido por el comite o la asamblea en cualquier momento.\n- Responsable civil y penalmente por actos dolosos o culposos en el ejercicio de su cargo.\n\n6. BIENES COMUNES Y GASTOS COMUNES:\n- Bienes comunes: terrenos de dominio comun, escaleras, ascensores, pasillos, sala de maquinas, piscina, estacionamientos comunes, etc.\n- Gastos comunes ordinarios: mantencion, servicios comunes, remuneracion del administrador, etc.\n- Gastos comunes extraordinarios: obras de mejoramiento, reparaciones mayores.\n- Fondo Comun de Reserva: minimo 5% de los gastos comunes ordinarios mensuales. Destino: reparaciones extraordinarias urgentes o imprevistos.\n- Cobro judicial de gastos comunes: el administrador tiene accion ejecutiva con el solo certificado de deuda firmado.\n\n7. SEGURIDAD Y PLAN DE EMERGENCIA:\n- Todo condominio debe tener un Plan de Emergencia ante incendios, terremotos, tsunamis u otros.\n- Debe ser entregado a Carabineros y Bomberos.\n- El comite debe actualizarlo periodicamente.\n\n8. INFRACCIONES, SANCIONES Y RESOLUSION DE CONFLICTOS:\n- Infracciones del administrador: multas de 1 a 150 UTM segun gravedad, aplicadas por el Juzgado de Policia Local.\n- Infracciones de copropietarios al reglamento: multas segun lo establezca el propio reglamento.\n- Conflictos entre copropietarios: mediacion municipal gratuita como primera instancia.\n- Conflictos no resueltos en asamblea o mediacion: Juzgado de Policia Local competente.\n- Facultades del juez: declarar nulidad del reglamento o acuerdos, exigir rendicion de cuentas, nombrar administrador provisional, adoptar medidas de solucion.\n- Accion de nulidad del reglamento: cualquier copropietario perjudicado puede solicitarla.\n\n9. REGISTRO NACIONAL DE ADMINISTRADORES (RNAC):\n- De caracter publico, obligatorio y gratuito.\n- A cargo del MINVU.\n- Administradores no inscritos no pueden ejercer legalmente.\n- Consulta publica en www.registroadministradores.minvu.gob.cl\n\n10. CONDOMINIOS DE VIVIENDA DE INTERES PUBLICO:\n- Las municipalidades deben prestar asesoria tecnica y legal gratuita.\n- Pueden designar un administrador provisional.\n- Acceso a programas de apoyo del MINVU.\n\nCAPACIDADES DEL AGENTE:\n\nA) RESPONDER PREGUNTAS: Responde con precision juridica y lenguaje claro sobre todos los aspectos de la Ley 21.442 y su reglamento. Cita articulos relevantes cuando sea util.\n\nB) ORIENTAR EN CONFLICTOS: Cuando el usuario describe una situacion de conflicto (mora en gastos comunes, abuso del administrador, acuerdos impugnados, uso indebido de bienes comunes, etc.), orienta sobre que camino seguir: mediacion municipal, asamblea, juzgado de policia local.\n\nC) GUIAR PROCEDIMIENTOS: Explica paso a paso como convocar una asamblea, como remover un administrador, como impugnar un reglamento, como cobrar gastos comunes morosos, como modificar el reglamento.\n\nD) DOCUMENTOS: Cuando el usuario solicite un modelo de documento, genera uno completo y formal en espanol con los campos necesarios marcados como [DATO]. Tipos de documentos: citacion a asamblea ordinaria o extraordinaria, acta de asamblea, carta de remocion del administrador, carta de cobro de gastos comunes morosos, solicitud de rendicion de cuentas, denuncia ante el Juzgado de Policia Local.\n\nE) CHECKLIST: Genera checklists practicos: checklist para convocar una asamblea, checklist de obligaciones del administrador, checklist para adecuar el reglamento a la Ley 21.442.\n\nFORMATO DE RESPUESTAS:\n- Lenguaje preciso pero accesible. No uses jerga innecesaria.\n- Listas numeradas o con vinetas cuando sea util.\n- Para conceptos clave usa **negrita**.\n- Para articulos de ley o terminos tecnicos especificos usa *cursiva*.\n- Cuando generes documentos, usa un bloque claramente marcado como DOCUMENTO GENERADO con el contenido en formato preformateado.\n- Recuerda siempre que para casos especificos se debe consultar a un abogado o a la municipalidad correspondiente.\n- No emitas juicios personales sobre administradores o copropietarios especificos.\n- Responde siempre en espanol.\n\nLIMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.442, administracion de condominios y edificios, copropiedad inmobiliaria, gastos comunes, reglamentos de copropiedad, y conflictos de convivencia en condominios en Chile. Si el usuario pregunta sobre temas no relacionados, responde educadamente que tu especialidad es exclusivamente la Ley de Copropiedad Inmobiliaria y la administracion de condominios en Chile, y ofrece ayuda en ese ambito.\n\nEres un recurso de orientacion profesional de ShellTI. Actua con rigor, claridad y utilidad practica.";
+const RAILWAY = 'https://web-production-372660.up.railway.app';
+var hist = [], busy = false, currentToken = null;
+var sessions = [], currentSessionId = null;
+
+window.addEventListener('shellti-guard-ok', function(e) {
+  var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
+  var token = (e && e.detail && e.detail.token) || new URLSearchParams(location.search).get('token') || localStorage.getItem('copropiedad_token');
+  if (token) { currentToken = token; loadSessions(); }
+});
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
+  startSession();
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast '+(type||'');
+  void t.offsetWidth; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+function genId() { return 'ses_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function dateLabel(iso) {
+  var d=new Date(iso), now=new Date(), diff=Math.floor((now-d)/86400000);
+  if(diff===0) return 'Hoy'; if(diff===1) return 'Ayer'; if(diff<7) return 'Esta semana';
+  return d.toLocaleDateString('es-CL',{day:'numeric',month:'short'});
+}
+function fmtTime(iso) { return new Date(iso).toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }
+
+async function loadSessions() {
+  if (!currentToken) return;
+  try {
+    var res  = await fetch(RAILWAY+'/copropiedad/history/load', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:currentToken})});
+    var data = await res.json();
+    sessions = Array.isArray(data.sessions) ? data.sessions : [];
+    if (data.user) {
+      var chip=document.getElementById('userChip'), av=document.getElementById('userAvatar'), nm=document.getElementById('userName'), org=document.getElementById('userOrg');
+      av.textContent=(data.user.name||'?')[0].toUpperCase(); nm.textContent=data.user.name||''; org.textContent=data.user.organization||''; chip.classList.add('show');
+    }
+    renderHistList();
+    if (sessions.length) {
+      var last=sessions[sessions.length-1], age=Date.now()-new Date(last.started_at).getTime();
+      if (age<7200000 && last.messages && last.messages.length) { loadSession(last.id, true); return; }
+    }
+    startSession();
+  } catch(e) { console.warn('[CP] loadSessions:', e.message); startSession(); }
+}
+
+async function saveSessions() {
+  if (!currentToken) return;
+  try {
+    await fetch(RAILWAY+'/copropiedad/history/save', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:currentToken,sessions:sessions.slice(-10)})});
+  } catch(e) { console.warn('[CP] saveSessions:', e.message); }
+}
+
+function startSession() {
+  var id=genId(), ses={id:id,started_at:new Date().toISOString(),preview:'',messages:[]};
+  sessions.push(ses); currentSessionId=id; hist=[];
+  showWelcome(); updateSessionBanner(ses); renderHistList();
+}
+
+function loadSession(id, silent) {
+  var ses=sessions.find(function(s){ return s.id===id; }); if(!ses) return;
+  currentSessionId=id; hist=ses.messages.slice();
+  var msgs=document.getElementById('messages'); msgs.innerHTML='';
+  if (hist.length) { hist.forEach(function(m){ appendMsg(m.role,m.content,true); }); scrollBot(); }
+  else showWelcome();
+  updateSessionBanner(ses); renderHistList(); closeHist();
+  if (!silent) showToast('Conversacion cargada','ok');
+}
+
+function deleteSession(id, e) {
+  e.stopPropagation(); sessions=sessions.filter(function(s){ return s.id!==id; });
+  if (currentSessionId===id) { sessions.length ? loadSession(sessions[sessions.length-1].id,true) : startSession(); }
+  renderHistList(); saveSessions(); showToast('Conversacion eliminada','');
+}
+
+function newSession() { startSession(); closeHist(); }
+
+function updateSessionBanner(ses) {
+  var banner=document.getElementById('sessionBanner'), title=document.getElementById('sessionTitle'), date=document.getElementById('sessionDate');
+  if (ses.preview) { title.textContent=ses.preview; date.textContent=fmtTime(ses.started_at); banner.classList.add('show'); }
+  else banner.classList.remove('show');
+}
+
+function renderHistList() {
+  var list=document.getElementById('histList');
+  if (!sessions.length) { list.innerHTML='<div class="hist-empty">Sin conversaciones guardadas.</div>'; return; }
+  list.innerHTML='';
+  var groups={}, order=[], sorted=sessions.slice().reverse();
+  sorted.forEach(function(s){ var g=dateLabel(s.started_at); if(!groups[g]){groups[g]=[];order.push(g);} groups[g].push(s); });
+  order.forEach(function(g) {
+    var gl=document.createElement('div'); gl.className='hist-group-label'; gl.textContent=g; list.appendChild(gl);
+    groups[g].forEach(function(s) {
+      var el=document.createElement('div'); el.className='hist-item'+(s.id===currentSessionId?' active':''); el.dataset.sid=s.id;
+      el.innerHTML='<div class="hist-item-title">'+esc(s.preview||'Nueva conversacion')+'</div><div class="hist-item-meta">'+fmtTime(s.started_at)+' &middot; '+s.messages.length+' msgs</div><button class="hist-item-del" title="Eliminar">&#x2715;</button>';
+      el.addEventListener('click', function(){ loadSession(this.dataset.sid,false); });
+      el.querySelector('.hist-item-del').addEventListener('click', function(e){ deleteSession(el.dataset.sid,e); });
+      list.appendChild(el);
+    });
+  });
+}
+
+function openHist()  { renderHistList(); document.getElementById('histDrawer').classList.add('open'); }
+function closeHist() { document.getElementById('histDrawer').classList.remove('open'); }
+
+function handleInput(el) {
+  el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,130)+'px';
+  var b=document.getElementById('clearInputBtn'); el.value.trim().length ? b.classList.add('show') : b.classList.remove('show');
+}
+function clearInput() { var i=document.getElementById('userInput'); i.value=''; i.style.height='auto'; i.focus(); document.getElementById('clearInputBtn').classList.remove('show'); }
+function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
+function scrollBot() { var m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
+function sq(text) { send(text); }
+
+function showWelcome() {
+  var msgs=document.getElementById('messages'); msgs.innerHTML='';
+  var w=document.createElement('div'); w.className='welcome'; w.id='welcome';
+  w.innerHTML='<div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>'
+    +'<h2>Agente Copropiedad</h2>'
+    +'<p>Asistente especializado en la Ley 21.442 de Copropiedad Inmobiliaria de Chile.</p>'
+    +'<div class="wgrid">'
+    +'<div class="wcard" id="wc1"><div class="wcard-t">Que es la Ley 21.442?</div><div class="wcard-d">Cambios y novedades de la nueva ley</div></div>'
+    +'<div class="wcard" id="wc2"><div class="wcard-t">Como convocar una asamblea</div><div class="wcard-d">Plazos, quorum y procedimiento</div></div>'
+    +'<div class="wcard" id="wc3"><div class="wcard-t">Remover al administrador</div><div class="wcard-d">Pasos y requisitos legales</div></div>'
+    +'<div class="wcard" id="wc4"><div class="wcard-t">Generar documento</div><div class="wcard-d">Citacion, acta, carta de cobranza</div></div>'
+    +'</div>';
+  msgs.appendChild(w);
+  w.querySelector('#wc1').onclick=function(){ sq('Que es la Ley 21.442 y que cambios principales introduce?'); };
+  w.querySelector('#wc2').onclick=function(){ sq('Como se convoca correctamente una asamblea de copropietarios segun la Ley 21.442?'); };
+  w.querySelector('#wc3').onclick=function(){ sq('Como se puede remover al administrador de un condominio bajo la Ley 21.442?'); };
+  w.querySelector('#wc4').onclick=function(){ sq('Genera un modelo de citacion a asamblea ordinaria de copropietarios.'); };
+  document.getElementById('sessionBanner').classList.remove('show');
+}
+
+function clearChat() {
+  hist=[]; var ses=sessions.find(function(s){ return s.id===currentSessionId; });
+  if(ses){ ses.messages=[]; ses.preview=''; }
+  showWelcome(); saveSessions(); renderHistList(); showToast('Conversacion limpiada','ok');
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function parseContent(raw) {
+  var h=raw;
+  h=h.replace(/```\w*\n?([\s\S]*?)```/g,function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
+  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  h=h.replace(/\n/g,'<br>');
+  return h;
+}
+function cpDoc(btn){ var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
+function appendMsg(role,content,silent){
+  var w=document.getElementById('welcome'); if(w) w.style.display='none';
+  var msgs=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg '+role;
+  var av=document.createElement('div'); av.className='msg-av'; av.textContent=role==='user'?'TU':'CP';
+  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML=parseContent(content);
+  d.appendChild(av); d.appendChild(b); msgs.appendChild(d);
+  if(!silent) scrollBot();
+}
+function showTyping(){
+  var w=document.getElementById('welcome'); if(w) w.style.display='none';
+  var msgs=document.getElementById('messages');
+  var d=document.createElement('div'); d.className='msg assistant'; d.id='typing';
+  var av=document.createElement('div'); av.className='msg-av'; av.textContent='CP';
+  var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot();
+}
+function removeTyping(){ var t=document.getElementById('typing'); if(t) t.remove(); }
+
+async function send(custom) {
+  if(busy) return;
+  var inp=document.getElementById('userInput'), text=(custom||inp.value).trim();
+  if(!text) return;
+  inp.value=''; inp.style.height='auto';
+  document.getElementById('clearInputBtn').classList.remove('show');
+  appendMsg('user',text); hist.push({role:'user',content:text});
+  var ses=sessions.find(function(s){ return s.id===currentSessionId; });
+  if(ses){ ses.messages=hist.slice(); if(!ses.preview){ ses.preview=text.slice(0,50)+(text.length>50?'...':''); updateSessionBanner(ses); renderHistList(); } }
+  busy=true; document.getElementById('sendBtn').disabled=true; showTyping();
+  try{
+    var res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:SP,messages:hist.slice(-20)})});
+    var data=await res.json(); removeTyping();
+    var reply=data.text||'No se pudo obtener respuesta.';
+    hist.push({role:'assistant',content:reply});
+    if(ses) ses.messages=hist.slice();
+    appendMsg('assistant',reply); saveSessions();
+  }catch(e){ removeTyping(); appendMsg('assistant','Error de conexion. Por favor intenta nuevamente.'); }
+  busy=false; document.getElementById('sendBtn').disabled=false;
+  document.getElementById('userInput').focus();
+}
+</script>
+</body>
+</html>

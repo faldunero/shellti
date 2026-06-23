@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solicitar acceso — Agente Copropiedad &middot; ShellTI</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/imagenes/webp/lobo_shellti.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#020617;--surface:#0b1120;--border:#1e2d45;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.12);--cyan-gl:rgba(0,212,255,.06);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--muted:#64748b;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:10px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px}
+    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    .container{position:relative;z-index:1;width:100%;max-width:480px}
+    .page-header{text-align:center;margin-bottom:28px}
+    .logo-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700;font-size:1rem;margin-bottom:20px}
+    .logo-link img{height:36px;filter:drop-shadow(0 0 8px var(--cyan))}
+    .page-badge{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,212,255,.25);background:var(--cyan-gl);padding:4px 12px;border-radius:20px;letter-spacing:.05em;margin-bottom:16px}
+    .page-header h1{font-size:1.4rem;font-weight:700;margin-bottom:8px}
+    .page-header p{font-size:.83rem;color:var(--muted);line-height:1.6;max-width:380px;margin:0 auto}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px}
+    .info-box{display:flex;gap:10px;align-items:flex-start;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.12);border-radius:var(--r);padding:12px 14px;margin-bottom:20px}
+    .info-box p{font-size:.75rem;color:var(--muted);line-height:1.5}
+    .form-group{margin-bottom:18px}
+    label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+    label span.req{color:var(--cyan);margin-left:2px}
+    input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.88rem;padding:10px 14px;outline:none;transition:border-color .15s}
+    input:focus,textarea:focus,select:focus{border-color:var(--cyan)}
+    input::placeholder,textarea::placeholder{color:#334155}
+    textarea{resize:none;min-height:80px;line-height:1.5}
+    select option{background:var(--surface)}
+    .field-hint{font-size:.7rem;color:#475569;margin-top:5px;line-height:1.4}
+    .submit-btn{width:100%;padding:13px;background:var(--cyan);color:var(--bg);border:none;border-radius:var(--r);font-family:var(--sans);font-weight:700;font-size:.9rem;cursor:pointer;transition:opacity .15s;margin-top:6px}
+    .submit-btn:hover{opacity:.88}
+    .submit-btn:disabled{opacity:.4;cursor:default}
+    .alert{padding:12px 16px;border-radius:var(--r);font-size:.82rem;margin-bottom:18px;display:none;line-height:1.5}
+    .alert.error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
+    .success-screen{text-align:center;padding:10px 0;display:none}
+    .success-icon{width:56px;height:56px;border-radius:14px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
+    .success-screen h2{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+    .success-screen p{font-size:.83rem;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto}
+    .divider{height:1px;background:var(--border);margin:20px 0}
+    .footer-note{text-align:center;font-size:.72rem;color:#334155;margin-top:20px;line-height:1.6}
+    .footer-note a{color:var(--muted);text-decoration:none}
+    .footer-note a:hover{color:var(--cyan)}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="page-header">
+    <a href="/" class="logo-link"><img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />ShellTI</a>
+    <br />
+    <span class="page-badge">Ley 21.442 &middot; Copropiedad</span>
+    <h1>Solicitar acceso</h1>
+    <p>Completa el formulario para acceder al Agente Copropiedad de ShellTI.</p>
+  </div>
+  <div class="card">
+    <div class="info-box">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="2" style="flex-shrink:0;margin-top:1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <p>Tu informacion es confidencial y solo sera utilizada para habilitar tu acceso.</p>
+    </div>
+    <div class="alert error" id="alertError"></div>
+    <div id="formSection">
+      <div class="form-group">
+        <label>Nombre completo <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="Ej: Juan Gonzalez" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label>Organizacion / Empresa <span class="req">*</span></label>
+        <input type="text" id="organization" placeholder="Ej: Condominio Las Palmas / Empresa S.A." />
+      </div>
+      <div class="form-group">
+        <label>Cargo / Rol <span class="req">*</span></label>
+        <select id="cargo">
+          <option value="">Selecciona tu rol...</option>
+          <option value="Administrador de condominio">Administrador de condominio</option>
+          <option value="Miembro del comite de administracion">Miembro del comite de administracion</option>
+          <option value="Copropietario">Copropietario</option>
+          <option value="Residente/arrendatario">Residente / Arrendatario</option>
+          <option value="Abogado/asesor legal">Abogado / Asesor legal</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Correo electronico <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="nombre@empresa.cl" autocomplete="email" />
+        <p class="field-hint">El enlace de acceso sera enviado a este correo una vez aprobada la solicitud.</p>
+      </div>
+      <div class="form-group">
+        <label>Contexto de la consulta <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
+        <textarea id="context" placeholder="Describe brevemente el motivo de tu consulta..."></textarea>
+      </div>
+      <div class="divider"></div>
+      <button class="submit-btn" id="submitBtn" onclick="submitRequest()">Enviar solicitud</button>
+    </div>
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#34D399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Solicitud enviada</h2>
+      <p>Hemos recibido tu solicitud. Una vez revisada, recibirás el enlace de acceso en tu correo electronico.</p>
+    </div>
+  </div>
+  <div class="footer-note">¿Tienes preguntas? <a href="mailto:contacto@shellti.com">contacto@shellti.com</a><br /><a href="/">volver a shellti.com</a></div>
+</div>
+<script>
+var RAILWAY = 'https://web-production-372660.up.railway.app';
+async function submitRequest() {
+  var name=document.getElementById('name').value.trim(), organization=document.getElementById('organization').value.trim();
+  var cargo=document.getElementById('cargo').value, email=document.getElementById('email').value.trim();
+  var context=document.getElementById('context').value.trim();
+  document.getElementById('alertError').style.display='none';
+  if(!name||!organization||!cargo||!email){ showError('Por favor completa todos los campos obligatorios.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showError('Ingresa un correo electronico valido.'); return; }
+  var btn=document.getElementById('submitBtn'); btn.disabled=true; btn.textContent='Enviando...';
+  try{
+    var res=await fetch(RAILWAY+'/copropiedad/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,organization,cargo,email,context:context||null})});
+    var data=await res.json();
+    if(!res.ok){ showError(data.error||'Error al enviar la solicitud.'); btn.disabled=false; btn.textContent='Enviar solicitud'; return; }
+    document.getElementById('formSection').style.display='none'; document.getElementById('successScreen').style.display='block';
+  }catch(e){ showError('Error de conexion. Por favor intenta nuevamente.'); btn.disabled=false; btn.textContent='Enviar solicitud'; }
+}
+function showError(msg){ var el=document.getElementById('alertError'); el.textContent=msg; el.style.display='block'; }
+document.addEventListener('keydown',function(e){ if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA') submitRequest(); });
+</script>
+</body>
+</html>
