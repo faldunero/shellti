@@ -751,74 +751,91 @@
 
     <!-- Evaluador rápido -->
     <div class="evaluator">
-      <div class="eval-label">Evaluador de situación</div>
-      <p style="font-size:.72rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">Selecciona los elementos presentes en la situación para obtener una evaluación orientativa.</p>
 
-      <div class="eval-options">
-        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev1');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck1')">
-          <span class="eval-check" id="evcheck1"></span>
-          <input type="checkbox" id="ev1" style="display:none" onchange="updateEvalCheck(this,'evcheck1')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Conducta repetida</span>
-            <span class="eval-opt-desc">Actos sostenidos en el tiempo, no aislados</span>
-          </span>
-          <span class="eval-weight high">Alta</span>
-        </label>
-        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev2');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck2')">
-          <span class="eval-check" id="evcheck2"></span>
-          <input type="checkbox" id="ev2" style="display:none" onchange="updateEvalCheck(this,'evcheck2')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Relación laboral</span>
-            <span class="eval-opt-desc">Empleador, compañero u otro trabajador</span>
-          </span>
-          <span class="eval-weight high">Alta</span>
-        </label>
-        <label class="eval-opt" data-weight="high" onclick="var cb=document.getElementById('ev3');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck3')">
-          <span class="eval-check" id="evcheck3"></span>
-          <input type="checkbox" id="ev3" style="display:none" onchange="updateEvalCheck(this,'evcheck3')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Afecta dignidad o salud</span>
-            <span class="eval-opt-desc">Menoscabo físico, psíquico o laboral</span>
-          </span>
-          <span class="eval-weight high">Alta</span>
-        </label>
-        <label class="eval-opt" data-weight="med" onclick="var cb=document.getElementById('ev4');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck4')">
-          <span class="eval-check" id="evcheck4"></span>
-          <input type="checkbox" id="ev4" style="display:none" onchange="updateEvalCheck(this,'evcheck4')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Connotación sexual</span>
-            <span class="eval-opt-desc">Requerimientos sexuales no consentidos</span>
-          </span>
-          <span class="eval-weight med">Media</span>
-        </label>
-        <label class="eval-opt" data-weight="med" onclick="var cb=document.getElementById('ev5');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck5')">
-          <span class="eval-check" id="evcheck5"></span>
-          <input type="checkbox" id="ev5" style="display:none" onchange="updateEvalCheck(this,'evcheck5')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Agresión física o verbal</span>
-            <span class="eval-opt-desc">Violencia directa en el trabajo</span>
-          </span>
-          <span class="eval-weight med">Media</span>
-        </label>
-        <label class="eval-opt" data-weight="low" onclick="var cb=document.getElementById('ev6');cb.checked=!cb.checked;updateEvalCheck(cb,'evcheck6')">
-          <span class="eval-check" id="evcheck6"></span>
-          <input type="checkbox" id="ev6" style="display:none" onchange="updateEvalCheck(this,'evcheck6')" />
-          <span class="eval-opt-content">
-            <span class="eval-opt-title">Quejas ignoradas</span>
-            <span class="eval-opt-desc">El empleador no tomó medidas previas</span>
-          </span>
-          <span class="eval-weight low">Agrav.</span>
-        </label>
+      <div class="eval-header">
+        <div class="eval-header-title">Evaluador de situación</div>
+        <p class="eval-header-desc">Selecciona los elementos que describen tu situación para obtener una orientación inicial.</p>
       </div>
 
-      <div class="eval-progress-wrap" id="evalProgress" style="display:none">
-        <div class="eval-progress-bar">
-          <div class="eval-progress-fill" id="evalFill"></div>
+      <div class="eval-criteria">
+
+        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev1')" data-id="ev1">
+          <div class="eval-card-icon">🔁</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Conducta repetida</div>
+            <div class="eval-card-desc">Ocurre más de una vez o es sostenida</div>
+          </div>
+          <div class="eval-card-check">✓</div>
         </div>
-        <div class="eval-progress-label" id="evalLabel"></div>
+
+        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev2')" data-id="ev2">
+          <div class="eval-card-icon">👥</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Relación laboral</div>
+            <div class="eval-card-desc">Jefatura, compañero u otro trabajador</div>
+          </div>
+          <div class="eval-card-check">✓</div>
+        </div>
+
+        <div class="eval-card w-high" onclick="toggleEvalCard(this, 'ev3')" data-id="ev3">
+          <div class="eval-card-icon">🧠</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Afecta dignidad o salud</div>
+            <div class="eval-card-desc">Daño físico, psíquico o al ambiente laboral</div>
+          </div>
+          <div class="eval-card-check">✓</div>
+        </div>
+
+        <div class="eval-card w-med" onclick="toggleEvalCard(this, 'ev4')" data-id="ev4">
+          <div class="eval-card-icon">⚠️</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Connotación sexual</div>
+            <div class="eval-card-desc">Conductas o comentarios no consentidos</div>
+          </div>
+          <div class="eval-card-check">✓</div>
+        </div>
+
+        <div class="eval-card w-med" onclick="toggleEvalCard(this, 'ev5')" data-id="ev5">
+          <div class="eval-card-icon">🚨</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Agresión física o verbal</div>
+            <div class="eval-card-desc">Violencia directa en el lugar de trabajo</div>
+          </div>
+          <div class="eval-card-check">✓</div>
+        </div>
+
+        <div class="eval-card w-low" onclick="toggleEvalCard(this, 'ev6')" data-id="ev6">
+          <div class="eval-card-icon">📋</div>
+          <div class="eval-card-body">
+            <div class="eval-card-title">Quejas previas ignoradas</div>
+            <div class="eval-card-desc">El empleador no actuó ante reportes anteriores</div>
+          </div>
+          <div class="eval-card-check">✓</div>
+        </div>
+
       </div>
 
-      <button class="eval-result-btn" onclick="evaluarSituacion()">Evaluar situación →</button>
+      <!-- Resultado dinámico -->
+      <div class="eval-result-panel" id="evalResultPanel">
+        <div class="eval-result-bar-wrap">
+          <div class="eval-result-bar-track">
+            <div class="eval-result-bar-fill" id="evalBarFill" style="width:0%"></div>
+          </div>
+          <div class="eval-result-bar-labels">
+            <span>Indicios iniciales</span>
+            <span>Alta probabilidad</span>
+          </div>
+        </div>
+        <div class="eval-result-body">
+          <div class="eval-result-level" id="evalResultLevel"></div>
+          <div class="eval-result-text" id="evalResultText"></div>
+        </div>
+      </div>
+
+      <div class="eval-action-wrap">
+        <button class="eval-result-btn" onclick="evaluarSituacion()">Consultar al agente →</button>
+      </div>
+
     </div>
 
   </aside>
@@ -1158,52 +1175,56 @@ async function sendMessage(customText) {
 }
 
 
-function updateEvalCheck(cb, checkId) {
-  var label = cb.closest('.eval-opt');
-  var check = document.getElementById(checkId);
-  if (cb.checked) {
-    label.classList.add('checked');
+
+/* ── Evaluador ── */
+var evalState = {};
+var evalWeights = { ev1:28, ev2:28, ev3:28, ev4:16, ev5:16, ev6:10 };
+
+function toggleEvalCard(card, id) {
+  evalState[id] = !evalState[id];
+  if (evalState[id]) {
+    card.classList.add('selected');
   } else {
-    label.classList.remove('checked');
+    card.classList.remove('selected');
   }
-  updateEvalProgress();
+  renderEvalResult();
 }
 
-function updateEvalProgress() {
-  var checked = [];
-  for (var i = 1; i <= 6; i++) {
-    var cb = document.getElementById('ev' + i);
-    if (cb && cb.checked) checked.push(i);
-  }
+function renderEvalResult() {
+  var selected = Object.keys(evalState).filter(function(k){ return evalState[k]; });
+  var panel  = document.getElementById('evalResultPanel');
+  var fill   = document.getElementById('evalBarFill');
+  var level  = document.getElementById('evalResultLevel');
+  var text   = document.getElementById('evalResultText');
 
-  var progressWrap = document.getElementById('evalProgress');
-  var fill = document.getElementById('evalFill');
-  var label = document.getElementById('evalLabel');
-
-  if (!checked.length) {
-    progressWrap.style.display = 'none';
+  if (!selected.length) {
+    panel.classList.remove('show');
     return;
   }
 
-  progressWrap.style.display = 'block';
+  panel.classList.add('show');
 
-  // Score: ev1,2,3 = 25pts each, ev4,5 = 15pts each, ev6 = 10pts
-  var weights = {1:25, 2:25, 3:25, 4:15, 5:15, 6:10};
   var score = 0;
-  checked.forEach(function(i){ score += weights[i] || 0; });
-  var pct = Math.min(score, 100);
+  selected.forEach(function(k){ score += evalWeights[k] || 0; });
+  var pct = Math.min(Math.round(score), 100);
 
   fill.style.width = pct + '%';
 
-  if (pct >= 70) {
-    fill.className = 'eval-progress-fill high';
-    label.textContent = 'Alta probabilidad · Consulta a la Inspección del Trabajo';
+  if (pct >= 65) {
+    fill.className = 'eval-result-bar-fill lvl-high';
+    level.className = 'eval-result-level lvl-high';
+    level.textContent = 'Indicios relevantes de conducta sancionable';
+    text.textContent = 'Los elementos presentes sugieren que la situación podría calificar bajo la Ley Karin. Se recomienda contactar a la Inspección del Trabajo o un abogado laboral.';
   } else if (pct >= 35) {
-    fill.className = 'eval-progress-fill medium';
-    label.textContent = 'Indicios relevantes · Evalúa con un especialista';
+    fill.className = 'eval-result-bar-fill lvl-medium';
+    level.className = 'eval-result-level lvl-medium';
+    level.textContent = 'Situación a evaluar con más antecedentes';
+    text.textContent = 'Algunos elementos están presentes, pero se requiere mayor contexto para determinar si configura una conducta bajo la Ley Karin. Consulta al agente para orientación específica.';
   } else {
-    fill.className = 'eval-progress-fill low';
-    label.textContent = 'Elementos iniciales · Puede requerir más antecedentes';
+    fill.className = 'eval-result-bar-fill lvl-low';
+    level.className = 'eval-result-level lvl-low';
+    level.textContent = 'Elementos iniciales, aún no concluyentes';
+    text.textContent = 'Con los elementos seleccionados no es posible determinar una configuración clara. Puedes agregar más detalles o consultarle directamente al agente.';
   }
 }
 
