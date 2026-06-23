@@ -246,6 +246,9 @@
 
 
     /* Scroll to bottom button */
+    .mob-tags-toggle { display: none; background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); font-size: .6rem; font-family: var(--mono); padding: 4px 8px; cursor: pointer; transition: all .14s; align-items: center; gap: 4px; }
+    .mob-tags-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+    .mob-tags-row { display: none; }
     .scroll-down-btn {
       position: absolute;
       bottom: 16px;
@@ -318,100 +321,98 @@
 
     /* ─── TABLET ──────────────────────────────────────────────────── */
 
-    /* ─── MOBILE ──────────────────────────────────────────────────── */
 
-
-    /* ═══════════════════════════════════════════════════
-       MOBILE LAYOUT — completely separate from desktop
-       ═══════════════════════════════════════════════════ */
+    /* ═══ MOBILE ═══════════════════════════════════════════════ */
     @media (max-width: 768px) {
 
-      /* Reset desktop fixed positioning */
-      .chat-head  { position: relative !important; top: auto !important; left: auto !important; right: auto !important; }
-      .messages   { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; overflow-y: visible !important; }
-      .disclaimer { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; }
-      .input-wrap { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; }
+      /* Reset desktop fixed */
+      .chat-head, .messages, .disclaimer, .input-wrap {
+        position: relative !important;
+        top: auto !important; left: auto !important;
+        right: auto !important; bottom: auto !important;
+      }
 
-      /* Full viewport column layout */
+      /* Viewport */
       body { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
-      main { display: flex; flex-direction: column; flex: 1; margin-top: 0; height: auto; overflow: hidden; grid-template-columns: unset; }
+      main { display: flex; flex-direction: column; flex: 1; margin-top: 0; height: auto; overflow: hidden; }
       .sidebar { display: none !important; }
-      .hist-drawer { width: 100%; }
 
       /* Nav */
-      nav { position: fixed; top: 0; left: 0; right: 0; height: 52px; padding: 0 12px; z-index: 100; }
+      nav { position: fixed; top: 0; left: 0; right: 0; height: 50px; padding: 0 10px; z-index: 100; }
       .nav-brand span { display: none; }
-      .nav-brand img { height: 26px; }
+      .nav-brand img { height: 24px; }
       .nav-pill { display: none; }
       .user-org, .user-expiry { display: none; }
-      .user-name { max-width: 80px; font-size: .6rem; }
-      .user-avatar { width: 22px; height: 22px; font-size: .56rem; }
-      .eval-trigger { width: 36px; height: 36px; padding: 0; justify-content: center; box-shadow: none; border-radius: 8px; }
+      .user-name { max-width: 75px; font-size: .58rem; }
+      .user-avatar { width: 20px; height: 20px; font-size: .52rem; }
+      .eval-trigger { width: 34px; height: 34px; padding: 0; justify-content: center; box-shadow: none; border-radius: 8px; }
       .eval-trigger span { display: none; }
-      .eval-trigger svg { margin: 0; width: 15px; height: 15px; }
+      .eval-trigger svg { margin: 0; width: 14px; height: 14px; }
 
-      /* Chat wrapper — full height below nav */
-      .chat-wrap { display: flex; flex-direction: column; flex: 1; margin-top: 52px; overflow: hidden; min-height: 0; }
+      /* Chat wrap below nav */
+      .chat-wrap { display: flex; flex-direction: column; flex: 1; margin-top: 50px; min-height: 0; overflow: hidden; }
 
-      /* Chat head — compact single row */
-      .chat-head { background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0; }
-      .chat-head-top { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; }
-      .chat-head-l h1 { font-size: .82rem; font-weight: 700; white-space: nowrap; }
+      /* Chat head — compact */
+      .chat-head { flex-shrink: 0; padding: 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+      .chat-head-top { padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; }
+      .chat-head-l h1 { font-size: .78rem; white-space: nowrap; }
       .chat-head-l p { display: none; }
-      .chat-head-r { gap: 4px; flex-wrap: nowrap; }
+      .chat-head-r { gap: 3px; align-items: center; }
+
+      /* Tags row hidden — replaced by toggle */
       .chat-head-r .ctag { display: none; }
-      .chat-head-r .ctag-c { display: inline-flex; font-size: .55rem; padding: 2px 6px; }
-      .icon-btn { font-size: .6rem; padding: 4px 7px; }
-      .icon-btn svg { width: 10px; height: 10px; }
+      .chat-head-r .ctag-c { display: none; }
+      .icon-btn { font-size: .58rem; padding: 3px 6px; }
+      .icon-btn svg { width: 9px; height: 9px; }
 
-      /* Session banner inside header */
-      .chat-head-session { padding: 3px 12px 4px; }
-      .chat-head-session-title { font-size: .6rem; }
+      /* Collapsible tags row */
+      .mob-tags-toggle { display: flex !important; }
+      .mob-tags-row { display: none; flex-wrap: wrap; gap: 5px; padding: 5px 10px 7px; border-top: 1px solid var(--border); background: var(--bg); }
+      .mob-tags-row.open { display: flex; }
+      .mob-tags-row .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* Messages — flex:1 scrollable */
-      .messages { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
-      .msg { gap: 6px; max-width: 100%; }
+      /* Messages — THE KEY: flex:1 + overflow scroll */
+      .messages-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+      .messages { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+      .msg { gap: 5px; max-width: 100%; }
       .msg.user { max-width: 90%; align-self: flex-end; }
       .msg.assistant { max-width: 98%; align-self: flex-start; }
-      .msg-av { width: 22px; height: 22px; font-size: .54rem; margin-top: 2px; flex-shrink: 0; }
-      .msg-bubble { font-size: .8rem; padding: 9px 12px; line-height: 1.55; }
-      .doc-block { font-size: .64rem; padding: 9px 10px; }
+      .msg-av { width: 20px; height: 20px; font-size: .5rem; margin-top: 2px; flex-shrink: 0; }
+      .msg-bubble { font-size: .75rem; padding: 7px 10px; line-height: 1.5; }
+      .doc-block { font-size: .6rem; padding: 8px 9px; line-height: 1.4; }
+      .doc-copy { font-size: .54rem; padding: 2px 5px; }
 
-      /* Welcome screen */
-      .welcome { padding: 16px 12px; max-width: 100%; }
-      .welcome-icon { width: 40px; height: 40px; margin-bottom: 10px; }
-      .welcome h2 { font-size: .92rem; margin-bottom: 6px; }
-      .welcome p { font-size: .74rem; margin-bottom: 12px; line-height: 1.5; }
-      .wgrid { grid-template-columns: 1fr; gap: 6px; }
-      .wcard { padding: 10px 12px; }
-      .wcard-t { font-size: .76rem; margin-bottom: 3px; }
-      .wcard-d { font-size: .63rem; }
+      /* Welcome */
+      .welcome { padding: 14px 10px; max-width: 100%; }
+      .welcome-icon { width: 36px; height: 36px; margin-bottom: 8px; }
+      .welcome h2 { font-size: .88rem; }
+      .welcome p { font-size: .7rem; margin-bottom: 10px; }
+      .wgrid { grid-template-columns: 1fr; gap: 5px; }
+      .wcard { padding: 9px 10px; }
+      .wcard-t { font-size: .72rem; }
+      .wcard-d { font-size: .6rem; }
 
-      /* Disclaimer — no fixed, inline */
-      .disclaimer { flex-shrink: 0; font-size: .6rem; padding: 4px 12px; }
-
-      /* Input wrap — no fixed, inline */
-      .input-wrap { flex-shrink: 0; padding: 7px 10px 10px; }
-      .input-row { gap: 6px; }
-      .input-row textarea { font-size: .8rem; padding: 9px 12px; min-height: 38px; max-height: 90px; border-radius: 10px; }
+      /* Bottom */
+      .disclaimer { flex-shrink: 0; font-size: .58rem; padding: 3px 10px; line-height: 1.3; }
+      .input-wrap { flex-shrink: 0; padding: 6px 10px 8px; background: var(--surface); }
+      .input-row { gap: 5px; }
+      .input-row textarea { font-size: .76rem; padding: 8px 10px; min-height: 36px; max-height: 80px; }
+      .send-btn { width: 36px; height: 36px; flex-shrink: 0; }
       .clear-input { display: none !important; }
-      .send-btn { width: 38px; height: 38px; flex-shrink: 0; }
-      .input-hint { font-size: .56rem; margin-top: 3px; }
+      .input-hint { font-size: .54rem; margin-top: 2px; }
 
-      /* Modals bottom sheet */
+      /* Modals */
       .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
-      .modal-box, .den-modal { border-radius: 16px 16px 0 0; max-height: 85vh; max-width: 100%; }
-
-      /* Scroll button */
-      .scroll-down-btn { bottom: 10px; right: 10px; }
+      .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
+      .hist-drawer { width: 100%; }
+      .mob-tags-toggle { display: none; background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); font-size: .6rem; font-family: var(--mono); padding: 4px 8px; cursor: pointer; transition: all .14s; align-items: center; gap: 4px; }
+    .mob-tags-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+    .mob-tags-row { display: none; }
+    .scroll-down-btn { right: 10px; bottom: 10px; }
       .toast { bottom: 80px; }
-
-      /* Messages-wrap */
-      .messages-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
     }
 
     @media (max-width: 390px) {
-      .chat-head-l h1 { font-size: .76rem; }
       .icon-btn span { display: none; }
     }
 
@@ -594,6 +595,10 @@
         <span class="ctag ctag-a">Documentos</span>
         <a href="https://www.inn.cl/noticias/inn-publica-nch-32622021-sistemas-de-gestion-gestion-de-igualdad-de-genero-y-conciliacion-de-la-vida-laboral-familiar-y-personal-requisitos" target="_blank" rel="noopener" class="ctag ctag-p ctag-link" title="NCh 3262:2021 - Igualdad de genero y conciliacion">NCh 3262</a>
         <a href="https://www.suseso.gob.cl/606/w3-article-19640.html" target="_blank" rel="noopener" class="ctag ctag-b ctag-link" title="Protocolo CEAL-SM/SUSESO - Riesgos psicosociales">CEAL-SM</a>
+        <button class="mob-tags-toggle" id="mobTagsToggle" onclick="toggleMobTags()">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Info
+        </button>
         <button class="icon-btn" onclick="openHist()">
           <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Historial
@@ -603,6 +608,13 @@
           Limpiar
         </button>
       </div>
+      </div>
+      <div class="mob-tags-row" id="mobTagsRow">
+        <a href="https://www.bcn.cl/leychile/navegar?idNorma=1174565" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.643</a>
+        <span class="ctag ctag-g ctag-link" onclick="openDen();closeMobTags();" style="cursor:pointer">Denuncias</span>
+        <span class="ctag ctag-a">Documentos</span>
+        <a href="https://www.inn.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">NCh 3262</a>
+        <a href="https://www.suseso.gob.cl" target="_blank" rel="noopener" class="ctag ctag-b ctag-link">CEAL-SM</a>
       </div>
       <div class="chat-head-session" id="sessionBanner">
         <span class="chat-head-session-title" id="sessionTitle"></span>
@@ -835,6 +847,18 @@ function openHist()  { renderHistList(); document.getElementById('histDrawer').c
 function closeHist() { document.getElementById('histDrawer').classList.remove('open'); }
 
 /* ── Modal evaluador ── */
+
+
+function toggleMobTags() {
+  var row = document.getElementById('mobTagsRow');
+  var btn = document.getElementById('mobTagsToggle');
+  if (row) row.classList.toggle('open');
+  if (btn) btn.style.color = row && row.classList.contains('open') ? 'var(--cyan)' : '';
+}
+function closeMobTags() {
+  var row = document.getElementById('mobTagsRow');
+  if (row) row.classList.remove('open');
+}
 
 function openDen()  { document.getElementById('denModal').classList.add('open'); }
 function closeDen() { document.getElementById('denModal').classList.remove('open'); }
