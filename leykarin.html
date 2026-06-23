@@ -34,6 +34,9 @@
     /* User chip */
     .user-chip{display:none;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 10px 4px 4px;cursor:default}
     .user-chip.show{display:flex}
+    .user-expiry{font-size:.55rem;font-family:var(--mono);padding:2px 7px;border-radius:10px;background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2);white-space:nowrap}
+    .user-expiry.warn{background:rgba(251,191,36,.1);color:var(--amber);border-color:rgba(251,191,36,.2)}
+    .user-expiry.crit{background:rgba(248,113,113,.1);color:var(--red);border-color:rgba(248,113,113,.2)}
     .user-avatar{width:22px;height:22px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--cyan);flex-shrink:0}
     .user-name{font-size:.65rem;font-weight:600;color:var(--text2);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
     .user-org{font-size:.58rem;color:var(--muted);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
@@ -248,13 +251,14 @@
 
 <nav>
   <a href="/" class="nav-brand">
-    <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
+    <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" onerror="this.style.display='none'" />
     ShellTI
   </a>
   <div class="nav-right">
     <div class="user-chip" id="userChip">
       <div class="user-avatar" id="userAvatar"></div>
       <div><div class="user-name" id="userName"></div><div class="user-org" id="userOrg"></div></div>
+      <span class="user-expiry" id="userExpiry"></span>
     </div>
     <button class="eval-trigger" onclick="openEval()">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#020617" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -419,6 +423,22 @@ async function loadSessions() {
       nm.textContent  = data.user.name || '';
       org.textContent = data.user.organization || '';
       chip.classList.add('show');
+      // Tiempo restante
+      if (data.user.expiresAt) {
+        var exp = new Date(data.user.expiresAt);
+        var diffMs = exp - new Date();
+        var badge = document.getElementById('userExpiry');
+        if (diffMs > 0) {
+          var diffH = Math.floor(diffMs / 3600000);
+          var diffD = Math.floor(diffH / 24);
+          var label = diffD > 1 ? diffD + ' dias' : diffH > 1 ? diffH + ' hrs' : 'Menos de 1 hr';
+          badge.textContent = label;
+          badge.className = 'user-expiry' + (diffD < 1 ? ' crit' : diffD < 3 ? ' warn' : '');
+        } else {
+          badge.textContent = 'Expirado';
+          badge.className = 'user-expiry crit';
+        }
+      }
     }
 
     renderHistList();
