@@ -338,16 +338,18 @@
       .sidebar { display: none !important; }
 
       /* Nav */
-      nav { position: fixed; top: 0; left: 0; right: 0; height: 50px; padding: 0 10px; z-index: 100; }
+      nav { position: fixed; top: 0; left: 0; right: 0; height: 50px; padding: 0 10px; z-index: 100; justify-content: space-between; }
+      .nav-brand { flex-shrink: 0; }
       .nav-brand span { display: none; }
       .nav-brand img { height: 24px; }
       .nav-pill { display: none; }
+      .nav-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
+      .user-chip { margin-right: auto; margin-left: 6px; }
       .user-org, .user-expiry { display: none; }
-      .user-name { max-width: 75px; font-size: .58rem; }
+      .user-name { max-width: 90px; font-size: .6rem; }
       .user-avatar { width: 20px; height: 20px; font-size: .52rem; }
-      .eval-trigger { width: 34px; height: 34px; padding: 0; justify-content: center; box-shadow: none; border-radius: 8px; }
-      .eval-trigger span { display: none; }
-      .eval-trigger svg { margin: 0; width: 14px; height: 14px; }
+      .eval-trigger { width: auto; height: 34px; padding: 0 10px; justify-content: center; box-shadow: none; border-radius: 8px; font-size: .68rem; gap: 5px; flex-shrink: 0; }
+      .eval-trigger svg { width: 13px; height: 13px; }
 
       /* Chat wrap below nav */
       .chat-wrap { display: flex; flex-direction: column; flex: 1; margin-top: 50px; min-height: 0; overflow: hidden; }
@@ -357,23 +359,19 @@
       .chat-head-top { padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; }
       .chat-head-l h1 { font-size: .78rem; white-space: nowrap; }
       .chat-head-l p { display: none; }
-      .chat-head-r { gap: 3px; align-items: center; }
-
-      /* Tags row hidden — replaced by toggle */
+      .chat-head-r { gap: 4px; align-items: center; width: 100%; justify-content: flex-end; }
       .chat-head-r .ctag { display: none; }
       .chat-head-r .ctag-c { display: none; }
-      .icon-btn { font-size: .58rem; padding: 3px 6px; }
+      .icon-btn { font-size: .6rem; padding: 4px 8px; }
       .icon-btn svg { width: 9px; height: 9px; }
-
-      /* Collapsible tags row */
-      .mob-tags-toggle { display: flex !important; }
+      .mob-tags-toggle { display: flex !important; order: -1; margin-right: auto; }
       .mob-tags-row { display: none; flex-wrap: wrap; gap: 5px; padding: 5px 10px 7px; border-top: 1px solid var(--border); background: var(--bg); }
       .mob-tags-row.open { display: flex; }
       .mob-tags-row .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* Messages — THE KEY: flex:1 + overflow scroll */
-      .messages-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
-      .messages { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+      /* Messages scroll fix */
+      .messages-wrap { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+      .messages { flex: 1; overflow-y: scroll; -webkit-overflow-scrolling: touch; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 0; height: 0; }
       .msg { gap: 5px; max-width: 100%; }
       .msg.user { max-width: 90%; align-self: flex-end; }
       .msg.assistant { max-width: 98%; align-self: flex-start; }
@@ -613,8 +611,6 @@
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1174565" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.643</a>
         <span class="ctag ctag-g ctag-link" onclick="openDen();closeMobTags();" style="cursor:pointer">Denuncias</span>
         <span class="ctag ctag-a">Documentos</span>
-        <a href="https://www.inn.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">NCh 3262</a>
-        <a href="https://www.suseso.gob.cl" target="_blank" rel="noopener" class="ctag ctag-b ctag-link">CEAL-SM</a>
       </div>
       <div class="chat-head-session" id="sessionBanner">
         <span class="chat-head-session-title" id="sessionTitle"></span>
