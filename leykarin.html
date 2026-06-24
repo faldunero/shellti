@@ -332,11 +332,11 @@
     /* ═══ MOBILE ════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
 
-      /* Reset desktop fixed — explicit per-element */
-      .chat-head  { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important; }
-      .messages   { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important; }
-      .disclaimer { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important; }
-      .input-wrap { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important; }
+      /* Reset desktop fixed */
+      .chat-head  { position: static !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; width: auto !important; }
+      .messages   { position: static !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; }
+      .disclaimer { position: static !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; z-index: 1 !important; }
+      .input-wrap { position: static !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; z-index: 1 !important; }
 
       /* Viewport */
       html, body { height: 100%; }
@@ -424,10 +424,10 @@
       /* MODALS */
       .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
       .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
-      .hist-drawer { width: 100%; position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 200; transform: translateX(-100%); }
-      .hist-drawer.open { transform: translateX(0); }
+      .hist-drawer { width: 100%; }
       .scroll-down-btn { right: 10px; bottom: 10px; }
-      .toast { bottom: 80px; }
+      .toast { bottom: auto !important; top: 120px !important; left: 50% !important; transform: translateX(-50%) translateY(-60px) !important; }
+      .toast.show { transform: translateX(-50%) translateY(0) !important; }
     }
 
     @media (max-width: 390px) {
