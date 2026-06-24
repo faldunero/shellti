@@ -635,6 +635,14 @@
         <a href="https://www.inn.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">NCh 3262</a>
         <a href="https://www.suseso.gob.cl" target="_blank" rel="noopener" class="ctag ctag-b ctag-link">CEAL-SM</a>
       </div>
+      <!-- Mobile Input Row (inside header) -->
+      <div class="mob-input-row" id="mobInputRow">
+        <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
+          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
       <div class="chat-head-top">
       <div class="chat-head-l">
         <h1>Agente Ley Karin</h1>
@@ -1120,6 +1128,23 @@ function mobSetUser(name) {
   if (nm && name) nm.textContent = name;
 }
 
+/* ── Mobile input handlers ─── */
+function handleMobInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 70) + 'px';
+}
+function handleMobKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMob(); }
+}
+function sendMob() {
+  var inp = document.getElementById('mobUserInput');
+  if (!inp) return;
+  var val = inp.value.trim();
+  if (!val) return;
+  inp.value = ''; inp.style.height = 'auto';
+  send(val);
+}
+
 </script>
 </body>
 </html    /* ═══ MOBILE LAYOUT ════════════════════════════════════════ */
@@ -1134,9 +1159,9 @@ function mobSetUser(name) {
       .nav-brand span { display: none; }
       .nav-brand img { height: 26px; }
 
-      /* Mobile rows: shown */
-      .mob-row1 { display: flex !important; align-items: center; justify-content: space-between; padding: 9px 12px 4px; gap: 8px; }
-      .mob-row2 { display: flex !important; align-items: center; gap: 5px; padding: 0 12px 8px; border-bottom: 1px solid var(--border); }
+      /* Mobile rows */
+      .mob-row1 { display: flex !important; align-items: center; justify-content: space-between; padding: 9px 12px 5px; gap: 8px; }
+      .mob-row2 { display: flex !important; align-items: center; gap: 5px; padding: 0 12px 7px; }
       .mob-r1-title { font-size: .84rem; font-weight: 700; color: var(--text); white-space: nowrap; }
       .mob-chip { display: flex; align-items: center; gap: 5px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 9px 3px 3px; }
       .mob-chip-av { width: 20px; height: 20px; border-radius: 50%; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.3); display: flex; align-items: center; justify-content: center; font-size: .52rem; font-weight: 700; color: var(--cyan); flex-shrink: 0; }
@@ -1148,78 +1173,35 @@ function mobSetUser(name) {
       .mob-tags-panel.open { display: flex !important; }
       .mob-tags-panel .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* KEY FIX: nav becomes inline (not fixed) */
-      nav {
-        position: relative !important;
-        height: auto !important;
-        padding: 8px 12px !important;
-      }
+      /* Inline input row inside chat-head on mobile */
+      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 8px; border-top: 1px solid var(--border); background: var(--surface); }
+      .mob-input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: .77rem; padding: 8px 10px; resize: none; outline: none; min-height: 36px; max-height: 70px; line-height: 1.5; transition: border-color .14s; }
+      .mob-input-row textarea:focus { border-color: var(--cyan); }
+      .mob-input-row textarea::placeholder { color: var(--muted); }
+      .mob-send-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--cyan); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity .14s; }
+      .mob-send-btn:disabled { opacity: .35; cursor: default; }
 
-      /* body stays flex column, height = full screen */
+      /* Hide original input/disclaimer on mobile */
+      .input-wrap { display: none !important; }
+      .disclaimer { display: none !important; }
+
+      /* Nav inline */
+      nav { position: relative !important; height: auto !important; padding: 8px 12px !important; }
       body { height: 100dvh !important; overflow: hidden !important; }
-
-      /* main: no top margin, fills remaining height after inline nav */
-      main {
-        margin-top: 0 !important;
-        height: auto !important;
-        flex: 1 !important;
-        min-height: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-        grid-template-columns: unset !important;
-      }
-
+      main { margin-top: 0 !important; height: auto !important; flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; grid-template-columns: unset !important; }
       .sidebar { display: none !important; }
-
-      /* chat-wrap fills main */
-      .chat-wrap {
-        flex: 1 !important;
-        min-height: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-        height: auto !important;
-      }
-
-      /* chat-head shrinks */
-      .chat-head { flex-shrink: 0 !important; }
-
-      /* messages scrolls */
+      .chat-wrap { flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; height: auto !important; }
+      .chat-head { flex-shrink: 0 !important; border-bottom: 1px solid var(--border); background: var(--bg); }
       .messages-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-      .messages {
-        flex: 1 !important;
-        min-height: 0 !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch;
-        padding: 10px 12px;
-        height: auto !important;
-      }
-
-      /* Welcome hidden ONLY on mobile */
+      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px; height: auto !important; }
       .welcome { display: none !important; }
-
-      /* Bottom */
-      .disclaimer { flex-shrink: 0 !important; font-size: .57rem; padding: 3px 12px; }
-      .input-wrap { flex-shrink: 0 !important; padding: 6px 10px 8px !important; background: var(--surface); }
-      .input-row { gap: 5px; }
-      .input-row textarea { font-size: .77rem; padding: 8px 10px; min-height: 36px; max-height: 80px; }
-      .send-btn { width: 36px; height: 36px; flex-shrink: 0; }
-      .clear-input { display: none !important; }
-      .input-hint { font-size: .53rem; margin-top: 2px; }
-
-      /* Content */
       .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; }
       .msg-av { width: 20px; height: 20px; font-size: .5rem; }
       .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; }
-
-      /* Modals */
       .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
       .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
       .hist-drawer { position: fixed !important; inset: 0; width: 100%; z-index: 200; }
-
-      /* Toast */
-      .toast { position: fixed !important; bottom: 80px !important; top: auto !important; left: 50% !important; right: auto !important; transform: translateX(-50%) translateY(60px) !important; z-index: 999 !important; }
+      .toast { position: fixed !important; bottom: 20px !important; top: auto !important; left: 50% !important; right: auto !important; transform: translateX(-50%) translateY(60px) !important; z-index: 999 !important; }
       .toast.show { transform: translateX(-50%) translateY(0) !important; }
     }
 
