@@ -311,7 +311,7 @@
       .chat-wrap { flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
       .chat-head { flex-shrink: 0 !important; border-bottom: 1px solid var(--border); background: var(--bg); }
       .messages-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px; height: auto !important; }
+      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px 20px !important; height: auto !important; }
 
       /* Desktop header hidden */
       .chat-head-top { display: none !important; }
@@ -331,8 +331,8 @@
       .mob-tags-panel.open { display: flex !important; }
       .mob-tags-panel .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* Mobile input */
-      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 8px; border-top: 1px solid var(--border); background: var(--surface); }
+      /* Mobile input — bottom of chat-wrap as flex child */
+      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 10px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0 !important; }
       .mob-input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: .77rem; padding: 8px 10px; resize: none; outline: none; min-height: 36px; max-height: 70px; line-height: 1.5; transition: border-color .14s; }
       .mob-input-row textarea:focus { border-color: var(--cyan); }
       .mob-input-row textarea::placeholder { color: var(--muted); }
@@ -567,14 +567,7 @@
         <a href="https://www.inn.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">NCh 3262</a>
         <a href="https://www.suseso.gob.cl" target="_blank" rel="noopener" class="ctag ctag-b ctag-link">CEAL-SM</a>
       </div>
-      <!-- Mobile Input -->
-      <div class="mob-input-row" id="mobInputRow">
-        <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
-          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
-        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
+
       <div class="chat-head-top">
       <div class="chat-head-l">
       </div>
@@ -642,6 +635,15 @@
         </button>
       </div>
       <div class="input-hint">Shift+Enter para salto de linea &middot; Enter para enviar</div>
+    </div>
+
+    <!-- Mobile Input Row (outside chat-head, at bottom of chat-wrap) -->
+    <div class="mob-input-row" id="mobInputRow">
+      <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
+        onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+      <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
   </div>
 </main>
