@@ -729,7 +729,7 @@ h2.sec-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:1.
    EQUIPO OFICINA
 ══════════════════════════════════════════════ */
 #equipo{background:var(--deep3);padding:80px 2.5rem}
-.equipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.equipo-grid{display:grid;grid-template-columns:1fr;gap:60px;align-items:center;max-width:780px}
 .equipo-img-wrap{
   border-radius:8px;overflow:hidden;
   border:1px solid var(--border);
@@ -909,19 +909,18 @@ h2.sec-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:1.
   font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cyan);
   background:var(--cg);box-shadow:0 0 12px rgba(0,212,255,.12);
 }
-.meto-item h5{color:var(--silver);font-size:.92rem;margin-bottom:.25rem}
-.meto-item p{color:var(--muted);font-size:.85rem;font-weight:300}
+.meto-item h5{color:#fff;font-size:.92rem;margin-bottom:.25rem;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.meto-item p{color:rgba(255,255,255,0.82);font-size:.85rem;font-weight:300;text-shadow:0 1px 6px rgba(0,0,0,.9)}
 .meto-stats{
-  background:var(--card);border:1px solid var(--border);border-radius:3px;
-  padding:2.5rem;display:flex;flex-direction:column;gap:1.75rem;
-  box-shadow:0 0 40px rgba(0,212,255,.06);
+  background:transparent;border:none;border-radius:0;
+  padding:2.5rem 0;display:flex;flex-direction:column;gap:1.75rem;
 }
 .ms-item{border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:1.5rem}
 .ms-item:last-child{border-bottom:none;padding-bottom:0}
 .ms-lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:.4rem;text-shadow:0 0 12px rgba(52,211,153,.6)}
 .ms-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:.25rem;text-shadow:0 1px 8px rgba(0,0,0,.9)}
 .ms-sub{font-size:.82rem;color:rgba(255,255,255,0.8);font-weight:300;text-shadow:0 1px 5px rgba(0,0,0,.8)}
-.meto-body>p{color:var(--muted);font-weight:300;margin-bottom:.75rem}
+.meto-body>p{color:rgba(255,255,255,0.85);font-weight:300;margin-bottom:.75rem;text-shadow:0 1px 6px rgba(0,0,0,.9)}
 
 /* ══════════════════════════════════════════════
    CONTACTO
@@ -1801,9 +1800,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
   <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
   <div class="container">
     <div class="equipo-grid fu">
-      <div class="equipo-img-wrap">
-        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&q=80&auto=format&fit=crop" alt="ShellTI — Infraestructura y Arquitectura" class="photo-vivid">
-      </div>
+      <div class="equipo-img-wrap" style="display:none">
       <div class="equipo-content">
         <p class="sec-label">El Equipo</p>
         <h2 class="sec-title">Expertos en<br><span class="tg">Compliance</span> y Arquitectura</h2>
