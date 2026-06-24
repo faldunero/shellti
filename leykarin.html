@@ -559,6 +559,14 @@
           <span>Limpiar</span>
         </button>
       </div>
+      <!-- Mobile Input -->
+      <div class="mob-input-row" id="mobInputRow">
+        <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
+          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
       <!-- Mobile Info Panel -->
       <div class="mob-tags-panel" id="mobTagsPanel">
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1174565" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.643</a>
@@ -637,14 +645,6 @@
       <div class="input-hint">Shift+Enter para salto de linea &middot; Enter para enviar</div>
     </div>
 
-    <!-- Mobile Input Row (outside chat-head, at bottom of chat-wrap) -->
-    <div class="mob-input-row" id="mobInputRow">
-      <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
-        onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
-      <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      </button>
-    </div>
   </div>
 </main>
 
@@ -906,9 +906,12 @@ function isNearBottom() {
 
 function scrollBot(force) {
   var m = document.getElementById('messages');
-  if (force || isNearBottom()) {
-    m.scrollTop = m.scrollHeight;
-    hideScrollBtn();
+  var isMob = window.innerWidth <= 768;
+  if (force || isMob || isNearBottom()) {
+    requestAnimationFrame(function() {
+      m.scrollTop = m.scrollHeight;
+      hideScrollBtn();
+    });
   }
 }
 
@@ -1075,10 +1078,6 @@ function sendMob() {
   if (!val) return;
   inp.value = ''; inp.style.height = 'auto';
   send(val);
-  setTimeout(function() {
-    var m = document.getElementById('messages');
-    if (m) m.scrollTop = m.scrollHeight;
-  }, 80);
 }
 
 </script>
