@@ -249,7 +249,6 @@
     .mob-tags-toggle { display: none; background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); font-size: .6rem; font-family: var(--mono); padding: 4px 8px; cursor: pointer; transition: all .14s; align-items: center; gap: 4px; }
     .mob-tags-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
     .mob-tags-row { display: none; }
-    .mob-input-row { display: none; }
     .scroll-down-btn {
       position: absolute;
       bottom: 16px;
@@ -329,7 +328,6 @@
     .mob-tools-toggle { display: none; }
     .mob-tools-row { display: none; }
     .mob-tags-row { display: none; }
-    .mob-input-row { display: none; }
 
     /* ═══ MOBILE ════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
@@ -568,7 +566,7 @@
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#020617" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Evaluar situacion
     </button>
-    <span class="nav-pill">Ley Karin</span>
+    <span class="nav-pill">Ley Karin &middot; IA</span>
   </div>
 </nav>
 
@@ -640,7 +638,7 @@
       <div class="chat-head-top">
       <div class="chat-head-l">
         <h1>Agente Ley Karin</h1>
-        <p>Ley 21.643 &middot; Acoso laboral, sexual y violencia en el trabajo</p>
+
       </div>
       <div class="chat-head-r">
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1174565" target="_blank" rel="noopener" class="ctag ctag-c ctag-link" title="Ver Ley 21.643 en BCN">Ley 21.643</a>
@@ -1124,70 +1122,4 @@ function mobSetUser(name) {
 
 </script>
 </body>
-</html    /* ═══ MOBILE LAYOUT ════════════════════════════════════════ */
-    @media (max-width: 768px) {
-
-      /* Desktop header: hidden */
-      .chat-head-top { display: none !important; }
-      .chat-head-session { display: none !important; }
-      .mob-tags-row { display: none !important; }
-      .nav-pill { display: none; }
-      .nav-right { display: none !important; }
-      .nav-brand span { display: none; }
-      .nav-brand img { height: 26px; }
-
-      /* Mobile rows: shown */
-      .mob-row1 { display: flex !important; align-items: center; justify-content: space-between; padding: 9px 12px 5px; gap: 8px; }
-      .mob-row2 { display: flex !important; align-items: center; gap: 5px; padding: 0 12px 7px; }
-      .mob-r1-title { font-size: .84rem; font-weight: 700; color: var(--text); white-space: nowrap; }
-      .mob-chip { display: flex; align-items: center; gap: 5px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 9px 3px 3px; }
-      .mob-chip-av { width: 20px; height: 20px; border-radius: 50%; background: var(--cyan-dim); border: 1px solid rgba(0,212,255,.3); display: flex; align-items: center; justify-content: center; font-size: .52rem; font-weight: 700; color: var(--cyan); flex-shrink: 0; }
-      .mob-chip-nm { font-size: .6rem; font-weight: 600; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
-      .mob-btn { display: inline-flex; align-items: center; gap: 4px; font-size: .62rem; font-family: var(--mono); color: var(--muted); background: transparent; border: 1px solid var(--border2); border-radius: 6px; padding: 4px 8px; cursor: pointer; white-space: nowrap; transition: all .14s; }
-      .mob-btn:hover, .mob-btn.on { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-gl); }
-      .mob-btn svg { width: 10px; height: 10px; flex-shrink: 0; }
-      .mob-tags-panel { border-top: 1px solid var(--border); padding: 6px 12px 8px; flex-wrap: wrap; gap: 5px; background: var(--surface2); display: none; }
-      .mob-tags-panel.open { display: flex !important; }
-      .mob-tags-panel .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
-
-      /* Mobile input row: shown */
-      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 8px; border-top: 1px solid var(--border); background: var(--surface); }
-      .mob-input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: .77rem; padding: 8px 10px; resize: none; outline: none; min-height: 36px; max-height: 70px; line-height: 1.5; transition: border-color .14s; }
-      .mob-input-row textarea:focus { border-color: var(--cyan); }
-      .mob-input-row textarea::placeholder { color: var(--muted); }
-      .mob-send-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--cyan); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-      /* Hide desktop input/disclaimer */
-      .input-wrap { display: none !important; }
-      .disclaimer { display: none !important; }
-
-      /* Layout */
-      nav { position: relative !important; height: auto !important; padding: 8px 12px !important; }
-      body { height: 100dvh !important; overflow: hidden !important; }
-      main { margin-top: 0 !important; height: auto !important; flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; grid-template-columns: unset !important; }
-      .sidebar { display: none !important; }
-      .chat-wrap { flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
-      .chat-head { flex-shrink: 0 !important; border-bottom: 1px solid var(--border); background: var(--bg); }
-      .messages-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px; height: auto !important; }
-
-      /* Welcome: hidden on mobile */
-      .welcome { display: none !important; }
-
-      /* Messages content */
-      .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; }
-      .msg-av { width: 20px; height: 20px; font-size: .5rem; }
-      .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; }
-
-      /* Modals */
-      .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
-      .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
-      .hist-drawer { position: fixed !important; inset: 0; width: 100%; z-index: 200; }
-      .toast { position: fixed !important; bottom: 20px !important; top: auto !important; left: 50% !important; right: auto !important; transform: translateX(-50%) translateY(60px) !important; z-index: 999 !important; }
-      .toast.show { transform: translateX(-50%) translateY(0) !important; }
-    }
-
-    @media (max-width: 390px) {
-      .mob-btn span { display: none; }
-    }
->
+</html>
