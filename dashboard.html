@@ -481,11 +481,13 @@ nav{
 
   /* PDF FOOTER */
   #pdf-footer{
-    display:block!important;
-    position:fixed;bottom:0;left:0;right:0;
+    display:flex!important;
+    justify-content:space-between;
+    align-items:center;
     border-top:1pt solid #e2e8f0;
     padding-top:6pt;
-    display:flex!important;justify-content:space-between;align-items:center;
+    margin-top:24pt;
+    width:100%;
   }
   #pdf-footer-left{font-size:6pt;color:#94a3b8;font-family:'JetBrains Mono',monospace}
   #pdf-footer-right{font-size:6pt;color:#94a3b8;font-family:'JetBrains Mono',monospace;text-align:right}
@@ -1568,7 +1570,7 @@ function exportPDF() {
           <span style="background:${bg};border:0.5pt solid ${col}33;color:${col};font-size:5.5pt;font-family:monospace;padding:1pt 5pt;letter-spacing:0.5pt">${n.ley||''}</span>
           <span style="font-size:6pt;color:#64748b;font-family:monospace">${n.articulo||''}</span>
         </div>
-        <div style="font-size:7pt;color:#475569;line-height:1.5">${n.descripcion||''}</div>
+        <div style="font-size:7pt;color:#475569;line-height:1.5;text-align:justify">${n.descripcion||''}</div>
       </div>`;
     }).join('');
   }
@@ -1579,7 +1581,7 @@ function exportPDF() {
       const sc = semColor(h.semaforo), sbg = semBg(h.semaforo), sbr = semBorder(h.semaforo);
       const catColors = {Privacidad:['#f5f3ff','#6d28d9'],Seguridad:['#eff6ff','#1d4ed8'],Cookies:['#fffbeb','#92400e'],Trackers:['#fffbeb','#92400e'],Derechos:['#f0fdf4','#15803d'],Formularios:['#eff6ff','#0369a1'],Transferencias:['#fff1f2','#dc2626'],DatosSensibles:['#fff1f2','#dc2626'],Accountability:['#f5f3ff','#6d28d9']};
       const [cbg, ccol] = catColors[h.categoria] || ['#f1f5f9','#64748b'];
-      return `<div style="border:0.5pt solid ${sbr};background:${sbg};margin-bottom:10pt;page-break-inside:avoid">
+      return `<div style="border:0.5pt solid ${sbr};background:${sbg};margin-bottom:12pt;page-break-inside:avoid">
         <div style="display:flex;align-items:stretch">
           <div style="width:3pt;background:${sc};flex-shrink:0"></div>
           <div style="flex:1;padding:7pt 9pt">
@@ -1588,9 +1590,9 @@ function exportPDF() {
               <span style="background:${cbg};color:${ccol};font-size:5.5pt;font-family:monospace;padding:1pt 5pt;letter-spacing:0.5pt">${h.categoria||''}</span>
               <span style="background:${sbg};color:${sc};font-size:5.5pt;font-family:monospace;padding:1pt 5pt;border:0.5pt solid ${sbr}">${(h.semaforo||'').toUpperCase()}</span>
             </div>
-            <div style="font-size:8.5pt;font-weight:700;color:#0f172a;margin-bottom:4pt;line-height:1.4">${h.descripcion||''}</div>
-            ${h.observacion ? `<div style="font-size:7.5pt;color:#475569;line-height:1.6;margin-bottom:4pt">${h.observacion}</div>` : ''}
-            ${h.impacto ? `<div style="background:#fff1f2;border-left:2pt solid #fca5a5;padding:5pt 7pt;font-size:7pt;color:#7f1d1d;line-height:1.5;margin-bottom:4pt"><strong style="display:block;font-size:5.5pt;font-family:monospace;color:#dc2626;letter-spacing:1pt;margin-bottom:2pt">IMPACTO PARA EL TITULAR</strong>${h.impacto}</div>` : ''}
+            <div style="font-size:8.5pt;font-weight:700;color:#0f172a;margin-bottom:4pt;line-height:1.4;text-align:justify">${h.descripcion||''}</div>
+            ${h.observacion ? `<div style="font-size:7.5pt;color:#475569;line-height:1.6;margin-bottom:4pt;text-align:justify">${h.observacion}</div>` : ''}
+            ${h.impacto ? `<div style="background:#fff1f2;border-left:2pt solid #fca5a5;padding:5pt 7pt;font-size:7pt;color:#7f1d1d;line-height:1.5;margin-bottom:4pt;text-align:justify"><strong style="display:block;font-size:5.5pt;font-family:monospace;color:#dc2626;letter-spacing:1pt;margin-bottom:2pt">IMPACTO PARA EL TITULAR</strong>${h.impacto}</div>` : ''}
             ${renderNormasHtml(h.normativa)}
           </div>
         </div>
@@ -1603,7 +1605,7 @@ function exportPDF() {
     return recs.map((r, i) => {
       const pc = priColor(r.prioridad), pbg = priBg(r.prioridad);
       const sc = semColor(r.semaforo), sbg = semBg(r.semaforo), sbr = semBorder(r.semaforo);
-      return `<div style="border:0.5pt solid #e2e8f0;background:#f8fafc;margin-bottom:10pt;page-break-inside:avoid">
+      return `<div style="border:0.5pt solid #e2e8f0;background:#f8fafc;margin-bottom:5pt;page-break-inside:avoid">
         <div style="display:flex;align-items:stretch">
           <div style="width:3pt;background:${sc};flex-shrink:0"></div>
           <div style="flex:1;padding:7pt 9pt">
@@ -1611,7 +1613,7 @@ function exportPDF() {
               <span style="background:${pbg};color:${pc};font-size:5.5pt;font-family:monospace;padding:1pt 6pt;border:0.5pt solid ${pc}44;letter-spacing:1pt;text-transform:uppercase">${r.prioridad||'media'}</span>
               ${r.plazo ? `<span style="font-size:6pt;color:#94a3b8;font-family:monospace">⏱ ${r.plazo}</span>` : ''}
             </div>
-            <div style="font-size:8.5pt;font-weight:600;color:#0f172a;margin-bottom:4pt;line-height:1.4">${r.descripcion||''}</div>
+            <div style="font-size:8.5pt;font-weight:600;color:#0f172a;margin-bottom:4pt;line-height:1.4;text-align:justify">${r.descripcion||''}</div>
             ${renderNormasHtml(r.fundamentoLegal)}
           </div>
         </div>
@@ -1659,14 +1661,12 @@ function exportPDF() {
 <meta charset="UTF-8">
 <title>ShellTI · Auditoría · ${crawler.title || url}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<style>  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#ffffff;color:#0f172a;font-family:'Inter',Arial,sans-serif;font-size:9.5pt;line-height:1.6}
-  body{padding-bottom:40pt}
-  @page{size:A4;margin:15mm 14mm 28mm 14mm}
+  @page{size:A4;margin:15mm 14mm 22mm 14mm}
   @page:first{margin-top:10mm}
   .page-break{page-break-before:always}
-  .avoid-break{page-break-inside:avoid;margin-bottom:6pt}
+  .avoid-break{page-break-inside:avoid}
 
   /* HEADER */
   .pdf-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10pt;border-bottom:2pt solid #0284c7;margin-bottom:20pt}
@@ -1682,7 +1682,18 @@ function exportPDF() {
   .report-date{font-size:6.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8}
 
   /* FOOTER */
-  .pdf-footer{position:fixed;bottom:0;left:0;right:0;border-top:0.5pt solid #e2e8f0;padding:8pt 0 6pt;display:flex;justify-content:space-between;background:#fff}
+  /* FOOTER — rendered at bottom of LAST page only, not fixed */
+  .pdf-footer{display:none}
+  @media print{
+    .pdf-footer{
+      display:flex !important;
+      justify-content:space-between;
+      border-top:0.5pt solid #e2e8f0;
+      padding-top:6pt;
+      margin-top:24pt;
+      width:100%;
+    }
+  }
   .pdf-footer span{font-size:5.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8}
 
   /* SECTION TITLES */
@@ -1702,7 +1713,7 @@ function exportPDF() {
   .hero-title{font-size:14pt;font-weight:800;color:#0f172a;line-height:1.2;margin-bottom:4pt}
   .hero-url{font-size:7.5pt;font-family:'JetBrains Mono',monospace;color:#0284c7;margin-bottom:10pt}
   .hero-semaforo{display:inline-flex;align-items:center;gap:5pt;font-size:7.5pt;font-weight:600}
-  .hero-resumen{font-size:8pt;color:#475569;line-height:1.7;font-style:italic;margin-top:8pt;padding-top:8pt;border-top:0.5pt solid #e2e8f0}
+  .hero-resumen{font-size:8pt;color:#475569;line-height:1.7;font-style:italic;margin-top:8pt;padding-top:8pt;border-top:0.5pt solid #e2e8f0;text-align:justify}
 
   /* KPI GRID */
   .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:0.5pt solid #e2e8f0;margin-bottom:16pt}
@@ -1728,11 +1739,12 @@ function exportPDF() {
   table.clean th{font-size:5.5pt;font-family:'JetBrains Mono',monospace;letter-spacing:1.5pt;text-transform:uppercase;color:#64748b;font-weight:400;padding:5pt 6pt;border-bottom:1pt solid #e2e8f0;text-align:left}
   table.clean td{padding:5pt 6pt;font-size:8pt;border-bottom:0.5pt solid #f1f5f9;color:#334155}
 
-  .disclaimer{background:#f8fafc;border:0.5pt solid #e2e8f0;padding:10pt 12pt;margin-top:20pt;font-size:6.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8;line-height:1.8}
+  .disclaimer{background:#f8fafc;border:0.5pt solid #e2e8f0;padding:10pt 12pt;margin-top:20pt;font-size:6.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8;line-height:1.8;text-align:justify}
   .tag{display:inline-block;font-size:5.5pt;font-family:'JetBrains Mono',monospace;letter-spacing:0.5pt;padding:1.5pt 5pt;border:0.5pt solid;margin-right:2pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .print-btn{position:fixed;top:12pt;right:12pt;background:#0284c7;color:#fff;border:none;padding:7pt 14pt;font-family:'Inter',sans-serif;font-size:8pt;font-weight:600;cursor:pointer;letter-spacing:0.5pt}
   .print-btn:hover{background:#0369a1}
   @media print{.print-btn{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -1878,12 +1890,12 @@ function exportPDF() {
 
 <!-- HALLAZGOS -->
 <div class="page-break"></div>
-<div style="margin-bottom:6pt;margin-top:4pt"><div class="section-title">Hallazgos · ${hallazgos.length} detectados</div></div>
+<div style="margin-bottom:6pt"><div class="section-title">Hallazgos · ${hallazgos.length} detectados</div></div>
 ${renderHallazgosHtml()}
 
 <!-- RECOMENDACIONES -->
 <div class="page-break"></div>
-<div style="margin-bottom:6pt;margin-top:4pt"><div class="section-title">Recomendaciones · ${recs.length} acciones sugeridas</div></div>
+<div style="margin-bottom:6pt"><div class="section-title">Recomendaciones · ${recs.length} acciones sugeridas</div></div>
 ${renderRecsHtml()}
 
 <!-- DISCLAIMER -->
