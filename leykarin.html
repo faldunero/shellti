@@ -353,9 +353,13 @@
       .wcard-d { font-size: .62rem; }
 
       /* Content */
-      .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; }
-      .msg-av { width: 20px; height: 20px; font-size: .5rem; }
-      .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; }
+      .messages { overflow-x: hidden !important; }
+      .msg { max-width: 100% !important; width: 100% !important; box-sizing: border-box !important; }
+      .msg.user { max-width: 100% !important; }
+      .msg.assistant { max-width: 100% !important; }
+      .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; max-width: calc(100vw - 60px) !important; word-break: break-word !important; overflow-wrap: break-word !important; white-space: normal !important; }
+      .msg-av { width: 20px; height: 20px; font-size: .5rem; flex-shrink: 0 !important; }
+      .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; max-width: calc(100vw - 80px) !important; overflow-x: auto; }
 
       /* Modals */
       .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
