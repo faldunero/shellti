@@ -1258,7 +1258,7 @@ function renderKPIs(hallazgos, recs, crawler) {
 function renderSancion(hallazgos, puntuacion) {
   const rojos = hallazgos.filter(h => h.semaforo === 'rojo').length;
   const tipo = puntuacion < 30 ? 'Gravísima' : puntuacion < 55 ? 'Grave' : 'Leve';
-  const maxUtm = puntuacion < 30 ? 5000 : puntuacion < 55 ? 1000 : 100;
+  const maxUtm = puntuacion < 30 ? 10000 : puntuacion < 55 ? 1000 : 100;
   const clpRef = maxUtm * 65000; // UTM aprox CLP
   const clpFmt = clpRef >= 1000000 ? `$${(clpRef/1000000).toFixed(0)}M` : `$${clpRef.toLocaleString('es-CL')}`;
 
@@ -1276,7 +1276,7 @@ function renderSancion(hallazgos, puntuacion) {
       <div class="sancion-sub">Equiv. CLP referencial</div>
     </div>`;
   document.getElementById('sancionNota').textContent =
-    `Basado en ${rojos} hallazgo(s) crítico(s). Ley 21.719 Título IX, Art. 33 y ss. La Agencia de Protección de Datos puede aplicar sanciones accesorias incluyendo publicación del infractor y suspensión del tratamiento. Cifras referenciales, no constituyen asesoría legal.`;
+    `Basado en ${rojos} hallazgo(s) crítico(s). Ley 21.719 Título IX, Arts. 33-36. Infracciones gravísimas: hasta 10.000 UTM (~$650M CLP); hasta 20.000 UTM (~$1.300M CLP) para empresas con ingresos anuales superiores a 1.000.000 UTM. La Agencia puede además suspender el tratamiento y publicar al infractor. Cifras referenciales, no constituyen asesoría legal.`;
 }
 
 function renderDimensionesLey(crawler, hallazgos) {
@@ -1528,7 +1528,7 @@ function exportPDF() {
   const nivelLabel = nivel.charAt(0).toUpperCase() + nivel.slice(1);
   const semaforoEmoji = { rojo: '🔴', amarillo: '🟡', verde: '🟢' }[semaforo] || '🟡';
   const tipoSancion = puntuacion < 30 ? 'Gravísima' : puntuacion < 55 ? 'Grave' : 'Leve';
-  const maxUtm = puntuacion < 30 ? 5000 : puntuacion < 55 ? 1000 : 100;
+  const maxUtm = puntuacion < 30 ? 10000 : puntuacion < 55 ? 1000 : 100;
   const clpRef = maxUtm * 65000;
   const clpFmt = clpRef >= 1000000 ? `$${(clpRef/1000000).toFixed(0)}M CLP` : `$${clpRef.toLocaleString('es-CL')} CLP`;
   const dateStr = now.toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -1581,7 +1581,7 @@ function exportPDF() {
       const sc = semColor(h.semaforo), sbg = semBg(h.semaforo), sbr = semBorder(h.semaforo);
       const catColors = {Privacidad:['#f5f3ff','#6d28d9'],Seguridad:['#eff6ff','#1d4ed8'],Cookies:['#fffbeb','#92400e'],Trackers:['#fffbeb','#92400e'],Derechos:['#f0fdf4','#15803d'],Formularios:['#eff6ff','#0369a1'],Transferencias:['#fff1f2','#dc2626'],DatosSensibles:['#fff1f2','#dc2626'],Accountability:['#f5f3ff','#6d28d9']};
       const [cbg, ccol] = catColors[h.categoria] || ['#f1f5f9','#64748b'];
-      return `<div style="border:0.5pt solid ${sbr};background:${sbg};margin-bottom:12pt;page-break-inside:avoid">
+      return `<div style="border:0.5pt solid ${sbr};background:${sbg};margin-bottom:6pt;page-break-inside:avoid">
         <div style="display:flex;align-items:stretch">
           <div style="width:3pt;background:${sc};flex-shrink:0"></div>
           <div style="flex:1;padding:7pt 9pt">
@@ -1661,8 +1661,10 @@ function exportPDF() {
 <meta charset="UTF-8">
 <title>ShellTI · Auditoría · ${crawler.title || url}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#ffffff;color:#0f172a;font-family:'Inter',Arial,sans-serif;font-size:9.5pt;line-height:1.6}
+  body{padding-bottom:32pt}
   @page{size:A4;margin:15mm 14mm 22mm 14mm}
   @page:first{margin-top:10mm}
   .page-break{page-break-before:always}
@@ -1682,18 +1684,7 @@ function exportPDF() {
   .report-date{font-size:6.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8}
 
   /* FOOTER */
-  /* FOOTER — rendered at bottom of LAST page only, not fixed */
-  .pdf-footer{display:none}
-  @media print{
-    .pdf-footer{
-      display:flex !important;
-      justify-content:space-between;
-      border-top:0.5pt solid #e2e8f0;
-      padding-top:6pt;
-      margin-top:24pt;
-      width:100%;
-    }
-  }
+  .pdf-footer{display:flex;justify-content:space-between;border-top:0.5pt solid #e2e8f0;padding-top:6pt;margin-top:24pt;width:100%}
   .pdf-footer span{font-size:5.5pt;font-family:'JetBrains Mono',monospace;color:#94a3b8}
 
   /* SECTION TITLES */
@@ -1744,7 +1735,6 @@ function exportPDF() {
   .print-btn{position:fixed;top:12pt;right:12pt;background:#0284c7;color:#fff;border:none;padding:7pt 14pt;font-family:'Inter',sans-serif;font-size:8pt;font-weight:600;cursor:pointer;letter-spacing:0.5pt}
   .print-btn:hover{background:#0369a1}
   @media print{.print-btn{display:none!important}}
-
 </style>
 </head>
 <body>
@@ -1819,7 +1809,7 @@ function exportPDF() {
     <div class="sancion-item"><div class="sancion-label">Multa máxima estimada</div><div class="sancion-val">${maxUtm.toLocaleString()} UTM</div></div>
     <div class="sancion-item"><div class="sancion-label">Equiv. CLP referencial</div><div class="sancion-val">${clpFmt}</div></div>
   </div>
-  <div class="sancion-nota">Basado en ${rojos} hallazgo(s) crítico(s). Art. 33 y ss. Ley 21.719. La Agencia de Protección de Datos puede aplicar sanciones accesorias incluyendo publicación del infractor. Cifras referenciales.</div>
+  <div class="sancion-nota">Basado en ${rojos} hallazgo(s) crítico(s). Arts. 33-36 Ley 21.719. Gravísimas: hasta 10.000 UTM (~$650M CLP); hasta 20.000 UTM para empresas con ingresos > 1.000.000 UTM anuales. La Agencia puede suspender el tratamiento y publicar al infractor. Cifras referenciales.</div>
 </div>
 
 <!-- CHECKS + TRACKERS -->
@@ -1909,7 +1899,176 @@ ${renderRecsHtml()}
 
 </body></html>`;
 
-  const w = window.open('', '_blank');
+
+  // ── PERFORMANCE SECTION ─────────────────────────────────────────────────
+  (function() {
+    var perfRaw = null;
+    try { perfRaw = localStorage.getItem('shellti_perf'); } catch(e) {}
+    if (!perfRaw) return;
+    var saved;
+    try { saved = JSON.parse(perfRaw); } catch(e) { return; }
+    var p = saved.p;
+    if (!p) return;
+    var perfUrl  = saved.url || '';
+    var perfDate = saved.ts ? new Date(saved.ts).toLocaleString('es-CL',{dateStyle:'short',timeStyle:'short'}) : '';
+
+    function pCol(score) {
+      return score >= 90 ? '#059669' : score >= 75 ? '#0284c7' : score >= 55 ? '#d97706' : '#dc2626';
+    }
+    function msCol(ms, ok, warn) {
+      return ms <= ok ? '#059669' : ms <= warn ? '#d97706' : '#dc2626';
+    }
+    function pGrade(score) {
+      return score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 55 ? 'C' : score >= 40 ? 'D' : 'F';
+    }
+
+    var col = pCol(p.performanceScore);
+    var g   = pGrade(p.performanceScore);
+    var tls = p.tls || {};
+
+    // timing bars
+    var phases = [
+      ['DNS Resolution', p.dnsResolution, 30, 80],
+      ['TCP Handshake',  p.tcpHandshake,  60, 120],
+      ['TLS Handshake',  p.tlsHandshake, 100, 200],
+      ['TTFB',           p.ttfb,         200, 600],
+      ['DOM Content Loaded', p.domContentLoaded, 1200, 2500],
+      ['Fully Loaded',   p.fullyLoaded,  2000, 5000],
+    ];
+    var maxMs = p.fullyLoaded || 1;
+    var timingHtml = phases.map(function(ph) {
+      var c = msCol(ph[1], ph[2], ph[3]);
+      var w = Math.round(ph[1] / maxMs * 100);
+      return '<div style="margin-bottom:6pt">'
+        + '<div style="display:flex;justify-content:space-between;font-size:7pt;color:#475569;margin-bottom:2pt">'
+        + '<span>' + ph[0] + '</span>'
+        + '<span style="font-family:monospace;color:' + c + '">' + ph[1] + ' ms</span></div>'
+        + '<div style="background:#e2e8f0;height:4pt;border-radius:2pt;overflow:hidden">'
+        + '<div style="background:' + c + ';height:100%;width:' + w + '%;print-color-adjust:exact;-webkit-print-color-adjust:exact"></div></div></div>';
+    }).join('');
+
+    // server rows
+    var serverRows = [
+      ['IP Servidor', p.ip || '?'],
+      ['ASN', p.asn || '?'],
+      ['CDN', p.cdn || 'Sin CDN'],
+      ['Hosting', p.hosting || '?'],
+      ['Protocolo HTTP', p.httpVersion || '?'],
+      ['Servidor web', p.serverSoftware || '?'],
+      ['Peso transferido', (p.transferSize || 0) + ' KB'],
+      ['Recursos totales', (p.resourceCount || 0) + ' items'],
+      ['Compresion', (p.compressionRatio || 0) + '%'],
+      ['Cache hit rate', (p.cacheHitRate || 0) + '%'],
+    ].map(function(r) {
+      return '<tr>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;color:#475569;border-bottom:0.5pt solid #f1f5f9">' + r[0] + '</td>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;font-family:monospace;color:#0f172a;text-align:right;border-bottom:0.5pt solid #f1f5f9">' + r[1] + '</td>'
+        + '</tr>';
+    }).join('');
+
+    // tls rows
+    var tlsRows = [
+      ['Version TLS', tls.version || '?', tls.version === 'TLS 1.3' ? '#059669' : '#d97706'],
+      ['Cipher suite', tls.cipher || '?', '#475569'],
+      ['Emisor cert.', tls.certIssuer || '?', '#475569'],
+      ['Vence', tls.certExpiry || '?', '#475569'],
+      ['HSTS', tls.hsts ? 'Activo' : 'Ausente', tls.hsts ? '#059669' : '#dc2626'],
+      ['OCSP Stapling', tls.ocspStapling ? 'Activo' : 'Ausente', tls.ocspStapling ? '#059669' : '#d97706'],
+      ['Cert. Transparency', tls.certTransparency ? 'Activo' : 'Ausente', tls.certTransparency ? '#059669' : '#d97706'],
+    ].map(function(r) {
+      return '<tr>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;color:#475569;border-bottom:0.5pt solid #f1f5f9">' + r[0] + '</td>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;font-family:monospace;color:' + r[2] + ';text-align:right;border-bottom:0.5pt solid #f1f5f9">' + r[1] + '</td>'
+        + '</tr>';
+    }).join('');
+
+    // web vitals
+    var lh = p.lighthouseEstimates || {};
+    var vitalsRows = [
+      ['LCP', (lh.lcp || 0) + ' s',  'menos 2.5s', lh.lcp  <= 2.5 ? '#059669' : lh.lcp  <= 4   ? '#d97706' : '#dc2626'],
+      ['FCP', (lh.fcp || 0) + ' s',  'menos 1.8s', lh.fcp  <= 1.8 ? '#059669' : lh.fcp  <= 3   ? '#d97706' : '#dc2626'],
+      ['CLS', (lh.cls || 0) + '',    'menos 0.1',  lh.cls  <= 0.1 ? '#059669' : lh.cls  <= 0.25? '#d97706' : '#dc2626'],
+      ['TTI', (lh.tti || 0) + ' s',  'menos 3.8s', lh.tti  <= 3.8 ? '#059669' : lh.tti  <= 7.3 ? '#d97706' : '#dc2626'],
+      ['TBT', (lh.tbt || 0) + ' ms', 'menos 200ms',lh.tbt  <= 200 ? '#059669' : lh.tbt  <= 600 ? '#d97706' : '#dc2626'],
+    ].map(function(r) {
+      return '<tr>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;font-family:monospace;color:#0284c7;border-bottom:0.5pt solid #f1f5f9">' + r[0] + '</td>'
+        + '<td style="padding:4pt 6pt;font-size:7.5pt;font-family:monospace;color:' + r[3] + ';border-bottom:0.5pt solid #f1f5f9">' + r[1] + '</td>'
+        + '<td style="padding:4pt 6pt;font-size:6pt;font-family:monospace;color:#94a3b8;border-bottom:0.5pt solid #f1f5f9">ref: ' + r[2] + '</td>'
+        + '</tr>';
+    }).join('');
+
+    // recomendaciones
+    var recsHtml = (p.recommendations || []).map(function(r) {
+      var bc = r.level === 'critical' ? '#fca5a5' : r.level === 'warning' ? '#fcd34d' : '#93c5fd';
+      var bg = r.level === 'critical' ? '#fff8f8' : r.level === 'warning' ? '#fffdf0' : '#f0f9ff';
+      var tc = r.level === 'critical' ? '#dc2626' : r.level === 'warning' ? '#d97706' : '#1d4ed8';
+      var lb = r.level === 'critical' ? 'Critico' : r.level === 'warning' ? 'Advertencia' : 'Info';
+      return '<div style="border:0.5pt solid ' + bc + ';background:' + bg + ';padding:7pt 9pt;margin-bottom:6pt;page-break-inside:avoid;display:flex;gap:8pt">'
+        + '<span style="font-size:5.5pt;font-family:monospace;letter-spacing:1pt;text-transform:uppercase;padding:2pt 6pt;border:0.5pt solid ' + bc + ';color:' + tc + ';white-space:nowrap;flex-shrink:0;align-self:flex-start">' + lb + '</span>'
+        + '<div style="font-size:7.5pt;color:#334155;line-height:1.5;text-align:justify"><strong>' + r.title + '</strong> — ' + r.description + '</div>'
+        + '</div>';
+    }).join('');
+
+    var perfHtml =
+      '<div style="page-break-before:always"></div>'
+      + '<div style="margin-bottom:6pt;margin-top:4pt">'
+      + '<div style="font-size:7pt;font-family:\'JetBrains Mono\',monospace;font-weight:500;letter-spacing:2.5pt;text-transform:uppercase;color:#0284c7;margin-bottom:10pt;padding-bottom:4pt;border-bottom:0.5pt solid #e2e8f0;display:flex;align-items:center;gap:7pt">'
+      + '<span style="display:inline-block;width:14pt;height:1pt;background:#0284c7"></span>'
+      + 'Analisis de Performance · ' + perfUrl + '</div></div>'
+      + '<div style="font-size:6pt;font-family:monospace;color:#94a3b8;margin-bottom:14pt">Datos del: ' + perfDate + ' · Estimaciones basadas en analisis tecnico externo</div>'
+
+      // score strip
+      + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.5pt solid #e2e8f0;margin-bottom:14pt;print-color-adjust:exact;-webkit-print-color-adjust:exact">'
+      + '<div style="padding:10pt 8pt;text-align:center;border-right:0.5pt solid #e2e8f0">'
+      + '<div style="font-size:18pt;font-weight:800;color:' + col + ';line-height:1">' + p.performanceScore + '</div>'
+      + '<div style="font-size:5pt;font-family:monospace;letter-spacing:1pt;text-transform:uppercase;color:#64748b;margin-top:3pt">Score Global · ' + g + '</div></div>'
+      + '<div style="padding:10pt 8pt;text-align:center;border-right:0.5pt solid #e2e8f0">'
+      + '<div style="font-size:18pt;font-weight:800;color:' + msCol(p.ttfb,200,600) + ';line-height:1">' + p.ttfb + '<span style="font-size:8pt;color:#94a3b8"> ms</span></div>'
+      + '<div style="font-size:5pt;font-family:monospace;letter-spacing:1pt;text-transform:uppercase;color:#64748b;margin-top:3pt">TTFB</div></div>'
+      + '<div style="padding:10pt 8pt;text-align:center;border-right:0.5pt solid #e2e8f0">'
+      + '<div style="font-size:18pt;font-weight:800;color:' + msCol(p.fullyLoaded,2000,5000) + ';line-height:1">' + (p.fullyLoaded/1000).toFixed(1) + '<span style="font-size:8pt;color:#94a3b8"> s</span></div>'
+      + '<div style="font-size:5pt;font-family:monospace;letter-spacing:1pt;text-transform:uppercase;color:#64748b;margin-top:3pt">Fully Loaded</div></div>'
+      + '<div style="padding:10pt 8pt;text-align:center">'
+      + '<div style="font-size:18pt;font-weight:800;color:' + ((tls.certDaysLeft||0)>60?'#059669':(tls.certDaysLeft||0)>20?'#d97706':'#dc2626') + ';line-height:1">' + (tls.certDaysLeft||0) + '<span style="font-size:8pt;color:#94a3b8"> d</span></div>'
+      + '<div style="font-size:5pt;font-family:monospace;letter-spacing:1pt;text-transform:uppercase;color:#64748b;margin-top:3pt">Cert. SSL expira</div></div>'
+      + '</div>'
+
+      // servidor + tiempos
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8pt;margin-bottom:8pt">'
+      + '<div style="border:0.5pt solid #e2e8f0;padding:10pt">'
+      + '<div style="font-size:6pt;font-family:monospace;letter-spacing:2pt;text-transform:uppercase;color:#64748b;margin-bottom:8pt;padding-bottom:5pt;border-bottom:0.5pt solid #f1f5f9">Servidor y Dominio</div>'
+      + '<table style="width:100%;border-collapse:collapse">' + serverRows + '</table></div>'
+      + '<div style="border:0.5pt solid #e2e8f0;padding:10pt">'
+      + '<div style="font-size:6pt;font-family:monospace;letter-spacing:2pt;text-transform:uppercase;color:#64748b;margin-bottom:8pt;padding-bottom:5pt;border-bottom:0.5pt solid #f1f5f9">Tiempos de Carga</div>'
+      + timingHtml + '</div></div>'
+
+      // TLS + vitals
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8pt;margin-bottom:8pt">'
+      + '<div style="border:0.5pt solid #e2e8f0;padding:10pt">'
+      + '<div style="font-size:6pt;font-family:monospace;letter-spacing:2pt;text-transform:uppercase;color:#64748b;margin-bottom:8pt;padding-bottom:5pt;border-bottom:0.5pt solid #f1f5f9">TLS / SSL</div>'
+      + '<table style="width:100%;border-collapse:collapse">' + tlsRows + '</table></div>'
+      + '<div style="border:0.5pt solid #e2e8f0;padding:10pt">'
+      + '<div style="font-size:6pt;font-family:monospace;letter-spacing:2pt;text-transform:uppercase;color:#64748b;margin-bottom:8pt;padding-bottom:5pt;border-bottom:0.5pt solid #f1f5f9">Web Vitals Estimados</div>'
+      + '<table style="width:100%;border-collapse:collapse">'
+      + '<thead><tr><th style="font-size:5.5pt;font-family:monospace;letter-spacing:1.5pt;text-transform:uppercase;color:#64748b;padding:4pt 6pt;border-bottom:0.5pt solid #e2e8f0;text-align:left">Metrica</th>'
+      + '<th style="font-size:5.5pt;font-family:monospace;letter-spacing:1.5pt;text-transform:uppercase;color:#64748b;padding:4pt 6pt;border-bottom:0.5pt solid #e2e8f0;text-align:right">Valor</th>'
+      + '<th style="font-size:5.5pt;font-family:monospace;letter-spacing:1.5pt;text-transform:uppercase;color:#64748b;padding:4pt 6pt;border-bottom:0.5pt solid #e2e8f0">Ref.</th></tr></thead>'
+      + '<tbody>' + vitalsRows + '</tbody></table></div></div>'
+
+      // recomendaciones
+      + (recsHtml.length ? '<div style="margin-bottom:6pt"><div style="font-size:7pt;font-family:\'JetBrains Mono\',monospace;font-weight:500;letter-spacing:2.5pt;text-transform:uppercase;color:#0284c7;margin-bottom:10pt;padding-bottom:4pt;border-bottom:0.5pt solid #e2e8f0;display:flex;align-items:center;gap:7pt"><span style="display:inline-block;width:14pt;height:1pt;background:#0284c7"></span>Recomendaciones de Performance</div></div>' + recsHtml : '')
+
+      // nota
+      + '<div style="background:#f8fafc;border:0.5pt solid #e2e8f0;padding:8pt 10pt;font-size:6pt;font-family:monospace;color:#94a3b8;line-height:1.8;text-align:justify;margin-bottom:8pt">'
+      + 'Los datos de performance son estimaciones basadas en analisis tecnico externo del dominio. No son mediciones directas del navegador. Para metricas definitivas se recomienda Google PageSpeed Insights o WebPageTest.</div>';
+
+    html += perfHtml;
+  })();
+  // ────────────────────────────────────────────────────────────────────────────
+
+
+    const w = window.open('', '_blank');
   w.document.write(html);
   w.document.close();
 }
@@ -2333,13 +2492,13 @@ document.addEventListener('keydown', function(e) {
           </div>
           <div class="m-rango rango-incipiente">
             <div class="m-rango-sem">⚖️</div>
-            <div class="m-rango-num" style="font-size:.9rem">Hasta 5.000 UTM</div>
+            <div class="m-rango-num" style="font-size:.9rem">Hasta 10.000 UTM</div>
             <div class="m-rango-label">Infracción Gravísima</div>
-            <div class="m-rango-desc">~$325 millones CLP. Transferencia de datos sensibles o con perjuicio a titulares.</div>
+            <div class="m-rango-desc">~$650M CLP. Hasta 20.000 UTM (~$1.300M) para empresas con ingresos &gt; 1.000.000 UTM anuales.</div>
           </div>
         </div>
         <div style="margin-top:12px;padding:10px 14px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.18);font-size:.78rem;color:var(--muted);line-height:1.7">
-          🟡 <strong style="color:var(--warn)">Además de la multa económica</strong>, la Agencia de Protección de Datos puede ordenar la <strong style="color:var(--silver)">suspensión inmediata del tratamiento</strong> (lo que puede implicar apagar herramientas críticas del sitio), publicar el nombre de la empresa en un registro público de infractores, y aplicar sanciones accesorias reincidentes con el doble de multa.
+          🟡 <strong style="color:var(--warn)">Además de la multa económica</strong>, la Agencia de Protección de Datos puede ordenar la <strong style="color:var(--silver)">suspensión inmediata del tratamiento</strong> (lo que puede implicar apagar herramientas críticas del sitio), publicar el nombre de la empresa en un registro público de infractores, y aplicar el doble de la multa cuando los ingresos anuales de la empresa superen 1.000.000 UTM, llegando hasta 20.000 UTM (~$1.300M CLP) en infracciones gravísimas.
         </div>
       </div>
 
@@ -2565,7 +2724,7 @@ document.addEventListener('keydown', function(e) {
           </tbody>
         </table>
         <div style="margin-top:12px;padding:10px 14px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.18);font-size:.78rem;color:var(--muted);line-height:1.7">
-          🟡 <strong style="color:var(--warn)">Las infracciones graves pueden implicar hasta 1.000 UTM (~$65 millones CLP)</strong> y las gravísimas hasta 5.000 UTM (~$325 millones CLP). Además, la Agencia de Protección de Datos puede ordenar la suspensión del tratamiento de datos y publicar el nombre del infractor en un registro público.
+          🟡 <strong style="color:var(--warn)">Las infracciones graves pueden implicar hasta 1.000 UTM (~$65 millones CLP)</strong> y las gravísimas hasta 10.000 UTM (~$650M CLP), o hasta 20.000 UTM (~$1.300M) para empresas con ingresos anuales superiores a 1.000.000 UTM. Además, la Agencia puede ordenar la suspensión del tratamiento y publicar el nombre del infractor en un registro público.
         </div>
       </div>
 
