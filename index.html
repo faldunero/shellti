@@ -758,11 +758,11 @@ h2.sec-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:1.
 .terreno-img{
   width:100%;height:580px;object-fit:cover;display:block;
   /* Vivid, punchy — like Blizzard cinematic still */
-  filter:brightness(1.12) saturate(1.5) contrast(1.1);
+  filter:brightness(1.22) saturate(1.6) contrast(1.12);
   transition:filter .5s ease,transform .6s ease;
 }
 #terreno:hover .terreno-img{
-  filter:brightness(1.18) saturate(1.6) contrast(1.12);
+  filter:brightness(1.28) saturate(1.7) contrast(1.14);
   transform:scale(1.012);
 }
 .terreno-overlay{
@@ -854,10 +854,10 @@ h2.sec-title{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;margin-bottom:1.
 #procesador{position:relative;overflow:hidden;padding:0;display:block}
 .proc-img{
   width:100%;height:520px;object-fit:cover;display:block;
-  filter:brightness(1.08) saturate(1.4) contrast(1.1);
+  filter:brightness(1.18) saturate(1.5) contrast(1.12);
   transition:filter .5s ease;
 }
-#procesador:hover .proc-img{filter:brightness(1.14) saturate(1.55) contrast(1.12)}
+#procesador:hover .proc-img{filter:brightness(1.24) saturate(1.65) contrast(1.14)}
 .proc-overlay{
   position:absolute;inset:0;
   background:linear-gradient(to right,rgba(2,6,23,0.92) 0%,rgba(2,6,23,0.64) 40%,rgba(2,6,23,0.22) 68%,transparent 100%);
@@ -1337,7 +1337,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 
 
 /* ── Section background photos ── */
-.sec-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:brightness(.12) saturate(1.2);}
+.sec-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:brightness(.25) saturate(1.4);}
 .sec-bg-wrap{position:relative;overflow:hidden;}
 .sec-bg-wrap > .container,.sec-bg-wrap > div:not(.sec-bg){position:relative;z-index:1;}
 
@@ -1802,8 +1802,6 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
   <div class="container">
     <div class="equipo-grid fu">
       <div class="equipo-img-wrap">
-        <img src="imagenes/webp/inline_png_03_1214x683.webp" alt="Equipo ShellTI — Compliance Map" class="photo-vivid">
-      </div>
       <div class="equipo-content">
         <p class="sec-label">El Equipo</p>
         <h2 class="sec-title">Expertos en<br><span class="tg">Compliance</span> y Arquitectura</h2>
@@ -1821,7 +1819,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 
 <!-- ════════ EQUIPO EN TERRENO — cinematic full bleed ════════ -->
 <div id="terreno">
-  <img src="imagenes/webp/inline_png_04_1408x768.webp" class="terreno-img" alt="ShellTI — Equipo en terreno, Live Code Deployment">
+
   <div class="terreno-overlay">
     <div class="terreno-content">
       <p class="sec-label" style="margin-bottom:.75rem">Despliegue en Terreno</p>
@@ -1873,8 +1871,6 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
         </div>
       </div>
       <div class="dash-wrap">
-        <img src="imagenes/webp/inline_png_05_1143x691.webp" alt="ShellTI Dashboard" class="photo-vivid">
-      </div>
     </div>
   </div>
 </section>
@@ -1901,7 +1897,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 
 <!-- ════════ PROCESADOR — full bleed ════════ -->
 <div id="procesador">
-  <img src="imagenes/webp/inline_png_06_2426x1386.webp" class="proc-img" alt="ShellTI — Digital Ecosystem Integration">
+
   <div class="proc-overlay">
     <div class="proc-content">
       <p class="sec-label">Infraestructura</p>
