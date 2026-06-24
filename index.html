@@ -1335,6 +1335,12 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 .c-slide-overlay{position:absolute;inset:0;z-index:2;background:rgba(2,6,23,0.62);}
 #ck-float.dragging{cursor:grabbing;transition:none;}
 
+
+/* ── Section background photos ── */
+.sec-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;filter:brightness(.12) saturate(1.2);}
+.sec-bg-wrap{position:relative;overflow:hidden;}
+.sec-bg-wrap > .container,.sec-bg-wrap > div:not(.sec-bg){position:relative;z-index:1;}
+
 </style>
 </head>
 <body>
@@ -1735,7 +1741,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ NOSOTROS ════════ -->
-<section id="nosotros">
+<section id="nosotros" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="about-grid fu">
       <div class="about-body">
@@ -1760,7 +1768,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ STAFFING ════════ -->
-<section id="staffing">
+<section id="staffing" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="fu">
       <p class="sec-label">02. Staffing</p>
@@ -1847,7 +1857,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ DASHBOARD ════════ -->
-<section id="dashboard-sec">
+<section id="dashboard-sec" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="dash-layout fu">
       <div class="dash-body">
@@ -1868,7 +1880,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ COMPLIANCE ════════ -->
-<section id="compliance">
+<section id="compliance" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="comp-hdr fu">
       <div>
@@ -1899,7 +1913,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </div>
 
 <!-- ════════ TRIANGULO ════════ -->
-<section id="triangulo">
+<section id="triangulo" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="fu">
       <p class="sec-label">04. Impacto en Valor y Riesgo</p>
@@ -1915,7 +1931,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ METODOLOGIA ════════ -->
-<section id="metodologia">
+<section id="metodologia" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1509718443690-d8e2fb3474b7?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="meto-grid fu">
       <div class="meto-body">
@@ -1941,7 +1959,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ CONTACTO ════════ -->
-<section id="contacto">
+<section id="contacto" class="sec-bg-wrap">
+  <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container">
     <div class="contact-grid fu">
       <div class="contact-pitch">
@@ -2003,7 +2023,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </section>
 
 <!-- ════════ NEWSLETTER ════════ -->
-<section id="newsletter" style="background:var(--deep3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+<section id="newsletter" class="sec-bg-wrap" style="background:var(--deep3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1440&q=80&auto=format&fit=crop" class="sec-bg" alt="" aria-hidden="true">
+  
   <div class="container" style="max-width:760px;padding:5rem 2rem;">
     <div style="text-align:center;margin-bottom:2.5rem;">
       <p class="sec-label" style="justify-content:center;">ShellTI Insights</p>
