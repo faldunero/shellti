@@ -1125,18 +1125,16 @@ function mobSetUser(name) {
 </html    /* ═══ MOBILE LAYOUT ════════════════════════════════════════ */
     @media (max-width: 768px) {
 
-      /* ── Nav pill ── */
-      .nav-pill { display: none; }
-      .nav-brand span { display: none; }
-      .nav-right { display: none !important; }
-      .nav-brand img { height: 26px; }
-      nav { padding: 8px 12px; }
-
-      /* ── Desktop header hidden, mobile rows shown ── */
+      /* Desktop header: hidden */
       .chat-head-top { display: none !important; }
       .chat-head-session { display: none !important; }
       .mob-tags-row { display: none !important; }
+      .nav-pill { display: none; }
+      .nav-right { display: none !important; }
+      .nav-brand span { display: none; }
+      .nav-brand img { height: 26px; }
 
+      /* Mobile rows: shown */
       .mob-row1 { display: flex !important; align-items: center; justify-content: space-between; padding: 9px 12px 4px; gap: 8px; }
       .mob-row2 { display: flex !important; align-items: center; gap: 5px; padding: 0 12px 8px; border-bottom: 1px solid var(--border); }
       .mob-r1-title { font-size: .84rem; font-weight: 700; color: var(--text); white-space: nowrap; }
@@ -1150,60 +1148,77 @@ function mobSetUser(name) {
       .mob-tags-panel.open { display: flex !important; }
       .mob-tags-panel .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* ── Layout: body = 100dvh flex column ── */
-      html { height: 100%; }
-      body { height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
+      /* KEY FIX: nav becomes inline (not fixed) */
+      nav {
+        position: relative !important;
+        height: auto !important;
+        padding: 8px 12px !important;
+      }
 
-      /* nav is flex-shrink:0 already — just ensure it */
-      nav { flex-shrink: 0; position: relative; }
+      /* body stays flex column, height = full screen */
+      body { height: 100dvh !important; overflow: hidden !important; }
 
-      /* main fills remaining space */
+      /* main: no top margin, fills remaining height after inline nav */
       main {
-        flex: 1;
-        min-height: 0;
         margin-top: 0 !important;
         height: auto !important;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
+        flex: 1 !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
         grid-template-columns: unset !important;
       }
 
       .sidebar { display: none !important; }
 
       /* chat-wrap fills main */
-      .chat-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+      .chat-wrap {
+        flex: 1 !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        height: auto !important;
+      }
 
-      /* chat-head shrinks to content */
-      .chat-head { flex-shrink: 0; }
+      /* chat-head shrinks */
+      .chat-head { flex-shrink: 0 !important; }
 
-      /* messages area scrolls */
+      /* messages scrolls */
       .messages-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-      .messages { flex: 1; min-height: 0; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px; }
+      .messages {
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px 12px;
+        height: auto !important;
+      }
 
-      /* Welcome — hidden on mobile */
+      /* Welcome hidden ONLY on mobile */
       .welcome { display: none !important; }
 
-      /* disclaimer + input always at bottom */
-      .disclaimer { flex-shrink: 0; font-size: .57rem; padding: 3px 12px; }
-      .input-wrap { flex-shrink: 0; padding: 6px 10px 8px; background: var(--surface); }
+      /* Bottom */
+      .disclaimer { flex-shrink: 0 !important; font-size: .57rem; padding: 3px 12px; }
+      .input-wrap { flex-shrink: 0 !important; padding: 6px 10px 8px !important; background: var(--surface); }
       .input-row { gap: 5px; }
       .input-row textarea { font-size: .77rem; padding: 8px 10px; min-height: 36px; max-height: 80px; }
       .send-btn { width: 36px; height: 36px; flex-shrink: 0; }
       .clear-input { display: none !important; }
       .input-hint { font-size: .53rem; margin-top: 2px; }
 
-      /* messages content */
+      /* Content */
       .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; }
       .msg-av { width: 20px; height: 20px; font-size: .5rem; }
       .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; }
 
-      /* modals */
+      /* Modals */
       .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
       .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
       .hist-drawer { position: fixed !important; inset: 0; width: 100%; z-index: 200; }
 
-      /* toast */
+      /* Toast */
       .toast { position: fixed !important; bottom: 80px !important; top: auto !important; left: 50% !important; right: auto !important; transform: translateX(-50%) translateY(60px) !important; z-index: 999 !important; }
       .toast.show { transform: translateX(-50%) translateY(0) !important; }
     }
