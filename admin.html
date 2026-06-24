@@ -37,10 +37,8 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .back-link a{color:rgba(148,163,184,0.5);text-decoration:none;transition:color .2s}
 .back-link a:hover{color:var(--cyan)}
 
-/* ── SHELL: topbar + sidebar + content ── */
+/* ── SHELL ── */
 #adminView{display:none;min-height:100vh;flex-direction:column}
-
-/* Topbar */
 .topbar{position:sticky;top:0;z-index:200;background:rgba(2,6,23,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
 .topbar-brand{font-weight:800;font-size:1rem;color:var(--silver)}.topbar-brand span{color:var(--cyan)}
 .topbar-sub{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
@@ -49,11 +47,7 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .btn-refresh:hover{color:var(--cyan);border-color:rgba(0,212,255,0.4)}
 .btn-logout{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.3);color:var(--danger);cursor:pointer;transition:all .2s}
 .btn-logout:hover{background:rgba(255,107,107,0.18)}
-
-/* Shell body */
 .shell{display:flex;flex:1}
-
-/* Sidebar */
 .sidebar{width:var(--sidebar);flex-shrink:0;border-right:1px solid var(--border);padding:24px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;background:rgba(2,6,23,0.6)}
 .sb-section{padding:0 16px;margin-bottom:24px}
 .sb-label{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(148,163,184,0.5);margin-bottom:10px;padding:0 4px}
@@ -66,40 +60,44 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .sb-nav-btn{width:100%;text-align:left;padding:9px 20px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:none;border-left:2px solid transparent;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
 .sb-nav-btn:hover{color:var(--cyan);background:rgba(0,212,255,0.04)}
 .sb-nav-btn.active{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,212,255,0.06)}
-.sb-badge{font-size:.55rem;padding:1px 6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:var(--warn);font-family:'JetBrains Mono',monospace}
 
-/* Main content */
+/* Badge con notificacion */
+.sb-badge{font-size:.55rem;padding:1px 6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:var(--warn);font-family:'JetBrains Mono',monospace;border-radius:3px;min-width:18px;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+.sb-badge.pulse{animation:badge-pulse 1.5s infinite}
+@keyframes badge-pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)}50%{box-shadow:0 0 0 4px rgba(245,158,11,0)}}
+
 .content{flex:1;padding:28px 32px;min-width:0;overflow:auto}
 .tab-panel{display:none}.tab-panel.active{display:block}
-
-/* Section header */
 .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .sec-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:8px}
 .sec-title::before{content:'';width:14px;height:1px;background:var(--green)}
 
-/* Search/filter bar */
-.filter-bar{display:flex;gap:8px;margin-bottom:16px}
-.filter-bar input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--silver);font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:8px 12px;outline:none;transition:border-color .2s}
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-bar input{flex:1;min-width:200px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--silver);font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:8px 12px;outline:none;transition:border-color .2s}
 .filter-bar input:focus{border-color:rgba(0,212,255,0.4)}
 .filter-bar input::placeholder{color:rgba(148,163,184,0.4)}
 .filter-chip{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
 .filter-chip.active{border-color:rgba(0,212,255,0.4);color:var(--cyan);background:rgba(0,212,255,0.07)}
 
+/* Tags VENCIDO */
+.tag-superseded{background:rgba(148,163,184,0.08);color:var(--muted);border:1px solid rgba(148,163,184,0.2);font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px}
+
 /* Request cards */
 .req-card{background:var(--card);border:1px solid var(--border);margin-bottom:6px;transition:border-color .2s}
 .req-card:hover{border-color:rgba(0,212,255,0.25)}
+.req-card.is-superseded{opacity:.55}
 .req-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;gap:12px}
 .req-head-left{display:flex;align-items:center;gap:14px;min-width:0}
 .req-avatar{width:34px;height:34px;flex-shrink:0;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(52,211,153,0.1));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--cyan)}
 .req-meta{min-width:0}
 .req-name{font-size:.9rem;font-weight:600;color:var(--silver)}
 .req-company{font-size:.72rem;color:var(--muted);margin-top:1px}
-.req-head-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.req-head-right{display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
 .req-email-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--cyan)}
 .req-time{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(148,163,184,0.5)}
 .chevron{font-size:.7rem;color:var(--muted);transition:transform .2s}
 .req-card.open .chevron{transform:rotate(180deg)}
-
 .req-body{display:none;padding:0 18px 18px;border-top:1px solid rgba(0,212,255,0.08)}
 .req-card.open .req-body{display:block}
 .req-reason-box{margin:14px 0 16px;padding:10px 14px;background:rgba(255,255,255,0.02);border-left:2px solid rgba(0,212,255,0.2);font-size:.8rem;color:var(--muted);line-height:1.7;font-style:italic}
@@ -112,15 +110,13 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .dur-chip.sel{border-color:rgba(0,212,255,0.5);color:var(--cyan);background:rgba(0,212,255,0.1)}
 .dur-chip:hover:not(.sel){border-color:rgba(0,212,255,0.3);color:rgba(0,212,255,0.7)}
 
-/* Resources checkboxes */
+/* Resource chips */
 .res-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .res-lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .res-chips{display:flex;flex-wrap:wrap;gap:4px}
 .res-chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--border);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);transition:all .2s;user-select:none}
 .res-chip input{display:none}
 .res-chip.checked{border-color:rgba(52,211,153,0.5);color:var(--ok);background:rgba(52,211,153,0.08)}
-
-/* Scans input */
 .scans-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .scans-row input[type=number]{width:90px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--silver);font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:6px 10px;outline:none;transition:border-color .2s}
 .scans-row input[type=number]:focus{border-color:rgba(0,212,255,0.4)}
@@ -158,7 +154,7 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .btn-edit-res{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-edit-res:hover{color:var(--cyan);border-color:rgba(0,212,255,0.3)}
 
-/* Edit resources modal */
+/* Modal */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.85);z-index:500;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{position:relative;background:var(--card);border:1px solid var(--border);padding:32px;width:100%;max-width:440px}
@@ -169,7 +165,6 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .btn-save:hover{background:rgba(0,212,255,0.22)}
 .btn-cancel{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s}
 .btn-cancel:hover{color:var(--silver)}
-
 .empty{padding:36px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);border:1px dashed rgba(0,212,255,0.1)}
 
 /* Toast */
@@ -181,7 +176,7 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 </head>
 <body>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN -->
 <div id="loginView">
   <div class="login-card">
     <div class="eyebrow">ShellTI · Administración</div>
@@ -210,10 +205,8 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
   </div>
 </div>
 
-<!-- ── ADMIN PANEL ── -->
+<!-- ADMIN PANEL -->
 <div id="adminView" style="display:none;flex-direction:column">
-
-  <!-- Topbar -->
   <div class="topbar">
     <div>
       <div class="topbar-brand">Shell<span>TI</span></div>
@@ -225,97 +218,98 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
     </div>
   </div>
 
-  <!-- Shell -->
   <div class="shell">
-
-    <!-- Sidebar -->
     <div class="sidebar">
       <div class="sb-section">
         <div class="sb-label">Resumen</div>
-        <div class="sb-stat">
-          <span class="sb-stat-label">Pendientes</span>
-          <span class="sb-stat-val c-warn" id="s-pending">—</span>
-        </div>
-        <div class="sb-stat">
-          <span class="sb-stat-label">Activos</span>
-          <span class="sb-stat-val c-ok" id="s-active">—</span>
-        </div>
-        <div class="sb-stat">
-          <span class="sb-stat-label">Aprobados</span>
-          <span class="sb-stat-val c-cyan" id="s-approved">—</span>
-        </div>
-        <div class="sb-stat">
-          <span class="sb-stat-label">Total</span>
-          <span class="sb-stat-val c-muted" id="s-total">—</span>
-        </div>
+        <div class="sb-stat"><span class="sb-stat-label">Pendientes</span><span class="sb-stat-val c-warn" id="s-pending">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-label">Activos</span><span class="sb-stat-val c-ok" id="s-active">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-label">Aprobados</span><span class="sb-stat-val c-cyan" id="s-approved">—</span></div>
+        <div class="sb-stat"><span class="sb-stat-label">Total</span><span class="sb-stat-val c-muted" id="s-total">—</span></div>
       </div>
       <div class="sb-divider"></div>
       <div class="sb-section" style="padding:0">
         <div class="sb-label" style="padding:0 20px;margin-bottom:8px">Vistas</div>
         <button class="sb-nav-btn active" id="nav-requests" onclick="switchTab('requests')">
-          <span>⬡</span> Solicitudes
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Solicitudes
           <span class="sb-badge" id="pending-badge" style="display:none">0</span>
         </button>
         <button class="sb-nav-btn" id="nav-users" onclick="switchTab('users')">
-          <span>⬡</span> Usuarios activos
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Usuarios activos
         </button>
         <button class="sb-nav-btn" id="nav-leykarin" onclick="switchTab('leykarin')">
-          <span>⚖️</span> Ley Karin
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Ley Karin
           <span class="sb-badge" id="lk-badge" style="display:none">0</span>
+        </button>
+        <button class="sb-nav-btn" id="nav-copropiedad" onclick="switchTab('copropiedad')">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Copropiedad
+          <span class="sb-badge" id="cp-badge" style="display:none">0</span>
         </button>
       </div>
     </div>
 
-    <!-- Content -->
     <div class="content">
 
-      <!-- Tab: Solicitudes -->
+      <!-- Tab: Solicitudes scanner -->
       <div class="tab-panel active" id="tab-requests">
-
         <div class="filter-bar">
           <input type="text" id="req-search" placeholder="Buscar por nombre, empresa o email..." oninput="filterRequests()" />
-          <button class="filter-chip active" id="chip-all" onclick="setFilter('all',this)">Todas</button>
-          <button class="filter-chip" id="chip-pending" onclick="setFilter('pending',this)">Pendientes</button>
-          <button class="filter-chip" id="chip-approved" onclick="setFilter('approved',this)">Aprobadas</button>
-          <button class="filter-chip" id="chip-rejected" onclick="setFilter('rejected',this)">Rechazadas</button>
+          <button class="filter-chip active" id="chip-active"    onclick="setFilter('active',this)">Activos</button>
+          <button class="filter-chip"        id="chip-pending"   onclick="setFilter('pending',this)">Pendientes</button>
+          <button class="filter-chip"        id="chip-approved"  onclick="setFilter('approved',this)">Aprobadas</button>
+          <button class="filter-chip"        id="chip-rejected"  onclick="setFilter('rejected',this)">Rechazadas</button>
+          <button class="filter-chip"        id="chip-historico" onclick="setFilter('historico',this)">Histórico</button>
         </div>
-
         <div id="req-list"></div>
       </div>
 
       <!-- Tab: Usuarios -->
       <div class="tab-panel" id="tab-users">
-        <div class="sec-hd">
-          <div class="sec-title">Usuarios con acceso activo</div>
-        </div>
+        <div class="sec-hd"><div class="sec-title">Usuarios con acceso activo</div></div>
         <div id="users-wrap"></div>
       </div>
 
       <!-- Tab: Ley Karin -->
       <div class="tab-panel" id="tab-leykarin">
-        <div class="sec-hd">
-          <div class="sec-title">Solicitudes · Ley Karin</div>
-        </div>
+        <div class="sec-hd"><div class="sec-title">Solicitudes · Ley Karin</div></div>
         <div class="filter-bar">
           <input type="text" id="lk-search" placeholder="Buscar por nombre, organización o email..." oninput="filterLK()" />
-          <button class="filter-chip active" id="lk-chip-all"      onclick="setLKFilter('all',this)">Todas</button>
-          <button class="filter-chip"        id="lk-chip-pending"  onclick="setLKFilter('pending',this)">Pendientes</button>
-          <button class="filter-chip"        id="lk-chip-approved" onclick="setLKFilter('approved',this)">Aprobadas</button>
-          <button class="filter-chip"        id="lk-chip-rejected" onclick="setLKFilter('rejected',this)">Rechazadas</button>
+          <button class="filter-chip active" id="lk-chip-active"    onclick="setLKFilter('active',this)">Activos</button>
+          <button class="filter-chip"        id="lk-chip-pending"   onclick="setLKFilter('pending',this)">Pendientes</button>
+          <button class="filter-chip"        id="lk-chip-approved"  onclick="setLKFilter('approved',this)">Aprobadas</button>
+          <button class="filter-chip"        id="lk-chip-rejected"  onclick="setLKFilter('rejected',this)">Rechazadas</button>
+          <button class="filter-chip"        id="lk-chip-historico" onclick="setLKFilter('historico',this)">Histórico</button>
         </div>
         <div id="lk-req-list"></div>
-
-        <div class="sec-hd" style="margin-top:32px">
-          <div class="sec-title">Usuarios activos · Ley Karin</div>
-        </div>
+        <div class="sec-hd" style="margin-top:32px"><div class="sec-title">Usuarios activos · Ley Karin</div></div>
         <div id="lk-users-wrap"></div>
+      </div>
+
+      <!-- Tab: Copropiedad -->
+      <div class="tab-panel" id="tab-copropiedad">
+        <div class="sec-hd"><div class="sec-title">Solicitudes · Copropiedad</div></div>
+        <div class="filter-bar">
+          <input type="text" id="cp-search" placeholder="Buscar por nombre, organización o email..." oninput="filterCP()" />
+          <button class="filter-chip active" id="cp-chip-active"    onclick="setCPFilter('active',this)">Activos</button>
+          <button class="filter-chip"        id="cp-chip-pending"   onclick="setCPFilter('pending',this)">Pendientes</button>
+          <button class="filter-chip"        id="cp-chip-approved"  onclick="setCPFilter('approved',this)">Aprobadas</button>
+          <button class="filter-chip"        id="cp-chip-rejected"  onclick="setCPFilter('rejected',this)">Rechazadas</button>
+          <button class="filter-chip"        id="cp-chip-historico" onclick="setCPFilter('historico',this)">Histórico</button>
+        </div>
+        <div id="cp-req-list"></div>
+        <div class="sec-hd" style="margin-top:32px"><div class="sec-title">Usuarios activos · Copropiedad</div></div>
+        <div id="cp-users-wrap"></div>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- Edit resources modal -->
+<!-- Modal edit resources -->
 <div class="modal-overlay" id="resModal">
   <div class="modal">
     <div class="modal-title">Editar acceso · <span id="modal-email"></span></div>
@@ -341,16 +335,12 @@ const DURATIONS = [
 let adminToken = sessionStorage.getItem('shellti_admin_token') || '';
 let selectedDuration = {};
 let allRequests = [];
-let currentFilter = 'all';
+let currentFilter = 'active';
 let modalEmail = '';
 
-// ── REMEMBER PASSWORD ─────────────────────────────────────────────────────────
 (function loadSavedPass() {
   const saved = localStorage.getItem('shellti_admin_pass');
-  if (saved) {
-    document.getElementById('adminPass').value = saved;
-    document.getElementById('rememberPass').checked = true;
-  }
+  if (saved) { document.getElementById('adminPass').value = saved; document.getElementById('rememberPass').checked = true; }
 })();
 
 function togglePass() {
@@ -358,24 +348,11 @@ function togglePass() {
   input.type = input.type === 'password' ? 'text' : 'password';
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
 (async function init() {
   const params = new URLSearchParams(window.location.search);
   const urlToken = params.get('adminToken');
-  if (urlToken) {
-    adminToken = urlToken;
-    sessionStorage.setItem('shellti_admin_token', adminToken);
-    window.history.replaceState({}, '', '/admin.html');
-  }
-  if (adminToken) {
-    try {
-      const r = await fetch(`${RAILWAY}/auth/google/status`);
-      const d = await r.json();
-      if (d.authenticated) { showPanel(); return; }
-    } catch(e) {}
-    // Try password token
-    showPanel();
-  }
+  if (urlToken) { adminToken = urlToken; sessionStorage.setItem('shellti_admin_token', adminToken); window.history.replaceState({}, '', '/admin.html'); }
+  if (adminToken) showPanel();
 })();
 
 async function doLogin() {
@@ -383,27 +360,16 @@ async function doLogin() {
   const err  = document.getElementById('loginErr');
   err.classList.remove('visible');
   try {
-    const res  = await fetch(`${RAILWAY}/admin/login`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({password: pass})
-    });
+    const res  = await fetch(`${RAILWAY}/admin/login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
     const data = await res.json();
     if (data.token) {
       adminToken = data.token;
       sessionStorage.setItem('shellti_admin_token', adminToken);
-      if (document.getElementById('rememberPass').checked) {
-        localStorage.setItem('shellti_admin_pass', pass);
-      } else {
-        localStorage.removeItem('shellti_admin_pass');
-      }
+      if (document.getElementById('rememberPass').checked) localStorage.setItem('shellti_admin_pass', pass);
+      else localStorage.removeItem('shellti_admin_pass');
       showPanel();
-    } else {
-      err.classList.add('visible');
-    }
-  } catch(e) {
-    err.textContent = 'Error de conexión';
-    err.classList.add('visible');
-  }
+    } else { err.classList.add('visible'); }
+  } catch(e) { err.textContent='Error de conexión'; err.classList.add('visible'); }
 }
 
 function showPanel() {
@@ -414,12 +380,8 @@ function showPanel() {
   setInterval(loadAll, 30000);
 }
 
-function doLogout() {
-  sessionStorage.removeItem('shellti_admin_token');
-  window.location.href = 'https://shellti.com/admin.html';
-}
+function doLogout() { sessionStorage.removeItem('shellti_admin_token'); window.location.href = 'https://shellti.com/admin.html'; }
 
-// ── LOAD ──────────────────────────────────────────────────────────────────────
 async function loadAll() {
   try {
     const res  = await fetch(`${RAILWAY}/admin/requests`, {headers:{'x-admin-token':adminToken}});
@@ -429,7 +391,8 @@ async function loadAll() {
     renderStats(allRequests, data.users || []);
     renderRequests(allRequests);
   } catch(e) {}
-  if (document.getElementById('tab-users').classList.contains('active')) loadUsers();
+  const activeTab = document.querySelector('.tab-panel.active');
+  if (activeTab && activeTab.id === 'tab-users') loadUsers();
 }
 
 async function loadUsers() {
@@ -440,7 +403,7 @@ async function loadUsers() {
   } catch(e) {}
 }
 
-// ── STATS ─────────────────────────────────────────────────────────────────────
+// ── STATS ──────────────────────────────────────────────────────────────────
 function renderStats(requests, users) {
   const pending  = requests.filter(r => r.status === 'pending').length;
   const approved = requests.filter(r => r.status === 'approved').length;
@@ -450,11 +413,11 @@ function renderStats(requests, users) {
   document.getElementById('s-approved').textContent = approved;
   document.getElementById('s-total').textContent    = requests.length;
   const badge = document.getElementById('pending-badge');
-  badge.textContent = pending;
-  badge.style.display = pending > 0 ? 'inline' : 'none';
+  if (pending > 0) { badge.textContent = pending; badge.style.display = 'inline-flex'; badge.classList.add('pulse'); }
+  else { badge.style.display = 'none'; badge.classList.remove('pulse'); }
 }
 
-// ── TAB SWITCH ────────────────────────────────────────────────────────────────
+// ── TAB SWITCH ──────────────────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sb-nav-btn').forEach(b => b.classList.remove('active'));
@@ -462,12 +425,37 @@ function switchTab(tab) {
   document.getElementById('nav-' + tab).classList.add('active');
   if (tab === 'users') loadUsers();
   if (tab === 'leykarin') loadLK();
+  if (tab === 'copropiedad') loadCP();
 }
 
-// ── FILTER / SEARCH ───────────────────────────────────────────────────────────
+// ── FILTER LÓGICA: "activos" = approved y NO superseded; "historico" = todos ──
+/*
+  Lógica de superseded:
+  Si el mismo email tiene múltiples aprobaciones, solo la MÁS RECIENTE está "activa".
+  Las anteriores se marcan como superseded (Vencido) para mostrar en Histórico.
+*/
+function markSuperseded(requests) {
+  // Agrupa aprobados por email, marca todos excepto el más reciente
+  const byEmail = {};
+  requests.forEach(function(r) {
+    if (r.status !== 'approved') return;
+    if (!byEmail[r.email]) byEmail[r.email] = [];
+    byEmail[r.email].push(r);
+  });
+  const supersededIds = new Set();
+  Object.values(byEmail).forEach(function(group) {
+    if (group.length <= 1) return;
+    // Ordena desc por fecha
+    group.sort(function(a,b){ return new Date(b.createdAt) - new Date(a.createdAt); });
+    // Todos excepto el primero (más reciente) son superseded
+    group.slice(1).forEach(function(r){ supersededIds.add(r.id); });
+  });
+  return supersededIds;
+}
+
 function setFilter(f, btn) {
   currentFilter = f;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#tab-requests .filter-chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
   renderRequests(allRequests);
 }
@@ -476,31 +464,58 @@ function filterRequests() { renderRequests(allRequests); }
 
 function renderRequests(requests) {
   const q = (document.getElementById('req-search').value || '').toLowerCase();
+  const supersededIds = markSuperseded(requests);
+
   let filtered = requests;
-  if (currentFilter !== 'all') filtered = filtered.filter(r => r.status === currentFilter);
+
+  if (currentFilter === 'active') {
+    // Solo pendientes + approved no superseded
+    filtered = filtered.filter(r =>
+      r.status === 'pending' ||
+      (r.status === 'approved' && !supersededIds.has(r.id))
+    );
+  } else if (currentFilter === 'historico') {
+    // Todos, sin filtro de status
+  } else if (currentFilter === 'pending') {
+    filtered = filtered.filter(r => r.status === 'pending');
+  } else if (currentFilter === 'approved') {
+    filtered = filtered.filter(r => r.status === 'approved');
+  } else if (currentFilter === 'rejected') {
+    filtered = filtered.filter(r => r.status === 'rejected');
+  }
+
   if (q) filtered = filtered.filter(r =>
     (r.name||'').toLowerCase().includes(q) ||
     (r.company||'').toLowerCase().includes(q) ||
     (r.email||'').toLowerCase().includes(q)
   );
-  const sorted = [...filtered].sort((a,b) => {
+
+  const sorted = [...filtered].sort(function(a,b) {
     if (a.status === 'pending' && b.status !== 'pending') return -1;
     if (b.status === 'pending' && a.status !== 'pending') return 1;
     return new Date(b.createdAt) - new Date(a.createdAt);
   });
+
   document.getElementById('req-list').innerHTML = sorted.length
-    ? sorted.map(reqCard).join('')
+    ? sorted.map(r => reqCard(r, supersededIds)).join('')
     : `<div class="empty">Sin solicitudes para mostrar</div>`;
 }
 
-function reqCard(r) {
-  const isPending = r.status === 'pending';
-  const initials  = (r.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  const statusTag = isPending
-    ? '<span class="tag tag-pending">Pendiente</span>'
-    : r.status === 'approved'
-      ? `<span class="tag tag-approved">Aprobado${r.durationLabel ? ' · '+r.durationLabel : ''}</span>`
-      : '<span class="tag tag-rejected">Rechazado</span>';
+function reqCard(r, supersededIds) {
+  const isPending    = r.status === 'pending';
+  const isSuperseded = supersededIds && supersededIds.has(r.id);
+  const initials     = (r.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+
+  let statusTag;
+  if (isSuperseded) {
+    statusTag = `<span class="tag tag-superseded">Vencido</span>`;
+  } else if (isPending) {
+    statusTag = `<span class="tag tag-pending">Pendiente</span>`;
+  } else if (r.status === 'approved') {
+    statusTag = `<span class="tag tag-approved">Aprobado${r.durationLabel ? ' · '+r.durationLabel : ''}</span>`;
+  } else {
+    statusTag = `<span class="tag tag-rejected">Rechazado</span>`;
+  }
 
   const durPicker = isPending ? `
     <div class="dur-row">
@@ -528,13 +543,13 @@ function reqCard(r) {
     </div>` : '';
 
   return `
-    <div class="req-card" id="card-${r.id}">
-      <div class="req-head" onclick="toggleCard('${r.id}')">
+    <div class="req-card${isSuperseded?' is-superseded':''}" id="card-${r.id}">
+      <div class="req-head" onclick="toggleCard('card-${r.id}')">
         <div class="req-head-left">
           <div class="req-avatar">${initials}</div>
           <div class="req-meta">
             <div class="req-name">${r.name}</div>
-            <div class="req-company">${r.company}</div>
+            <div class="req-company">${r.company||''}</div>
           </div>
         </div>
         <div class="req-head-right">
@@ -552,34 +567,21 @@ function reqCard(r) {
 }
 
 function toggleCard(id) {
-  var el = document.getElementById(id) || document.getElementById('card-'+id);
+  const el = document.getElementById(id);
   if (el) el.classList.toggle('open');
 }
 
-function toggleResChip(e, label) {
-  e.preventDefault();
-  label.classList.toggle('checked');
-  const cb = label.querySelector('input');
-  cb.checked = label.classList.contains('checked');
-}
-
-// ── USERS TABLE ───────────────────────────────────────────────────────────────
+// ── USERS TABLE ─────────────────────────────────────────────────────────────
 function renderUsers(users) {
   const active = users.filter(u => u.active);
-  if (!active.length) {
-    document.getElementById('users-wrap').innerHTML = '<div class="empty">Sin usuarios activos</div>';
-    return;
-  }
+  if (!active.length) { document.getElementById('users-wrap').innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
   const rows = active.map(u => {
-    const exp    = new Date(u.expiresAt);
-    const now    = new Date();
-    const diffMs = exp - now;
-    const diffH  = Math.floor(diffMs / 3600000);
+    const exp = new Date(u.expiresAt), now = new Date(), diffMs = exp - now, diffH = Math.floor(diffMs / 3600000);
     let expLabel, expClass;
-    if (diffMs <= 0)      { expLabel = 'Expirado'; expClass = 'exp-dead'; }
-    else if (diffH < 2)   { expLabel = `${Math.floor((diffMs%3600000)/60000)}min`; expClass = 'exp-warn'; }
-    else if (diffH < 24)  { expLabel = `${diffH}h`; expClass = 'exp-ok'; }
-    else                  { expLabel = exp.toLocaleDateString('es-CL'); expClass = 'exp-ok'; }
+    if (diffMs <= 0)     { expLabel='Expirado'; expClass='exp-dead'; }
+    else if (diffH < 2)  { expLabel=`${Math.floor((diffMs%3600000)/60000)}min`; expClass='exp-warn'; }
+    else if (diffH < 24) { expLabel=`${diffH}h`; expClass='exp-ok'; }
+    else                 { expLabel=exp.toLocaleDateString('es-CL'); expClass='exp-ok'; }
     const res = (u.resources||[]).map(r=>`<span class="res-tag">${r}</span>`).join('');
     const scans = u.maxScans != null
       ? `<span style="color:${(u.scansUsed||0)>=u.maxScans?'var(--danger)':'var(--muted)'}">${u.scansUsed||0}/${u.maxScans}</span>`
@@ -595,17 +597,14 @@ function renderUsers(users) {
       </td>
     </tr>`;
   }).join('');
-
   document.getElementById('users-wrap').innerHTML = `
     <table class="users-table">
-      <thead><tr>
-        <th>Usuario</th><th>Expira</th><th>Consultas</th><th>Recursos</th><th>Acciones</th>
-      </tr></thead>
+      <thead><tr><th>Usuario</th><th>Expira</th><th>Consultas</th><th>Recursos</th><th>Acciones</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
 
-// ── MODAL RECURSOS ────────────────────────────────────────────────────────────
+// ── MODAL RECURSOS ──────────────────────────────────────────────────────────
 function openModal(email, resStr) {
   modalEmail = email;
   const current = resStr ? resStr.split(',').filter(Boolean) : [];
@@ -616,18 +615,15 @@ function openModal(email, resStr) {
     </div>`).join('');
   document.getElementById('resModal').classList.add('open');
 }
-
 function closeModal() { document.getElementById('resModal').classList.remove('open'); }
 
 async function saveModalResources() {
-  const chips    = document.querySelectorAll('#modal-res-chips .res-chip');
+  const chips     = document.querySelectorAll('#modal-res-chips .res-chip');
   const resources = Array.from(chips).filter(c=>c.classList.contains('checked')).map(c=>c.textContent.trim());
-  const emailKey  = modalEmail.replace('@','_').replace('.','_');
   try {
     const res  = await fetch(`${RAILWAY}/admin/update-resources`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
-      body: JSON.stringify({email: modalEmail, resources})
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({email:modalEmail, resources})
     });
     const data = await res.json();
     if (data.success) { toast('Recursos actualizados','ok'); closeModal(); loadUsers(); }
@@ -635,7 +631,7 @@ async function saveModalResources() {
   } catch(e) { toast('Error de conexión','err'); }
 }
 
-// ── ACCIONES ──────────────────────────────────────────────────────────────────
+// ── ACCIONES SCANNER ────────────────────────────────────────────────────────
 function selectDur(id, ms, label, btn) {
   selectedDuration[id] = {ms, label};
   btn.closest('.dur-chips').querySelectorAll('.dur-chip').forEach(b=>b.classList.remove('sel'));
@@ -647,32 +643,24 @@ async function approve(id) {
   if (!dur) { toast('Selecciona una duración primero','err'); return; }
   const maxScansEl = document.getElementById('maxScans-'+id);
   const maxScans   = maxScansEl?.value ? parseInt(maxScansEl.value) : null;
-  const resources  = RES_OPTIONS.filter(r => {
-    const el = document.getElementById('rchip-'+id+'-'+r);
-    return el?.classList.contains('checked');
-  });
+  const resources  = RES_OPTIONS.filter(r => document.getElementById('rchip-'+id+'-'+r)?.classList.contains('checked'));
   const btn = document.getElementById('approve-'+id);
-  btn.disabled = true; btn.textContent = '...';
+  btn.disabled=true; btn.textContent='...';
   try {
     const res  = await fetch(`${RAILWAY}/admin/approve/${id}`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
       body: JSON.stringify({durationMs:dur.ms, durationLabel:dur.label, maxScans, resources})
     });
     const data = await res.json();
-    if (data.success) {
-      toast(`Aprobado por ${dur.label}${maxScans?' · '+maxScans+' consultas':''}`,'ok');
-      loadAll();
-    } else { toast(data.error||'Error','err'); btn.disabled=false; btn.textContent='✓ Aprobar'; }
+    if (data.success) { toast(`Aprobado por ${dur.label}${maxScans?' · '+maxScans+' consultas':''}`,'ok'); loadAll(); }
+    else { toast(data.error||'Error','err'); btn.disabled=false; btn.textContent='✓ Aprobar'; }
   } catch(e) { toast('Error de conexión','err'); btn.disabled=false; btn.textContent='✓ Aprobar'; }
 }
 
 async function reject(id) {
   if (!confirm('¿Rechazar esta solicitud?')) return;
   try {
-    const res  = await fetch(`${RAILWAY}/admin/reject/${id}`, {
-      method:'POST', headers:{'x-admin-token':adminToken}
-    });
+    const res  = await fetch(`${RAILWAY}/admin/reject/${id}`, {method:'POST',headers:{'x-admin-token':adminToken}});
     const data = await res.json();
     if (data.success) { toast('Solicitud rechazada','ok'); loadAll(); }
     else toast(data.error||'Error','err');
@@ -683,8 +671,7 @@ async function revoke(email) {
   if (!confirm(`¿Revocar acceso de ${email}?`)) return;
   try {
     const res  = await fetch(`${RAILWAY}/admin/revoke`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
       body: JSON.stringify({email})
     });
     const data = await res.json();
@@ -693,26 +680,19 @@ async function revoke(email) {
   } catch(e) { toast('Error de conexión','err'); }
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
+// ── HELPERS ─────────────────────────────────────────────────────────────────
 function formatDate(iso) {
   return new Date(iso).toLocaleString('es-CL',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
 }
-
 function toast(msg, type) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.className = `toast ${type} show`;
   setTimeout(() => el.classList.remove('show'), 3500);
 }
+document.getElementById('resModal').addEventListener('click', e => { if (e.target === document.getElementById('resModal')) closeModal(); });
 
-document.getElementById('resModal').addEventListener('click', e => {
-  if (e.target === document.getElementById('resModal')) closeModal();
-});
-
-// ── LEY KARIN ────────────────────────────────────────────────────────────────
-var allLKRequests = [];
-var allLKUsers    = [];
-var lkFilter      = 'all';
-var lkDurSelected = {};
+// ── LEY KARIN ───────────────────────────────────────────────────────────────
+var allLKRequests = [], allLKUsers = [], lkFilter = 'active', lkDurSelected = {};
 
 async function loadLK() {
   try {
@@ -724,8 +704,8 @@ async function loadLK() {
     renderLKUsers(allLKUsers);
     var pend  = allLKRequests.filter(function(r){ return r.status === 'pending'; }).length;
     var badge = document.getElementById('lk-badge');
-    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; }
-    else            badge.style.display = 'none';
+    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; badge.classList.add('pulse'); }
+    else { badge.style.display = 'none'; badge.classList.remove('pulse'); }
   } catch(e) { console.error('[LK] loadLK:', e.message); }
 }
 
@@ -738,62 +718,76 @@ function setLKFilter(f, btn) {
 
 function filterLK() {
   var q = (document.getElementById('lk-search').value || '').toLowerCase();
+  var supersededIds = markSuperseded(allLKRequests);
   var filtered = allLKRequests;
-  if (lkFilter !== 'all') filtered = filtered.filter(function(r){ return r.status === lkFilter; });
+
+  if (lkFilter === 'active') {
+    filtered = filtered.filter(function(r){
+      return r.status === 'pending' || (r.status === 'approved' && !supersededIds.has(r.id));
+    });
+  } else if (lkFilter === 'historico') {
+    // todos
+  } else if (lkFilter === 'pending') {
+    filtered = filtered.filter(function(r){ return r.status === 'pending'; });
+  } else if (lkFilter === 'approved') {
+    filtered = filtered.filter(function(r){ return r.status === 'approved'; });
+  } else if (lkFilter === 'rejected') {
+    filtered = filtered.filter(function(r){ return r.status === 'rejected'; });
+  }
+
   if (q) filtered = filtered.filter(function(r){
-    return (r.name||'').toLowerCase().indexOf(q) > -1 ||
-           (r.organization||'').toLowerCase().indexOf(q) > -1 ||
-           (r.email||'').toLowerCase().indexOf(q) > -1;
+    return (r.name||'').toLowerCase().indexOf(q)>-1 ||
+           (r.organization||'').toLowerCase().indexOf(q)>-1 ||
+           (r.email||'').toLowerCase().indexOf(q)>-1;
   });
   renderLKRequests(filtered);
 }
 
 function renderLKRequests(requests) {
   var el = document.getElementById('lk-req-list');
+  var supersededIds = markSuperseded(allLKRequests);
   if (!requests.length) { el.innerHTML = '<div class="empty">Sin solicitudes</div>'; return; }
-
   el.innerHTML = requests.map(function(r) {
+    var isSuperseded = supersededIds.has(r.id);
     var date = new Date(r.createdAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
-    var statusTag = r.status === 'pending'
-      ? '<span class="tag tag-pending">Pendiente</span>'
-      : r.status === 'approved'
-        ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' \xb7 ' + r.durationLabel : '') + '</span>'
-        : '<span class="tag tag-rejected">Rechazado</span>';
+    var statusTag = isSuperseded
+      ? '<span class="tag tag-superseded">Vencido</span>'
+      : r.status === 'pending'
+        ? '<span class="tag tag-pending">Pendiente</span>'
+        : r.status === 'approved'
+          ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' · ' + r.durationLabel : '') + '</span>'
+          : '<span class="tag tag-rejected">Rechazado</span>';
 
     var contextHtml = r.context
       ? '<div style="font-size:.75rem;color:var(--muted);margin:6px 0 0;font-style:italic">' + r.context + '</div>'
       : '';
 
-    var durList = [
-      ['1h','1 hora',3600000],['4h','4 horas',14400000],['12h','12 horas',43200000],
-      ['1d','1 d\xeda',86400000],['3d','3 d\xedas',259200000],
-      ['7d','7 d\xedas',604800000],['30d','30 d\xedas',2592000000]
-    ];
+    var durList = [['1h',3600000],['4h',14400000],['12h',43200000],['1d',86400000],['3d',259200000],['7d',604800000],['30d',2592000000]];
     var durChips = durList.map(function(x) {
-      return '<button class="dur-chip" data-ms="' + x[2] + '" data-label="' + x[1] +
-             '" onclick="selectLKDur(this,\'' + r.id + '\')">' + x[0] + '</button>';
+      return '<button class="dur-chip" onclick="selectLKDur(this,\'' + r.id + '\',' + x[1] + ',\'' + x[0] + '\')">' + x[0] + '</button>';
     }).join('');
 
     var actions = '';
     if (r.status === 'pending') {
-      actions = '<div class="req-dur"><span class="dur-lbl">Duración</span>' + durChips + '</div>' +
+      actions = '<div class="dur-row"><span class="dur-label">Duración</span><div class="dur-chips">' + durChips + '</div></div>' +
         '<div style="display:flex;gap:8px;margin-top:10px">' +
-        '<button class="btn-approve" id="lk-approve-' + r.id + '" onclick="approveLK(\'' + r.id + '\')">&#10003; Aprobar</button>' +
-        '<button class="btn-reject" onclick="rejectLK(\'' + r.id + '\')">&#10007; Rechazar</button>' +
+        '<button class="btn-approve" id="lk-approve-' + r.id + '" onclick="approveLK(\'' + r.id + '\')">✓ Aprobar</button>' +
+        '<button class="btn-reject" onclick="rejectLK(\'' + r.id + '\')">✗ Rechazar</button>' +
         '</div>';
     }
 
-    return '<div class="req-card" id="lk-card-' + r.id + '">' +
-      '<div class="req-header" onclick="toggleCard(\'lk-card-' + r.id + '\')">' +
-        '<div style="display:flex;align-items:center;gap:10px">' +
+    return '<div class="req-card' + (isSuperseded?' is-superseded':'') + '" id="lk-card-' + r.id + '">' +
+      '<div class="req-head" onclick="toggleCard(\'lk-card-' + r.id + '\')">' +
+        '<div class="req-head-left">' +
           '<div class="req-avatar">' + (r.name||'?')[0].toUpperCase() + '</div>' +
-          '<div><div class="req-name">' + r.name + '</div>' +
-          '<div class="req-meta">' + (r.organization||'') + (r.cargo ? ' \xb7 ' + r.cargo : '') + '</div></div>' +
+          '<div class="req-meta"><div class="req-name">' + r.name + '</div>' +
+          '<div class="req-company">' + (r.organization||'') + (r.cargo ? ' · ' + r.cargo : '') + '</div></div>' +
         '</div>' +
-        '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">' +
-          '<span style="font-size:.7rem;color:var(--muted)">' + r.email + '</span>' +
-          statusTag + '<span style="font-size:.65rem;color:var(--muted)">' + date + '</span>' +
-          '<span class="collapse-icon">&#9662;</span>' +
+        '<div class="req-head-right">' +
+          '<span class="req-email-tag">' + r.email + '</span>' +
+          statusTag +
+          '<span class="req-time">' + date + '</span>' +
+          '<span class="chevron">▾</span>' +
         '</div>' +
       '</div>' +
       '<div class="req-body">' + contextHtml + actions + '</div>' +
@@ -801,39 +795,33 @@ function renderLKRequests(requests) {
   }).join('');
 }
 
-function selectLKDur(btn, id) {
-  btn.closest('.req-dur').querySelectorAll('.dur-chip').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  lkDurSelected[id] = { ms: Number(btn.dataset.ms), label: btn.dataset.label };
+function selectLKDur(btn, id, ms, label) {
+  btn.closest('.dur-chips').querySelectorAll('.dur-chip').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  lkDurSelected[id] = { ms: ms, label: label };
 }
 
 async function approveLK(id) {
-  if (!lkDurSelected[id]) { toast('Selecciona una duraci\xf3n', 'warn'); return; }
+  if (!lkDurSelected[id]) { toast('Selecciona una duración', 'err'); return; }
   var ms = lkDurSelected[id].ms, label = lkDurSelected[id].label;
   var btn = document.getElementById('lk-approve-' + id);
-  if (btn) { btn.disabled = true; btn.textContent = 'Aprobando...'; }
+  if (btn) { btn.disabled=true; btn.textContent='Aprobando...'; }
   try {
     var res = await fetch(RAILWAY + '/leykarin/admin/approve/' + id, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','x-admin-token':adminToken},
-      body: JSON.stringify({ durationMs: ms, durationLabel: label })
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({durationMs:ms, durationLabel:label})
     });
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
-    toast('Acceso Ley Karin aprobado \xb7 Email enviado', 'ok');
+    toast('Acceso Ley Karin aprobado · Email enviado', 'ok');
     await loadLK();
-  } catch(e) {
-    toast('Error: ' + e.message, 'err');
-    if (btn) { btn.disabled = false; btn.textContent = '\u2713 Aprobar'; }
-  }
+  } catch(e) { toast('Error: ' + e.message, 'err'); if (btn) { btn.disabled=false; btn.textContent='✓ Aprobar'; } }
 }
 
 async function rejectLK(id) {
-  if (!confirm('\xbfRechazar esta solicitud Ley Karin?')) return;
+  if (!confirm('¿Rechazar esta solicitud Ley Karin?')) return;
   try {
-    var res = await fetch(RAILWAY + '/leykarin/admin/reject/' + id, {
-      method: 'POST', headers: {'x-admin-token': adminToken}
-    });
+    var res = await fetch(RAILWAY + '/leykarin/admin/reject/' + id, {method:'POST', headers:{'x-admin-token':adminToken}});
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
     toast('Solicitud rechazada', 'ok');
@@ -847,25 +835,23 @@ function renderLKUsers(users) {
   var active = users.filter(function(u){ return u.active && new Date(u.expiresAt) > new Date(); });
   if (!active.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
   el.innerHTML = '<table class="users-table"><thead><tr>' +
-    '<th>Nombre</th><th>Organizaci\xf3n</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
+    '<th>Nombre</th><th>Organización</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
     '</tr></thead><tbody>' +
     active.map(function(u) {
       var exp = new Date(u.expiresAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
-      return '<tr><td>' + u.name + '</td><td>' + (u.organization||'\u2014') + '</td><td>' + (u.cargo||'\u2014') + '</td>' +
+      return '<tr><td>' + u.name + '</td><td>' + (u.organization||'—') + '</td><td>' + (u.cargo||'—') + '</td>' +
         '<td>' + u.email + '</td>' +
         '<td style="font-family:var(--mono);font-size:.72rem">' + exp + '</td>' +
         '<td><button class="btn-reject" style="font-size:.6rem;padding:5px 12px" onclick="revokeLK(\'' + u.email + '\')">Revocar</button></td></tr>';
-    }).join('') +
-    '</tbody></table>';
+    }).join('') + '</tbody></table>';
 }
 
 async function revokeLK(email) {
-  if (!confirm('\xbfRevocar acceso Ley Karin de ' + email + '?')) return;
+  if (!confirm('¿Revocar acceso Ley Karin de ' + email + '?')) return;
   try {
     var res = await fetch(RAILWAY + '/leykarin/admin/revoke', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','x-admin-token':adminToken},
-      body: JSON.stringify({ email: email })
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({email:email})
     });
     var data = await res.json();
     if (!data.success) throw new Error(data.error);
@@ -873,6 +859,205 @@ async function revokeLK(email) {
     await loadLK();
   } catch(e) { toast('Error: ' + e.message, 'err'); }
 }
+
+// ── COPROPIEDAD ─────────────────────────────────────────────────────────────
+var allCPRequests = [], allCPUsers = [], cpFilter = 'active', cpDurSelected = {};
+
+async function loadCP() {
+  try {
+    var res  = await fetch(RAILWAY + '/copropiedad/admin/requests', {headers:{'x-admin-token':adminToken}});
+    var data = await res.json();
+    allCPRequests = data.requests || [];
+    allCPUsers    = data.users    || [];
+    renderCPRequests(allCPRequests);
+    renderCPUsers(allCPUsers);
+    var pend  = allCPRequests.filter(function(r){ return r.status === 'pending'; }).length;
+    var badge = document.getElementById('cp-badge');
+    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; badge.classList.add('pulse'); }
+    else { badge.style.display = 'none'; badge.classList.remove('pulse'); }
+  } catch(e) { console.error('[CP] loadCP:', e.message); }
+}
+
+function setCPFilter(f, btn) {
+  cpFilter = f;
+  document.querySelectorAll('#tab-copropiedad .filter-chip').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  filterCP();
+}
+
+function filterCP() {
+  var q = (document.getElementById('cp-search').value || '').toLowerCase();
+  var supersededIds = markSuperseded(allCPRequests);
+  var filtered = allCPRequests;
+
+  if (cpFilter === 'active') {
+    filtered = filtered.filter(function(r){
+      return r.status === 'pending' || (r.status === 'approved' && !supersededIds.has(r.id));
+    });
+  } else if (cpFilter === 'historico') {
+    // todos
+  } else if (cpFilter === 'pending') {
+    filtered = filtered.filter(function(r){ return r.status === 'pending'; });
+  } else if (cpFilter === 'approved') {
+    filtered = filtered.filter(function(r){ return r.status === 'approved'; });
+  } else if (cpFilter === 'rejected') {
+    filtered = filtered.filter(function(r){ return r.status === 'rejected'; });
+  }
+
+  if (q) filtered = filtered.filter(function(r){
+    return (r.name||'').toLowerCase().indexOf(q)>-1 ||
+           (r.organization||'').toLowerCase().indexOf(q)>-1 ||
+           (r.email||'').toLowerCase().indexOf(q)>-1;
+  });
+  renderCPRequests(filtered);
+}
+
+function renderCPRequests(requests) {
+  var el = document.getElementById('cp-req-list');
+  var supersededIds = markSuperseded(allCPRequests);
+  if (!requests.length) { el.innerHTML = '<div class="empty">Sin solicitudes</div>'; return; }
+  el.innerHTML = requests.map(function(r) {
+    var isSuperseded = supersededIds.has(r.id);
+    var date = new Date(r.createdAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
+    var statusTag = isSuperseded
+      ? '<span class="tag tag-superseded">Vencido</span>'
+      : r.status === 'pending'
+        ? '<span class="tag tag-pending">Pendiente</span>'
+        : r.status === 'approved'
+          ? '<span class="tag tag-approved">Aprobado' + (r.durationLabel ? ' · ' + r.durationLabel : '') + '</span>'
+          : '<span class="tag tag-rejected">Rechazado</span>';
+
+    var contextHtml = r.context
+      ? '<div style="font-size:.75rem;color:var(--muted);margin:6px 0 0;font-style:italic">' + r.context + '</div>'
+      : '';
+
+    var durList = [['1h',3600000],['4h',14400000],['12h',43200000],['1d',86400000],['3d',259200000],['7d',604800000],['30d',2592000000]];
+    var durChips = durList.map(function(x) {
+      return '<button class="dur-chip" onclick="selectCPDur(this,\'' + r.id + '\',' + x[1] + ',\'' + x[0] + '\')">' + x[0] + '</button>';
+    }).join('');
+
+    var actions = '';
+    if (r.status === 'pending') {
+      actions = '<div class="dur-row"><span class="dur-label">Duración</span><div class="dur-chips">' + durChips + '</div></div>' +
+        '<div style="display:flex;gap:8px;margin-top:10px">' +
+        '<button class="btn-approve" id="cp-approve-' + r.id + '" onclick="approveCP(\'' + r.id + '\')">✓ Aprobar</button>' +
+        '<button class="btn-reject" onclick="rejectCP(\'' + r.id + '\')">✗ Rechazar</button>' +
+        '</div>';
+    }
+
+    return '<div class="req-card' + (isSuperseded?' is-superseded':'') + '" id="cp-card-' + r.id + '">' +
+      '<div class="req-head" onclick="toggleCard(\'cp-card-' + r.id + '\')">' +
+        '<div class="req-head-left">' +
+          '<div class="req-avatar">' + (r.name||'?')[0].toUpperCase() + '</div>' +
+          '<div class="req-meta"><div class="req-name">' + r.name + '</div>' +
+          '<div class="req-company">' + (r.organization||'') + (r.cargo ? ' · ' + r.cargo : '') + '</div></div>' +
+        '</div>' +
+        '<div class="req-head-right">' +
+          '<span class="req-email-tag">' + r.email + '</span>' +
+          statusTag +
+          '<span class="req-time">' + date + '</span>' +
+          '<span class="chevron">▾</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="req-body">' + contextHtml + actions + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function selectCPDur(btn, id, ms, label) {
+  btn.closest('.dur-chips').querySelectorAll('.dur-chip').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  cpDurSelected[id] = { ms: ms, label: label };
+}
+
+async function approveCP(id) {
+  if (!cpDurSelected[id]) { toast('Selecciona una duración', 'err'); return; }
+  var ms = cpDurSelected[id].ms, label = cpDurSelected[id].label;
+  var btn = document.getElementById('cp-approve-' + id);
+  if (btn) { btn.disabled=true; btn.textContent='Aprobando...'; }
+  try {
+    var res = await fetch(RAILWAY + '/copropiedad/admin/approve/' + id, {
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({durationMs:ms, durationLabel:label})
+    });
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Acceso Copropiedad aprobado · Email enviado', 'ok');
+    await loadCP();
+  } catch(e) { toast('Error: ' + e.message, 'err'); if (btn) { btn.disabled=false; btn.textContent='✓ Aprobar'; } }
+}
+
+async function rejectCP(id) {
+  if (!confirm('¿Rechazar esta solicitud Copropiedad?')) return;
+  try {
+    var res = await fetch(RAILWAY + '/copropiedad/admin/reject/' + id, {method:'POST', headers:{'x-admin-token':adminToken}});
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Solicitud rechazada', 'ok');
+    await loadCP();
+  } catch(e) { toast('Error: ' + e.message, 'err'); }
+}
+
+function renderCPUsers(users) {
+  var el = document.getElementById('cp-users-wrap');
+  if (!users || !users.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
+  var active = users.filter(function(u){ return u.active && new Date(u.expiresAt) > new Date(); });
+  if (!active.length) { el.innerHTML = '<div class="empty">Sin usuarios activos</div>'; return; }
+  el.innerHTML = '<table class="users-table"><thead><tr>' +
+    '<th>Nombre</th><th>Organización</th><th>Cargo</th><th>Email</th><th>Vence</th><th>Acciones</th>' +
+    '</tr></thead><tbody>' +
+    active.map(function(u) {
+      var exp = new Date(u.expiresAt).toLocaleString('es-CL', {dateStyle:'short', timeStyle:'short'});
+      return '<tr><td>' + u.name + '</td><td>' + (u.organization||'—') + '</td><td>' + (u.cargo||'—') + '</td>' +
+        '<td>' + u.email + '</td>' +
+        '<td style="font-family:var(--mono);font-size:.72rem">' + exp + '</td>' +
+        '<td><button class="btn-reject" style="font-size:.6rem;padding:5px 12px" onclick="revokeCP(\'' + u.email + '\')">Revocar</button></td></tr>';
+    }).join('') + '</tbody></table>';
+}
+
+async function revokeCP(email) {
+  if (!confirm('¿Revocar acceso Copropiedad de ' + email + '?')) return;
+  try {
+    var res = await fetch(RAILWAY + '/copropiedad/admin/revoke', {
+      method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
+      body: JSON.stringify({email:email})
+    });
+    var data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    toast('Acceso revocado', 'ok');
+    await loadCP();
+  } catch(e) { toast('Error: ' + e.message, 'err'); }
+}
+
+// Carga badges de CP al inicio también
+async function loadCPBadge() {
+  try {
+    var res  = await fetch(RAILWAY + '/copropiedad/admin/requests', {headers:{'x-admin-token':adminToken}});
+    var data = await res.json();
+    var pend  = (data.requests||[]).filter(function(r){ return r.status === 'pending'; }).length;
+    var badge = document.getElementById('cp-badge');
+    if (pend > 0) { badge.textContent = pend; badge.style.display = 'inline-flex'; badge.classList.add('pulse'); }
+    else { badge.style.display = 'none'; badge.classList.remove('pulse'); }
+    // También carga badge LK
+    var res2  = await fetch(RAILWAY + '/leykarin/admin/requests', {headers:{'x-admin-token':adminToken}});
+    var data2 = await res2.json();
+    var pend2 = (data2.requests||[]).filter(function(r){ return r.status === 'pending'; }).length;
+    var badge2 = document.getElementById('lk-badge');
+    if (pend2 > 0) { badge2.textContent = pend2; badge2.style.display = 'inline-flex'; badge2.classList.add('pulse'); }
+    else { badge2.style.display = 'none'; badge2.classList.remove('pulse'); }
+  } catch(e) {}
+}
+
+// Override showPanel para cargar badges de todos los agentes al inicio
+var _origShowPanel = showPanel;
+showPanel = function() {
+  document.getElementById('loginView').style.display = 'none';
+  const av = document.getElementById('adminView');
+  av.style.display = 'flex';
+  loadAll();
+  loadCPBadge();
+  setInterval(function(){ loadAll(); loadCPBadge(); }, 30000);
+};
 </script>
 </body>
 </html>
