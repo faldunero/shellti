@@ -157,9 +157,9 @@
 ══════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --deep:    #020617;
-  --deep2:   #040d1e;
-  --deep3:   #060f1c;
+  --deep:    #050e28;
+  --deep2:   #081530;
+  --deep3:   #0a1a38;
   --cyan:    #00D4FF;
   --cyan2:   #00b8e6;
   --cyan3:   #7eeeff;
@@ -1792,7 +1792,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
   <div class="container">
     <div class="equipo-grid fu">
       <div class="equipo-img-wrap">
-        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1214&q=85&auto=format&fit=crop" alt="Equipo ShellTI — Compliance y Arquitectura" class="photo-vivid">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1214&q=85&auto=format&fit=crop" alt="ShellTI — Arquitectura y Compliance" class="photo-vivid">
       </div>
       <div class="equipo-content">
         <p class="sec-label">El Equipo</p>
@@ -1829,8 +1829,9 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
 </div>
 
 <!-- ════════ ASSESSMENT ════════ -->
-<section id="assessment">
-  <div class="container">
+<section id="assessment" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=1440&q=80&auto=format&fit=crop');background-size:cover;background-position:center;filter:brightness(.18) saturate(1.2);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="fu">
       <p class="sec-label">03. Assessment Gratis</p>
       <h2 class="sec-title">Nuestra Columna <span class="tc">Vertebral</span></h2>
@@ -1842,6 +1843,7 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
       <div class="card"><span class="card-num">03</span><h4>Marcos de Referencia Internacionales</h4><p>Procesos alineados con ISO 27001, NIST CSF (Identificar, Proteger, Detectar, Responder, Recuperar) y la Ley N° 21.719. Tecnología como habilitador del cumplimiento legal.</p></div>
       <div class="card"><span class="card-num">04</span><h4>Capas de Abstracción y Desacoplamiento</h4><p>Interfaces de abstracción que aíslan la complejidad heredada. Nuevos servicios consumen datos críticos de forma simplificada, protegiendo el núcleo operativo.</p></div>
     </div>
+  </div>
   </div>
 </section>
 
@@ -1859,16 +1861,17 @@ input:disabled~.ck-slider{cursor:default;opacity:.6}
           <div class="stat-item"><div class="lbl">Compliance 21.719</div><div class="val">Full</div></div>
         </div>
       </div>
-      <div class="dash-wrap">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1143&q=85&auto=format&fit=crop" alt="ShellTI — Observabilidad y Control en Tiempo Real" class="photo-vivid">
+      <div class="dash-wrap" style="position:relative;overflow:hidden;border-radius:4px;min-height:360px;">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1143&q=85&auto=format&fit=crop" alt="ShellTI — Observabilidad y Control en Tiempo Real" style="width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;filter:brightness(.85) saturate(1.3) contrast(1.1);transition:filter .4s;">
       </div>
     </div>
   </div>
 </section>
 
 <!-- ════════ COMPLIANCE ════════ -->
-<section id="compliance">
-  <div class="container">
+<section id="compliance" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1440&q=80&auto=format&fit=crop');background-size:cover;background-position:center;filter:brightness(.15) saturate(1.1);z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="comp-hdr fu">
       <div>
         <p class="sec-label">03. Especialización Sectorial</p>
