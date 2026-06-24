@@ -249,6 +249,7 @@
     .mob-tags-toggle { display: none; background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); font-size: .6rem; font-family: var(--mono); padding: 4px 8px; cursor: pointer; transition: all .14s; align-items: center; gap: 4px; }
     .mob-tags-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
     .mob-tags-row { display: none; }
+    .mob-input-row { display: none; }
     .scroll-down-btn {
       position: absolute;
       bottom: 16px;
@@ -328,6 +329,7 @@
     .mob-tools-toggle { display: none; }
     .mob-tools-row { display: none; }
     .mob-tags-row { display: none; }
+    .mob-input-row { display: none; }
 
     /* ═══ MOBILE ════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
@@ -566,7 +568,7 @@
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#020617" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Evaluar situacion
     </button>
-    <span class="nav-pill">Ley Karin &middot; IA</span>
+    <span class="nav-pill">Ley Karin</span>
   </div>
 </nav>
 
@@ -635,10 +637,16 @@
         <a href="https://www.inn.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">NCh 3262</a>
         <a href="https://www.suseso.gob.cl" target="_blank" rel="noopener" class="ctag ctag-b ctag-link">CEAL-SM</a>
       </div>
+      <!-- Mobile Input -->
+      <div class="mob-input-row" id="mobInputRow">
+        <textarea id="mobUserInput" placeholder="Escribe aqui tu consulta..." rows="1"
+          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
       <div class="chat-head-top">
       <div class="chat-head-l">
-        <h1>Agente Ley Karin</h1>
-        <p>Ley 21.643 &middot; Acoso laboral, sexual y violencia en el trabajo</p>
       </div>
       <div class="chat-head-r">
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1174565" target="_blank" rel="noopener" class="ctag ctag-c ctag-link" title="Ver Ley 21.643 en BCN">Ley 21.643</a>
@@ -1120,6 +1128,22 @@ function mobSetUser(name) {
   if (nm && name) nm.textContent = name;
 }
 
+function handleMobInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 70) + 'px';
+}
+function handleMobKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMob(); }
+}
+function sendMob() {
+  var inp = document.getElementById('mobUserInput');
+  if (!inp) return;
+  var val = inp.value.trim();
+  if (!val) return;
+  inp.value = ''; inp.style.height = 'auto';
+  send(val);
+}
+
 </script>
 </body>
 </html
@@ -1128,5 +1152,18 @@ function mobSetUser(name) {
       .disclaimer { display: none !important; }
       /* Also hide the original desktop input-wrap since we have mob-input-row */
       .input-wrap { display: none !important; }
+
+
+      /* Mobile only: hide welcome, disclaimer, desktop input */
+      .welcome { display: none !important; }
+      .disclaimer { display: none !important; }
+      .input-wrap { display: none !important; }
+
+      /* Show mobile input row */
+      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 8px; border-top: 1px solid var(--border); background: var(--surface); }
+      .mob-input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: .77rem; padding: 8px 10px; resize: none; outline: none; min-height: 36px; max-height: 70px; line-height: 1.5; transition: border-color .14s; }
+      .mob-input-row textarea:focus { border-color: var(--cyan); }
+      .mob-input-row textarea::placeholder { color: var(--muted); }
+      .mob-send-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--cyan); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 >
