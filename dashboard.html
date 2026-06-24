@@ -947,19 +947,68 @@ function getToken() {
 }
 
 (function checkAuth() {
-  const token = getToken();
-  if (!token) { window.location.href = '/'; return; }
-  // Validación inicial estricta — solo redirige si el token no existe en el sistema
-  // El status-widget.js maneja el cronómetro y badge de consultas
+  var token = getToken();
+  if (!token) { _showAuthError('no-token', 'Usa el enlace que recibiste por email o ingresa tu token de acceso.'); return; }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ token, strict: false })
-  }).then(r=>r.json()).then(d=>{
-    if (!d.valid) { localStorage.removeItem('shellti_token'); window.location.href='/'; return; }
-    // Bloquear botón si no puede hacer más consultas
+    body: JSON.stringify({ token: token, strict: false })
+  })
+  .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(d) {
+    if (!d.valid) {
+      localStorage.removeItem('shellti_token');
+      _showAuthError('invalid-token', d.reason || 'Token inválido o expirado. Solicita un nuevo acceso o contacta a contacto@shellti.com');
+      return;
+    }
+    var ov = document.getElementById('auth-error-overlay');
+    if (ov) ov.style.display = 'none';
     if (!d.canScan) blockScanBtn(d.expired ? 'Sesión expirada' : 'Sin consultas disponibles');
-  }).catch(()=>{ /* error de red — no redirigir */ });
+  })
+  .catch(function(err) {
+    console.warn('[ShellTI] auth validate error:', err.message);
+    var banner = document.getElementById('auth-network-banner');
+    if (banner) banner.style.display = 'flex';
+  });
 })();
+
+function _showAuthError(code, msg) {
+  var ov = document.getElementById('auth-error-overlay');
+  var msgEl = document.getElementById('auth-error-msg');
+  if (msgEl) msgEl.textContent = msg;
+  if (ov) ov.style.display = 'flex';
+  console.warn('[ShellTI] auth error (' + code + '):', msg);
+}
+
+function _submitManualToken() {
+  var input = document.getElementById('manual-token-input');
+  var errEl = document.getElementById('manual-token-error');
+  var btn   = document.getElementById('manual-token-btn');
+  var token = input ? input.value.trim() : '';
+  if (!token) {
+    if (errEl) { errEl.textContent = 'Ingresa tu token de acceso.'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+  if (btn) { btn.textContent = 'Verificando...'; btn.disabled = true; }
+  fetch('https://web-production-372660.up.railway.app/auth/validate', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ token: token, strict: false })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (!d.valid) {
+      if (errEl) { errEl.textContent = d.reason || 'Token inválido o expirado.'; errEl.style.display = 'block'; }
+      if (btn) { btn.textContent = 'Ingresar'; btn.disabled = false; }
+      return;
+    }
+    localStorage.setItem('shellti_token', token);
+    window.location.reload();
+  })
+  .catch(function() {
+    if (errEl) { errEl.textContent = 'Error de conexión. Intenta de nuevo.'; errEl.style.display = 'block'; }
+    if (btn) { btn.textContent = 'Ingresar'; btn.disabled = false; }
+  });
+}
 
 function startCountdown(expiresAtStr) {
   const expiresAt = new Date(expiresAtStr);
