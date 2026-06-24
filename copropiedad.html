@@ -10,22 +10,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root{--bg:#0d1b2e;--surface:#111e33;--surface2:#142038;--border:#1a2d45;--border2:#243550;--cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);--emerald:#34D399;--amber:#FBBF24;--red:#F87171;--text:#e2e8f0;--text2:#94a3b8;--muted:#475569;--sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;--r:8px;--nav-h:60px}
+    :root {
+      --bg:#0d1b2e;--surface:#080f1e;--surface2:#0b1425;
+      --border:#162032;--border2:#1e2d45;
+      --cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);
+      --emerald:#34D399;--amber:#FBBF24;--red:#F87171;
+      --text:#e2e8f0;--text2:#94a3b8;--muted:#475569;
+      --sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;
+      --r:8px;--nav-h:60px;--sb-w:252px;
+    }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(13,27,46,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
     .nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:.92rem}
     .nav-brand img{height:30px;filter:drop-shadow(0 0 6px var(--cyan))}
     .nav-right{display:flex;align-items:center;gap:10px}
     .nav-pill{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,212,255,.2);background:var(--cyan-gl);padding:3px 10px;border-radius:20px;letter-spacing:.04em}
     .nav-pill::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-    .user-chip{display:none;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 10px 4px 4px}
+
+    /* User chip */
+    .user-chip{display:none;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 10px 4px 4px;cursor:default}
     .user-chip.show{display:flex}
     .user-avatar{width:22px;height:22px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--cyan);flex-shrink:0}
     .user-name{font-size:.65rem;font-weight:600;color:var(--text2);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
     .user-org{font-size:.58rem;color:var(--muted);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
-    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative}
+
+    /* LAYOUT */
+    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
+
+    /* SIDEBAR */
     .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
     .sidebar::-webkit-scrollbar{width:3px}
     .sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
@@ -34,6 +50,8 @@
     .qbtn{display:block;width:100%;text-align:left;padding:8px 10px;margin-bottom:4px;background:transparent;border:1px solid var(--border);border-radius:var(--r);color:var(--text2);font-family:var(--sans);font-size:.73rem;cursor:pointer;transition:all .14s;line-height:1.35}
     .qbtn:hover{border-color:var(--cyan);color:var(--text);background:var(--cyan-gl)}
     .ql{display:block;font-size:.57rem;font-family:var(--mono);color:var(--muted);margin-bottom:2px;letter-spacing:.06em}
+
+    /* Historial drawer */
     .hist-drawer{position:absolute;top:0;left:0;width:252px;height:100%;background:var(--surface2);border-right:1px solid var(--border2);z-index:50;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
     .hist-drawer.open{transform:translateX(0)}
     .hist-drawer-head{padding:14px 14px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -55,8 +73,15 @@
     .hist-item:hover .hist-item-del{display:flex}
     .hist-item-del:hover{background:rgba(248,113,113,.15);color:var(--red)}
     .hist-empty{padding:20px 14px;font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5}
+
+    /* CHAT */
     .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
-    .chat-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .chat-head{padding:0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;background:var(--bg)}
+    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+    .chat-head-session{padding:4px 20px 5px;border-top:1px solid var(--border);background:rgba(0,212,255,.03);display:none;align-items:center;justify-content:space-between}
+    .chat-head-session.show{display:flex}
+    .chat-head-session-title{font-size:.63rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+    .chat-head-session-date{font-size:.58rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
     .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
     .chat-head-l p{font-size:.68rem;color:var(--muted)}
     .chat-head-r{display:flex;align-items:center;gap:5px}
@@ -64,10 +89,15 @@
     .ctag-c{color:var(--cyan);border-color:rgba(0,212,255,.2);background:var(--cyan-gl)}
     .ctag-g{color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)}
     .ctag-a{color:var(--amber);border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.05)}
+    .ctag-p{color:#c084fc;border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.06)}
+    .ctag-link{cursor:pointer;text-decoration:none;transition:opacity .14s}
+    .ctag-link:hover{opacity:.75}
     .icon-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:.62rem;font-family:var(--mono);padding:5px 10px;cursor:pointer;transition:all .14s;white-space:nowrap}
     .icon-btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
     .icon-btn.danger:hover{border-color:rgba(248,113,113,.4);color:var(--red);background:rgba(248,113,113,.05)}
-    .messages{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+
+    /* Messages */
+    .messages{overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0}
     .messages::-webkit-scrollbar{width:3px}
     .messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
     .msg{display:flex;gap:8px;max-width:800px}
@@ -80,19 +110,17 @@
     .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
     .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
     .msg-bubble strong{color:var(--cyan)}
-    .doc-block{margin-top:10px;background:rgba(13,27,46,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
+    .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
     .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
     .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
     .typing-dots{display:flex;gap:4px;padding:4px 0}
     .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tdot 1.2s infinite}
     .typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
     @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
-    .session-banner{padding:6px 20px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border);display:none;align-items:center;justify-content:space-between;flex-shrink:0}
-    .session-banner.show{display:flex}
-    .session-banner-title{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
-    .session-banner-date{font-size:.6rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
+
+    /* Welcome */
     .welcome{max-width:520px;width:100%;margin:auto;text-align:center;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .welcome-icon{width:54px;height:54px;border-radius:14px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .welcome-icon{width:52px;height:52px;border-radius:14px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
     .welcome h2{font-size:1.15rem;font-weight:700;margin-bottom:8px;color:var(--text)}
     .welcome p{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;max-width:380px}
     .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;width:100%}
@@ -100,6 +128,8 @@
     .wcard:hover{border-color:var(--cyan);background:var(--cyan-gl)}
     .wcard-t{font-size:.78rem;font-weight:600;margin-bottom:4px;color:var(--text)}
     .wcard-d{font-size:.67rem;color:var(--muted);line-height:1.4}
+
+    /* Disclaimer + Input */
     .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
     .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
     .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
@@ -113,10 +143,14 @@
     .send-btn:hover{opacity:.85}
     .send-btn:disabled{opacity:.35;cursor:default}
     .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
+
+    /* Toast */
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:300;pointer-events:none;white-space:nowrap}
     .toast.show{transform:translateX(-50%) translateY(0)}
     .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
     .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
+
+    /* Access overlay */
     #access-overlay{position:fixed;inset:0;background:rgba(13,27,46,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
     .overlay-box{text-align:center}
     .overlay-icon{width:48px;height:48px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
@@ -124,7 +158,122 @@
     #access-overlay p{font-size:.76rem;color:var(--muted);max-width:260px}
     #access-overlay a{margin-top:14px;display:inline-block;color:var(--cyan);font-size:.74rem;text-decoration:none}
     #access-overlay a:hover{text-decoration:underline}
-    @media(max-width:768px){main{grid-template-columns:1fr}.sidebar{display:none}}
+
+    /* Modal recursos Copropiedad */
+    .res-modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.88);backdrop-filter:blur(6px);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+    .res-modal-overlay.open{display:flex}
+    .res-modal{background:var(--surface);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+    .res-modal::-webkit-scrollbar{width:3px}
+    .res-modal::-webkit-scrollbar-thumb{background:var(--border2)}
+    .res-modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .res-modal-head h2{font-size:.95rem;font-weight:700;margin-bottom:3px}
+    .res-modal-head p{font-size:.72rem;color:var(--muted);line-height:1.4}
+    .res-modal-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .14s;font-size:.85rem}
+    .res-modal-close:hover{border-color:var(--red);color:var(--red)}
+    .res-modal-body{padding:16px 20px 20px}
+    .res-item{border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;transition:border-color .14s}
+    .res-item:hover{border-color:var(--border2)}
+    .res-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+    .res-item-name{font-size:.8rem;font-weight:700;color:var(--text)}
+    .res-item-badge{font-size:.58rem;font-family:var(--mono);padding:2px 7px;border-radius:10px}
+    .res-item-badge.prim{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .res-item-badge.sec{background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2)}
+    .res-item-badge.adv{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+    .res-item-desc{font-size:.73rem;color:var(--muted);line-height:1.5;margin-bottom:8px}
+    .res-item-link{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-family:var(--mono);color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,.2);padding:3px 9px;border-radius:6px;transition:all .14s}
+    .res-item-link:hover{background:var(--cyan-gl);border-color:var(--cyan)}
+    .res-disclaimer{margin-top:14px;padding:10px 12px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:var(--r);font-size:.68rem;color:#92742a;line-height:1.5}
+
+    /* Scroll to bottom button */
+    .scroll-down-btn{position:absolute;bottom:16px;right:20px;width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);display:none;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .scroll-down-btn.show{display:flex}
+    .scroll-down-btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
+    .scroll-down-btn .unread-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--cyan);display:none}
+    .scroll-down-btn .unread-dot.show{display:block}
+    .messages-wrap{position:relative;flex:1;overflow:hidden;display:flex;flex-direction:column}
+
+    /* Desktop-only hidden mobile elements */
+    .mob-row1{display:none}
+    .mob-row2{display:none}
+    .mob-tags-panel{display:none}
+    .mob-input-row{display:none}
+    .mob-tags-toggle{display:none}
+    .mob-tools-toggle{display:none}
+    .mob-tools-row{display:none}
+    .mob-tags-row{display:none}
+
+    @media(max-width:1024px){
+      .chat-head-r .ctag-g,.chat-head-r .ctag-a{display:none}
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav{position:relative !important;height:auto !important;padding:8px 12px !important}
+      .nav-brand span{display:none}
+      .nav-brand img{height:26px}
+      .nav-pill{display:none}
+      .nav-right{display:none !important}
+
+      body{height:100dvh !important;overflow:hidden !important}
+      main{margin-top:0 !important;height:auto !important;flex:1 !important;min-height:0 !important;display:flex !important;flex-direction:column !important;overflow:hidden !important;grid-template-columns:unset !important}
+      .sidebar{display:none !important}
+      .chat-wrap{flex:1 !important;min-height:0 !important;display:flex !important;flex-direction:column !important;overflow:hidden !important}
+      .chat-head{flex-shrink:0 !important;border-bottom:1px solid var(--border);background:var(--bg)}
+      .messages-wrap{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+      .messages{flex:1 !important;min-height:0 !important;overflow-y:auto !important;-webkit-overflow-scrolling:touch;padding:10px 12px 20px !important;height:auto !important}
+
+      .chat-head-top{display:none !important}
+      .chat-head-session{display:none !important}
+      .mob-tags-row{display:none !important}
+
+      .mob-row1{display:flex !important;align-items:center;justify-content:flex-end;padding:9px 12px 5px;gap:8px}
+      .mob-row2{display:flex !important;align-items:center;gap:5px;padding:0 12px 7px}
+      .mob-chip{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:3px 9px 3px 3px}
+      .mob-chip-av{width:20px;height:20px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:700;color:var(--cyan);flex-shrink:0}
+      .mob-chip-nm{font-size:.6rem;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+      .mob-btn{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;font-family:var(--mono);color:var(--muted);background:transparent;border:1px solid var(--border2);border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap;transition:all .14s}
+      .mob-btn:hover,.mob-btn.on{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
+      .mob-btn svg{width:10px;height:10px;flex-shrink:0}
+      .mob-tags-panel{border-top:1px solid var(--border);padding:6px 12px 8px;flex-wrap:wrap;gap:5px;background:var(--surface2);display:none}
+      .mob-tags-panel.open{display:flex !important}
+      .mob-tags-panel .ctag{display:inline-flex !important;font-size:.55rem;padding:2px 6px}
+
+      .mob-input-row{display:flex !important;align-items:center;gap:6px;padding:6px 10px 10px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0 !important}
+      .mob-input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:.77rem;padding:8px 10px;resize:none;outline:none;min-height:36px;max-height:70px;line-height:1.5;transition:border-color .14s}
+      .mob-input-row textarea:focus{border-color:var(--cyan)}
+      .mob-input-row textarea::placeholder{color:var(--muted)}
+      .mob-send-btn{width:34px;height:34px;border-radius:8px;background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+      .disclaimer{display:none !important}
+      .input-wrap{display:none !important}
+
+      .messages{justify-content:flex-start !important}
+      .welcome{display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;padding:20px 14px 16px !important;max-width:100% !important;width:100% !important;margin:0 !important}
+      .welcome-icon{width:44px;height:44px;margin-bottom:10px}
+      .welcome h2{font-size:1rem}
+      .welcome p{font-size:.75rem;margin-bottom:14px}
+      .wgrid{width:100% !important}
+      .wcard-t{font-size:.72rem}
+      .wcard-d{font-size:.62rem}
+
+      .messages{overflow-x:hidden !important}
+      .msg{max-width:100% !important;width:100% !important;box-sizing:border-box !important}
+      .msg.user{max-width:100% !important}
+      .msg.assistant{max-width:100% !important}
+      .msg-bubble{font-size:.76rem;padding:8px 11px;line-height:1.5;max-width:calc(100vw - 60px) !important;word-break:break-word !important;overflow-wrap:break-word !important;white-space:normal !important}
+      .msg-av{width:20px;height:20px;font-size:.5rem;flex-shrink:0 !important}
+      .doc-block{font-size:.6rem;padding:8px;word-break:break-word;max-width:calc(100vw - 80px) !important;overflow-x:auto}
+
+      .res-modal-overlay{align-items:flex-end;padding:0}
+      .res-modal{border-radius:14px 14px 0 0;max-height:85vh;max-width:100%}
+      .hist-drawer{position:fixed !important;inset:0;width:100%;z-index:200}
+      .toast{position:fixed !important;bottom:20px !important;top:auto !important;left:50% !important;right:auto !important;transform:translateX(-50%) translateY(60px) !important;z-index:999 !important}
+      .toast.show{transform:translateX(-50%) translateY(0) !important}
+    }
+
+    @media (max-width: 390px) {
+      .mob-btn span{display:none}
+    }
   </style>
 </head>
 <body>
@@ -140,6 +289,77 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Modal recursos Ley 21.442 -->
+<div class="res-modal-overlay" id="resModal" onclick="closeResIfOutside(event)">
+  <div class="res-modal">
+    <div class="res-modal-head">
+      <div>
+        <h2>Recursos oficiales</h2>
+        <p>Ley 21.442 &middot; Copropiedad Inmobiliaria en Chile</p>
+      </div>
+      <button class="res-modal-close" onclick="closeRes()">&#x2715;</button>
+    </div>
+    <div class="res-modal-body">
+
+      <div class="res-item">
+        <div class="res-item-head">
+          <span class="res-item-name">Ley 21.442 — Texto oficial</span>
+          <span class="res-item-badge prim">Principal</span>
+        </div>
+        <p class="res-item-desc">Texto completo de la Ley de Copropiedad Inmobiliaria promulgada el 13 de abril de 2022, disponible en la Biblioteca del Congreso Nacional.</p>
+        <a href="https://www.bcn.cl/leychile/navegar?idNorma=1172296" target="_blank" rel="noopener" class="res-item-link">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          bcn.cl — Ley 21.442
+        </a>
+      </div>
+
+      <div class="res-item">
+        <div class="res-item-head">
+          <span class="res-item-name">MINVU — Secretaria Ejecutiva de Condominios</span>
+          <span class="res-item-badge sec">Organismo rector</span>
+        </div>
+        <p class="res-item-desc">Ministerio de Vivienda y Urbanismo. Organismo encargado de la aplicacion de la Ley 21.442, reglamentos y registro de administradores.</p>
+        <a href="https://www.minvu.gob.cl" target="_blank" rel="noopener" class="res-item-link">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          www.minvu.gob.cl
+        </a>
+      </div>
+
+      <div class="res-item">
+        <div class="res-item-head">
+          <span class="res-item-name">Registro Nacional de Administradores</span>
+          <span class="res-item-badge sec">Verificacion</span>
+        </div>
+        <p class="res-item-desc">Registro publico y obligatorio de administradores de condominios. Permite verificar si un administrador esta habilitado legalmente para ejercer.</p>
+        <a href="https://www.registroadministradores.minvu.gob.cl" target="_blank" rel="noopener" class="res-item-link">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          registroadministradores.minvu.gob.cl
+        </a>
+      </div>
+
+      <div class="res-item">
+        <div class="res-item-head">
+          <span class="res-item-name">Juzgado de Policia Local</span>
+          <span class="res-item-badge adv">Via judicial</span>
+        </div>
+        <p class="res-item-desc">Tribunal competente para resolver conflictos entre copropietarios, impugnar acuerdos de asamblea, exigir rendicion de cuentas y aplicar sanciones al administrador (multas de 1 a 150 UTM).</p>
+      </div>
+
+      <div class="res-item">
+        <div class="res-item-head">
+          <span class="res-item-name">Mediacion municipal gratuita</span>
+          <span class="res-item-badge sec">Primera instancia</span>
+        </div>
+        <p class="res-item-desc">Las municipalidades deben ofrecer mediacion gratuita como primera instancia para resolver conflictos entre copropietarios antes de recurrir al Juzgado de Policia Local.</p>
+      </div>
+
+      <div class="res-disclaimer">
+        Esta informacion es de caracter orientativo. Para casos especificos, consulta directamente al MINVU, a tu municipalidad o a un abogado especializado en copropiedad inmobiliaria.
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav>
   <a href="/" class="nav-brand">
     <img src="/imagenes/webp/lobo_shellti.webp" alt="ShellTI" />
@@ -150,11 +370,12 @@
       <div class="user-avatar" id="userAvatar"></div>
       <div><div class="user-name" id="userName"></div><div class="user-org" id="userOrg"></div></div>
     </div>
-    <span class="nav-pill">Ley 21.442 &middot; IA</span>
+    <span class="nav-pill">Ley 21.442</span>
   </div>
 </nav>
 
 <main>
+  <!-- Historial drawer -->
   <div class="hist-drawer" id="histDrawer">
     <div class="hist-drawer-head">
       <h3>Conversaciones</h3>
@@ -195,33 +416,90 @@
 
   <div class="chat-wrap">
     <div class="chat-head">
-      <div class="chat-head-l">
-        <h1>Agente Copropiedad</h1>
-        <p>Ley 21.442 &middot; Administracion de condominios y edificios en Chile</p>
+      <!-- Mobile Row 1 -->
+      <div class="mob-row1">
+        <div class="mob-chip" id="mobChip">
+          <div class="mob-chip-av" id="mobAv">?</div>
+          <span class="mob-chip-nm" id="mobNm">Usuario</span>
+        </div>
       </div>
-      <div class="chat-head-r">
-        <span class="ctag ctag-c">Ley 21.442</span>
-        <span class="ctag ctag-g">Asambleas</span>
-        <span class="ctag ctag-a">Administracion</span>
-        <button class="icon-btn" onclick="openHist()">
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Historial
+      <!-- Mobile Row 2 -->
+      <div class="mob-row2">
+        <button class="mob-btn" id="mobInfoBtn" onclick="toggleMobInfo()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Recursos</span>
         </button>
-        <button class="icon-btn danger" onclick="clearChat()">
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
-          Limpiar
+        <button class="mob-btn" onclick="openHist()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Historial</span>
         </button>
+        <button class="mob-btn" onclick="clearChat()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          <span>Limpiar</span>
+        </button>
+      </div>
+      <!-- Mobile Input -->
+      <div class="mob-input-row" id="mobInputRow">
+        <textarea id="mobUserInput" placeholder="Escribe tu consulta sobre copropiedad..." rows="1"
+          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <!-- Mobile Info Panel -->
+      <div class="mob-tags-panel" id="mobTagsPanel">
+        <a href="https://www.bcn.cl/leychile/navegar?idNorma=1172296" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.442</a>
+        <span class="ctag ctag-g ctag-link" onclick="openRes();" style="cursor:pointer">Recursos</span>
+        <a href="https://www.minvu.gob.cl" target="_blank" rel="noopener" class="ctag ctag-a ctag-link">MINVU</a>
+        <a href="https://www.registroadministradores.minvu.gob.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link">Reg. Admin.</a>
+      </div>
+
+      <!-- Desktop header -->
+      <div class="chat-head-top">
+        <div class="chat-head-l">
+        </div>
+        <div class="chat-head-r">
+          <a href="https://www.bcn.cl/leychile/navegar?idNorma=1172296" target="_blank" rel="noopener" class="ctag ctag-c ctag-link" title="Ver Ley 21.442 en BCN">Ley 21.442</a>
+          <span class="ctag ctag-g ctag-link" onclick="openRes()" title="Ver recursos oficiales" style="cursor:pointer">Recursos</span>
+          <a href="https://www.minvu.gob.cl" target="_blank" rel="noopener" class="ctag ctag-a ctag-link" title="Ministerio de Vivienda y Urbanismo">MINVU</a>
+          <a href="https://www.registroadministradores.minvu.gob.cl" target="_blank" rel="noopener" class="ctag ctag-p ctag-link" title="Registro Nacional de Administradores">Reg. Admin.</a>
+          <button class="icon-btn" onclick="openHist()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Historial
+          </button>
+          <button class="icon-btn danger" onclick="clearChat()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            Limpiar
+          </button>
+        </div>
+      </div>
+      <div class="chat-head-session" id="sessionBanner">
+        <span class="chat-head-session-title" id="sessionTitle"></span>
+        <span class="chat-head-session-date" id="sessionDate"></span>
       </div>
     </div>
 
-    <div class="session-banner" id="sessionBanner">
-      <span class="session-banner-title" id="sessionTitle"></span>
-      <span class="session-banner-date" id="sessionDate"></span>
+    <div class="messages-wrap">
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <h2>Agente Copropiedad</h2>
+          <p>Asistente especializado en la Ley 21.442 de Copropiedad Inmobiliaria de Chile. Puedo ayudarte con asambleas, gastos comunes, administradores y conflictos de convivencia.</p>
+          <div class="wgrid">
+            <div class="wcard" onclick="sq('Que es la Ley 21.442 y que cambios principales introduce?')"><div class="wcard-t">Que es la Ley 21.442?</div><div class="wcard-d">Cambios y novedades de la nueva ley</div></div>
+            <div class="wcard" onclick="sq('Como se convoca correctamente una asamblea de copropietarios segun la Ley 21.442?')"><div class="wcard-t">Como convocar una asamblea</div><div class="wcard-d">Plazos, quorum y procedimiento</div></div>
+            <div class="wcard" onclick="sq('Como se puede remover al administrador de un condominio bajo la Ley 21.442?')"><div class="wcard-t">Remover al administrador</div><div class="wcard-d">Pasos y requisitos legales</div></div>
+            <div class="wcard" onclick="sq('Genera un modelo de citacion a asamblea ordinaria de copropietarios.')"><div class="wcard-t">Generar documento</div><div class="wcard-d">Citacion, acta, carta de cobranza</div></div>
+          </div>
+        </div>
+      </div>
+      <button class="scroll-down-btn" id="scrollDownBtn" onclick="scrollBot(true)" title="Ir al final">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <span class="unread-dot" id="unreadDot"></span>
+      </button>
     </div>
 
-    <div class="messages" id="messages"></div>
-
-    <div class="disclaimer">Aviso: Este agente entrega orientacion general. Para casos individuales, consulta a un abogado o a tu municipalidad.</div>
+    <div class="disclaimer">Aviso: Este agente entrega orientacion general sobre la Ley 21.442. Para casos individuales, consulta a un abogado o a tu municipalidad.</div>
 
     <div class="input-wrap">
       <div class="input-row">
@@ -236,16 +514,18 @@
       </div>
       <div class="input-hint">Shift+Enter para salto de linea &middot; Enter para enviar</div>
     </div>
+
   </div>
 </main>
 
 <script src="/copropiedad-guard.js"></script>
 <script>
-const SP = "Eres el Agente Copropiedad de ShellTI, un asistente especializado en la Ley 21.442 de Chile, conocida como la Nueva Ley de Copropiedad Inmobiliaria, promulgada el 13 de abril de 2022 y cuyo reglamento fue publicado en el Diario Oficial el 9 de enero de 2025.\n\nCONTEXTO LEGAL QUE DOMINAS:\n\n1. LEY 21.442 \u2014 ESTRUCTURA GENERAL:\n- Deroga la antigua Ley 19.537 de 1997.\n- Aplica a todos los condominios acogidos al r\u00e9gimen de copropiedad inmobiliaria en Chile.\n- Reglamento vigente desde enero 2025 (DS aprobado por MINVU).\n- Organismos clave: MINVU (Secretaria Ejecutiva de Condominios), municipalidades, Juzgados de Policia Local.\n\n2. TIPOS DE CONDOMINIOS:\n- Tipo A: Edificaciones en un terreno comun (edificios de departamentos, torres).\n- Tipo B: Sitios urbanizados con terrenos de dominio exclusivo (condominios de casas).\n- Condominios de Vivienda de Interes Publico (VIP): reglas especiales de apoyo municipal.\n\n3. DERECHOS Y OBLIGACIONES DE COPROPIETARIOS (Titulo II):\n- Cada copropietario es dueno exclusivo de su unidad y comunero en los bienes comunes.\n- Derecho a usar bienes comunes segun su destino, sin restringir el uso de los demas.\n- Obligacion de inscribirse en el Registro de Copropietarios.\n- Obligacion de pagar gastos comunes ordinarios y extraordinarios.\n- Obligacion de pagar al Fondo Comun de Reserva (minimo 5% de los gastos comunes ordinarios).\n- Mora en gastos comunes: genera intereses y puede suspenderse el suministro de servicios no esenciales.\n- No se puede prohibir la tenencia de mascotas dentro de la unidad; si se pueden restringir bienes comunes.\n- El reglamento de copropiedad debe regularse conforme a la Ley 20.609 (no discriminacion).\n\n4. REGLAMENTO DE COPROPIEDAD:\n- Instrumento principal de administracion del condominio.\n- Debe estar inscrito en el Conservador de Bienes Raices.\n- Contenido obligatorio: uso de bienes comunes, derechos y deberes de copropietarios, quorum de asambleas, facultades del comite, sanciones, entre otros.\n- Clausulas nulas absolutamente: las que contravengan la ley o el reglamento del DS.\n- Plazo para adecuar reglamentos existentes: 1 ano desde publicacion del reglamento del DS (enero 2025), es decir hasta enero 2026.\n- No puede prohibir ingreso de empresas de telecomunicaciones.\n- Debe regular arriendo temporal (Airbnb) para que no perjudique a residentes permanentes.\n\n5. ORGANOS DE ADMINISTRACION (Titulo IV):\na) ASAMBLEA DE COPROPIETARIOS:\n- Organo decisorio maximo.\n- Sesiones ordinarias: al menos 1 vez al ano. Sesiones extraordinarias: cuando las circunstancias lo exijan.\n- Pueden realizarse presencialmente, de forma tele\u00admatica o mixta.\n- Citacion: con al menos 5 dias de anticipacion para ordinarias, 3 dias para extraordinarias.\n- Quorum constitucion sesion ordinaria 1a citacion: 33% de los derechos del condominio. 2a citacion: con los que asistan.\n- Quorum adopcion de acuerdos ordinarios: mayoria de los asistentes.\n- Acuerdos que requieren quorum especial (2/3 de los derechos): enajenacion de bienes comunes, modificacion del reglamento, autorizacion al administrador para contratar ciertos montos, entre otros.\n- Acuerdos que requieren quorum calificado (mayoria de todos los derechos): disolucion del regimen de copropiedad.\n- Arrendatarios: pueden participar con voz pero sin voto, salvo autorizacion escrita del copropietario.\n\nb) COMITE DE ADMINISTRACION:\n- Organo ejecutivo elegido por la asamblea.\n- Minimo 3 integrantes, duracion maxima 3 anos, reelegibles.\n- Preside el comite y actua como representante legal del condominio ante terceros.\n- Puede designar o remover al administrador.\n- Fija la remuneracion del administrador.\n- Puede sesionar de forma tele\u00admatica.\n\nc) ADMINISTRADOR:\n- Persona natural o juridica designada por la asamblea o el comite.\n- Debe inscribirse en el Registro Nacional de Administradores de Condominios (MINVU), obligatorio.\n- Obligaciones: cobrar gastos comunes, mantener cuentas corrientes del condominio, convocar asambleas, mantener el plan de emergencia actualizado, rendir cuentas documentadas, llevar el Registro de Copropietarios.\n- Rendicion de cuentas: documentada, al menos 1 vez al ano en asamblea ordinaria.\n- Puede ser removido por el comite o la asamblea en cualquier momento.\n- Responsable civil y penalmente por actos dolosos o culposos en el ejercicio de su cargo.\n\n6. BIENES COMUNES Y GASTOS COMUNES:\n- Bienes comunes: terrenos de dominio comun, escaleras, ascensores, pasillos, sala de maquinas, piscina, estacionamientos comunes, etc.\n- Gastos comunes ordinarios: mantencion, servicios comunes, remuneracion del administrador, etc.\n- Gastos comunes extraordinarios: obras de mejoramiento, reparaciones mayores.\n- Fondo Comun de Reserva: minimo 5% de los gastos comunes ordinarios mensuales. Destino: reparaciones extraordinarias urgentes o imprevistos.\n- Cobro judicial de gastos comunes: el administrador tiene accion ejecutiva con el solo certificado de deuda firmado.\n\n7. SEGURIDAD Y PLAN DE EMERGENCIA:\n- Todo condominio debe tener un Plan de Emergencia ante incendios, terremotos, tsunamis u otros.\n- Debe ser entregado a Carabineros y Bomberos.\n- El comite debe actualizarlo periodicamente.\n\n8. INFRACCIONES, SANCIONES Y RESOLUSION DE CONFLICTOS:\n- Infracciones del administrador: multas de 1 a 150 UTM segun gravedad, aplicadas por el Juzgado de Policia Local.\n- Infracciones de copropietarios al reglamento: multas segun lo establezca el propio reglamento.\n- Conflictos entre copropietarios: mediacion municipal gratuita como primera instancia.\n- Conflictos no resueltos en asamblea o mediacion: Juzgado de Policia Local competente.\n- Facultades del juez: declarar nulidad del reglamento o acuerdos, exigir rendicion de cuentas, nombrar administrador provisional, adoptar medidas de solucion.\n- Accion de nulidad del reglamento: cualquier copropietario perjudicado puede solicitarla.\n\n9. REGISTRO NACIONAL DE ADMINISTRADORES (RNAC):\n- De caracter publico, obligatorio y gratuito.\n- A cargo del MINVU.\n- Administradores no inscritos no pueden ejercer legalmente.\n- Consulta publica en www.registroadministradores.minvu.gob.cl\n\n10. CONDOMINIOS DE VIVIENDA DE INTERES PUBLICO:\n- Las municipalidades deben prestar asesoria tecnica y legal gratuita.\n- Pueden designar un administrador provisional.\n- Acceso a programas de apoyo del MINVU.\n\nCAPACIDADES DEL AGENTE:\n\nA) RESPONDER PREGUNTAS: Responde con precision juridica y lenguaje claro sobre todos los aspectos de la Ley 21.442 y su reglamento. Cita articulos relevantes cuando sea util.\n\nB) ORIENTAR EN CONFLICTOS: Cuando el usuario describe una situacion de conflicto (mora en gastos comunes, abuso del administrador, acuerdos impugnados, uso indebido de bienes comunes, etc.), orienta sobre que camino seguir: mediacion municipal, asamblea, juzgado de policia local.\n\nC) GUIAR PROCEDIMIENTOS: Explica paso a paso como convocar una asamblea, como remover un administrador, como impugnar un reglamento, como cobrar gastos comunes morosos, como modificar el reglamento.\n\nD) DOCUMENTOS: Cuando el usuario solicite un modelo de documento, genera uno completo y formal en espanol con los campos necesarios marcados como [DATO]. Tipos de documentos: citacion a asamblea ordinaria o extraordinaria, acta de asamblea, carta de remocion del administrador, carta de cobro de gastos comunes morosos, solicitud de rendicion de cuentas, denuncia ante el Juzgado de Policia Local.\n\nE) CHECKLIST: Genera checklists practicos: checklist para convocar una asamblea, checklist de obligaciones del administrador, checklist para adecuar el reglamento a la Ley 21.442.\n\nFORMATO DE RESPUESTAS:\n- Lenguaje preciso pero accesible. No uses jerga innecesaria.\n- Listas numeradas o con vinetas cuando sea util.\n- Para conceptos clave usa **negrita**.\n- Para articulos de ley o terminos tecnicos especificos usa *cursiva*.\n- Cuando generes documentos, usa un bloque claramente marcado como DOCUMENTO GENERADO con el contenido en formato preformateado.\n- Recuerda siempre que para casos especificos se debe consultar a un abogado o a la municipalidad correspondiente.\n- No emitas juicios personales sobre administradores o copropietarios especificos.\n- Responde siempre en espanol.\n\nLIMITES DEL AGENTE: Solo respondes preguntas relacionadas con la Ley 21.442, administracion de condominios y edificios, copropiedad inmobiliaria, gastos comunes, reglamentos de copropiedad, y conflictos de convivencia en condominios en Chile. Si el usuario pregunta sobre temas no relacionados, responde educadamente que tu especialidad es exclusivamente la Ley de Copropiedad Inmobiliaria y la administracion de condominios en Chile, y ofrece ayuda en ese ambito.\n\nEres un recurso de orientacion profesional de ShellTI. Actua con rigor, claridad y utilidad practica.";
+const SP = "Eres el Agente Copropiedad de ShellTI, un asistente especializado exclusivamente en la Ley 21.442 de Chile (Nueva Ley de Copropiedad Inmobiliaria), promulgada el 13 de abril de 2022, y su reglamento publicado en el Diario Oficial el 9 de enero de 2025.\n\nEVALUACION DE SCOPE — OBLIGATORIA ANTES DE RESPONDER:\nAntes de responder cualquier pregunta, evalua si tiene relacion directa o indirecta con:\n- Administracion de condominios o edificios en Chile\n- Derechos y obligaciones de copropietarios\n- Asambleas de copropietarios (convocatoria, quorum, acuerdos)\n- Comite de administracion y administrador de condominio\n- Gastos comunes ordinarios o extraordinarios, Fondo Comun de Reserva\n- Reglamento de copropiedad\n- Bienes comunes y uso de espacios comunes\n- Conflictos entre copropietarios o con el administrador\n- Seguridad, plan de emergencia, mascotas, arriendo temporal en condominios\n- Infracciones, sanciones y mediacion en copropiedad\n\nSi tiene relacion, RESPONDE dentro de tu marco. Ejemplos que SI debes responder:\n- 'el administrador no rinde cuentas' -> obligaciones del administrador, responde.\n- 'nos cobran gastos comunes sin explicacion' -> gastos comunes, responde.\n- 'quiero convocar una asamblea' -> procedimiento de asamblea, responde.\n- 'el vecino tiene un perro grande' -> normas sobre mascotas, responde.\n- 'subarrendamos en Airbnb, hay problema?' -> arriendo temporal, responde.\n\nSolo rechaza si el tema es completamente ajeno a la copropiedad inmobiliaria: derecho laboral, tributario, penal, tecnologia, otras leyes, etc. En ese caso responde exactamente: \"Mi especialidad es exclusivamente la Ley 21.442 de Copropiedad Inmobiliaria y la administracion de condominios en Chile. Para ese tema te recomiendo un abogado especializado o la municipalidad correspondiente.\"\n\nCONOCIMIENTO LEY 21.442:\n\n1. ESTRUCTURA GENERAL:\n- Deroga la antigua Ley 19.537 de 1997.\n- Aplica a todos los condominios acogidos al regimen de copropiedad inmobiliaria en Chile.\n- Reglamento vigente desde enero 2025 (DS aprobado por MINVU).\n- Organismos clave: MINVU (Secretaria Ejecutiva de Condominios), municipalidades, Juzgados de Policia Local.\n\n2. TIPOS DE CONDOMINIOS:\n- Tipo A: Edificaciones en un terreno comun (edificios de departamentos, torres).\n- Tipo B: Sitios urbanizados con terrenos de dominio exclusivo (condominios de casas).\n- Condominios de Vivienda de Interes Publico (VIP): reglas especiales de apoyo municipal.\n\n3. DERECHOS Y OBLIGACIONES DE COPROPIETARIOS:\n- Cada copropietario es dueno exclusivo de su unidad y comunero en los bienes comunes.\n- Derecho a usar bienes comunes segun su destino, sin restringir el uso de los demas.\n- Obligacion de inscribirse en el Registro de Copropietarios.\n- Obligacion de pagar gastos comunes ordinarios y extraordinarios.\n- Obligacion de pagar al Fondo Comun de Reserva (minimo 5% de los gastos comunes ordinarios).\n- Mora en gastos comunes: genera intereses y puede suspenderse el suministro de servicios no esenciales.\n- No se puede prohibir la tenencia de mascotas dentro de la unidad; si se pueden restringir en bienes comunes.\n- El reglamento de copropiedad debe regularse conforme a la Ley 20.609 (no discriminacion).\n\n4. REGLAMENTO DE COPROPIEDAD:\n- Instrumento principal de administracion del condominio.\n- Debe estar inscrito en el Conservador de Bienes Raices.\n- Clausulas nulas absolutamente: las que contravengan la ley o el reglamento del DS.\n- Plazo para adecuar reglamentos existentes: hasta enero 2026 (1 ano desde publicacion del reglamento del DS).\n- No puede prohibir ingreso de empresas de telecomunicaciones.\n- Debe regular arriendo temporal (Airbnb) para que no perjudique a residentes permanentes.\n\n5. ORGANOS DE ADMINISTRACION:\na) ASAMBLEA DE COPROPIETARIOS:\n- Organo decisorio maximo. Sesiones ordinarias: al menos 1 vez al ano.\n- Pueden realizarse presencialmente, de forma telematica o mixta.\n- Citacion: con al menos 5 dias de anticipacion para ordinarias, 3 dias para extraordinarias.\n- Quorum constitucion sesion ordinaria 1a citacion: 33% de los derechos. 2a citacion: con los que asistan.\n- Quorum adopcion de acuerdos ordinarios: mayoria de los asistentes.\n- Acuerdos que requieren 2/3 de los derechos: enajenacion de bienes comunes, modificacion del reglamento.\n- Arrendatarios: pueden participar con voz pero sin voto, salvo autorizacion escrita del copropietario.\n\nb) COMITE DE ADMINISTRACION:\n- Organo ejecutivo elegido por la asamblea. Minimo 3 integrantes, duracion maxima 3 anos, reelegibles.\n- Puede designar o remover al administrador y fijar su remuneracion.\n- Puede sesionar de forma telematica.\n\nc) ADMINISTRADOR:\n- Persona natural o juridica designada por la asamblea o el comite.\n- Debe inscribirse en el Registro Nacional de Administradores de Condominios (MINVU), obligatorio.\n- Obligaciones: cobrar gastos comunes, mantener cuentas corrientes, convocar asambleas, rendir cuentas documentadas, llevar el Registro de Copropietarios, mantener plan de emergencia actualizado.\n- Rendicion de cuentas: documentada, al menos 1 vez al ano en asamblea ordinaria.\n- Puede ser removido por el comite o la asamblea en cualquier momento.\n- Responsable civil y penalmente por actos dolosos o culposos.\n\n6. BIENES COMUNES Y GASTOS COMUNES:\n- Gastos comunes ordinarios: mantencion, servicios comunes, remuneracion del administrador.\n- Gastos comunes extraordinarios: obras de mejoramiento, reparaciones mayores.\n- Fondo Comun de Reserva: minimo 5% de los gastos comunes ordinarios mensuales.\n- Cobro judicial de gastos comunes: accion ejecutiva con el solo certificado de deuda firmado.\n\n7. INFRACCIONES, SANCIONES Y RESOLUCION DE CONFLICTOS:\n- Infracciones del administrador: multas de 1 a 150 UTM segun gravedad, aplicadas por el Juzgado de Policia Local.\n- Conflictos entre copropietarios: mediacion municipal gratuita como primera instancia.\n- Conflictos no resueltos: Juzgado de Policia Local competente.\n- Facultades del juez: declarar nulidad del reglamento o acuerdos, exigir rendicion de cuentas, nombrar administrador provisional.\n- Accion de nulidad del reglamento: cualquier copropietario perjudicado puede solicitarla.\n\nCAPACIDADES:\n- Responder preguntas sobre todos los aspectos de la Ley 21.442 con precision juridica y lenguaje claro.\n- Orientar en conflictos: mora en gastos comunes, abuso del administrador, acuerdos impugnados, uso indebido de bienes comunes.\n- Guiar procedimientos paso a paso: convocar una asamblea, remover un administrador, impugnar un reglamento.\n- Generar documentos modelo completos con campos marcados como [DATO]: citacion a asamblea, acta de asamblea, carta de remocion del administrador, carta de cobro de gastos comunes morosos, solicitud de rendicion de cuentas.\n- Generar checklists practicos sobre las materias de la ley.\n\nREGLAS DE PRECISION:\n1. Nunca inventes articulos, plazos, montos ni organismos. Si no tienes certeza, dilo.\n2. No cites articulos especificos si no estas seguro de su contenido exacto.\n3. Ante casos concretos orienta y deriva a la municipalidad, MINVU o abogado especializado.\n4. Respuestas concisas y estructuradas. Sin relleno. Sin introduccion innecesaria.\n5. Usa **negrita** para conceptos clave y listas cuando sea util.\n6. Para documentos usa un bloque claramente marcado como DOCUMENTO GENERADO.\n7. Responde siempre en espanol.";
 const RAILWAY = 'https://web-production-372660.up.railway.app';
 var hist = [], busy = false, currentToken = null;
 var sessions = [], currentSessionId = null;
 
+/* Guard */
 window.addEventListener('shellti-guard-ok', function(e) {
   var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
   var token = (e && e.detail && e.detail.token) || new URLSearchParams(location.search).get('token') || localStorage.getItem('copropiedad_token');
@@ -253,9 +533,11 @@ window.addEventListener('shellti-guard-ok', function(e) {
 });
 if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
   var o = document.getElementById('access-overlay'); if (o) o.style.display = 'none';
-  startSession();
+  var tk = new URLSearchParams(location.search).get('token') || localStorage.getItem('copropiedad_token');
+  if (tk) { currentToken = tk; loadSessions(); } else { startSession(); }
 }
 
+/* Toast */
 function showToast(msg, type) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.className = 'toast '+(type||'');
@@ -263,28 +545,53 @@ function showToast(msg, type) {
   setTimeout(function(){ t.classList.remove('show'); }, 2800);
 }
 
-function genId() { return 'ses_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+/* Sessions */
+function genId() { return 'ses_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
 function dateLabel(iso) {
-  var d=new Date(iso), now=new Date(), diff=Math.floor((now-d)/86400000);
-  if(diff===0) return 'Hoy'; if(diff===1) return 'Ayer'; if(diff<7) return 'Esta semana';
-  return d.toLocaleDateString('es-CL',{day:'numeric',month:'short'});
+  var d = new Date(iso), now = new Date();
+  var diff = Math.floor((now - d) / 86400000);
+  if (diff === 0) return 'Hoy';
+  if (diff === 1) return 'Ayer';
+  if (diff < 7)  return 'Esta semana';
+  return d.toLocaleDateString('es-CL', {day:'numeric', month:'short'});
 }
-function fmtTime(iso) { return new Date(iso).toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }
+
+function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
+}
 
 async function loadSessions() {
   if (!currentToken) return;
   try {
-    var res  = await fetch(RAILWAY+'/copropiedad/history/load', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:currentToken})});
+    var res  = await fetch(RAILWAY + '/copropiedad/history/load', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken})
+    });
     var data = await res.json();
     sessions = Array.isArray(data.sessions) ? data.sessions : [];
+
     if (data.user) {
-      var chip=document.getElementById('userChip'), av=document.getElementById('userAvatar'), nm=document.getElementById('userName'), org=document.getElementById('userOrg');
-      av.textContent=(data.user.name||'?')[0].toUpperCase(); nm.textContent=data.user.name||''; org.textContent=data.user.organization||''; chip.classList.add('show');
+      var chip = document.getElementById('userChip');
+      var av   = document.getElementById('userAvatar');
+      var nm   = document.getElementById('userName');
+      var org  = document.getElementById('userOrg');
+      av.textContent  = (data.user.name || '?')[0].toUpperCase();
+      nm.textContent  = data.user.name || '';
+      org.textContent = data.user.organization || '';
+      chip.classList.add('show');
+      mobSetUser(data.user.name || '');
     }
+
     renderHistList();
+
     if (sessions.length) {
-      var last=sessions[sessions.length-1], age=Date.now()-new Date(last.started_at).getTime();
-      if (age<7200000 && last.messages && last.messages.length) { loadSession(last.id, true); return; }
+      var last = sessions[sessions.length - 1];
+      var age  = Date.now() - new Date(last.started_at).getTime();
+      if (age < 7200000 && last.messages && last.messages.length) {
+        loadSession(last.id, true);
+        return;
+      }
     }
     startSession();
   } catch(e) { console.warn('[CP] loadSessions:', e.message); startSession(); }
@@ -293,144 +600,296 @@ async function loadSessions() {
 async function saveSessions() {
   if (!currentToken) return;
   try {
-    await fetch(RAILWAY+'/copropiedad/history/save', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:currentToken,sessions:sessions.slice(-10)})});
+    await fetch(RAILWAY + '/copropiedad/history/save', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({token: currentToken, sessions: sessions.slice(-10)})
+    });
   } catch(e) { console.warn('[CP] saveSessions:', e.message); }
 }
 
 function startSession() {
-  var id=genId(), ses={id:id,started_at:new Date().toISOString(),preview:'',messages:[]};
-  sessions.push(ses); currentSessionId=id; hist=[];
-  showWelcome(); updateSessionBanner(ses); renderHistList();
+  var id = genId();
+  var ses = {id: id, started_at: new Date().toISOString(), preview: '', messages: []};
+  sessions.push(ses);
+  currentSessionId = id;
+  hist = [];
+  showWelcome();
+  updateSessionBanner(ses);
+  renderHistList();
 }
 
 function loadSession(id, silent) {
-  var ses=sessions.find(function(s){ return s.id===id; }); if(!ses) return;
-  currentSessionId=id; hist=ses.messages.slice();
-  var msgs=document.getElementById('messages'); msgs.innerHTML='';
-  if (hist.length) { hist.forEach(function(m){ appendMsg(m.role,m.content,true); }); scrollBot(); }
-  else showWelcome();
-  updateSessionBanner(ses); renderHistList(); closeHist();
-  if (!silent) showToast('Conversacion cargada','ok');
+  var ses = sessions.find(function(s){ return s.id === id; });
+  if (!ses) return;
+  currentSessionId = id;
+  hist = ses.messages.slice();
+  var msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  if (hist.length) {
+    hist.forEach(function(m){ appendMsg(m.role, m.content, true); });
+    scrollBot(true);
+  } else {
+    showWelcome();
+  }
+  updateSessionBanner(ses);
+  renderHistList();
+  closeHist();
+  if (!silent) showToast('Conversacion cargada', 'ok');
 }
 
 function deleteSession(id, e) {
-  e.stopPropagation(); sessions=sessions.filter(function(s){ return s.id!==id; });
-  if (currentSessionId===id) { sessions.length ? loadSession(sessions[sessions.length-1].id,true) : startSession(); }
-  renderHistList(); saveSessions(); showToast('Conversacion eliminada','');
+  e.stopPropagation();
+  sessions = sessions.filter(function(s){ return s.id !== id; });
+  if (currentSessionId === id) {
+    if (sessions.length) loadSession(sessions[sessions.length-1].id, true);
+    else startSession();
+  }
+  renderHistList();
+  saveSessions();
+  showToast('Conversacion eliminada', '');
 }
 
 function newSession() { startSession(); closeHist(); }
 
 function updateSessionBanner(ses) {
-  var banner=document.getElementById('sessionBanner'), title=document.getElementById('sessionTitle'), date=document.getElementById('sessionDate');
-  if (ses.preview) { title.textContent=ses.preview; date.textContent=fmtTime(ses.started_at); banner.classList.add('show'); }
-  else banner.classList.remove('show');
+  var banner = document.getElementById('sessionBanner');
+  var title  = document.getElementById('sessionTitle');
+  var date   = document.getElementById('sessionDate');
+  if (ses.preview) {
+    title.textContent = ses.preview;
+    date.textContent  = fmtTime(ses.started_at);
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
 }
 
 function renderHistList() {
-  var list=document.getElementById('histList');
-  if (!sessions.length) { list.innerHTML='<div class="hist-empty">Sin conversaciones guardadas.</div>'; return; }
-  list.innerHTML='';
-  var groups={}, order=[], sorted=sessions.slice().reverse();
-  sorted.forEach(function(s){ var g=dateLabel(s.started_at); if(!groups[g]){groups[g]=[];order.push(g);} groups[g].push(s); });
+  var list = document.getElementById('histList');
+  if (!sessions.length) {
+    list.innerHTML = '<div class="hist-empty">Sin conversaciones guardadas.<br>Inicia una nueva consulta.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  var groups = {}, order = [];
+  var sorted = sessions.slice().reverse();
+  sorted.forEach(function(s) {
+    var g = dateLabel(s.started_at);
+    if (!groups[g]) { groups[g] = []; order.push(g); }
+    groups[g].push(s);
+  });
   order.forEach(function(g) {
-    var gl=document.createElement('div'); gl.className='hist-group-label'; gl.textContent=g; list.appendChild(gl);
+    var gl = document.createElement('div'); gl.className = 'hist-group-label'; gl.textContent = g; list.appendChild(gl);
     groups[g].forEach(function(s) {
-      var el=document.createElement('div'); el.className='hist-item'+(s.id===currentSessionId?' active':''); el.dataset.sid=s.id;
-      el.innerHTML='<div class="hist-item-title">'+esc(s.preview||'Nueva conversacion')+'</div><div class="hist-item-meta">'+fmtTime(s.started_at)+' &middot; '+s.messages.length+' msgs</div><button class="hist-item-del" title="Eliminar">&#x2715;</button>';
-      el.addEventListener('click', function(){ loadSession(this.dataset.sid,false); });
-      el.querySelector('.hist-item-del').addEventListener('click', function(e){ deleteSession(el.dataset.sid,e); });
+      var el = document.createElement('div');
+      el.className = 'hist-item' + (s.id === currentSessionId ? ' active' : '');
+      el.dataset.sid = s.id;
+      el.innerHTML = '<div class="hist-item-title">'+esc(s.preview||'Nueva conversacion')+'</div>'
+        + '<div class="hist-item-meta">'+fmtTime(s.started_at)+' &middot; '+s.messages.length+' msgs</div>'
+        + '<button class="hist-item-del" title="Eliminar">&#x2715;</button>';
+      el.addEventListener('click', function(){ loadSession(this.dataset.sid, false); });
+      el.querySelector('.hist-item-del').addEventListener('click', function(e){ deleteSession(el.dataset.sid, e); });
       list.appendChild(el);
     });
   });
 }
 
+/* Hist drawer */
 function openHist()  { renderHistList(); document.getElementById('histDrawer').classList.add('open'); }
 function closeHist() { document.getElementById('histDrawer').classList.remove('open'); }
 
+/* Modal recursos */
+function openRes()  { document.getElementById('resModal').classList.add('open'); }
+function closeRes() { document.getElementById('resModal').classList.remove('open'); }
+function closeResIfOutside(e) { if (e.target === document.getElementById('resModal')) closeRes(); }
+
+/* Input */
 function handleInput(el) {
   el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,130)+'px';
-  var b=document.getElementById('clearInputBtn'); el.value.trim().length ? b.classList.add('show') : b.classList.remove('show');
+  var b = document.getElementById('clearInputBtn');
+  el.value.trim().length ? b.classList.add('show') : b.classList.remove('show');
 }
 function clearInput() { var i=document.getElementById('userInput'); i.value=''; i.style.height='auto'; i.focus(); document.getElementById('clearInputBtn').classList.remove('show'); }
-function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
-function scrollBot() { var m=document.getElementById('messages'); m.scrollTop=m.scrollHeight; }
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } }
+
+function isNearBottom() {
+  var m = document.getElementById('messages');
+  return m.scrollHeight - m.scrollTop - m.clientHeight < 80;
+}
+
+function scrollBot(force) {
+  var m = document.getElementById('messages');
+  var isMob = window.innerWidth <= 768;
+  if (force || isMob || isNearBottom()) {
+    requestAnimationFrame(function() {
+      m.scrollTop = m.scrollHeight;
+      hideScrollBtn();
+    });
+  }
+}
+
+function hideScrollBtn() {
+  var btn = document.getElementById('scrollDownBtn');
+  var dot = document.getElementById('unreadDot');
+  if (btn) btn.classList.remove('show');
+  if (dot) dot.classList.remove('show');
+}
+
+function showScrollBtn(hasNew) {
+  var btn = document.getElementById('scrollDownBtn');
+  var dot = document.getElementById('unreadDot');
+  if (btn) btn.classList.add('show');
+  if (dot && hasNew) dot.classList.add('show');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var msgs = document.getElementById('messages');
+  if (msgs) {
+    msgs.addEventListener('scroll', function() {
+      if (isNearBottom()) hideScrollBtn();
+    });
+  }
+});
+
 function sq(text) { send(text); }
 
+/* Welcome */
 function showWelcome() {
-  var msgs=document.getElementById('messages'); msgs.innerHTML='';
-  var w=document.createElement('div'); w.className='welcome'; w.id='welcome';
-  w.innerHTML='<div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>'
-    +'<h2>Agente Copropiedad</h2>'
-    +'<p>Asistente especializado en la Ley 21.442 de Copropiedad Inmobiliaria de Chile.</p>'
-    +'<div class="wgrid">'
-    +'<div class="wcard" id="wc1"><div class="wcard-t">Que es la Ley 21.442?</div><div class="wcard-d">Cambios y novedades de la nueva ley</div></div>'
-    +'<div class="wcard" id="wc2"><div class="wcard-t">Como convocar una asamblea</div><div class="wcard-d">Plazos, quorum y procedimiento</div></div>'
-    +'<div class="wcard" id="wc3"><div class="wcard-t">Remover al administrador</div><div class="wcard-d">Pasos y requisitos legales</div></div>'
-    +'<div class="wcard" id="wc4"><div class="wcard-t">Generar documento</div><div class="wcard-d">Citacion, acta, carta de cobranza</div></div>'
-    +'</div>';
+  var msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  var w = document.createElement('div'); w.className='welcome'; w.id='welcome';
+  w.innerHTML = '<div class="welcome-icon"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>'
+    + '<h2>Agente Copropiedad</h2>'
+    + '<p>Asistente especializado en la Ley 21.442 de Copropiedad Inmobiliaria de Chile.</p>'
+    + '<div class="wgrid">'
+    + '<div class="wcard" id="wc1"><div class="wcard-t">Que es la Ley 21.442?</div><div class="wcard-d">Cambios y novedades de la nueva ley</div></div>'
+    + '<div class="wcard" id="wc2"><div class="wcard-t">Como convocar una asamblea</div><div class="wcard-d">Plazos, quorum y procedimiento</div></div>'
+    + '<div class="wcard" id="wc3"><div class="wcard-t">Remover al administrador</div><div class="wcard-d">Pasos y requisitos legales</div></div>'
+    + '<div class="wcard" id="wc4"><div class="wcard-t">Generar documento</div><div class="wcard-d">Citacion, acta, carta de cobranza</div></div>'
+    + '</div>';
   msgs.appendChild(w);
-  w.querySelector('#wc1').onclick=function(){ sq('Que es la Ley 21.442 y que cambios principales introduce?'); };
-  w.querySelector('#wc2').onclick=function(){ sq('Como se convoca correctamente una asamblea de copropietarios segun la Ley 21.442?'); };
-  w.querySelector('#wc3').onclick=function(){ sq('Como se puede remover al administrador de un condominio bajo la Ley 21.442?'); };
-  w.querySelector('#wc4').onclick=function(){ sq('Genera un modelo de citacion a asamblea ordinaria de copropietarios.'); };
+  w.querySelector('#wc1').onclick = function(){ sq('Que es la Ley 21.442 y que cambios principales introduce?'); };
+  w.querySelector('#wc2').onclick = function(){ sq('Como se convoca correctamente una asamblea de copropietarios segun la Ley 21.442?'); };
+  w.querySelector('#wc3').onclick = function(){ sq('Como se puede remover al administrador de un condominio bajo la Ley 21.442?'); };
+  w.querySelector('#wc4').onclick = function(){ sq('Genera un modelo de citacion a asamblea ordinaria de copropietarios.'); };
   document.getElementById('sessionBanner').classList.remove('show');
 }
 
+/* Clear chat */
 function clearChat() {
-  hist=[]; var ses=sessions.find(function(s){ return s.id===currentSessionId; });
-  if(ses){ ses.messages=[]; ses.preview=''; }
-  showWelcome(); saveSessions(); renderHistList(); showToast('Conversacion limpiada','ok');
+  hist = [];
+  var ses = sessions.find(function(s){ return s.id === currentSessionId; });
+  if (ses) { ses.messages = []; ses.preview = ''; }
+  showWelcome();
+  saveSessions();
+  renderHistList();
+  showToast('Conversacion limpiada', 'ok');
 }
 
+/* Render */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function parseContent(raw) {
-  var h=raw;
-  h=h.replace(/```\w*\n?([\s\S]*?)```/g,function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
-  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  h=h.replace(/\n/g,'<br>');
+  var h = raw;
+  h = h.replace(/```\w*\n?([\s\S]*?)```/g, function(_,code){ return '<div class="doc-block"><button class="doc-copy" onclick="cpDoc(this)">Copiar</button>'+esc(code.trim())+'</div>'; });
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\n/g, '<br>');
   return h;
 }
-function cpDoc(btn){ var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
-function appendMsg(role,content,silent){
+function cpDoc(btn) { var t=btn.parentElement.innerText.replace('Copiar','').trim(); navigator.clipboard.writeText(t).then(function(){ btn.textContent='Copiado'; setTimeout(function(){ btn.textContent='Copiar'; },2000); }); }
+function appendMsg(role, content, silent) {
   var w=document.getElementById('welcome'); if(w) w.style.display='none';
   var msgs=document.getElementById('messages');
   var d=document.createElement('div'); d.className='msg '+role;
   var av=document.createElement('div'); av.className='msg-av'; av.textContent=role==='user'?'TU':'CP';
   var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML=parseContent(content);
   d.appendChild(av); d.appendChild(b); msgs.appendChild(d);
-  if(!silent) scrollBot();
+  if(!silent) {
+    var isMob = window.innerWidth <= 768;
+    if (isMob || isNearBottom()) {
+      scrollBot(false);
+    } else {
+      showScrollBtn(true);
+    }
+  }
 }
-function showTyping(){
+function showTyping() {
   var w=document.getElementById('welcome'); if(w) w.style.display='none';
   var msgs=document.getElementById('messages');
   var d=document.createElement('div'); d.className='msg assistant'; d.id='typing';
   var av=document.createElement('div'); av.className='msg-av'; av.textContent='CP';
   var b=document.createElement('div'); b.className='msg-bubble'; b.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot();
+  d.appendChild(av); d.appendChild(b); msgs.appendChild(d); scrollBot(true);
 }
 function removeTyping(){ var t=document.getElementById('typing'); if(t) t.remove(); }
 
+/* Send */
 async function send(custom) {
-  if(busy) return;
-  var inp=document.getElementById('userInput'), text=(custom||inp.value).trim();
-  if(!text) return;
+  if (busy) return;
+  var inp  = document.getElementById('userInput');
+  var text = (custom || inp.value).trim();
+  if (!text) return;
   inp.value=''; inp.style.height='auto';
   document.getElementById('clearInputBtn').classList.remove('show');
-  appendMsg('user',text); hist.push({role:'user',content:text});
-  var ses=sessions.find(function(s){ return s.id===currentSessionId; });
-  if(ses){ ses.messages=hist.slice(); if(!ses.preview){ ses.preview=text.slice(0,50)+(text.length>50?'...':''); updateSessionBanner(ses); renderHistList(); } }
-  busy=true; document.getElementById('sendBtn').disabled=true; showTyping();
-  try{
-    var res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:SP,messages:hist.slice(-20)})});
-    var data=await res.json(); removeTyping();
-    var reply=data.text||'No se pudo obtener respuesta.';
-    hist.push({role:'assistant',content:reply});
-    if(ses) ses.messages=hist.slice();
-    appendMsg('assistant',reply); saveSessions();
-  }catch(e){ removeTyping(); appendMsg('assistant','Error de conexion. Por favor intenta nuevamente.'); }
+  appendMsg('user', text);
+  hist.push({role:'user', content:text});
+
+  var ses = sessions.find(function(s){ return s.id===currentSessionId; });
+  if (ses) {
+    ses.messages = hist.slice();
+    if (!ses.preview) {
+      ses.preview = text.slice(0, 50) + (text.length > 50 ? '...' : '');
+      updateSessionBanner(ses);
+      renderHistList();
+    }
+  }
+
+  busy=true; document.getElementById('sendBtn').disabled=true;
+  showTyping();
+  try {
+    var res  = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({system:SP, messages:hist.slice(-20)})});
+    var data = await res.json();
+    removeTyping();
+    var reply = data.text || 'No se pudo obtener respuesta.';
+    hist.push({role:'assistant', content:reply});
+    if (ses) ses.messages = hist.slice();
+    appendMsg('assistant', reply);
+    saveSessions();
+  } catch(e) {
+    removeTyping();
+    appendMsg('assistant', 'Error de conexion. Por favor intenta nuevamente.');
+  }
   busy=false; document.getElementById('sendBtn').disabled=false;
   document.getElementById('userInput').focus();
+}
+
+/* Mobile helpers */
+function toggleMobInfo() {
+  var panel = document.getElementById('mobTagsPanel');
+  var btn   = document.getElementById('mobInfoBtn');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (btn) btn.classList.toggle('on', panel.classList.contains('open'));
+}
+function mobSetUser(name) {
+  var av = document.getElementById('mobAv');
+  var nm = document.getElementById('mobNm');
+  if (av && name) av.textContent = name[0].toUpperCase();
+  if (nm && name) nm.textContent = name;
+}
+function handleMobInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 70) + 'px';
+}
+function handleMobKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMob(); }
+}
+function sendMob() {
+  var inp = document.getElementById('mobUserInput');
+  if (!inp) return;
+  var val = inp.value.trim();
+  if (!val) return;
+  inp.value = ''; inp.style.height = 'auto';
+  send(val);
 }
 </script>
 </body>
