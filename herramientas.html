@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+// Admin bypass — corre ANTES del guard
+(function() {
+  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
+  if (!bypass) return;
+  // Guardar sync en sessionStorage para que el guard lo encuentre
+  try { sessionStorage.setItem('shellti_admin_bypass', bypass); } catch(e) {}
+  // Limpiar URL
+  var url2 = new URL(window.location.href);
+  url2.searchParams.delete('adminBypass');
+  window.history.replaceState({}, '', url2.toString());
+  // Validar async y ocultar overlays cuando llegue respuesta
+  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
+  .then(function(r) {
+    if (r.ok) {
+      window._adminSession = true;
+      ['access-blocked','auth-error-overlay'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.display = 'none';
+      });
+      document.querySelectorAll('body > *').forEach(function(el) {
+        el.style.visibility = '';
+      });
+    } else {
+      sessionStorage.removeItem('shellti_admin_bypass');
+    }
+  }).catch(function() {});
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Herramientas · ShellTI</title>
@@ -248,25 +277,6 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:auto;padding:0;display:fl
 /* nav padding-top */
 .main,#toolsView{padding-top:54px}
 </style>
-<script>
-// Admin bypass
-(function() {
-  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  if (!bypass) return;
-  var url2 = new URL(window.location.href);
-  url2.searchParams.delete('adminBypass');
-  window.history.replaceState({}, '', url2.toString());
-  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
-  .then(function(r) {
-    if (r.ok) {
-      window._adminSession = true;
-      ['access-blocked','auth-error-overlay'].forEach(function(id) {
-        var el = document.getElementById(id); if (el) el.style.display = 'none';
-      });
-    }
-  }).catch(function() {});
-})();
-</script>
 </head>
 <body>
 <!-- ACCESS BLOCKED OVERLAY -->
@@ -451,7 +461,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:auto;padding:0;display:fl
 // AUTH
 // ══════════════════════════════════════════════════════
 function getToken(){const u=new URLSearchParams(window.location.search).get('token');if(u){const s=localStorage.getItem('shellti_token');if(s&&s!==u){['shellti_audit','shellti_perf','shellti_shared_url','shellti_autorun_perf'].forEach(k=>localStorage.removeItem(k))}localStorage.setItem('shellti_token',u);const url=new URL(window.location.href);url.searchParams.delete('token');window.history.replaceState({},'',url.toString());return u}return localStorage.getItem('shellti_token')||''}
-(function checkAuth(){const t=getToken();if(!t){window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
+(function checkAuth(){const t=getToken();if(!t){try{var ab=sessionStorage.getItem('shellti_admin_bypass');if(ab){window._adminSession=true;return;}}catch(e){}window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
 function logout(){localStorage.removeItem('shellti_token');['shellti_audit','shellti_perf','shellti_shared_url'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window.location.href='/'}
 
 // ══════════════════════════════════════════════════════
@@ -1808,7 +1818,11 @@ renderToolsGrid();
     }
     return localStorage.getItem('shellti_token') || '';
   })();
-  if (!token) { window.location.href = '/'; return; }
+  if (!token) {
+    // Admin bypass check
+    try { var ab = sessionStorage.getItem('shellti_admin_bypass'); if (ab) { window._adminSession = true; return; } } catch(e) {}
+    window.location.href = '/'; return;
+  }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+// Admin bypass — corre ANTES del guard
+(function() {
+  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
+  if (!bypass) return;
+  // Guardar sync en sessionStorage para que el guard lo encuentre
+  try { sessionStorage.setItem('shellti_admin_bypass', bypass); } catch(e) {}
+  // Limpiar URL
+  var url2 = new URL(window.location.href);
+  url2.searchParams.delete('adminBypass');
+  window.history.replaceState({}, '', url2.toString());
+  // Validar async y ocultar overlays cuando llegue respuesta
+  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
+  .then(function(r) {
+    if (r.ok) {
+      window._adminSession = true;
+      ['access-blocked','auth-error-overlay'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.display = 'none';
+      });
+      document.querySelectorAll('body > *').forEach(function(el) {
+        el.style.visibility = '';
+      });
+    } else {
+      sessionStorage.removeItem('shellti_admin_bypass');
+    }
+  }).catch(function() {});
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Performance · ShellTI</title>
@@ -260,25 +289,6 @@ nav{
 .p-color-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--silver);flex:0 0 120px}
 .p-color-desc{font-size:.74rem;color:var(--muted)}
 </style>
-<script>
-// Admin bypass
-(function() {
-  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  if (!bypass) return;
-  var url2 = new URL(window.location.href);
-  url2.searchParams.delete('adminBypass');
-  window.history.replaceState({}, '', url2.toString());
-  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
-  .then(function(r) {
-    if (r.ok) {
-      window._adminSession = true;
-      ['access-blocked','auth-error-overlay'].forEach(function(id) {
-        var el = document.getElementById(id); if (el) el.style.display = 'none';
-      });
-    }
-  }).catch(function() {});
-})();
-</script>
 </head>
 <body>
 
@@ -941,7 +951,11 @@ function getToken() {
 
 (function checkAuth() {
   const token = getToken();
-  if (!token) { window.location.href = '/'; return; }
+  if (!token) {
+    // Admin bypass check
+    try { var ab = sessionStorage.getItem('shellti_admin_bypass'); if (ab) { window._adminSession = true; return; } } catch(e) {}
+    window.location.href = '/'; return;
+  }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ token, strict: false })
