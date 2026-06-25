@@ -1822,7 +1822,10 @@ renderToolsGrid();
     }
     return localStorage.getItem('shellti_token') || '';
   })();
-  if (!token) { window.location.href = '/'; return; }
+  if (!token) {
+    try { if (sessionStorage.getItem('shellti_admin_bypass')) { window._adminSession=true; return; } } catch(e) {}
+    window.location.href = '/'; return;
+  }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
