@@ -800,6 +800,9 @@ function renderGroups(cl){
       </div>`;
     container.appendChild(div);
   });
+  // Auto-expandir todos los grupos
+  container.querySelectorAll('.cl-group-body').forEach(function(b){ b.classList.add('open'); });
+  container.querySelectorAll('.cl-group-chevron').forEach(function(ch){ ch.classList.add('open'); });
 }
 
 function renderRow(cl, c, data){
