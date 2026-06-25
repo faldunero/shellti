@@ -1,39 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script>
-// Admin bypass
-(function() {
-  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  var stored = bypass || (function(){ try{ return sessionStorage.getItem('shellti_admin_bypass'); }catch(e){ return null; } })();
-  if (!stored) return;
-  try { sessionStorage.setItem('shellti_admin_bypass', stored); } catch(e) {}
-  window._adminSession = true;
-  if (bypass) {
-    var u2 = new URL(window.location.href);
-    u2.searchParams.delete('adminBypass');
-    window.history.replaceState({}, '', u2.toString());
-  }
-  // Interceptar fetch: cuando loadUserModules llame a /auth/validate sin token,
-  // devolver valid:true con todos los módulos habilitados
-  var _origFetch = window.fetch;
-  window.fetch = function(url, opts) {
-    var urlStr = typeof url === "string" ? url : "";
-    if (urlStr.indexOf("/auth/validate") !== -1) {
-      return Promise.resolve(new Response(
-        JSON.stringify({ valid: true, name: "Admin", canScan: true,
-          modules: { iso27001:true, ley21719:true, incidentes:true, riesgos:true, rat:true, levantamiento:true },
-          resources: ["agente","scanner","herramientas","diagnostico"] }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      ));
-    }
-    return _origFetch.apply(window, arguments);
-  };
-  // Restaurar fetch después del init
-  setTimeout(function() { window.fetch = _origFetch; }, 3000);
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Herramientas · ShellTI</title>
@@ -191,8 +158,8 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:auto;padding:0;display:fl
 .cl-gstat.na{border-color:rgba(148,163,184,0.25);color:var(--muted);background:rgba(148,163,184,0.05)}
 .cl-group-progress{width:60px;height:4px;background:rgba(255,255,255,0.06)}
 .cl-group-progress-fill{height:100%;background:var(--ok);transition:width .5s ease}
-.cl-group-body{display:none}
-.cl-group-body.open{display:block}
+.cl-group-body{display:block}
+.cl-group-body.closed{display:none}
 
 /* ── TABLA ISO — 8 columnas ──────────────────────── */
 /* #  | ID | Nombre | Tipo | Atributo | Evidencia | Responsable | Estado+Notas */
@@ -465,7 +432,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:auto;padding:0;display:fl
 // AUTH
 // ══════════════════════════════════════════════════════
 function getToken(){const u=new URLSearchParams(window.location.search).get('token');if(u){const s=localStorage.getItem('shellti_token');if(s&&s!==u){['shellti_audit','shellti_perf','shellti_shared_url','shellti_autorun_perf'].forEach(k=>localStorage.removeItem(k))}localStorage.setItem('shellti_token',u);const url=new URL(window.location.href);url.searchParams.delete('token');window.history.replaceState({},'',url.toString());return u}return localStorage.getItem('shellti_token')||''}
-(function checkAuth(){const t=getToken();if(!t){try{if(sessionStorage.getItem('shellti_admin_bypass')){window._adminSession=true;return;}}catch(e){}window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
+(function checkAuth(){const t=getToken();if(!t){window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
 function logout(){localStorage.removeItem('shellti_token');['shellti_audit','shellti_perf','shellti_shared_url'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window.location.href='/'}
 
 // ══════════════════════════════════════════════════════
@@ -800,9 +767,6 @@ function renderGroups(cl){
       </div>`;
     container.appendChild(div);
   });
-  // Auto-expandir todos los grupos
-  container.querySelectorAll('.cl-group-body').forEach(function(b){ b.classList.add('open'); });
-  container.querySelectorAll('.cl-group-chevron').forEach(function(ch){ ch.classList.add('open'); });
 }
 
 function renderRow(cl, c, data){
@@ -859,7 +823,7 @@ function toggleGroup(bodyId, chevId){
   const body=document.getElementById(bodyId);
   const chev=document.getElementById(chevId);
   if(!body||!chev)return;
-  body.classList.toggle('open');
+  body.classList.toggle('closed');
   chev.classList.toggle('open');
 }
 
@@ -1825,10 +1789,7 @@ renderToolsGrid();
     }
     return localStorage.getItem('shellti_token') || '';
   })();
-  if (!token) {
-    try { if (sessionStorage.getItem('shellti_admin_bypass')) { window._adminSession=true; return; } } catch(e) {}
-    window.location.href = '/'; return;
-  }
+  if (!token) { window.location.href = '/'; return; }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1901,8 +1862,8 @@ renderToolsGrid();
 .chk72-grupo-name{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--danger);display:flex;align-items:center;gap:8px}
 .chk72-grupo-chevron{font-size:.5rem;color:var(--muted);transition:transform .25s}
 .chk72-grupo-chevron.open{transform:rotate(180deg)}
-.chk72-grupo-body{display:none}
-.chk72-grupo-body.open{display:block}
+.chk72-grupo-body{display:block}
+.chk72-grupo-body.closed{display:none}
 .chk72-stats{display:flex;gap:8px}
 
 /* Estado select compacto */
@@ -2290,7 +2251,7 @@ function renderChk72(){
 
 function toggleChkGrupo(bodyId,chevId){
   const b=document.getElementById(bodyId);const c=document.getElementById(chevId);
-  if(!b||!c)return;b.classList.toggle('open');c.classList.toggle('open');
+  if(!b||!c)return;b.classList.toggle('closed');c.classList.toggle('open');
 }
 
 function calcChkStats(g){
@@ -2627,8 +2588,8 @@ renderToolsGrid();
 .rat-act-finalidad{font-size:.7rem;color:var(--muted);line-height:1.45}
 .rat-act-chevron{font-size:.55rem;color:var(--muted);transition:transform .25s;justify-self:end}
 .rat-act-chevron.open{transform:rotate(180deg)}
-.rat-act-body{display:none;padding:0 20px 16px 20px;border-top:1px solid var(--border)}
-.rat-act-body.open{display:block}
+.rat-act-body{display:block;padding:0 20px 16px 20px;border-top:1px solid var(--border)}
+.rat-act-body.closed{display:none}
 
 /* Grid de campos en detalle */
 .rat-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
@@ -2976,7 +2937,7 @@ function renderRatActividades(){
 
 function toggleRatAct(bodyId,chevId){
   const b=document.getElementById(bodyId);const c=document.getElementById(chevId);
-  if(!b||!c)return;b.classList.toggle('open');c.classList.toggle('open');
+  if(!b||!c)return;b.classList.toggle('closed');c.classList.toggle('open');
 }
 function onRatField(ta){
   const [idx,field]=ta.dataset.key.split('|');
@@ -3198,8 +3159,8 @@ renderToolsGrid();
 .lev-section-emoji{font-size:1rem}
 .lev-section-chevron{font-size:.55rem;color:var(--muted);transition:transform .25s}
 .lev-section-chevron.open{transform:rotate(180deg)}
-.lev-section-body{display:none}
-.lev-section-body.open{display:block}
+.lev-section-body{display:block}
+.lev-section-body.closed{display:none}
 .lev-section-progress{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted)}
 
 /* Pregunta */
