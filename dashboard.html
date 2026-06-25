@@ -925,6 +925,31 @@ function clearAll() {
 }
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
+// Admin bypass — si viene con adminBypass válido, saltar auth de usuario
+(function checkAdminBypass() {
+  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
+  if (!bypass) return;
+  // Validar que es un token de admin real antes de dar paso
+  fetch('https://web-production-372660.up.railway.app/admin/ping', {
+    headers: {'x-admin-token': bypass}
+  })
+  .then(function(r) {
+    if (r.ok) {
+      // Admin autenticado — limpiar URL y ocultar overlays
+      var url2 = new URL(window.location.href);
+      url2.searchParams.delete('adminBypass');
+      window.history.replaceState({}, '', url2.toString());
+      var ov = document.getElementById('auth-error-overlay');
+      if (ov) ov.style.display = 'none';
+      var banner = document.getElementById('auth-network-banner');
+      if (banner) banner.style.display = 'none';
+      // Mark as admin session so checkAuth doesn't redirect
+      window._adminSession = true;
+    }
+  })
+  .catch(function() {});
+})();
+
 function getToken() {
   const urlToken = new URLSearchParams(window.location.search).get('token');
   if (urlToken) {
@@ -947,6 +972,7 @@ function getToken() {
 }
 
 (function checkAuth() {
+  if (window._adminSession) return; // Admin bypass activo
   var token = getToken();
   if (!token) { _showAuthError('no-token', 'Usa el enlace que recibiste por email o ingresa tu token de acceso.'); return; }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
