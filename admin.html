@@ -178,6 +178,20 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 .sb-tool-link:hover{color:var(--cyan);background:rgba(0,212,255,0.04);border-left-color:rgba(0,212,255,0.4)}
 .sb-tool-link svg{flex-shrink:0;opacity:.6}
 .sb-tool-link:hover svg{opacity:1}
+
+/* ── Herramientas grid ── */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:0 14px 4px}
+.tool-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  padding:11px 6px 10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:5px;cursor:pointer;transition:all .18s;text-decoration:none;
+  font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--muted);text-align:center;line-height:1.3;user-select:none}
+.tool-btn:hover{border-color:rgba(0,212,255,0.4);color:var(--cyan);
+  background:rgba(0,212,255,0.06);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,212,255,0.1)}
+.tool-btn svg{flex-shrink:0;transition:opacity .18s}
+.tool-btn:hover svg{opacity:1!important}
+.sb-tool-note{padding:6px 14px 0;font-size:.5rem;font-family:'JetBrains Mono',monospace;
+  color:rgba(148,163,184,0.28);text-align:center;letter-spacing:.5px}
 </style>
 </head>
 <body>
@@ -226,6 +240,8 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
 
   <div class="shell">
     <div class="sidebar">
+
+      <!-- RESUMEN -->
       <div class="sb-section">
         <div class="sb-label">Resumen</div>
         <div class="sb-stat"><span class="sb-stat-label">Pendientes</span><span class="sb-stat-val c-warn" id="s-pending">—</span></div>
@@ -233,12 +249,15 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
         <div class="sb-stat"><span class="sb-stat-label">Aprobados</span><span class="sb-stat-val c-cyan" id="s-approved">—</span></div>
         <div class="sb-stat"><span class="sb-stat-label">Total</span><span class="sb-stat-val c-muted" id="s-total">—</span></div>
       </div>
+
       <div class="sb-divider"></div>
+
+      <!-- GESTIÓN -->
       <div class="sb-section" style="padding:0">
-        <div class="sb-label" style="padding:0 20px;margin-bottom:8px">Vistas</div>
+        <div class="sb-label" style="padding:0 20px;margin-bottom:6px">Gestión</div>
         <button class="sb-nav-btn active" id="nav-requests" onclick="switchTab('requests')">
           <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Solicitudes
+          Solicitudes scanner
           <span class="sb-badge" id="pending-badge" style="display:none">0</span>
         </button>
         <button class="sb-nav-btn" id="nav-users" onclick="switchTab('users')">
@@ -255,38 +274,42 @@ input[type=password]:focus{border-color:rgba(0,212,255,0.5)}
           Copropiedad
           <span class="sb-badge" id="cp-badge" style="display:none">0</span>
         </button>
-      <div class="sb-divider"></div>
-      <div class="sb-section" style="padding:0">
-        <div class="sb-label" style="padding:0 20px;margin-bottom:8px">Acceso directo</div>
-
-        <a class="sb-tool-link" onclick="openTool('dashboard.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Auditoría
-        </a>
-        <a class="sb-tool-link" onclick="openTool('performance.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Performance
-        </a>
-        <a class="sb-tool-link" onclick="openTool('agente.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Agente IA
-        </a>
-        <a class="sb-tool-link" onclick="openTool('herramientas.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          Herramientas
-        </a>
-
-        <div style="height:1px;background:var(--border);margin:6px 16px"></div>
-
-        <a class="sb-tool-link" onclick="openTool('leykarin.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Ley Karin
-        </a>
-        <a class="sb-tool-link" onclick="openTool('copropiedad.html')" href="#">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          Copropiedad
-        </a>
       </div>
+
+      <div class="sb-divider"></div>
+
+      <!-- ABRIR HERRAMIENTA -->
+      <div class="sb-section" style="padding:0 0 8px">
+        <div class="sb-label" style="padding:0 20px;margin-bottom:10px">Abrir herramienta</div>
+        <div class="tools-grid">
+          <a class="tool-btn" onclick="openTool('dashboard.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Auditoría
+          </a>
+          <a class="tool-btn" onclick="openTool('performance.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Performance
+          </a>
+          <a class="tool-btn" onclick="openTool('herramientas.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            Herramientas
+          </a>
+          <a class="tool-btn" onclick="openTool('agente.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2"/><path d="M12 8v4m0 4h.01"/></svg>
+            Agente IA
+          </a>
+          <a class="tool-btn" onclick="openTool('leykarin.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Ley Karin
+          </a>
+          <a class="tool-btn" onclick="openTool('copropiedad.html');return false" href="#">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="opacity:.55"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Copropiedad
+          </a>
+        </div>
+        <div class="sb-tool-note">Nueva pestaña · sin login adicional</div>
+      </div>
+
     </div>
 
     <div class="content">

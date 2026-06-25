@@ -445,6 +445,25 @@
  }
 .layout,.main{padding-top:54px}
 </style>
+<script>
+// Admin bypass
+(function() {
+  var bypass = new URLSearchParams(window.location.search).get('adminBypass');
+  if (!bypass) return;
+  var url2 = new URL(window.location.href);
+  url2.searchParams.delete('adminBypass');
+  window.history.replaceState({}, '', url2.toString());
+  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
+  .then(function(r) {
+    if (r.ok) {
+      window._adminSession = true;
+      ['access-blocked','auth-error-overlay'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.display = 'none';
+      });
+    }
+  }).catch(function() {});
+})();
+</script>
 </head>
 <body>
 <!-- ACCESS BLOCKED OVERLAY -->
