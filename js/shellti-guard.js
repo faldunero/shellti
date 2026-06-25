@@ -6,25 +6,6 @@
 
 (function () {
 
-  // ── Admin bypass — saltar validación si viene desde admin.html ──────────────
-  try {
-    var _ab = sessionStorage.getItem('shellti_admin_bypass');
-    if (_ab || window._adminSession) {
-      // Disparar guard-ok y salir sin validar
-      function _dispatchOk() {
-        window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: 'admin-bypass' } }));
-        document.documentElement.style.visibility = 'visible';
-      }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', _dispatchOk);
-      } else {
-        _dispatchOk();
-      }
-      return; // salir del guard completamente
-    }
-  } catch(e) {}
-  // ────────────────────────────────────────────────────────────────────────────
-
   const SCANNER_URL = 'https://web-production-372660.up.railway.app';
   const TOKEN_KEY   = 'shellti_token';
 
@@ -139,8 +120,15 @@
         const data = await res.json();
         if (data.id || data.success !== false) {
           msg.className = 'guard-msg ok';
-          msg.textContent = 'Solicitud enviada. Recibirás un email cuando sea aprobada.';
           document.getElementById('guardForm').style.display = 'none';
+          var secs = 10;
+          function tick() {
+            msg.textContent = 'Solicitud enviada. Recibirás un email cuando sea aprobada. Volviendo a shellti.com en ' + secs + 's...';
+            if (secs <= 0) { window.location.href = 'https://shellti.com'; return; }
+            secs--;
+            setTimeout(tick, 1000);
+          }
+          tick();
         } else {
           throw new Error(data.error || 'Error al enviar');
         }
