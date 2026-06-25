@@ -2,31 +2,35 @@
 <html lang="es">
 <head>
 <script>
-// Admin bypass — corre ANTES del guard
+// Admin bypass
 (function() {
   var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  if (!bypass) return;
-  // Guardar sync en sessionStorage para que el guard lo encuentre
-  try { sessionStorage.setItem('shellti_admin_bypass', bypass); } catch(e) {}
-  // Limpiar URL
-  var url2 = new URL(window.location.href);
-  url2.searchParams.delete('adminBypass');
-  window.history.replaceState({}, '', url2.toString());
-  // Validar async y ocultar overlays cuando llegue respuesta
-  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
-  .then(function(r) {
-    if (r.ok) {
-      window._adminSession = true;
-      ['access-blocked','auth-error-overlay'].forEach(function(id) {
-        var el = document.getElementById(id); if (el) el.style.display = 'none';
-      });
-      document.querySelectorAll('body > *').forEach(function(el) {
-        el.style.visibility = '';
-      });
-    } else {
-      sessionStorage.removeItem('shellti_admin_bypass');
+  var stored = bypass || (function(){ try{ return sessionStorage.getItem('shellti_admin_bypass'); }catch(e){ return null; } })();
+  if (!stored) return;
+  try { sessionStorage.setItem('shellti_admin_bypass', stored); } catch(e) {}
+  window._adminSession = true;
+  if (bypass) {
+    var u2 = new URL(window.location.href);
+    u2.searchParams.delete('adminBypass');
+    window.history.replaceState({}, '', u2.toString());
+  }
+  // Interceptar fetch: cuando loadUserModules llame a /auth/validate sin token,
+  // devolver valid:true con todos los módulos habilitados
+  var _origFetch = window.fetch;
+  window.fetch = function(url, opts) {
+    var urlStr = typeof url === "string" ? url : "";
+    if (urlStr.indexOf("/auth/validate") !== -1) {
+      return Promise.resolve(new Response(
+        JSON.stringify({ valid: true, name: "Admin", canScan: true,
+          modules: { iso27001:true, ley21719:true, incidentes:true, riesgos:true, rat:true, levantamiento:true },
+          resources: ["agente","scanner","herramientas","diagnostico"] }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      ));
     }
-  }).catch(function() {});
+    return _origFetch.apply(window, arguments);
+  };
+  // Restaurar fetch después del init
+  setTimeout(function() { window.fetch = _origFetch; }, 3000);
 })();
 </script>
 
@@ -461,7 +465,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:auto;padding:0;display:fl
 // AUTH
 // ══════════════════════════════════════════════════════
 function getToken(){const u=new URLSearchParams(window.location.search).get('token');if(u){const s=localStorage.getItem('shellti_token');if(s&&s!==u){['shellti_audit','shellti_perf','shellti_shared_url','shellti_autorun_perf'].forEach(k=>localStorage.removeItem(k))}localStorage.setItem('shellti_token',u);const url=new URL(window.location.href);url.searchParams.delete('token');window.history.replaceState({},'',url.toString());return u}return localStorage.getItem('shellti_token')||''}
-(function checkAuth(){const t=getToken();if(!t){try{var ab=sessionStorage.getItem('shellti_admin_bypass');if(ab){window._adminSession=true;return;}}catch(e){}window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
+(function checkAuth(){const t=getToken();if(!t){try{if(sessionStorage.getItem('shellti_admin_bypass')){window._adminSession=true;return;}}catch(e){}window.location.href='/';return}fetch('https://web-production-372660.up.railway.app/auth/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t,strict:false})}).then(r=>r.json()).then(d=>{if(!d.valid){localStorage.removeItem('shellti_token');window.location.href='/'}}).catch(()=>{})})();
 function logout(){localStorage.removeItem('shellti_token');['shellti_audit','shellti_perf','shellti_shared_url'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window.location.href='/'}
 
 // ══════════════════════════════════════════════════════
@@ -1818,11 +1822,7 @@ renderToolsGrid();
     }
     return localStorage.getItem('shellti_token') || '';
   })();
-  if (!token) {
-    // Admin bypass check
-    try { var ab = sessionStorage.getItem('shellti_admin_bypass'); if (ab) { window._adminSession = true; return; } } catch(e) {}
-    window.location.href = '/'; return;
-  }
+  if (!token) { window.location.href = '/'; return; }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
