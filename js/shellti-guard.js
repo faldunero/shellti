@@ -6,6 +6,25 @@
 
 (function () {
 
+  // ── Admin bypass — saltar validación si viene desde admin.html ──────────────
+  try {
+    var _ab = sessionStorage.getItem('shellti_admin_bypass');
+    if (_ab || window._adminSession) {
+      // Disparar guard-ok y salir sin validar
+      function _dispatchOk() {
+        window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: 'admin-bypass' } }));
+        document.documentElement.style.visibility = 'visible';
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', _dispatchOk);
+      } else {
+        _dispatchOk();
+      }
+      return; // salir del guard completamente
+    }
+  } catch(e) {}
+  // ────────────────────────────────────────────────────────────────────────────
+
   const SCANNER_URL = 'https://web-production-372660.up.railway.app';
   const TOKEN_KEY   = 'shellti_token';
 
