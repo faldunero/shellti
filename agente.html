@@ -2,48 +2,53 @@
 <html lang="es">
 <head>
 <script>
-// Admin bypass — intercepta shellti-guard.js
+// Admin bypass — intercepta shellti-guard.js antes de que corra
 (function() {
   var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  var stored = bypass || (function() {
-    try { return sessionStorage.getItem('shellti_admin_bypass'); } catch(e) { return null; }
-  })();
+  var stored = bypass || (function(){ try{ return sessionStorage.getItem('shellti_admin_bypass'); }catch(e){ return null; } })();
   if (!stored) return;
-
-  // Guardar en sessionStorage sync
   try { sessionStorage.setItem('shellti_admin_bypass', stored); } catch(e) {}
   window._adminSession = true;
-
-  // Limpiar URL
   if (bypass) {
-    var u = new URL(window.location.href);
-    u.searchParams.delete('adminBypass');
-    window.history.replaceState({}, '', u.toString());
+    var u2 = new URL(window.location.href);
+    u2.searchParams.delete('adminBypass');
+    window.history.replaceState({}, '', u2.toString());
   }
 
-  // Interceptar fetch — cuando shellti-guard.js llame a /auth/validate
-  // devolver valid:true con todos los recursos
+  // Interceptar fetch para que el guard reciba {valid:true} sin token real
   var _origFetch = window.fetch;
   window.fetch = function(url, opts) {
-    var u = typeof url === 'string' ? url : (url && url.url ? url.url : '');
-    if (u.indexOf('/auth/validate') !== -1) {
+    var urlStr = (typeof url === "string") ? url : (url.url || "");
+    // Si el guard llama a validate, devolver valid:true
+    if (urlStr.indexOf("/auth/validate") !== -1 || urlStr.indexOf("/validate") !== -1) {
       return Promise.resolve(new Response(
-        JSON.stringify({
-          valid: true, expired: false, scansDone: false,
-          resources: ['agente','scanner','herramientas','diagnostico','biblioteca'],
-          name: 'Admin', canScan: true
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ valid: true, name: "Admin", resources: ["agente","scanner","herramientas","diagnostico"] }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
       ));
     }
     return _origFetch.apply(window, arguments);
   };
 
-  // Restaurar fetch a los 4 segundos (después de que el guard haya corrido)
-  setTimeout(function() { window.fetch = _origFetch; }, 4000);
+  // También interceptar document.body.innerHTML en caso que el guard reemplace el contenido
+  var _bodyDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML");
+  var _origSet = _bodyDescriptor && _bodyDescriptor.set;
+  if (_origSet) {
+    Object.defineProperty(document.body && document.body.__proto__ ? document.body : Element.prototype, "innerHTML", {
+      set: function(v) {
+        if (window._adminSession && this === document.body && v && v.indexOf("Área Premium") !== -1) {
+          console.log("[bypass] bloqueando reemplazo de body con formulario premium");
+          return;
+        }
+        _origSet.call(this, v);
+      },
+      get: _bodyDescriptor.get,
+      configurable: true
+    });
+  }
 
-  // Disparar shellti-guard-ok para inicializar el agente
-  document.addEventListener('DOMContentLoaded', function() {
+  // Restaurar fetch después de que el guard haya corrido
+  document.addEventListener("DOMContentLoaded", function() {
+    window.fetch = _origFetch;
     window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: 'admin-bypass' } }));
   });
 })();
@@ -1474,43 +1479,5 @@ window.addEventListener('DOMContentLoaded', function() {
 
 </script>
 
-<script>
-// ACCESS CHECK: resource agente
-(function() {
-  var token = (function() {
-    var u = new URLSearchParams(window.location.search).get('token');
-    if (u) {
-      localStorage.setItem('shellti_token', u);
-      var url2 = new URL(window.location.href);
-      url2.searchParams.delete('token');
-      window.history.replaceState({}, '', url2.toString());
-      return u;
-    }
-    return localStorage.getItem('shellti_token') || '';
-  })();
-  if (!token) {
-    try { if (sessionStorage.getItem('shellti_admin_bypass')) { window._adminSession=true; return; } } catch(e) {}
-    window.location.href = '/'; return;
-  }
-  fetch('https://web-production-372660.up.railway.app/auth/validate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: token, strict: false })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(d) {
-    if (!d.valid) { localStorage.removeItem('shellti_token'); window.location.href = '/'; return; }
-    var resources = d.resources || [];
-    if (resources.indexOf('agente') === -1) {
-      var ov = document.getElementById('access-blocked');
-      if (ov) ov.style.display = 'flex';
-      document.querySelectorAll('body > *:not(nav):not(#access-blocked)').forEach(function(el) {
-        el.style.visibility = 'hidden';
-      });
-    }
-  })
-  .catch(function() { /* fail open */ });
-})();
-</script>
 </body>
 </html>
