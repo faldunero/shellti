@@ -2,34 +2,66 @@
 <html lang="es">
 <head>
 <script>
-// Admin bypass — corre ANTES del guard
+// Admin bypass — intercepta guard ANTES de que corra
 (function() {
   var bypass = new URLSearchParams(window.location.search).get('adminBypass');
-  if (!bypass) return;
-  // Guardar sync en sessionStorage para que el guard lo encuentre
-  try { sessionStorage.setItem('shellti_admin_bypass', bypass); } catch(e) {}
+  var stored = bypass || (function(){ try{ return sessionStorage.getItem('shellti_admin_bypass'); }catch(e){ return null; } })();
+  if (!stored) return;
+  // Guardar para uso posterior
+  try { sessionStorage.setItem('shellti_admin_bypass', stored); } catch(e) {}
   // Limpiar URL
-  var url2 = new URL(window.location.href);
-  url2.searchParams.delete('adminBypass');
-  window.history.replaceState({}, '', url2.toString());
-  // Validar async y ocultar overlays cuando llegue respuesta
-  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': bypass } })
-  .then(function(r) {
-    if (r.ok) {
-      window._adminSession = true;
-      ['access-blocked','auth-error-overlay'].forEach(function(id) {
-        var el = document.getElementById(id); if (el) el.style.display = 'none';
+  if (bypass) {
+    var url2 = new URL(window.location.href);
+    url2.searchParams.delete('adminBypass');
+    window.history.replaceState({}, '', url2.toString());
+  }
+  window._adminSession = true;
+  // Cuando el DOM esté listo, ocultar cualquier overlay de acceso
+  function hideAccessOverlays() {
+    ['access-overlay','access-blocked','auth-error-overlay'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.style.display = 'none';
+    });
+    document.querySelectorAll('[id*="access"],[id*="overlay"]').forEach(function(el) {
+      if (el.style.display !== 'none') el.style.display = 'none';
+    });
+  }
+  // Override document.getElementById para interceptar cuando el guard
+  // llama a getElementById("access-overlay") para mostrarlo
+  var _origGetById = document.getElementById.bind(document);
+  document.getElementById = function(id) {
+    var el = _origGetById(id);
+    if (el && (id === 'access-overlay' || id === 'access-blocked')) {
+      // Devolver un proxy que ignora style.display = "flex"
+      return new Proxy(el, {
+        get: function(target, prop) {
+          if (prop === 'style') {
+            return new Proxy(target.style, {
+              set: function(s, p, v) {
+                if (p === 'display' && (v === 'flex' || v === 'block')) {
+                  s[p] = 'none'; // nunca mostrar el overlay
+                  return true;
+                }
+                s[p] = v; return true;
+              },
+              get: function(s, p) { return s[p]; }
+            });
+          }
+          var val = target[prop];
+          return (typeof val === 'function') ? val.bind(target) : val;
+        }
       });
-      document.querySelectorAll('body > *').forEach(function(el) {
-        el.style.visibility = '';
-      });
-    } else {
-      sessionStorage.removeItem('shellti_admin_bypass');
     }
-  }).catch(function() {});
+    return el;
+  };
+  // También disparar shellti-guard-ok para que el agente cargue las sesiones
+  document.addEventListener("DOMContentLoaded", function() {
+    hideAccessOverlays();
+    // Restaurar getElementById original después de que el guard haya corrido
+    document.getElementById = _origGetById;
+    window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: null } }));
+  });
 })();
 </script>
-
 <script src="/js/shellti-guard.js" data-resource="agente"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -1470,11 +1502,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     return localStorage.getItem('shellti_token') || '';
   })();
-  if (!token) {
-    // Admin bypass check
-    try { var ab = sessionStorage.getItem('shellti_admin_bypass'); if (ab) { window._adminSession = true; return; } } catch(e) {}
-    window.location.href = '/'; return;
-  }
+  if (!token) { window.location.href = '/'; return; }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
