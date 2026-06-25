@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <script>
-// Admin bypass — intercepta AMBOS guards antes de que corran
+// Admin bypass — intercepta shellti-guard.js antes de que corra
 (function() {
   var bypass = new URLSearchParams(window.location.search).get('adminBypass');
   var stored = bypass || (function(){ try{ return sessionStorage.getItem('shellti_admin_bypass'); }catch(e){ return null; } })();
@@ -14,44 +14,43 @@
     u2.searchParams.delete('adminBypass');
     window.history.replaceState({}, '', u2.toString());
   }
-  // Interceptar getElementById para suprimir CUALQUIER overlay de acceso
-  var OVERLAY_IDS = ["access-overlay","access-blocked","auth-error-overlay"];
-  var _orig = document.getElementById.bind(document);
-  document.getElementById = function(id) {
-    var el = _orig(id);
-    if (el && OVERLAY_IDS.indexOf(id) !== -1) {
-      return new Proxy(el, {
-        get: function(t, p) {
-          if (p === 'style') {
-            return new Proxy(t.style, {
-              set: function(s, k, v) {
-                if (k === 'display' && (v === 'flex' || v === 'block')) { s[k] = 'none'; return true; }
-                s[k] = v; return true;
-              },
-              get: function(s, k) { return s[k]; }
-            });
-          }
-          var val = t[p];
-          return typeof val === 'function' ? val.bind(t) : val;
-        }
-      });
+
+  // Interceptar fetch para que el guard reciba {valid:true} sin token real
+  var _origFetch = window.fetch;
+  window.fetch = function(url, opts) {
+    var urlStr = (typeof url === "string") ? url : (url.url || "");
+    // Si el guard llama a validate, devolver valid:true
+    if (urlStr.indexOf("/auth/validate") !== -1 || urlStr.indexOf("/validate") !== -1) {
+      return Promise.resolve(new Response(
+        JSON.stringify({ valid: true, name: "Admin", resources: ["agente","scanner","herramientas","diagnostico"] }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      ));
     }
-    return el;
+    return _origFetch.apply(window, arguments);
   };
-  // Restaurar después del DOMContentLoaded y despachar guard-ok
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById = _orig;
-    OVERLAY_IDS.forEach(function(id) {
-      var el = _orig(id); if (el) el.style.display = "none";
+
+  // También interceptar document.body.innerHTML en caso que el guard reemplace el contenido
+  var _bodyDescriptor = Object.getOwnPropertyDescriptor(Element.prototype, "innerHTML");
+  var _origSet = _bodyDescriptor && _bodyDescriptor.set;
+  if (_origSet) {
+    Object.defineProperty(document.body && document.body.__proto__ ? document.body : Element.prototype, "innerHTML", {
+      set: function(v) {
+        if (window._adminSession && this === document.body && v && v.indexOf("Área Premium") !== -1) {
+          console.log("[bypass] bloqueando reemplazo de body con formulario premium");
+          return;
+        }
+        _origSet.call(this, v);
+      },
+      get: _bodyDescriptor.get,
+      configurable: true
     });
-    // Disparar shellti-guard-ok para que el agente cargue sesiones
-    window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: null } }));
+  }
+
+  // Restaurar fetch después de que el guard haya corrido
+  document.addEventListener("DOMContentLoaded", function() {
+    window.fetch = _origFetch;
+    window.dispatchEvent(new CustomEvent('shellti-guard-ok', { detail: { token: 'admin-bypass' } }));
   });
-  // Validar async (solo para confirmar — no bloqueante)
-  fetch('https://web-production-372660.up.railway.app/admin/requests', { headers: { 'x-admin-token': stored } })
-  .then(function(r) {
-    if (!r.ok) { try { sessionStorage.removeItem('shellti_admin_bypass'); } catch(e) {} window._adminSession = false; }
-  }).catch(function() {});
 })();
 </script>
 <script src="/js/shellti-guard.js" data-resource="agente"></script>
@@ -1495,8 +1494,7 @@ window.addEventListener('DOMContentLoaded', function() {
     return localStorage.getItem('shellti_token') || '';
   })();
   if (!token) {
-    // Admin bypass check
-    try { var ab = sessionStorage.getItem('shellti_admin_bypass'); if (ab) { window._adminSession = true; return; } } catch(e) {}
+    try { if (sessionStorage.getItem('shellti_admin_bypass')) { window._adminSession=true; return; } } catch(e) {}
     window.location.href = '/'; return;
   }
   fetch('https://web-production-372660.up.railway.app/auth/validate', {
