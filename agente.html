@@ -354,7 +354,9 @@
       .nav-right { display: none !important; }
 
       /* Layout */
-      body { height: 100dvh !important; overflow: hidden !important; }
+      /* Guard reemplaza body.innerHTML — no bloquear scroll con overflow en body */
+      html:has(main) { height: 100dvh !important; overflow: hidden !important; }
+      html:has(main) body { height: 100% !important; overflow: hidden !important; }
       main { margin-top: 0 !important; height: auto !important; flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; grid-template-columns: unset !important; }
       .sidebar { display: none !important; }
       .chat-wrap { flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
