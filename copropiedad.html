@@ -222,14 +222,14 @@
       .chat-wrap{flex:1 !important;min-height:0 !important;display:flex !important;flex-direction:column !important;overflow:hidden !important}
       .chat-head{flex-shrink:0 !important;border-bottom:1px solid var(--border);background:var(--bg)}
       .messages-wrap{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-      .messages{flex:1 !important;min-height:0 !important;overflow-y:auto !important;-webkit-overflow-scrolling:touch;padding:4px 12px 12px !important;height:auto !important}
+      .messages{flex:1 !important;min-height:0 !important;overflow-y:auto !important;-webkit-overflow-scrolling:touch;padding:0 12px 8px !important;height:auto !important}
 
       .chat-head-top{display:none !important}
       .chat-head-session{display:none !important}
       .mob-tags-row{display:none !important}
 
-      .mob-row1{display:flex !important;align-items:center;justify-content:flex-end;padding:5px 12px 3px;gap:8px}
-      .mob-row2{display:flex !important;align-items:center;gap:5px;padding:0 12px 5px}
+      .mob-row1{display:none !important}
+      .mob-row2{display:flex !important;align-items:center;gap:5px;padding:4px 12px 4px}
       .mob-chip{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:3px 9px 3px 3px}
       .mob-chip-av{width:20px;height:20px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:700;color:var(--cyan);flex-shrink:0}
       .mob-chip-nm{font-size:.6rem;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
@@ -250,7 +250,7 @@
       .input-wrap{display:none !important}
 
       .messages{justify-content:flex-start !important}
-      .welcome{display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;padding:8px 14px 12px !important;max-width:100% !important;width:100% !important;margin:0 auto !important}
+      .welcome{display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;padding:2px 14px 8px !important;max-width:100% !important;width:100% !important;margin:0 !important}
       .welcome-icon{width:38px;height:38px;margin-bottom:6px}
       .welcome h2{font-size:.9rem;margin-bottom:4px}
       .welcome p{font-size:.7rem;margin-bottom:10px;max-width:280px}
@@ -459,14 +459,7 @@
           <span>Limpiar</span>
         </button>
       </div>
-      <!-- Mobile Input -->
-      <div class="mob-input-row" id="mobInputRow">
-        <textarea id="mobUserInput" placeholder="Escribe tu consulta sobre copropiedad..." rows="1"
-          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
-        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
+
       <!-- Mobile Info Panel -->
       <div class="mob-tags-panel" id="mobTagsPanel">
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1172296" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.442</a>
@@ -517,6 +510,15 @@
       <button class="scroll-down-btn" id="scrollDownBtn" onclick="scrollBot(true)" title="Ir al final">
         <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         <span class="unread-dot" id="unreadDot"></span>
+      </button>
+    </div>
+
+    <!-- Mobile input bar — anchored to bottom -->
+    <div class="mob-input-row" id="mobInputRow">
+      <textarea id="mobUserInput" placeholder="Escribe tu consulta sobre copropiedad..." rows="1"
+        onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+      <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
 
