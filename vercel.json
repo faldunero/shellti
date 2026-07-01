@@ -1,6 +1,8 @@
 {
+  "redirects": [
+    { "source": "/mercadopublico", "destination": "/mercadopublico/", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/mercadopublico", "destination": "https://chilecompra.vercel.app/index.html" },
     { "source": "/mercadopublico/:path*", "destination": "https://chilecompra.vercel.app/:path*" }
   ],
   "headers": [
