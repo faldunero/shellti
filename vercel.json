@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/mercadopublico", "destination": "https://chilecompra.vercel.app/index.html" },
+    { "source": "/mercadopublico/:path*", "destination": "https://chilecompra.vercel.app/:path*" }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.xlsx",
