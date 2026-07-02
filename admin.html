@@ -547,42 +547,139 @@ function markSuperseded(requests) {
 // SÍ es específico por agente es la acción de aprobar (asigna solo ese
 // recurso) y el revoke (quita solo ese recurso, no toca los demás del user).
 
+let agentFilter = {};
+
 function buildAgentTabsShell() {
   const container = document.getElementById('agent-tabs-container');
-  container.innerHTML = RES_OPTIONS.map((key, i) => `
+  container.innerHTML = RES_OPTIONS.map((key, i) => {
+    agentFilter[key] = 'active';
+    return `
     <div class="tab-panel${i===0?' active':''}" id="tab-${key}">
-      <div class="sec-hd"><div class="sec-title">${AGENT_LABELS[key]} · solicitudes pendientes</div></div>
-      <div style="font-size:.7rem;color:var(--muted);margin-bottom:14px;line-height:1.6">
-        Las solicitudes de acceso son genéricas — aparecen igual en los 5 agentes hasta que apruebes para uno específico.
+      <div class="sec-hd"><div class="sec-title">${AGENT_LABELS[key]} · solicitudes</div></div>
+      <div class="filter-bar">
+        <input type="text" id="ag-search-${key}" placeholder="Buscar por nombre, empresa o email..." oninput="renderAgentList('${key}')" />
+        <button class="filter-chip active" onclick="setAgentFilter('${key}','active',this)">Activos</button>
+        <button class="filter-chip" onclick="setAgentFilter('${key}','pending',this)">Pendientes</button>
+        <button class="filter-chip" onclick="setAgentFilter('${key}','approved',this)">Aprobadas</button>
+        <button class="filter-chip" onclick="setAgentFilter('${key}','rejected',this)">Rechazadas</button>
+        <button class="filter-chip" onclick="setAgentFilter('${key}','historico',this)">Histórico</button>
       </div>
-      <div id="pending-${key}"></div>
+      <div id="ag-list-${key}"></div>
       <div class="sec-hd" style="margin-top:32px"><div class="sec-title">${AGENT_LABELS[key]} · usuarios con acceso</div></div>
       <div id="active-${key}"></div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderAgentTab(agentKey) {
-  renderAgentPending(agentKey);
+  renderAgentList(agentKey);
   renderAgentActive(agentKey);
 }
 
-function renderAgentPending(agentKey) {
-  const el = document.getElementById('pending-' + agentKey);
-  if (!el) return;
-  const pending = allRequests.filter(r => r.status === 'pending');
-  el.innerHTML = pending.length
-    ? pending.map(r => agentReqCard(r, agentKey)).join('')
-    : `<div class="empty">Sin solicitudes pendientes</div>`;
+// Un request es "de este agente" si viene etiquetado (r.resource === agentKey,
+// gracias al fix en shellti-guard.js), o si es una solicitud vieja/legacy sin
+// etiquetar (r.resource ausente) — esas se siguen mostrando en las 5 pestañas
+// porque no hay forma de saber a cuál pertenecen hasta que se aprueban.
+function agentRelevant(r, agentKey) {
+  if (r.resource) return r.resource === agentKey;
+  return true;
+}
+function agentApprovedFor(r, agentKey) {
+  return r.status === 'approved' && Array.isArray(r.resources) && r.resources.includes(agentKey);
 }
 
-function agentReqCard(r, agentKey) {
-  const initials = (r.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  const cardId = 'card-' + agentKey + '-' + r.id;
-  const durKey = agentKey + ':' + r.id;
+function computeAgentSuperseded(agentKey) {
+  const byEmail = {};
+  allRequests.forEach(r => {
+    if (!agentApprovedFor(r, agentKey)) return;
+    if (!byEmail[r.email]) byEmail[r.email] = [];
+    byEmail[r.email].push(r);
+  });
+  const supersededIds = new Set();
+  Object.values(byEmail).forEach(group => {
+    if (group.length <= 1) return;
+    group.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    group.slice(1).forEach(r => supersededIds.add(r.id));
+  });
+  return supersededIds;
+}
+
+function setAgentFilter(agentKey, f, btn) {
+  agentFilter[agentKey] = f;
+  document.querySelectorAll('#tab-' + agentKey + ' .filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderAgentList(agentKey);
+}
+
+function renderAgentList(agentKey) {
+  const searchEl = document.getElementById('ag-search-' + agentKey);
+  const q = (searchEl?.value || '').toLowerCase();
+  const filter = agentFilter[agentKey] || 'active';
+  const superseded = computeAgentSuperseded(agentKey);
+
+  let filtered = allRequests.filter(r =>
+    r.status === 'approved' ? agentApprovedFor(r, agentKey) : agentRelevant(r, agentKey)
+  );
+
+  if (filter === 'active') {
+    filtered = filtered.filter(r => r.status === 'pending' || (r.status === 'approved' && !superseded.has(r.id)));
+  } else if (filter === 'pending') {
+    filtered = filtered.filter(r => r.status === 'pending');
+  } else if (filter === 'approved') {
+    filtered = filtered.filter(r => r.status === 'approved');
+  } else if (filter === 'rejected') {
+    filtered = filtered.filter(r => r.status === 'rejected');
+  } // historico: sin filtro extra
+
+  if (q) filtered = filtered.filter(r =>
+    (r.name||'').toLowerCase().includes(q) || (r.company||'').toLowerCase().includes(q) || (r.email||'').toLowerCase().includes(q)
+  );
+
+  const sorted = [...filtered].sort((a,b) => {
+    if (a.status === 'pending' && b.status !== 'pending') return -1;
+    if (b.status === 'pending' && a.status !== 'pending') return 1;
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
+  document.getElementById('ag-list-' + agentKey).innerHTML = sorted.length
+    ? sorted.map(r => agentReqCard(r, agentKey, superseded)).join('')
+    : `<div class="empty">Sin solicitudes para mostrar</div>`;
+}
+
+function agentReqCard(r, agentKey, supersededIds) {
+  const isPending    = r.status === 'pending';
+  const isSuperseded = supersededIds && supersededIds.has(r.id);
+  const initials     = (r.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  const cardId       = 'card-' + agentKey + '-' + r.id;
+  const durKey       = agentKey + ':' + r.id;
+
+  let statusTag;
+  if (isSuperseded)          statusTag = `<span class="tag tag-superseded">Vencido</span>`;
+  else if (isPending)        statusTag = `<span class="tag tag-pending">Pendiente</span>`;
+  else if (r.status==='approved') statusTag = `<span class="tag tag-approved">Aprobado${r.durationLabel?' · '+r.durationLabel:''}</span>`;
+  else                        statusTag = `<span class="tag tag-rejected">Rechazado</span>`;
+
+  const unlabeledNote = (isPending && !r.resource)
+    ? `<div style="font-size:.62rem;color:var(--warn);margin-top:6px">⚠ Solicitud sin agente específico — visible en las 5 pestañas hasta aprobarla</div>` : '';
+
+  const actions = isPending ? `
+    <div class="dur-row">
+      <span class="dur-label">Duración</span>
+      <div class="dur-chips">
+        ${DURATIONS.map(d => `<button class="dur-chip" onclick="event.stopPropagation();selectDurAgent('${durKey}',${d.ms},'${d.label}',this)">${d.label}</button>`).join('')}
+      </div>
+    </div>
+    <div class="scans-row">
+      <span class="res-lbl">Máx. consultas</span>
+      <input type="number" id="maxScans-${agentKey}-${r.id}" min="1" max="999" placeholder="∞ ilimitado" onclick="event.stopPropagation()" />
+    </div>
+    <div class="action-row">
+      <button class="btn-approve" id="approve-${agentKey}-${r.id}" onclick="event.stopPropagation();approveForAgent('${r.id}','${agentKey}')">✓ Aprobar para ${AGENT_LABELS[agentKey]}</button>
+      <button class="btn-reject" onclick="event.stopPropagation();reject('${r.id}')">✗ Rechazar</button>
+    </div>` : '';
 
   return `
-    <div class="req-card" id="${cardId}">
+    <div class="req-card${isSuperseded?' is-superseded':''}" id="${cardId}">
       <div class="req-head" onclick="toggleCard('${cardId}')">
         <div class="req-head-left">
           <div class="req-avatar">${initials}</div>
@@ -593,27 +690,15 @@ function agentReqCard(r, agentKey) {
         </div>
         <div class="req-head-right">
           <span class="req-email-tag">${r.email}</span>
-          <span class="tag tag-pending">Pendiente</span>
+          ${statusTag}
           <span class="req-time">${formatDate(r.createdAt)}</span>
           <span class="chevron">▾</span>
         </div>
       </div>
       <div class="req-body">
         ${r.reason ? `<div class="req-reason-box">"${r.reason}"</div>` : ''}
-        <div class="dur-row">
-          <span class="dur-label">Duración</span>
-          <div class="dur-chips">
-            ${DURATIONS.map(d => `<button class="dur-chip" onclick="event.stopPropagation();selectDurAgent('${durKey}',${d.ms},'${d.label}',this)">${d.label}</button>`).join('')}
-          </div>
-        </div>
-        <div class="scans-row">
-          <span class="res-lbl">Máx. consultas</span>
-          <input type="number" id="maxScans-${agentKey}-${r.id}" min="1" max="999" placeholder="∞ ilimitado" onclick="event.stopPropagation()" />
-        </div>
-        <div class="action-row">
-          <button class="btn-approve" id="approve-${agentKey}-${r.id}" onclick="event.stopPropagation();approveForAgent('${r.id}','${agentKey}')">✓ Aprobar para ${AGENT_LABELS[agentKey]}</button>
-          <button class="btn-reject" onclick="event.stopPropagation();reject('${r.id}')">✗ Rechazar</button>
-        </div>
+        ${unlabeledNote}
+        ${actions}
       </div>
     </div>`;
 }
@@ -646,7 +731,7 @@ async function approveForAgent(id, agentKey) {
 function renderAgentActive(agentKey) {
   const el = document.getElementById('active-' + agentKey);
   if (!el) return;
-  const active = allUsers.filter(u => u.active && (u.resources||[]).includes(agentKey));
+  const active = allUsers.filter(u => u.active && new Date(u.expiresAt) > new Date() && (u.resources||[]).includes(agentKey));
   if (!active.length) { el.innerHTML = `<div class="empty">Nadie tiene acceso a ${AGENT_LABELS[agentKey]} todavía</div>`; return; }
   const rows = active.map(u => {
     const exp = new Date(u.expiresAt), now = new Date(), diffMs = exp - now, diffH = Math.floor(diffMs / 3600000);
@@ -656,7 +741,7 @@ function renderAgentActive(agentKey) {
     else if (diffH < 24) { expLabel=`${diffH}h`; expClass='exp-ok'; }
     else                 { expLabel=exp.toLocaleDateString('es-CL'); expClass='exp-ok'; }
     return `<tr>
-      <td><div class="user-name-cell">${u.name}</div><div class="user-email-cell">${u.email}</div></td>
+      <td><div class="user-name-cell">${u.name}</div><div class="user-email-cell">${u.email}</div><div class="user-co-cell">${u.company||''}</div></td>
       <td><span class="${expClass}">${expLabel}</span></td>
       <td style="white-space:nowrap"><button class="btn-revoke" onclick="revokeAgentResource('${u.email}','${agentKey}')">✗ Quitar acceso a ${AGENT_LABELS[agentKey]}</button></td>
     </tr>`;
@@ -670,7 +755,6 @@ async function revokeAgentResource(email, agentKey) {
   const current = (user?.resources || []).filter(r => r !== agentKey);
   try {
     if (current.length === 0) {
-      // Era el último recurso que le quedaba: revoca la cuenta completa.
       const res = await fetch(`${RAILWAY}/admin/revoke`, {
         method:'POST', headers:{'Content-Type':'application/json','x-admin-token':adminToken},
         body: JSON.stringify({email})
@@ -781,7 +865,7 @@ async function loadUnifiedUsers() {
   }
 
   // 5 agentes del sistema compartido — ya están en allUsers (cargados por loadAll)
-  allUsers.filter(u => u.active).forEach(u => {
+  allUsers.filter(u => u.active && new Date(u.expiresAt) > new Date()).forEach(u => {
     (u.resources || []).forEach(r => addPerson(u, r, AGENT_LABELS[r] || r, 'simple'));
   });
 

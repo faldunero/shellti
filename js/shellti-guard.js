@@ -114,7 +114,8 @@
             name:    document.getElementById('g-name').value.trim(),
             company: document.getElementById('g-company').value.trim(),
             email:   document.getElementById('g-email').value.trim(),
-            reason:  document.getElementById('g-reason').value.trim()
+            reason:  document.getElementById('g-reason').value.trim(),
+            resource: RESOURCE || null
           })
         });
         const data = await res.json();
