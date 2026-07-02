@@ -418,6 +418,7 @@ let selectedDuration = {};   // clave: "agentKey:requestId"
 let allRequests = [];
 let allUsers = [];
 let modalEmail = '';
+let agentFilter = {};
 
 (function loadSavedPass() {
   const saved = localStorage.getItem('shellti_admin_pass');
@@ -546,8 +547,6 @@ function markSuperseded(requests) {
 // agente corresponden), así que se muestran igual en las 5 pestañas — lo que
 // SÍ es específico por agente es la acción de aprobar (asigna solo ese
 // recurso) y el revoke (quita solo ese recurso, no toca los demás del user).
-
-let agentFilter = {};
 
 function buildAgentTabsShell() {
   const container = document.getElementById('agent-tabs-container');
