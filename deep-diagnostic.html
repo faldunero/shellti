@@ -314,8 +314,9 @@
         <p>Ley N° 21.719 - Protección de Datos Personales</p>
     </footer>
 
-    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <!-- Firebase temporalmente deshabilitado -->
+    <!-- <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script> -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
@@ -405,8 +406,9 @@
         ];
 
         window.addEventListener('load', function() {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
+            // Firebase temporalmente deshabilitado
+            // firebase.initializeApp(firebaseConfig);
+            // db = firebase.database();
             allQuestions = questions.map((q, idx) => ({
                 ...q,
                 id: `q${idx + 1}`
@@ -562,13 +564,18 @@
                 estadisticas: stats
             };
 
-            try {
-                await db.ref(`deep-diagnosticos/${responseId}`).set(data);
-                document.getElementById('questionsSection').style.display = 'none';
-                document.getElementById('summary').style.display = 'block';
-            } catch (error) {
-                showError('Error: ' + error.message);
-            }
+            // Firebase temporalmente deshabilitado - solo mostrar resumen
+            document.getElementById('questionsSection').style.display = 'none';
+            document.getElementById('summary').style.display = 'block';
+
+            // Cuando Firebase esté listo:
+            // try {
+            //     await db.ref(`deep-diagnosticos/${responseId}`).set(data);
+            //     document.getElementById('questionsSection').style.display = 'none';
+            //     document.getElementById('summary').style.display = 'block';
+            // } catch (error) {
+            //     showError('Error: ' + error.message);
+            // }
         });
     </script>
 </body>
