@@ -703,7 +703,14 @@
                 console.log('Formulario completado:', data);
 
                 // Mostrar resumen con análisis
-                document.getElementById('resultsContent').innerHTML = generateResultsHTML();
+                try {
+                    const resultsHTML = generateResultsHTML();
+                    document.getElementById('resultsContent').innerHTML = resultsHTML;
+                } catch (e) {
+                    console.error('Error generando resultados:', e);
+                    document.getElementById('resultsContent').innerHTML = '<p style="color: red;">Error al generar análisis</p>';
+                }
+
                 document.getElementById('questionsSection').style.display = 'none';
                 document.getElementById('summary').style.display = 'block';
 
