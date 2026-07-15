@@ -149,13 +149,46 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            gap: 30px;
+        }
+        .progress-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(var(--cyan) 0deg, var(--cyan) var(--progress-angle, 0deg), rgba(255, 255, 255, 0.1) var(--progress-angle, 0deg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .progress-circle-inner {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress-percent {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--cyan);
+        }
+        .progress-percent-label {
+            font-size: 10px;
+            color: var(--silver);
+            opacity: 0.7;
+        }
+        .progress-container {
+            flex: 1;
         }
         .progress-bar {
-            flex: 1;
             height: 8px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
-            margin-right: 20px;
+            margin-bottom: 12px;
         }
         .progress-fill {
             height: 100%;
@@ -165,10 +198,9 @@
             border-radius: 4px;
         }
         .progress-text {
-            font-size: 14px;
+            font-size: 12px;
             color: var(--silver);
-            white-space: nowrap;
-            min-width: 60px;
+            opacity: 0.8;
         }
         .navigation {
             display: flex;
@@ -245,10 +277,18 @@
 
             <div id="questionsSection" style="display:none;">
                 <div class="progress-section">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-circle" id="progressCircle">
+                        <div class="progress-circle-inner">
+                            <div class="progress-percent" id="progressPercent">0%</div>
+                            <div class="progress-percent-label">completado</div>
+                        </div>
                     </div>
-                    <div class="progress-text"><span id="currentQuestion">0</span>/<span id="totalQuestions">0</span> (<span id="progressPercent">0</span>%)</div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text"><span id="currentQuestion">0</span>/<span id="totalQuestions">0</span> preguntas respondidas</div>
+                    </div>
                 </div>
 
                 <form id="form">
@@ -422,19 +462,19 @@
                         <div class="question-text">${q.text} *</div>
                         <div class="options">
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required>
+                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required onchange="updateProgress()">
                                 Sí
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''} onchange="updateProgress()">
                                 Parcial
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''} onchange="updateProgress()">
                                 No
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''} onchange="updateProgress()">
                                 N/A
                             </label>
                         </div>
@@ -448,6 +488,7 @@
 
             container.innerHTML = html;
             updateNavigation();
+            updateProgress();
         }
 
         function getQuestionValue(questionId) {
@@ -470,11 +511,15 @@
             const totalQuestions = allQuestions.length;
             const answeredQuestions = allQuestions.filter(q => getQuestionValue(q.id)).length;
             const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
+            const angleInDegrees = (percentage / 100) * 360;
 
             document.getElementById('progressFill').style.width = percentage + '%';
             document.getElementById('currentQuestion').textContent = answeredQuestions;
             document.getElementById('totalQuestions').textContent = totalQuestions;
-            document.getElementById('progressPercent').textContent = percentage;
+            document.getElementById('progressPercent').textContent = percentage + '%';
+
+            // Actualizar círculo de progreso
+            document.getElementById('progressCircle').style.setProperty('--progress-angle', angleInDegrees + 'deg');
         }
 
         function nextQuestion() {
