@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Diagnostic - Ley N° 21.719</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <style>
+        :root {
+            --cyan: #00D4FF;
+            --green: #34D399;
+            --deep: #020617;
+            --silver: #E2E8F0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--deep) 0%, #1a2332 100%);
+            color: var(--silver);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--cyan);
+        }
+        .auth-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--cyan);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--cyan);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--cyan);
+            border-radius: 8px;
+            color: var(--silver);
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--cyan);
+            color: var(--deep);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: var(--green);
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h3 {
+            color: var(--cyan);
+            margin-bottom: 20px;
+        }
+        .question-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--cyan);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .option-label input {
+            margin-right: 8px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--green));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .summary {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid var(--green);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 30px;
+        }
+        .error {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #FF6B6B;
+            color: #FF6B6B;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Deep Diagnostic - Ley 21.719</h1>
+            <p>Evaluación profunda de cumplimiento</p>
+        </div>
+
+        <div class="error" id="errorMessage"></div>
+
+        <div class="auth-section" id="authSection">
+            <h2 style="color: var(--cyan); margin-bottom: 20px;">Acceso</h2>
+            <div class="form-group">
+                <label>Empresa *</label>
+                <input type="text" id="empresa" required>
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Token *</label>
+                <input type="text" id="token" placeholder="shellti-client-" required>
+            </div>
+            <button class="btn" onclick="authenticate()">Acceder</button>
+        </div>
+
+        <div id="questionsSection" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="form">
+                <div class="section">
+                    <h3>I. Gobernanza</h3>
+                    <div class="question-item">
+                        <div>¿Política documentada de protección de datos? *</div>
+                        <div class="options">
+                            <label class="option-label"><input type="radio" name="q1" value="Si" required> Sí</label>
+                            <label class="option-label"><input type="radio" name="q1" value="Parcial"> Parcial</label>
+                            <label class="option-label"><input type="radio" name="q1" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="q1" value="NA"> N/A</label>
+                        </div>
+                    </div>
+                    <div class="question-item">
+                        <div>¿Responsable de protección de datos designado? *</div>
+                        <div class="options">
+                            <label class="option-label"><input type="radio" name="q2" value="Si" required> Sí</label>
+                            <label class="option-label"><input type="radio" name="q2" value="Parcial"> Parcial</label>
+                            <label class="option-label"><input type="radio" name="q2" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="q2" value="NA"> N/A</label>
+                        </div>
+                    </div>
+                    <div class="question-item">
+                        <div>¿Auditorías internas de cumplimiento? *</div>
+                        <div class="options">
+                            <label class="option-label"><input type="radio" name="q3" value="Si" required> Sí</label>
+                            <label class="option-label"><input type="radio" name="q3" value="Parcial"> Parcial</label>
+                            <label class="option-label"><input type="radio" name="q3" value="No"> No</label>
+                            <label class="option-label"><input type="radio" name="q3" value="NA"> N/A</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 20px; background: rgba(52,211,153,0.1); border-radius: 8px;">
+                    <p style="color: var(--green);">Cuestionario completo con 47 preguntas adicionales disponible...</p>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; gap: 12px;">
+                    <button type="button" class="btn" onclick="logout()" style="background: transparent; border: 1px solid var(--cyan); color: var(--cyan);">Salir</button>
+                    <button type="submit" class="btn">Enviar</button>
+                </div>
+            </form>
+
+            <div class="summary" id="summary" style="display:none;">
+                <h3>✅ Respuestas guardadas</h3>
+                <p>Trazabilidad completada en Firebase</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
+            authDomain: "shellti-diagnostico.firebaseapp.com",
+            projectId: "shellti-diagnostico",
+            storageBucket: "shellti-diagnostico.appspot.com",
+            messagingSenderId: "808197164295",
+            appId: "1:808197164295:web:4d863b69d6df9ee3e249a2"
+        };
+
+        let db, clientData = {};
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.log('Firebase init');
+        }
+
+        function authenticate() {
+            const empresa = document.getElementById('empresa').value;
+            const email = document.getElementById('email').value;
+            const token = document.getElementById('token').value;
+
+            if (!empresa || !email || !token) {
+                showError('Completa todos los campos');
+                return;
+            }
+
+            if (!token.startsWith('shellti-client-')) {
+                showError('Token inválido');
+                return;
+            }
+
+            clientData = { empresa, email, token };
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('questionsSection').style.display = 'block';
+        }
+
+        document.getElementById('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const responses = {};
+            const stats = { Si: 0, Parcial: 0, No: 0, NA: 0 };
+
+            for (let [key, value] of formData.entries()) {
+                responses[key] = value;
+                stats[value]++;
+            }
+
+            const responseId = 'deep-' + Date.now();
+            const data = {
+                responseId,
+                timestamp: new Date().toISOString(),
+                cliente: clientData,
+                respuestas: responses,
+                estadisticas: stats
+            };
+
+            try {
+                await db.ref(`deep-diagnosticos/${responseId}`).set(data);
+                document.getElementById('form').style.display = 'none';
+                document.getElementById('summary').style.display = 'block';
+            } catch (error) {
+                showError('Error: ' + error.message);
+            }
+        });
+
+        function logout() {
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('questionsSection').style.display = 'none';
+            document.getElementById('form').reset();
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
