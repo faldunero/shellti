@@ -546,36 +546,36 @@
             }
         }
 
-        document.getElementById('form').addEventListener('submit', async function(e) {
+        document.getElementById('form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const stats = { Si: 0, Parcial: 0, No: 0, NA: 0 };
+            try {
+                const stats = { Si: 0, Parcial: 0, No: 0, NA: 0 };
 
-            for (let key in responses) {
-                stats[responses[key]]++;
+                for (let key in responses) {
+                    if (responses[key]) {
+                        stats[responses[key]]++;
+                    }
+                }
+
+                const responseId = 'deep-' + Date.now();
+                const data = {
+                    responseId,
+                    timestamp: new Date().toISOString(),
+                    cliente: clientData,
+                    respuestas: responses,
+                    estadisticas: stats
+                };
+
+                console.log('Formulario completado:', data);
+
+                // Mostrar resumen
+                document.getElementById('questionsSection').style.display = 'none';
+                document.getElementById('summary').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Error al procesar: ' + error.message);
             }
-
-            const responseId = 'deep-' + Date.now();
-            const data = {
-                responseId,
-                timestamp: new Date().toISOString(),
-                cliente: clientData,
-                respuestas: responses,
-                estadisticas: stats
-            };
-
-            // Firebase temporalmente deshabilitado - solo mostrar resumen
-            document.getElementById('questionsSection').style.display = 'none';
-            document.getElementById('summary').style.display = 'block';
-
-            // Cuando Firebase esté listo:
-            // try {
-            //     await db.ref(`deep-diagnosticos/${responseId}`).set(data);
-            //     document.getElementById('questionsSection').style.display = 'none';
-            //     document.getElementById('summary').style.display = 'block';
-            // } catch (error) {
-            //     showError('Error: ' + error.message);
-            // }
         });
     </script>
 </body>
