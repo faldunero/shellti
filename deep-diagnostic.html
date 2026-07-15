@@ -23,7 +23,30 @@
             background: linear-gradient(135deg, var(--deep) 0%, #1a2332 100%);
             color: var(--silver);
             min-height: 100vh;
-            padding: 20px;
+        }
+        .site-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 20px 0;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-content h1 {
+            font-size: 24px;
+            color: var(--cyan);
+            margin: 0;
+        }
+        .header-content p {
+            margin: 5px 0 0 0;
+            color: var(--silver);
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        main {
+            padding: 40px 20px;
         }
         .container {
             max-width: 1000px;
@@ -33,15 +56,6 @@
             border: 1px solid rgba(0, 212, 255, 0.1);
             border-radius: 16px;
             padding: 40px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: var(--cyan);
         }
         .auth-section {
             background: rgba(0, 212, 255, 0.05);
@@ -66,9 +80,11 @@
             border-radius: 8px;
             color: var(--silver);
         }
+        .form-group input::placeholder {
+            color: rgba(226, 232, 240, 0.5);
+        }
         .btn {
-            width: 100%;
-            padding: 12px;
+            padding: 12px 24px;
             background: var(--cyan);
             color: var(--deep);
             border: none;
@@ -79,18 +95,32 @@
         .btn:hover {
             background: var(--green);
         }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+        }
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         .section h3 {
             color: var(--cyan);
             margin-bottom: 20px;
+            font-size: 18px;
         }
         .question-item {
             background: rgba(255, 255, 255, 0.02);
             padding: 20px;
             margin-bottom: 16px;
             border-radius: 8px;
+        }
+        .question-text {
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--silver);
         }
         .options {
             display: grid;
@@ -106,22 +136,50 @@
             border: 1px solid rgba(0, 212, 255, 0.2);
             border-radius: 8px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-label:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
         }
         .option-label input {
             margin-right: 8px;
+            cursor: pointer;
+        }
+        .progress-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
         .progress-bar {
-            width: 100%;
+            flex: 1;
             height: 8px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
-            margin-bottom: 30px;
+            margin-right: 20px;
         }
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--cyan), var(--green));
             width: 0%;
             transition: width 0.3s;
+            border-radius: 4px;
+        }
+        .progress-text {
+            font-size: 14px;
+            color: var(--silver);
+            white-space: nowrap;
+            min-width: 60px;
+        }
+        .navigation {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .nav-btn {
+            flex: 1;
         }
         .summary {
             background: rgba(52, 211, 153, 0.1);
@@ -129,6 +187,11 @@
             border-radius: 12px;
             padding: 24px;
             margin-top: 30px;
+            text-align: center;
+        }
+        .summary h3 {
+            color: var(--green);
+            margin-bottom: 10px;
         }
         .error {
             background: rgba(255, 107, 107, 0.1);
@@ -142,45 +205,18 @@
         .error.show {
             display: block;
         }
-        .site-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-            padding: 20px 0;
-            margin-bottom: 40px;
-        }
-        .header-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-        .header-content h1 {
-            font-size: 24px;
-            color: var(--cyan);
-            margin: 0;
-        }
-        .header-content p {
-            margin: 5px 0 0 0;
-            color: var(--silver);
-            opacity: 0.8;
-            font-size: 14px;
-        }
         .site-footer {
             background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
             border-top: 1px solid rgba(0, 212, 255, 0.1);
-            padding: 30px 0;
-            margin-top: 60px;
+            padding: 30px 20px;
             color: var(--silver);
             opacity: 0.7;
             text-align: center;
             font-size: 14px;
         }
-        main {
-            min-height: calc(100vh - 400px);
-        }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <header class="site-header">
         <div class="header-content">
             <h1>🔍 ShellTI</h1>
@@ -189,92 +225,59 @@
     </header>
 
     <main>
-    <div class="container">
-        <div class="header">
-            <h1>🔍 Deep Diagnostic - Ley 21.719</h1>
-            <p>Evaluación profunda de cumplimiento</p>
-        </div>
+        <div class="container">
+            <div class="error" id="errorMessage"></div>
 
-        <div class="error" id="errorMessage"></div>
-
-        <div class="auth-section" id="authSection">
-            <h2 style="color: var(--cyan); margin-bottom: 20px;">Acceso</h2>
-            <div class="form-group">
-                <label>Empresa *</label>
-                <input type="text" id="empresa" required>
-            </div>
-            <div class="form-group">
-                <label>Email *</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label>Token *</label>
-                <input type="text" id="token" placeholder="shellti-client-" required>
-            </div>
-            <button class="btn" onclick="authenticate()">Acceder</button>
-        </div>
-
-        <div id="questionsSection" style="display:none;">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+            <div class="auth-section" id="authSection">
+                <h2 style="color: var(--cyan); margin-bottom: 20px;">Acceso</h2>
+                <div class="form-group">
+                    <label>Empresa *</label>
+                    <input type="text" id="empresa" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Token *</label>
+                    <input type="text" id="token" placeholder="shellti-client-" required>
+                </div>
+                <button class="btn" onclick="authenticate()" style="width: 100%;">Acceder</button>
             </div>
 
-            <form id="form">
-                <div class="section">
-                    <h3>I. Gobernanza</h3>
-                    <div class="question-item">
-                        <div>¿Política documentada de protección de datos? *</div>
-                        <div class="options">
-                            <label class="option-label"><input type="radio" name="q1" value="Si" required> Sí</label>
-                            <label class="option-label"><input type="radio" name="q1" value="Parcial"> Parcial</label>
-                            <label class="option-label"><input type="radio" name="q1" value="No"> No</label>
-                            <label class="option-label"><input type="radio" name="q1" value="NA"> N/A</label>
-                        </div>
+            <div id="questionsSection" style="display:none;">
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <div class="question-item">
-                        <div>¿Responsable de protección de datos designado? *</div>
-                        <div class="options">
-                            <label class="option-label"><input type="radio" name="q2" value="Si" required> Sí</label>
-                            <label class="option-label"><input type="radio" name="q2" value="Parcial"> Parcial</label>
-                            <label class="option-label"><input type="radio" name="q2" value="No"> No</label>
-                            <label class="option-label"><input type="radio" name="q2" value="NA"> N/A</label>
-                        </div>
-                    </div>
-                    <div class="question-item">
-                        <div>¿Auditorías internas de cumplimiento? *</div>
-                        <div class="options">
-                            <label class="option-label"><input type="radio" name="q3" value="Si" required> Sí</label>
-                            <label class="option-label"><input type="radio" name="q3" value="Parcial"> Parcial</label>
-                            <label class="option-label"><input type="radio" name="q3" value="No"> No</label>
-                            <label class="option-label"><input type="radio" name="q3" value="NA"> N/A</label>
-                        </div>
-                    </div>
+                    <div class="progress-text"><span id="currentQuestion">0</span>/<span id="totalQuestions">0</span> (<span id="progressPercent">0</span>%)</div>
                 </div>
 
-                <div style="padding: 20px; background: rgba(52,211,153,0.1); border-radius: 8px;">
-                    <p style="color: var(--green);">Cuestionario completo con 47 preguntas adicionales disponible...</p>
-                </div>
+                <form id="form">
+                    <div id="questionsContainer"></div>
 
-                <div style="margin-top: 30px; display: flex; gap: 12px;">
-                    <button type="button" class="btn" onclick="logout()" style="background: transparent; border: 1px solid var(--cyan); color: var(--cyan);">Salir</button>
-                    <button type="submit" class="btn">Enviar</button>
-                </div>
-            </form>
+                    <div class="navigation">
+                        <button type="button" class="btn btn-secondary nav-btn" onclick="prevQuestion()" id="prevBtn" style="display:none;">← Anterior</button>
+                        <button type="submit" class="btn nav-btn" id="submitBtn" style="display:none;">Enviar</button>
+                        <button type="button" class="btn nav-btn" onclick="nextQuestion()" id="nextBtn" style="display:none;">Siguiente →</button>
+                    </div>
+                </form>
 
-            <div class="summary" id="summary" style="display:none;">
-                <h3>✅ Respuestas guardadas</h3>
-                <p>Trazabilidad completada en Firebase</p>
+                <div class="summary" id="summary" style="display:none;">
+                    <h3>✅ Respuestas guardadas</h3>
+                    <p>Trazabilidad completada en Firebase</p>
+                </div>
             </div>
         </div>
-    </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
         <p>&copy; 2026 ShellTI Technology Consultancy. Todos los derechos reservados.</p>
         <p>Ley N° 21.719 - Protección de Datos Personales</p>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
@@ -286,12 +289,95 @@
         };
 
         let db, clientData = {};
+        let currentPage = 0;
+        const questionsPerPage = 5;
+        let allQuestions = [];
 
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        } catch (e) {
-            console.log('Firebase init');
+        const questions = [
+            // I. Gobernanza (5)
+            { section: "I. Gobernanza", text: "¿Tiene usted una Política documentada de protección de datos?" },
+            { section: "I. Gobernanza", text: "¿Tiene usted un Responsable de protección de datos designado?" },
+            { section: "I. Gobernanza", text: "¿Cuenta con Auditorías internas de cumplimiento?" },
+            { section: "I. Gobernanza", text: "¿Existe un Registro de tratamiento de datos personales?" },
+            { section: "I. Gobernanza", text: "¿Tiene políticas de privacidad actualizadas?" },
+
+            // II. Seguridad Técnica (5)
+            { section: "II. Seguridad Técnica", text: "¿Implementa cifrado de datos en reposo?" },
+            { section: "II. Seguridad Técnica", text: "¿Utiliza cifrado en tránsito (HTTPS/TLS)?" },
+            { section: "II. Seguridad Técnica", text: "¿Tiene controles de acceso basados en roles?" },
+            { section: "II. Seguridad Técnica", text: "¿Implementa autenticación multifactor?" },
+            { section: "II. Seguridad Técnica", text: "¿Mantiene logs de acceso a datos personales?" },
+
+            // III. Gestión de Incidentes (5)
+            { section: "III. Gestión de Incidentes", text: "¿Tiene un Plan de respuesta a brechas de datos?" },
+            { section: "III. Gestión de Incidentes", text: "¿Realiza notificaciones oportunas de incidentes?" },
+            { section: "III. Gestión de Incidentes", text: "¿Tiene procesos de investigación de incidentes?" },
+            { section: "III. Gestión de Incidentes", text: "¿Mantiene registro de incidentes históricos?" },
+            { section: "III. Gestión de Incidentes", text: "¿Realiza análisis post-incidente (lecciones aprendidas)?" },
+
+            // IV. Derechos de los Titulares (5)
+            { section: "IV. Derechos de los Titulares", text: "¿Facilita acceso a datos personales solicitados?" },
+            { section: "IV. Derechos de los Titulares", text: "¿Permite rectificación de datos inexactos?" },
+            { section: "IV. Derechos de los Titulares", text: "¿Implementa derecho a supresión ('derecho al olvido')?" },
+            { section: "IV. Derechos de los Titulares", text: "¿Permite limitación del tratamiento de datos?" },
+            { section: "IV. Derechos de los Titulares", text: "¿Ofrece portabilidad de datos?" },
+
+            // V. Consentimiento y Transparencia (5)
+            { section: "V. Consentimiento y Transparencia", text: "¿Obtiene consentimiento explícito previo?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Proporciona información clara sobre tratamiento?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Documenta todas las bases legales de tratamiento?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Informa sobre derechos disponibles?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Tiene declaraciones de privacidad accesibles?" },
+
+            // VI. Evaluación de Impacto (5)
+            { section: "VI. Evaluación de Impacto", text: "¿Realiza Evaluaciones de Impacto en privacidad?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Evalúa riesgos antes de nuevos tratamientos?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Documentan análisis de riesgos?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Implementan medidas mitigantes identificadas?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Revisan evaluaciones periódicamente?" },
+
+            // VII. Personal y Capacitación (5)
+            { section: "VII. Personal y Capacitación", text: "¿Capacita a personal sobre protección de datos?" },
+            { section: "VII. Personal y Capacitación", text: "¿Tienen clausulas de confidencialidad en contratos?" },
+            { section: "VII. Personal y Capacitación", text: "¿Implementan segregación de funciones?" },
+            { section: "VII. Personal y Capacitación", text: "¿Revisan permisos de acceso regularmente?" },
+            { section: "VII. Personal y Capacitación", text: "¿Hay políticas de acceso remoto seguro?" },
+
+            // VIII. Transferencias Internacionales (5)
+            { section: "VIII. Transferencias Internacionales", text: "¿Evalúan destinos de transferencia de datos?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Utilizan cláusulas contractuales estándar?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Cumplen con restricciones de destinos?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Tienen acuerdos de procesamiento de datos?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Notifican sobre transferencias a terceros?" },
+
+            // IX. Terceros y Proveedores (5)
+            { section: "IX. Terceros y Proveedores", text: "¿Evalúan proveedores antes de contratar?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Tienen contratos que garanticen protección?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Auditan proveedores regularmente?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Tienen clausulas de terminación en contratos?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Controlan subcontratistas de proveedores?" },
+
+            // X. Cumplimiento y Documentación (5)
+            { section: "X. Cumplimiento y Documentación", text: "¿Mantienen Registro de Actividades de Tratamiento?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Documentan decisiones sobre privacidad?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Tienen procedimientos documentados?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Realizan auditorías externas periódicamente?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Cumplen con obligaciones de retención de datos?" }
+        ];
+
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+
+        allQuestions = questions.map((q, idx) => ({
+            ...q,
+            id: `q${idx + 1}`
+        }));
+
+        function showError(msg) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
         }
 
         function authenticate() {
@@ -310,9 +396,106 @@
             }
 
             clientData = { empresa, email, token };
+            renderQuestions();
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('questionsSection').style.display = 'block';
+            updateProgress();
         }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const start = currentPage * questionsPerPage;
+            const end = start + questionsPerPage;
+            const pageQuestions = allQuestions.slice(start, end);
+
+            let html = '';
+            let currentSection = '';
+
+            pageQuestions.forEach(q => {
+                if (q.section !== currentSection) {
+                    currentSection = q.section;
+                    html += `<div class="section"><h3>${currentSection}</h3>`;
+                }
+
+                const value = getQuestionValue(q.id);
+                html += `
+                    <div class="question-item">
+                        <div class="question-text">${q.text} *</div>
+                        <div class="options">
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required>
+                                Sí
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''}>
+                                Parcial
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''}>
+                                No
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''}>
+                                N/A
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (pageQuestions.length > 0) {
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+            updateNavigation();
+        }
+
+        function getQuestionValue(questionId) {
+            const input = document.querySelector(`input[name="${questionId}"]:checked`);
+            return input ? input.value : '';
+        }
+
+        function updateNavigation() {
+            const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.style.display = currentPage > 0 ? 'block' : 'none';
+            nextBtn.style.display = currentPage < totalPages - 1 ? 'block' : 'none';
+            submitBtn.style.display = currentPage === totalPages - 1 ? 'block' : 'none';
+        }
+
+        function updateProgress() {
+            const totalQuestions = allQuestions.length;
+            const answeredQuestions = allQuestions.filter(q => getQuestionValue(q.id)).length;
+            const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('currentQuestion').textContent = answeredQuestions;
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            document.getElementById('progressPercent').textContent = percentage;
+        }
+
+        function nextQuestion() {
+            const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                renderQuestions();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentPage > 0) {
+                currentPage--;
+                renderQuestions();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        document.addEventListener('change', updateProgress);
 
         document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -337,25 +520,12 @@
 
             try {
                 await db.ref(`deep-diagnosticos/${responseId}`).set(data);
-                document.getElementById('form').style.display = 'none';
+                document.getElementById('questionsSection').style.display = 'none';
                 document.getElementById('summary').style.display = 'block';
             } catch (error) {
                 showError('Error: ' + error.message);
             }
         });
-
-        function logout() {
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('questionsSection').style.display = 'none';
-            document.getElementById('form').reset();
-        }
-
-        function showError(msg) {
-            const el = document.getElementById('errorMessage');
-            el.textContent = msg;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 3000);
-        }
     </script>
 </body>
 </html>
