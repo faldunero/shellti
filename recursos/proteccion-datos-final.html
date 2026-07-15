@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="es-CL" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="canonical" href="https://shellti.com/recursos/proteccion-datos"/>
+<title>Protección de Datos Personales — Ley 21.719 | ShellTI</title>
+<meta name="description" content="Guía completa sobre protección de datos personales: obligaciones, derechos de titulares, medidas de seguridad y plan de adecuación a Ley 21.719."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://shellti.com/recursos/proteccion-datos"/>
+<meta property="og:title" content="Protección de Datos Personales — Ley 21.719 | ShellTI"/>
+<meta property="og:description" content="Guía completa sobre protección de datos personales: obligaciones, derechos de titulares, medidas de seguridad y plan de adecuación."/>
+<meta property="og:image" content="https://shellti.com/imagenes/og-shellti.jpg"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "name": "Protección de Datos Personales — Ley 21.719",
+  "description": "Guía completa sobre protección de datos personales: obligaciones, derechos de titulares, medidas de seguridad y plan de adecuación.",
+  "url": "https://shellti.com/recursos/proteccion-datos",
+  "publisher": {"@type": "Organization","name": "ShellTI","url": "https://shellti.com"},
+  "breadcrumb": {"@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://shellti.com/"},
+    {"@type":"ListItem","position":2,"name":"Recursos","item":"https://shellti.com/recursos"},
+    {"@type":"ListItem","position":3,"name":"Protección de Datos","item":"https://shellti.com/recursos/proteccion-datos"}
+  ]}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#020617;--deep2:#040d1e;--deep3:#060f1c;--cyan:#00D4FF;--cyan2:#00b8e6;--cyan3:#7eeeff;--green:#34D399;--green2:#22c587;--silver:#E2E8F0;--muted:#94A3B8;--border:rgba(0,212,255,0.13);--bh:rgba(0,212,255,0.32);--card:rgba(3,9,24,0.93);--cg:rgba(0,212,255,0.07)}
+html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--deep)}::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.4);border-radius:2px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);line-height:1.7;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--silver);line-height:1.1}
+a{text-decoration:none}
+nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(2,6,23,0.95);backdrop-filter:blur(28px) saturate(200%);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:42px;width:42px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,0.85)) drop-shadow(0 0 22px rgba(0,212,255,0.5)) brightness(1.25) saturate(1.5)}
+.nav-brand-name{font-weight:800;font-size:1.15rem;color:var(--silver);letter-spacing:-.5px;line-height:1}
+.nav-brand-name span{color:var(--cyan)}
+.nav-brand-sub{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+.nav-cta{border:1px solid var(--cyan)!important;color:var(--cyan)!important;padding:8px 20px;border-radius:2px;box-shadow:0 0 12px rgba(0,212,255,0.18);transition:background .2s,box-shadow .2s!important}
+.nav-cta:hover{background:rgba(0,212,255,0.1)!important;box-shadow:0 0 28px rgba(0,212,255,0.35)!important}
+.nav-dropdown{position:relative}
+.nav-dropdown>a{display:flex;align-items:center;gap:5px}
+.dd-arrow{font-size:.5rem;transition:transform .25s;opacity:.7;display:inline-block}
+.nav-dropdown:hover>a .dd-arrow{transform:rotate(180deg)}
+.nav-dropdown::after{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px;z-index:499}
+.dd-menu{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(6px);background:linear-gradient(160deg,#030c20 0%,#020a1a 70%,#040e24 100%);border:1px solid rgba(0,212,255,0.22);border-radius:4px;min-width:720px;padding:1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s,visibility .22s,transform .22s;box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 40px rgba(0,212,255,0.08);z-index:500}
+.dd-menu::before{content:'';position:absolute;top:-5px;left:50%;width:10px;height:10px;background:#030c20;border-left:1px solid rgba(0,212,255,0.22);border-top:1px solid rgba(0,212,255,0.22);transform:translateX(-50%) rotate(45deg)}
+.nav-dropdown:hover .dd-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.dd-col-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(52,211,153,0.15);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.dd-col-title::before{content:'';width:12px;height:1px;background:var(--green)}
+.dd-link{display:block;padding:.45rem .5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.8px;color:var(--muted);text-decoration:none;border-radius:2px;transition:color .18s,background .18s,padding-left .18s;white-space:nowrap}
+.dd-link:hover{color:var(--cyan);background:rgba(0,212,255,0.06);padding-left:.85rem}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;background:none;border:none;outline:none;padding:6px;width:36px;height:36px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--cyan);border-radius:2px}
+.breadcrumb{padding:84px 2.5rem 0;max-width:1200px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted);transition:color .2s}
+.breadcrumb a:hover{color:var(--cyan)}
+.breadcrumb-sep{opacity:.4}
+.breadcrumb-current{color:var(--cyan)}
+.resource-hero{padding:36px 2.5rem 70px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1440');background-size:cover;background-position:center;}.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(2,6,23,0.88) 0%,rgba(2,6,23,0.75) 100%)}
+.grid-lines{position:absolute;inset:0;z-index:1;opacity:.025;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:start}
+.overline{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px}
+.overline::before{content:'';display:block;width:32px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.7)}
+.hero-title{font-size:clamp(1.9rem,4vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
+.hero-title em{color:var(--cyan);font-style:normal;text-shadow:0 0 28px rgba(0,212,255,.6),0 0 60px rgba(0,212,255,.25)}
+.hero-sub{font-size:.96rem;color:var(--muted);font-weight:300;line-height:1.85;margin-bottom:1.75rem;max-width:580px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem}
+.htag{font-family:'JetBrains Mono',monospace;font-size:.63rem;padding:4px 11px;border:1px solid var(--border);border-radius:2px;color:var(--cyan);background:rgba(0,212,255,.05);letter-spacing:1px}
+.htag.g{color:var(--green);border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.05)}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.5rem;position:sticky;top:88px}
+.toc-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.toc-title::before{content:'';width:14px;height:1px;background:var(--cyan)}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.toc-list a{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.5px;transition:color .18s,padding-left .18s;display:block;padding:.3rem .4rem;border-radius:2px}
+.toc-list a:hover{color:var(--cyan);padding-left:.8rem;background:rgba(0,212,255,.05)}
+section.res{padding:60px 2.5rem}
+.container{max-width:1200px;margin:0 auto}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.sec-label::before{content:'';display:block;width:28px;height:1px;background:var(--green);box-shadow:0 0 8px rgba(52,211,153,.6)}
+h2.sec-title{font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:800;margin-bottom:1.25rem}
+.tc{color:var(--cyan);text-shadow:0 0 22px rgba(0,212,255,.4)}
+.tg{color:var(--green);text-shadow:0 0 22px rgba(52,211,153,.4)}
+.res-body{max-width:820px}
+.res-body p{color:var(--muted);font-weight:300;margin-bottom:1rem;font-size:.95rem;line-height:1.82}
+.res-body strong{color:var(--silver);font-weight:600}
+.res-body h3{color:var(--silver);font-size:1.05rem;margin-bottom:.6rem;margin-top:1.5rem}
+.res-body ul{margin-left:20px;margin-bottom:1rem}
+.res-body li{margin-bottom:.6rem;color:var(--muted);font-size:.95rem}
+.info-box{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 0 28px rgba(0,212,255,.05)}
+.info-box.blue{border-left:2px solid var(--cyan)}
+.info-box.green{border-left:2px solid var(--green)}
+.info-box.yellow{border-left:2px solid #f59e0b}
+.info-box h4{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:.6rem}
+.info-box.green h4{color:var(--green)}
+.info-box.yellow h4{color:#f59e0b}
+.info-box p{color:var(--muted);font-size:.88rem;font-weight:300;line-height:1.75}
+.info-box ul{margin-left:20px;margin-top:.8rem}
+.info-box li{margin-bottom:.5rem;font-size:.88rem}
+.faq-list{display:flex;flex-direction:column;gap:12px;margin-top:1.5rem}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.faq-q{padding:1.1rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .2s}
+.faq-q:hover{background:rgba(0,212,255,.04)}
+.faq-q h5{color:var(--silver);font-size:.9rem;font-weight:600}
+.faq-arrow{color:var(--cyan);font-size:.7rem;transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;padding:0 1.5rem}
+.faq-item.open .faq-a{max-height:500px;padding:.2rem 1.5rem 1.25rem}
+.faq-a p{color:var(--muted);font-size:.88rem;font-weight:300;line-height:1.72}
+.faq-a ul{margin-left:20px;margin-top:.8rem}
+.faq-a li{margin-bottom:.5rem;font-size:.88rem}
+.cta-band{background:linear-gradient(135deg,rgba(0,212,255,.07),rgba(52,211,153,.04));border:1px solid rgba(0,212,255,.2);border-radius:3px;padding:2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-top:3rem}
+.cta-band h3{color:var(--silver);font-size:1.2rem;margin-bottom:.4rem}
+.cta-band p{color:var(--muted);font-size:.88rem;font-weight:300}
+.btn-cta{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:var(--deep);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;padding:13px 28px;border-radius:3px;box-shadow:0 0 24px rgba(0,212,255,0.38);transition:transform .2s,box-shadow .2s;white-space:nowrap;cursor:pointer;border:none}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,255,.55)}
+footer{padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--deep);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{display:flex;align-items:center;gap:12px}
+.footer-logo img{height:32px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,212,255,.65)) drop-shadow(0 0 22px rgba(0,212,255,.35)) brightness(1.2) saturate(1.4)}
+.footer-logo span{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:2px;color:var(--muted)}
+footer p{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;color:var(--muted);text-align:right}
+.fu{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fu.vis{opacity:1;transform:none}
+.table-responsive{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:3px}
+th{background:rgba(0,212,255,.1);padding:.8rem 1rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);border-bottom:1px solid var(--border)}
+td{padding:.75rem 1rem;border-bottom:1px solid rgba(0,212,255,.05);font-size:.9rem;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+@media(max-width:960px){.nav-links{display:none!important}.hamburger{display:flex}nav{padding:0 1.5rem}.hero-inner{grid-template-columns:1fr}.toc-box{display:none}section.res{padding:50px 1.5rem}.resource-hero{padding:24px 1.5rem 50px}.breadcrumb{padding:84px 1.5rem 0}.cta-band{flex-direction:column}.footer-logo span{display:none}footer{flex-direction:column;align-items:flex-start;padding:1.5rem}footer p{text-align:left}}
+@media(max-width:640px){nav{padding:0 1.2rem}.breadcrumb{padding:80px 1.2rem 0}.resource-hero{padding:16px 1.2rem 40px}section.res{padding:40px 1.2rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="https://shellti.com" class="nav-logo">
+    <img src="https://shellti.com/imagenes/webp/lobo_shellti.webp" alt="ShellTI">
+    <div>
+      <div class="nav-brand-name">Shell<span>TI</span></div>
+      <div class="nav-brand-sub">.com · Digital Ecosystems</div>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://shellti.com/#nosotros">Nosotros</a></li>
+    <li><a href="https://shellti.com/#staffing">Staffing</a></li>
+    <li><a href="https://shellti.com/#compliance">Compliance</a></li>
+    <li><a href="https://shellti.com/#triangulo">Resiliencia</a></li>
+    <li><a href="https://shellti.com/#metodologia">Metodología</a></li>
+    <li class="nav-dropdown">
+      <a href="https://shellti.com/recursos">Recursos <span class="dd-arrow">▼</span></a>
+      <div class="dd-menu">
+        <div class="dd-col">
+          <div class="dd-col-title">Marcos y Estándares</div>
+          <a href="https://shellti.com/recursos/iso-27001" class="dd-link">ISO 27001</a>
+          <a href="https://shellti.com/recursos/nist-csf-2-0" class="dd-link">NIST CSF 2.0</a>
+          <a href="https://shellti.com/recursos/cis-controls" class="dd-link">CIS Controls</a>
+          <a href="https://shellti.com/recursos/owasp" class="dd-link">OWASP</a>
+          <div class="dd-col-title" style="margin-top:.8rem;">Legislación</div>
+          <a href="https://shellti.com/recursos/ley-21719" class="dd-link">Ley N° 21.719</a>
+          <a href="https://shellti.com/recursos/anci" class="dd-link">ANCI</a>
+          <a href="https://shellti.com/recursos/proteccion-datos" class="dd-link">Protección de Datos</a>
+        </div>
+        <div class="dd-col">
+          <div class="dd-col-title">Contenido</div>
+          <a href="https://shellti.com/blog" class="dd-link">Blog</a>
+          <a href="https://shellti.com/news" class="dd-link">News</a>
+          <a href="https://shellti.com/recursos#guias" class="dd-link">Guías</a>
+          <a href="https://shellti.com/recursos#casos" class="dd-link">Casos de Uso</a>
+        </div>
+        <div>
+          <div class="dd-col-title">Descargas</div>
+          <a href="https://shellti.com/recursos#checklists" class="dd-link">Checklists</a>
+          <a href="https://shellti.com/recursos#plantillas" class="dd-link">Plantillas</a>
+          <a href="https://shellti.com/recursos#documentos" class="dd-link">Docs de Referencia</a>
+        </div>
+      </div>
+    </li>
+    <li><a href="https://shellti.com/newsletter">Insights</a></li>
+    <li><a href="https://shellti.com/#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb">
+  <a href="https://shellti.com">Inicio</a><span class="breadcrumb-sep">/</span>
+  <a href="https://shellti.com/recursos">Recursos</a><span class="breadcrumb-sep">/</span>
+  <span class="breadcrumb-current">Protección de Datos</span>
+</div>
+
+<div class="resource-hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="hero-inner">
+    <div>
+      <p class="overline">ShellTI · Cumplimiento Normativo</p>
+      <h1 class="hero-title">Protección de <em>Datos Personales</em><br>Ley N° 21.719</h1>
+      <p class="hero-sub">Guía esencial para empresas y organizaciones: obligaciones legales, derechos de titulares, medidas de seguridad y metodología práctica para la adecuación normativa.</p>
+      <div class="hero-tags"><span class="htag g">Ley 21.719</span><span class="htag">Responsabilidad Demostrable</span><span class="htag">ARSOP-B</span><span class="htag">Compliance</span></div>
+    </div>
+    <div class="toc-box">
+      <div class="toc-title">Tabla de Contenidos</div>
+      <ul class="toc-list">
+        <li><a href="#intro">Introducción</a></li>
+        <li><a href="#contexto">Contexto Normativo</a></li>
+        <li><a href="#conceptos">Conceptos Fundamentales</a></li>
+        <li><a href="#obligaciones">Obligaciones Clave</a></li>
+        <li><a href="#derechos">Derechos ARSOP-B</a></li>
+        <li><a href="#seguridad">Seguridad e Incidentes</a></li>
+        <li><a href="#plan">Metodología de Adecuación</a></li>
+        <li><a href="#faq">Preguntas Frecuentes</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section class="res" id="intro">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Introducción</p>
+      <h2 class="sec-title">Transformación Digital y <span class="tc">Protección de Datos</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>La transformación digital ha permitido que empresas de todos los tamaños recopilen, almacenen y utilicen una cantidad cada vez mayor de información de clientes, trabajadores, proveedores y terceros. En este contexto, la protección de los datos personales ha dejado de ser una materia exclusiva de grandes compañías o áreas tecnológicas para convertirse en una obligación legal fundamental para toda organización que trate información vinculada a personas naturales.</p>
+
+      <p>La Ley N° 21.719 moderniza profundamente el régimen de protección de datos personales en Chile, establecido originalmente en la Ley N° 19.628, creando un nuevo marco regulatorio basado en estándares internacionales de privacidad. La normativa contempla la creación de la Agencia de Protección de Datos Personales, organismo encargado de fiscalizar y sancionar los incumplimientos.</p>
+
+      <div class="info-box green">
+        <h4>Entrada en Vigencia General</h4>
+        <p>La entrada en vigencia general de la Ley N° 21.719 está prevista para el 1 de diciembre de 2026. El objetivo de este documento es entregar una metodología práctica, simple y proporcional para que pequeñas y medianas empresas puedan implementar un Programa de Cumplimiento de manera gradual, ordenada y documentada.</p>
+      </div>
+
+      <p>La metodología propuesta se estructura en etapas sucesivas que permiten a la organización avanzar desde el diagnóstico inicial hasta la implementación de políticas, procedimientos, registros y controles mínimos de cumplimiento. Cada etapa contiene actividades concretas, herramientas de apoyo y recomendaciones prácticas especialmente diseñadas para la realidad de las PYMES chilenas.</p>
+
+      <p>La protección de datos personales no debe entenderse únicamente como una obligación legal. También constituye una oportunidad para fortalecer la confianza de clientes, trabajadores y socios comerciales, mejorar la gestión de la información, reducir riesgos operacionales y diferenciarse competitivamente en un entorno donde la privacidad y la seguridad de los datos son cada vez más valoradas.</p>
+
+      <div class="info-box yellow">
+        <h4>Riesgos del Incumplimiento</h4>
+        <p>El incumplimiento de la Ley N° 21.719 puede exponer a la empresa a procedimientos de fiscalización e investigación por parte de la Agencia de Protección de Datos Personales. La ley contempla un sistema de infracciones y sanciones graduadas según su gravedad: infracciones leves (multas hasta 5.000 UTM), infracciones graves (hasta 10.000 UTM) e infracciones gravísimas (hasta 20.000 UTM). Además de multas, la Agencia puede ordenar adecuaciones de procesos, suspensión de operaciones de tratamiento y medidas correctivas. Los titulares de datos también pueden ejercer acciones judiciales para obtener indemnizaciones por tratamientos ilícitos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="contexto" style="background:var(--deep2);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Marco Regulatorio</p>
+      <h2 class="sec-title">Principios y <span class="tc">Responsabilidad Demostrable</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>La Ley N° 21.719 establece un modelo de cumplimiento basado en la responsabilidad proactiva o <strong>accountability</strong>. Esto significa que las organizaciones no solo deben cumplir con la normativa, sino también ser capaces de demostrar dicho cumplimiento mediante políticas, procedimientos, registros y evidencia objetiva ante clientes, proveedores, trabajadores, autoridades y eventuales procesos de fiscalización.</p>
+
+      <p>La ley aplica a toda organización pública o privada que trate datos personales de personas naturales, independientemente de su tamaño. Si su empresa mantiene una base de clientes, gestiona trabajadores, contrata proveedores, utiliza formularios de contacto en su sitio web, envía correos electrónicos comerciales, opera sistemas de videovigilancia, utiliza plataformas de recursos humanos o CRM, o gestiona procesos de selección de personal, está tratando datos personales y se encuentra sujeta a esta normativa.</p>
+
+      <div class="info-box blue">
+        <h4>Plasticidad del Alcance</h4>
+        <p>El primer paso para cumplir la Ley N° 21.719 consiste en identificar qué datos personales trata la organización, dónde se encuentran y para qué finalidades son utilizados. El concepto de dato personal es amplio y no se limita únicamente al nombre o al RUT de una persona. Cualquier información vinculada o referida a una persona natural identificada o identificable constituye dato personal protegido por la ley.</p>
+      </div>
+
+      <p>Una persona se considera identificada cuando es posible determinar directamente quién es a partir de la información disponible. Por su parte, una persona es identificable cuando su identidad puede determinarse directa o indirectamente mediante uno o más datos o mediante la combinación de éstos con otra información razonablemente disponible. En consecuencia, el concepto de dato personal es amplio y puede incluir direcciones IP, cookies asociadas a una persona, geolocalización, registro de navegación, datos de contacto, datos laborales, información comercial y financiera, datos biométricos, entre otros.</p>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="conceptos" style="background:var(--deep3);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Definiciones</p>
+      <h2 class="sec-title">Datos, Tratamiento y <span class="tc">Bases de Licitud</span></h2>
+    </div>
+    <div class="res-body fu">
+      <h3>¿Qué constituye Tratamiento de Datos Personales?</h3>
+      <p>El tratamiento de datos personales corresponde a cualquier operación o conjunto de operaciones realizadas sobre datos personales, ya sea por medios automatizados, tecnológicos, electrónicos, manuales o físicos. En términos simples, una organización realiza un tratamiento de datos personales cada vez que recopila, utiliza, almacena, organiza, consulta, modifica, comunica, comparte, conserva, bloquea, elimina o realiza cualquier otra acción respecto de información asociada a una persona natural identificada o identificable.</p>
+
+      <p>Por lo tanto, el tratamiento de datos personales no se limita al almacenamiento de información en una base de datos. La mayoría de las actividades que una empresa realiza con información de clientes, trabajadores, proveedores o usuarios constituyen tratamientos de datos personales: gestión de bases de datos de clientes y fichas de trabajadores, reclutamiento y selección de personal, videovigilancia y registro de visitas, marketing y envío de comunicaciones comerciales, formularios de contacto en sitios web, uso de plataformas CRM y de facturación, gestión de proveedores, uso de plataformas en la nube y aplicaciones móviles.</p>
+
+      <div class="info-box blue">
+        <h4>Datos Sensibles y Protección Reforzada</h4>
+        <p>Los datos sensibles corresponden a una categoría especial de datos personales que, debido a su naturaleza, pueden afectar de manera significativa la privacidad, dignidad, derechos fundamentales o generar riesgos de discriminación para las personas. Entre los principales datos sensibles se encuentran: origen racial o étnico, convicciones religiosas, filosóficas o morales, opiniones o afiliaciones políticas, afiliación sindical, gremial o asociativa, datos de salud, datos relativos a la vida sexual, afectiva u orientación sexual, datos biométricos, datos relativos al perfil biológico humano, y situación socioeconómica.</p>
+        <p>La ley establece como principio general que los datos sensibles no pueden ser tratados libremente. Su tratamiento solo podrá realizarse cuando exista una autorización legal expresa o una base de licitud especialmente habilitada por la normativa. Esto implica que las organizaciones deben justificar de manera más rigurosa la necesidad de recopilar, utilizar, almacenar o comunicar este tipo de información.</p>
+      </div>
+
+      <h3>Bases de Licitud: La Justificación Legal</h3>
+      <p>Ningún dato personal puede ser tratado libremente por una organización. Todo tratamiento debe encontrarse respaldado por una base de licitud o fundamento legal que autorice su realización. En términos simples, la base de licitud responde a la siguiente pregunta: ¿por qué la empresa está autorizada para recopilar, utilizar, almacenar, comunicar o eliminar estos datos personales?</p>
+
+      <p>Las principales bases de licitud aplicables para el caso de las PYMES corresponden a las siguientes: <strong>consentimiento del titular</strong> (manifestación de voluntad libre, específica, informada e inequívoca que autoriza el tratamiento), <strong>ejecución de un contrato</strong> (cuando sea necesario para cumplir con una relación contractual con el titular), <strong>cumplimiento de una obligación legal</strong> (cuando una ley obliga o autoriza expresamente a recopilar, conservar o comunicar determinados datos), e <strong>interés legítimo del responsable</strong> (cuando existe un interés legítimo que no prevalece sobre derechos fundamentales de los titulares).</p>
+
+      <p>La identificación correcta de la base de licitud es uno de los elementos más importantes de un programa de cumplimiento, ya que determina las obligaciones aplicables, los derechos de los titulares y los riesgos asociados al tratamiento. Se recomienda elaborar una Matriz de Tratamientos y Bases de Licitud que permita identificar claramente qué fundamento jurídico respalda cada actividad de tratamiento realizada por la organización.</p>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="obligaciones" style="background:var(--deep2);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Cumplimiento Legal</p>
+      <h2 class="sec-title">Ocho Obligaciones <span class="tc">Principales</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>La Ley N° 21.719 establece ocho obligaciones fundamentales que toda organización debe cumplir. La implementación de estas obligaciones permitirá a la PYME construir una base sólida de cumplimiento frente a la ley.</p>
+
+      <h3>1. Identificar los Tratamientos de Datos Personales</h3>
+      <p>El primer paso consiste en conocer qué datos personales trata la organización, para qué fines los utiliza, dónde se almacenan, quiénes tienen acceso y con quiénes se comparten. Esto requiere realizar un inventario completo de todos los procesos de la empresa donde se recopilan, utilizan, almacenan, comunican o eliminan datos personales. Revisar procesos de clientes, trabajadores, proveedores y usuarios. Identificar formularios, planillas, sistemas y plataformas. Determinar qué datos se tratan y para qué finalidad. Identificar si existen datos sensibles. Identificar terceros que acceden a los datos.</p>
+
+      <h3>2. Determinar la Base de Licitud de Cada Tratamiento</h3>
+      <p>Cada tratamiento identificado debe contar con una base legal que lo justifique. La empresa debe evitar asumir que todo se resuelve mediante consentimiento. En muchos casos, el tratamiento estará fundado en la ejecución de un contrato, el cumplimiento de una obligación legal o el interés legítimo. Para cada tratamiento del inventario, se debe asignar una base de licitud y documentar la justificación. Revisar consentimientos existentes. Elaborar análisis de interés legítimo cuando corresponda.</p>
+
+      <h3>3. Informar Adecuadamente a los Titulares</h3>
+      <p>La ley exige transparencia respecto del tratamiento de los datos personales. Las personas deben conocer quién trata sus datos, para qué fines, cuáles son sus derechos y cómo pueden ejercerlos. La información mínima obligatoria incluye: identificación del responsable del tratamiento, finalidades del tratamiento y base de licitud, destinatarios y transferencias internacionales, plazos de conservación, derechos ARSOP-B del titular y canal de contacto. Esta información debe publicarse en la Política de Privacidad disponible en sitio web, formularios, contratos, procesos de contratación laboral, y aplicaciones móviles.</p>
+
+      <div class="info-box green">
+        <h4>Medidas de Seguridad Proporcionales</h4>
+        <p>Las organizaciones deben proteger los datos personales mediante medidas técnicas y organizativas apropiadas al riesgo. La ley no exige una tecnología específica, sino medidas razonables y proporcionales según la realidad de cada empresa. Ejemplos incluyen: medidas organizacionales (política de protección de datos, responsables, capacitación, control de acceso), medidas técnicas (contraseñas robustas, MFA, antivirus, respaldos, cifrado, gestión de usuarios), y medidas físicas (control de acceso a instalaciones, resguardo de documentos, destrucción segura).</p>
+      </div>
+
+      <h3>4. Gestionar los Derechos de los Titulares (ARSOP-B)</h3>
+      <p>La ley reconoce diversos derechos que pueden ser ejercidos por las personas respecto de sus datos personales. Toda organización debe disponer de un canal para recibir solicitudes ARSOP-B: correo electrónico, formulario web o canal de atención. Debe existir un procedimiento documentado para gestionar solicitudes. Deben encontrarse definidos responsables internos. La organización debe mantener un registro formal de solicitudes recibidas con fecha de recepción, identificación del titular, derecho ejercido, responsable de gestión, análisis realizado, fecha de respuesta, resultado y evidencia. Este registro constituye una de las principales evidencias de cumplimiento ante auditorías o fiscalizaciones.</p>
+
+      <h3>5. Regular la Relación con Proveedores (Encargados)</h3>
+      <p>Muchas PYMES utilizan proveedores que acceden o procesan datos personales. Cuando un proveedor trata datos por cuenta de la empresa, debe existir un acuerdo que regule dicho tratamiento. Los aspectos mínimos a regular incluyen: objeto y duración del encargo, finalidad del tratamiento, categorías de datos, tipo de datos personales tratados, instrucciones del responsable, obligaciones de las partes, confidencialidad, medidas de seguridad, subcontratación, eliminación o devolución de datos, y gestión de incidentes. Se recomienda identificar proveedores críticos, revisar contratos vigentes, e incorporar anexos o acuerdos de tratamiento de datos cuando corresponda.</p>
+
+      <h3>6. Gestionar Incidentes de Seguridad</h3>
+      <p>Las organizaciones deben estar preparadas para detectar, contener, analizar y documentar incidentes que afecten la seguridad de los datos personales. Un incidente puede incluir acceso no autorizado, pérdida de información, divulgación accidental, ataques informáticos, robo de dispositivos o envío erróneo de información. Se debe definir responsables, establecer un procedimiento de respuesta, crear canales internos de reporte, mantener registros de incidentes, y evaluar la necesidad de notificaciones a la autoridad y titulares afectados.</p>
+
+      <div class="info-box yellow">
+        <h4>Obligación Crítica de Notificación</h4>
+        <p>Existe obligación de notificación a la Agencia de Protección de Datos dentro de 72 horas desde que el responsable toma conocimiento del incidente, cuando éste pueda causar daño significativo a los titulares. Este es un plazo crítico que requiere procesos establecidos y coordinación predefinida.</p>
+      </div>
+
+      <h3>7. Mantener Evidencia de Cumplimiento</h3>
+      <p>La capacidad de demostrar cumplimiento es uno de los pilares centrales de la Ley N° 21.719. Ante una fiscalización, la empresa deberá acreditar las medidas implementadas y las decisiones adoptadas. No basta con declarar que se cumple; es necesario conservar evidencia objetiva. Esta incluye: inventario de tratamientos / Registro de Actividades de Tratamiento (RATs), matriz de bases de licitud, política de privacidad y política de protección de datos, procedimiento ARSOP-B y procedimiento de gestión de incidentes, contratos con proveedores (DPA cuando corresponda), registros de capacitaciones, solicitudes de titulares e incidentes, y carpeta digital de cumplimiento consolidada.</p>
+
+      <h3>8. Implementar Encargados de Tratamiento, Cesión de Datos y Transferencias Internacionales</h3>
+      <p>Uno de los aspectos más relevantes consiste en distinguir claramente cuándo una organización está compartiendo datos con un proveedor que actúa por su cuenta, cuándo está cediendo datos a un tercero y cuándo está transfiriendo información fuera de Chile. Estas figuras tienen efectos jurídicos distintos y están sujetas a requisitos específicos. Un Encargado de Tratamiento trata datos por cuenta de la organización siguiendo sus instrucciones, sin utilizar los datos para fines propios. La cesión consiste en comunicar datos a un tercero para que los utilice para sus propios fines. Una transferencia internacional existe cuando datos personales se comunican, almacenan, procesan o se ponen a disposición fuera de Chile, y requiere un mecanismo legal que garantice un nivel adecuado de protección.</p>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="derechos" style="background:var(--deep3);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Titulares de Datos</p>
+      <h2 class="sec-title">Derechos ARSOP-B <span class="tc">Fundamentales</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>La Ley N° 21.719 reconoce a todas las personas una serie de derechos destinados a garantizar el control sobre sus datos personales y permitirles intervenir activamente en la forma en que éstos son tratados. Estos derechos constituyen uno de los pilares fundamentales del nuevo sistema de protección de datos personales y obligan a las empresas a implementar mecanismos adecuados para recibir, gestionar y responder las solicitudes de los titulares.</p>
+
+      <div class="faq-list fu">
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Acceso (A):</strong> ¿Qué datos tienen sobre mí?</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>El derecho de acceso permite a una persona conocer si una organización está tratando sus datos personales y obtener información sobre dicho tratamiento. El titular puede solicitar información sobre los datos personales que posee la empresa, el origen de los datos, las finalidades del tratamiento, la base de licitud utilizada, los destinatarios o terceros con quienes se comparten, el plazo de tratamiento, las transferencias internacionales realizadas, y las categorías de datos tratadas. La organización deberá proporcionar la información de manera clara, comprensible y gratuita, salvo excepciones legales expresamente establecidas.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Rectificación (R):</strong> Corregir o actualizar mis datos</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>Permite al titular solicitar la corrección o actualización de datos personales que sean inexactos, incompletos, erróneos o desactualizados. Ejemplos incluyen corrección de un nombre mal escrito, actualización de domicilio, cambio de correo electrónico, corrección de antecedentes laborales, actualización de información de contacto. La organización deberá corregir los datos cuando la solicitud sea procedente y adoptar las medidas necesarias para mantener la consistencia de la información en sus sistemas.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Supresión (S):</strong> Eliminar mis datos personales</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>Permite solicitar la eliminación de datos personales cuando exista una causa legal que justifique dicha solicitud. Procede cuando los datos ya no son necesarios para la finalidad que justificó su recopilación, el consentimiento ha sido revocado y no existe otra base legal, el tratamiento resulta ilícito, ha expirado el plazo de conservación aplicable, o los datos fueron obtenidos o tratados de forma contraria a la ley. No procede cuando la organización deba conservar los datos para cumplir una obligación legal o contractual, tales como obligaciones tributarias, registros laborales obligatorios, o conservación de antecedentes exigida por autoridades competentes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Oposición (O):</strong> No quiero ser tratado de cierta forma</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>Permite al titular solicitar que la organización deje de tratar sus datos personales cuando existan circunstancias particulares que justifiquen dicha oposición. Ejemplos incluyen oposición al envío de publicidad, oposición a perfiles comerciales, oposición a determinadas actividades de marketing, oposición a tratamientos basados en intereses legítimos. La organización deberá evaluar la solicitud y cesar el tratamiento cuando no existan razones legítimas imperiosas que justifiquen su continuación.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Portabilidad (P):</strong> Obtener mis datos en otro formato</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>Permite al titular obtener una copia de sus datos personales en un formato estructurado, de uso común e interoperable, y solicitar su transmisión a otro responsable cuando el tratamiento se realice de forma automatizada y esté basado en el consentimiento del titular. Su finalidad es facilitar que las personas mantengan el control sobre su información y puedan cambiar de proveedor sin perder sus antecedentes. Ejemplos incluyen cambio de entidad financiera, cambio de proveedor tecnológico, migración entre plataformas digitales, transferencia de información entre prestadores de servicios. La organización deberá entregar la información en un formato que permita su reutilización y lectura por otros sistemas.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <h5><strong>Bloqueo (B):</strong> Congelar mi información temporalmente</h5>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            <p>Permite al titular solicitar la suspensión temporal del tratamiento de sus datos personales en determinadas circunstancias. Durante el período de bloqueo, los datos podrán conservarse, pero no podrán ser objeto de tratamiento activo, salvo para efectos de conservación o cumplimiento de obligaciones legales. Procede, por ejemplo, cuando se impugna la exactitud de los datos, se discute la procedencia de una solicitud de supresión, o existe una reclamación pendiente respecto del tratamiento.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box green">
+        <h4>Plazos y Procedimientos de Respuesta</h4>
+        <p>La Ley N° 21.719 exige que los responsables del tratamiento cuenten con procedimientos que permitan gestionar oportunamente las solicitudes de los titulares. Como regla general, las solicitudes deberán ser respondidas dentro del plazo legal establecido por la normativa vigente y sus futuras instrucciones complementarias emitidas por la Agencia de Protección de Datos Personales. El procedimiento debería contemplar: recepción de la solicitud, verificación de identidad del solicitante, análisis de procedencia, ejecución de las medidas correspondientes, respuesta formal al titular, registro y conservación de evidencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="seguridad" style="background:var(--deep2);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Gestión de Riesgos</p>
+      <h2 class="sec-title">Seguridad de la Información e <span class="tc">Incidentes</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>Las organizaciones deben proteger los datos personales mediante medidas técnicas y organizativas apropiadas al riesgo. La ley no exige una tecnología específica, sino medidas razonables y proporcionales según la realidad de cada empresa. Las medidas deberán ser implementadas considerando: la naturaleza de los datos tratados, el riesgo potencial de daño, el tamaño de la organización, y la disponibilidad de recursos.</p>
+
+      <h3>Medidas de Seguridad Implementables</h3>
+      <p><strong>Organizacionales:</strong> Política de protección de datos, responsables designados, capacitación continua, control de acceso a la información, compromisos de confidencialidad, segregación de funciones cuando corresponda. <strong>Técnicas:</strong> Contraseñas robustas y autenticación multifactor, antivirus y protección malware, respaldos periódicos, cifrado cuando corresponda, gestión de usuarios y perfiles. <strong>Físicas:</strong> Control de acceso a instalaciones, resguardo de archivos físicos, destrucción segura de documentos, protección de equipos y dispositivos.</p>
+
+      <h3>Gestión de Incidentes de Seguridad</h3>
+      <p>Un incidente de seguridad es cualquier evento que comprometa la confidencialidad, integridad o disponibilidad de datos personales. Ejemplos incluyen robo de computadores, acceso no autorizado, pérdida de información, ataques informáticos, envío erróneo de correos, y exposición accidental de bases de datos. Las organizaciones deben estar preparadas para detectar incidentes, reportarlos internamente, evaluar su impacto, implementar medidas de contención y documentar lo ocurrido. Se debe definir responsables, establecer un procedimiento de respuesta, crear canales internos de reporte, y mantener registros de incidentes para aprender de ellos.</p>
+
+      <div class="info-box yellow">
+        <h4>Plazo Crítico de Notificación</h4>
+        <p>Existe obligación de notificar a la Agencia de Protección de Datos dentro de 72 horas desde que el responsable toma conocimiento del incidente, cuando éste pueda causar daño significativo a los titulares. Este es el plazo más exigente del sistema regulatorio chileno y requiere procesos automatizados de detección, clasificación y reporte.</p>
+      </div>
+
+      <h3>Procedimiento de Respuesta a Incidentes</h3>
+      <p><strong>Detección y Reporte:</strong> Los trabajadores deben conocer cómo reportar incidentes. Establezca canales internos claros. <strong>Contención:</strong> Tomar medidas inmediatas para limitar el alcance y el daño. <strong>Análisis:</strong> Investigar qué sucedió, cuándo, cómo y por qué. Determinar qué datos fueron afectados y quiénes. <strong>Documentación:</strong> Registrar todos los detalles del incidente, acciones tomadas y resultados. <strong>Notificación:</strong> Evaluar si procede notificar a la autoridad competente (dentro de 72 horas si hay daño significativo) y a titulares afectados cuando sea obligatorio.</p>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="plan" style="background:var(--deep3);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Implementación</p>
+      <h2 class="sec-title">Plan de Adecuación en <span class="tc">10 Pasos</span></h2>
+    </div>
+    <div class="res-body fu">
+      <p>El cumplimiento de la Ley N° 21.719 no debe entenderse como un proceso exclusivamente jurídico ni como una carga administrativa imposible de abordar para una pequeña o mediana empresa. Por el contrario, puede implementarse de manera gradual, proporcional y práctica, priorizando aquellos tratamientos de datos que generen mayores riesgos para las personas y para la organización. A continuación, una metodología paso a paso para que una PYME pueda diseñar e implementar un Plan de Adecuación en Protección de Datos Personales, considerando sus recursos, tamaño, actividad económica y nivel de exposición al riesgo.</p>
+
+      <div class="info-box blue">
+        <h4>Plazos Sugeridos</h4>
+        <p>Se proponen plazos orientativos desde junio a noviembre de 2026 con el objetivo de alcanzar un nivel adecuado de cumplimiento antes de la entrada en vigencia de la Ley N° 21.719 el 1 de diciembre de 2026. Las organizaciones que inicien tempranamente su proceso de adecuación podrán implementar las medidas de manera planificada y eficiente, evitando costos innecesarios y reduciendo significativamente los riesgos legales, reputacionales y económicos.</p>
+      </div>
+
+      <h3>Etapa Inicial: Gobernanza y Diagnóstico (Junio - Agosto)</h3>
+      <p><strong>Paso 1 - Designar Responsable Interno del Proyecto:</strong> La empresa debe identificar a una persona o equipo encargado de coordinar el proceso de adecuación. No siempre será necesario contar con un área legal o de cumplimiento especializada; en una PYME, este rol puede ser asumido por la gerencia general, administración, recursos humanos, tecnología o quien tenga mayor conocimiento de los procesos internos. Se debe designar formalmente mediante acta o correo, definir funciones principales, establecer apoyo de áreas que tratan datos, y crear una carpeta digital de cumplimiento.</p>
+
+      <p><strong>Paso 2 - Levantar los Tratamientos de Datos Personales (RATs):</strong> El segundo paso consiste en identificar todos los procesos de la empresa donde se recopilan, utilizan, almacenan, comunican o eliminan datos personales. Este levantamiento permite conocer el punto de partida real. Se debe revisar procesos de clientes, trabajadores, proveedores y usuarios. Identificar formularios, planillas, sistemas y plataformas. Determinar qué datos se tratan y para qué finalidad. Identificar si existen datos sensibles. Identificar terceros que acceden a los datos. Evidencia sugerida: Inventario de tratamientos/Registro de Actividades de Tratamiento, Mapa de datos, Listado de sistemas y plataformas.</p>
+
+      <p><strong>Paso 3 - Determinar la Base de Licitud:</strong> Cada tratamiento identificado debe contar con una base legal que lo justifique. Para cada tratamiento del inventario, se debe asignar una base de licitud y documentar la justificación. La empresa debe evitar asumir que todo se resuelve mediante consentimiento. Revisar consentimientos existentes. Identificar tratamientos sin fundamento claro. Evidencia sugerida: Matriz de bases de licitud, Formularios de consentimiento, Análisis de interés legítimo.</p>
+
+      <p><strong>Paso 4 - Etapa de Diagnóstico y Análisis de Brechas:</strong> El diagnóstico constituye la base sobre la cual se construirá todo el programa de cumplimiento. Permite identificar las brechas existentes entre la situación actual de la empresa y las exigencias establecidas por la normativa. Esta etapa debe ser proporcional al tamaño, complejidad y nivel de riesgo de la organización. Cada hallazgo podrá clasificarse como Cumple (controles adecuados y evidencia suficiente), Cumple Parcialmente (medidas implementadas, requieren ajustes), No Cumple (sin medidas suficientes), o No Aplica. Las brechas detectadas deberán priorizarse considerando su impacto potencial en riesgos Alto, Medio o Bajo. Como resultado, se debe elaborar un Informe de Diagnóstico y Brechas consolidando hallazgos principales con recomendaciones.</p>
+
+      <h3>Etapa de Implementación: Medidas y Documentación (Agosto - Octubre)</h3>
+      <p><strong>Paso 5 - Implementar Acciones Correctivas y Cierre de Brechas:</strong> Una vez finalizado el diagnóstico, la organización deberá analizar los hallazgos detectados y ejecutar las medidas necesarias para corregir las brechas de cumplimiento identificadas. Para cada brecha detectada, se debe definir acción correctiva, asignar responsable, establecer fecha de implementación, e identificar recursos necesarios. Mantener registro de avance. La sola identificación de una brecha no constituye incumplimiento; el problema se intensifica cuando la organización conoce la existencia de una deficiencia y no adopta medidas para corregirla.</p>
+
+      <p><strong>Paso 6 - Implementación y Actualización de la Documentación de Protección de Datos Personales:</strong> Una vez identificadas las brechas de cumplimiento, la organización deberá desarrollar, actualizar o formalizar la documentación necesaria. La complejidad deberá ser proporcional al tamaño, actividad y nivel de riesgo de la organización. Documentos esenciales: Política de Protección de Datos Personales, Política de Privacidad, Política de Conservación y Eliminación de Datos, Política de Seguridad de la Información, Procedimiento de Gestión de Derechos ARSOP-B, Procedimiento de Gestión de Incidentes, Procedimiento de Gestión de Proveedores, Procedimiento de Conservación y Eliminación, Contratos con Trabajadores/Clientes/Proveedores actualizados, y Acuerdos de Tratamiento de Datos (DPA) con proveedores críticos.</p>
+
+      <p><strong>Paso 7 - Implementación de Procedimientos Internos:</strong> Una vez definida la documentación, la organización deberá implementar procedimientos que permitan gestionar de forma consistente las obligaciones establecidas por la ley. Estos procedimientos transforman las obligaciones legales en actividades operativas concretas. Se debe habilitar canal de recepción ARSOP-B, establecer flujo de verificación de identidad, definir plazos de respuesta, crear registro de solicitudes, establecer procedimiento de incidentes, formalizar gestión de proveedores.</p>
+
+      <p><strong>Paso 8 - Implementación de Medidas de Seguridad:</strong> La Ley N° 21.719 exige adoptar medidas de seguridad apropiadas al riesgo del tratamiento realizado. Las medidas deberán ser razonables, proporcionales y adecuadas a la naturaleza de los datos tratados. Implementar controles organizacionales (definición de responsables, control de acceso, gestión de permisos, compromisos de confidencialidad, segregación de funciones), controles técnicos (contraseñas robustas, antivirus, respaldos, cifrado, gestión de usuarios), y controles físicos (control de acceso a instalaciones, resguardo de archivos, destrucción segura, protección de equipos).</p>
+
+      <h3>Etapa Final: Capacitación y Seguimiento (Octubre - Noviembre y Permanente)</h3>
+      <p><strong>Paso 9 - Capacitación y Sensibilización:</strong> La protección de datos personales requiere que trabajadores, ejecutivos y colaboradores conozcan sus obligaciones y comprendan los riesgos asociados. La capacitación constituye una medida fundamental para prevenir errores humanos e incidentes de seguridad. Contenidos mínimos: conceptos básicos de protección de datos, principios de la Ley N° 21.719, bases de licitud, derechos ARSOP-B, obligaciones de confidencialidad, gestión de incidentes, medidas de seguridad, buenas prácticas. Se debe mantener registro de asistencia, material de capacitación, presentaciones utilizadas, comunicaciones internas, y evaluaciones de aprendizaje.</p>
+
+      <p><strong>Paso 10 - Seguimiento y Mejora Continua:</strong> La adecuación a la Ley N° 21.719 no constituye un proyecto puntual, sino un proceso permanente de revisión y mejora. La organización deberá monitorear periódicamente la efectividad de las medidas implementadas y realizar los ajustes necesarios cuando cambien los riesgos, procesos o requisitos legales. Se debe revisar periódicamente políticas y procedimientos, actualizar inventarios de tratamientos, revisar contratos y proveedores, analizar incidentes ocurridos y lecciones aprendidas, revisar solicitudes ARSOP-B recibidas, evaluar nuevos riesgos derivados de cambios tecnológicos u organizacionales, actualizar programas de capacitación. Mantener informes de revisión periódica, actualizaciones documentales, planes de acción, registros de seguimiento, y actas de revisión.</p>
+
+      <div class="table-responsive">
+        <table>
+          <tr>
+            <th>Actividad</th>
+            <th>Jun</th>
+            <th>Jul</th>
+            <th>Ago</th>
+            <th>Sep</th>
+            <th>Oct</th>
+            <th>Nov</th>
+          </tr>
+          <tr>
+            <td>Designación de responsable interno</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Levantamiento de tratamientos (RATs)</td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Elaboración inventario de tratamientos</td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Identificación de bases de licitud</td>
+            <td></td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Elaboración de informe de brechas</td>
+            <td></td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Aprobación del plan de adecuación</td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Política de Privacidad y de Protección de Datos</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Política de Seguridad y de Conservación</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Procedimiento ARSOP-B</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Procedimiento de Gestión de Incidentes</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Procedimiento de Gestión de Proveedores</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Revisión formularios y avisos de privacidad</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Revisión de contratos con clientes</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Revisión de contratos laborales</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Revisión de contratos con proveedores</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Firma de DPA con proveedores críticos</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Implementación de medidas de seguridad</td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Capacitación a trabajadores y jefaturas</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>●</td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="info-box green">
+        <h4>Meta Final</h4>
+        <p>Llegar al 1 de diciembre de 2026 con un programa de cumplimiento documentado, implementado y con evidencia suficiente para demostrar el principio de responsabilidad demostrable exigido por la Ley N° 21.719. La implementación de estas diez obligaciones permitirá a la PYME construir una base sólida de cumplimiento frente a la ley. La experiencia internacional demuestra que las organizaciones que comienzan tempranamente este proceso logran reducir riesgos legales, mejorar sus procesos internos y fortalecer la confianza de clientes, trabajadores y socios comerciales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="faq" style="background:var(--deep2);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="fu">
+      <p class="sec-label">Dudas Comunes</p>
+      <h2 class="sec-title">Preguntas <span class="tc">Frecuentes</span></h2>
+    </div>
+    <div class="faq-list fu">
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Mi empresa está obligada a cumplir la Ley N° 21.719?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí. La ley aplica a toda organización pública o privada que trate datos personales de personas naturales, independientemente de su tamaño. Si su empresa mantiene información de clientes, trabajadores, proveedores, postulantes a empleo, contactos comerciales o usuarios de un sitio web, se encuentra sujeta a esta normativa.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué son exactamente los datos personales y el tratamiento?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Datos personales son todos aquellos que permiten identificar o hacer identificable a una persona natural. Incluyen nombre, RUT, dirección, correo electrónico, teléfono, patente de vehículo, dirección IP, datos laborales e imágenes. Tratamiento corresponde a cualquier operación realizada sobre datos personales, ya sea manual o electrónica: recopilar, registrar, organizar, almacenar, consultar, utilizar, compartir, actualizar, conservar, eliminar o destruir información.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué son los datos sensibles?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Son datos que requieren protección reforzada porque pueden afectar significativamente la privacidad o derechos de las personas. Incluyen datos de salud, datos biométricos, origen racial o étnico, convicciones religiosas o filosóficas, información sobre vida sexual, afiliación sindical y situación socioeconómica. Su tratamiento tiene restricciones mayores que otros datos.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Necesito pedir consentimiento para todos los tratamientos de datos?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>No. El consentimiento es solo una de las bases de licitud previstas por la ley. En muchos casos el tratamiento puede fundarse en ejecución de un contrato, cumplimiento de una obligación legal, interés legítimo, protección de intereses vitales u otras bases reconocidas por la ley. Cada tratamiento debe justificarse según su naturaleza y circunstancias.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué es una base de licitud?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Es el fundamento legal que autoriza a la organización a tratar datos personales. Antes de recopilar o utilizar datos, la empresa debe poder responder: ¿por qué estoy autorizado a tratar estos datos? Las bases principales son consentimiento, ejecución de contrato, cumplimiento de obligación legal e interés legítimo. Cada base tiene requisitos y obligaciones diferentes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué es un inventario de tratamientos?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Es un registro que identifica los tratamientos de datos personales realizados por la organización. Debe indicar qué datos se tratan, para qué finalidad, dónde se almacenan, quién accede a ellos, cuál es la base de licitud aplicable, y con quién se comparten. Constituye el punto de partida fundamental para cualquier programa de cumplimiento.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Mi empresa necesita una Política de Privacidad?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí. Toda organización que recopile datos personales debería contar con una Política de Privacidad que informe de manera transparente qué datos recopila, para qué los utiliza, cuál es la base de licitud, con quién los comparte, qué derechos tienen los titulares, y cómo pueden ejercerlos. Debe publicarse en sitio web, formularios y contratos.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué son los derechos ARSOP-B?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Son los derechos que la ley reconoce a los titulares respecto de sus datos personales: Acceso (saber qué datos tienen), Rectificación (corregirlos si son inexactos), Supresión (eliminarlos), Oposición (no ser tratado en ciertos casos), Portabilidad (obtener copia en otro formato) y Bloqueo (congelar temporalmente). Las empresas deben estar preparadas para responder solicitudes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Debo habilitar un canal para recibir solicitudes ARSOP-B?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí. La organización debe disponer de un mecanismo que permita a los titulares ejercer sus derechos. Puede tratarse de un correo electrónico, un formulario web, una plataforma de atención o un canal de servicio al cliente. Debe estar publicado y accesible. La empresa debe contar con procedimiento documentado y responsables designados.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué ocurre si un titular solicita eliminar sus datos?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>La empresa deberá analizar si la solicitud procede. Si existe una obligación legal o contractual o base de licitud que justifique la conservación de los datos, deberá rechazarla. Si no existe justificación, deberá eliminarlos o anonimizar la información cuando corresponda. El derecho de supresión tiene excepciones legales expresamente establecidas.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Necesito un procedimiento para gestionar incidentes de seguridad?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí. Toda organización debería contar con un procedimiento que permita detectar incidentes, reportarlos internamente, evaluar su impacto, implementar medidas de contención y documentar lo ocurrido. Debe designarse responsables. Debe haber canales internos de reporte. Deben mantenerse registros de incidentes para análisis y mejora continua.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué se considera un incidente de seguridad?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Cualquier evento que comprometa la confidencialidad, integridad o disponibilidad de datos personales: robo de computadores, acceso no autorizado, pérdida de información, ataques informáticos, envío erróneo de correos, exposición accidental de bases de datos, destrucción no intencional, alteración de datos, interrupción de acceso.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué pasa si utilizo servicios en la nube?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>La utilización de servicios cloud no está prohibida. Sin embargo, la empresa sigue siendo responsable de verificar que el proveedor implemente medidas adecuadas de seguridad y protección de datos. Se recomienda formalizar un Acuerdo de Tratamiento de Datos (DPA) o incorporar cláusulas específicas en el contrato. La empresa no puede transferir responsabilidad al proveedor.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué es un Encargado de Tratamiento?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Es una persona o empresa que trata datos personales por cuenta de otra organización siguiendo sus instrucciones, sin utilizar los datos para fines propios. El control de los datos sigue perteneciendo al responsable original. Ejemplos: proveedores de software, plataformas SaaS, empresas de almacenamiento en nube, servicios de recursos humanos, empresas de marketing.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Necesito firmar contratos especiales con proveedores?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí, cuando traten datos personales por cuenta de la organización. Se recomienda suscribir un Acuerdo de Tratamiento de Datos Personales (DPA) o incorporar cláusulas específicas de protección de datos en el contrato. El acuerdo debe regular objeto del tratamiento, finalidad, medidas de seguridad, confidencialidad, subcontratación, eliminación de datos, gestión de incidentes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué medidas de seguridad exige la ley?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>La ley no establece una tecnología específica. Exige que las organizaciones implementen medidas apropiadas al riesgo. Ejemplos: contraseñas robustas, autenticación multifactor, respaldos, control de accesos, capacitación, compromisos de confidencialidad, protección física de documentos, cifrado cuando corresponda, antivirus.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Necesito capacitar a mis trabajadores?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Sí. La capacitación constituye una de las medidas más eficaces para prevenir errores humanos, incidentes de seguridad y tratamientos indebidos de datos personales. Se recomienda entrenar en conceptos básicos, principios, bases de licitud, derechos ARSOP-B, confidencialidad, gestión de incidentes, medidas de seguridad y buenas prácticas. Mantener registro de asistencia.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué documentación mínima debería tener una PYME?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Como mínimo se recomienda contar con: Política de Privacidad, Política de Protección de Datos, Procedimiento ARSOP-B, Procedimiento de Gestión de Incidentes, Registro de Proveedores, cláusulas contractuales de protección de datos, Acuerdos de Tratamiento de Datos cuando corresponda, inventario de tratamientos, matriz de bases de licitud, y evidencia de capacitación.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué significa el principio de responsabilidad demostrable?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Significa que no basta con cumplir la ley; la organización debe ser capaz de demostrar que cumple. Por ello, resulta fundamental mantener evidencia de políticas, procedimientos, registros, capacitaciones, contratos y evaluaciones realizadas. Ante una fiscalización, la empresa deberá acreditar las medidas implementadas y las decisiones adoptadas mediante documentación objetiva.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué pasa si mi empresa aún no ha comenzado su proceso de adecuación?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Todavía existe tiempo para prepararse antes de la entrada en vigencia general de la Ley N° 21.719. Sin embargo, se recomienda iniciar el proceso lo antes posible, ya que la adecuación requiere revisar contratos, procesos, sistemas, proveedores y documentación interna. Las organizaciones que comiencen tempranamente podrán reducir riesgos y evitar costos asociados a adecuaciones de última hora.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Cuál es el primer paso que debería dar mi empresa?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>Realizar un autodiagnóstico. A partir de dicho diagnóstico será posible identificar los tratamientos de datos personales, detectar brechas de cumplimiento, priorizar riesgos, elaborar un plan de adecuación e implementar las medidas necesarias. Designe formalmente un responsable. Cree un inventario de los datos que trata. Determine las bases de licitud. Así iniciará su viaje hacia el cumplimiento.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <h5>¿Qué pasa si no cumplo con la Ley N° 21.719?</h5>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          <p>El incumplimiento puede dar lugar a fiscalizaciones y sanciones por parte de la Agencia de Protección de Datos Personales, incluyendo multas de hasta 5.000 UTM para infracciones leves, 10.000 UTM para infracciones graves y 20.000 UTM para infracciones gravísimas. Además, la Agencia podrá ordenar medidas correctivas, los titulares podrán ejercer acciones judicales, y puede haber daño reputacional significativo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="res" id="contacto" style="background:var(--deep3);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="cta-band fu">
+      <div>
+        <h3>¿Necesitas implementar este marco en tu organización?</h3>
+        <p>ShellTI acompaña a empresas chilenas en la adecuación a Ley 21.719 e ISO 27001, desde diagnóstico hasta implementación y certificación.</p>
+      </div>
+      <a href="https://shellti.com/#contacto" class="btn-cta">Agendar Evaluación →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <a href="https://shellti.com" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+      <img src="https://shellti.com/imagenes/webp/lobo_shellti.webp" alt="ShellTI Logo" />
+      <span>ShellTI</span>
+    </a>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+    <a href="https://www.linkedin.com/company/122454230/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:1px;transition:color .2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <p style="text-align:right;">contacto@shellti.com<br>&copy; 2026 ShellTI. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.08});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.parentElement;
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+    if(!isOpen)item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

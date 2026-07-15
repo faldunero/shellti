@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Roadmap de Adecuación — Protección de Datos | ShellTI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--deep:#020617;--cyan:#00D4FF;--green:#34D399;--silver:#E2E8F0;--muted:#94A3B8}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--deep);color:var(--silver);overflow-x:hidden}
+.hero{
+  padding:100px 40px;
+  text-align:center;
+  border-bottom:1px solid rgba(0,212,255,.1);
+}
+.hero h1{
+  font-size:4rem;
+  font-weight:800;
+  margin-bottom:20px;
+  letter-spacing:-2px;
+}
+.hero h1 em{color:var(--cyan);font-style:normal}
+.hero p{font-size:1.2rem;color:var(--muted);font-weight:300;max-width:600px;margin:0 auto}
+
+.roadmap-section{max-width:1200px;margin:0 auto;padding:100px 40px}
+
+.roadmap-header{
+  display:flex;
+  align-items:center;
+  gap:40px;
+  margin-bottom:80px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(0,212,255,.1);
+}
+.phase-badge{
+  font-size:2.5rem;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.header-text h2{font-size:2.2rem;margin-bottom:8px}
+.header-text p{color:var(--muted);font-size:1rem}
+
+.phase-title-main{
+  font-size:3rem;
+  font-weight:800;
+  margin-bottom:40px;
+  color:var(--silver);
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:24px;
+  margin-bottom:120px;
+}
+
+.step-box{
+  padding:40px 30px;
+  background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(52,211,153,.05));
+  border-radius:8px;
+  transition:all .4s cubic-bezier(.34,.1,.68,1);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  min-height:200px;
+  display:flex;
+  flex-direction:column;
+}
+
+.step-box::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s cubic-bezier(.34,.1,.68,1);
+}
+
+.step-box:hover::before{transform:scaleX(1)}
+.step-box:hover{background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(52,211,153,.1));transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,212,255,.15)}
+
+.step-number{
+  font-size:2.8rem;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:12px;
+}
+
+.step-title{font-size:1.05rem;font-weight:700;margin-bottom:12px;color:var(--silver)}
+.step-desc{font-size:.9rem;color:var(--muted);line-height:1.6;flex:1}
+
+.phase-separator{
+  margin:120px 0;
+  padding:60px 0;
+  border-top:1px solid rgba(0,212,255,.1);
+  border-bottom:1px solid rgba(0,212,255,.1);
+}
+
+.timeline-visual{
+  margin-top:120px;
+  padding:80px 40px;
+  background:rgba(0,212,255,.02);
+  border-radius:12px;
+  border:1px solid rgba(0,212,255,.1);
+}
+
+.timeline-title{
+  text-align:center;
+  font-size:2rem;
+  font-weight:800;
+  margin-bottom:60px;
+}
+
+.timeline{
+  display:flex;
+  align-items:center;
+  gap:0;
+  position:relative;
+  overflow-x:auto;
+  padding:20px 0;
+}
+
+.timeline::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--green),transparent);
+  z-index:1;
+}
+
+.month{
+  flex:0 0 100px;
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+.month-dot{
+  width:32px;
+  height:32px;
+  background:var(--deep);
+  border:3px solid var(--cyan);
+  border-radius:50%;
+  margin:0 auto 16px;
+  box-shadow:0 0 20px rgba(0,212,255,.4);
+}
+
+.month.highlight .month-dot{border-color:var(--green);box-shadow:0 0 20px rgba(52,211,153,.4)}
+
+.month-name{
+  font-weight:700;
+  font-size:.9rem;
+  color:var(--cyan);
+  margin-bottom:6px;
+}
+
+.month.highlight .month-name{color:var(--green)}
+
+.month-activity{
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+.cta{
+  text-align:center;
+  padding:100px 40px;
+}
+
+.cta h2{font-size:2.5rem;font-weight:800;margin-bottom:20px}
+.cta p{color:var(--muted);font-size:1.1rem;margin-bottom:40px;max-width:700px;margin-left:auto;margin-right:auto}
+
+.btn{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--cyan),#00b8e6);
+  color:var(--deep);
+  font-weight:800;
+  font-size:.85rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:16px 40px;
+  border-radius:6px;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 0 30px rgba(0,212,255,.3);
+  transition:all .3s ease;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 50px rgba(0,212,255,.5)
+}
+
+@media(max-width:768px){
+  .hero h1{font-size:2.5rem}
+  .phase-title-main{font-size:2rem}
+  .steps{grid-template-columns:repeat(2,1fr);gap:16px}
+  .step-box{padding:30px 20px;min-height:160px}
+  .step-number{font-size:2rem}
+  .roadmap-header{flex-direction:column;text-align:center;gap:20px}
+}
+
+@media(max-width:480px){
+  .hero{padding:60px 20px}
+  .hero h1{font-size:1.8rem}
+  .roadmap-section{padding:60px 20px}
+  .steps{grid-template-columns:1fr}
+  .timeline{flex-direction:column;gap:40px}
+  .timeline::before{display:none}
+  .month{flex:1;width:100%}
+  .month-dot{box-shadow:0 0 15px rgba(0,212,255,.3)}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Roadmap de <em>Adecuación</em></h1>
+  <p>Plan claro y ejecutable hacia el cumplimiento normativo en 6 meses</p>
+</div>
+
+<!-- FASE 1 -->
+<div class="roadmap-section">
+  <div class="roadmap-header">
+    <div class="phase-badge">01</div>
+    <div class="header-text">
+      <h2>Gobernanza y Diagnóstico</h2>
+      <p>Junio — Agosto 2026</p>
+    </div>
+  </div>
+
+  <div class="phase-title-main">Semanas 1-12</div>
+
+  <div class="steps">
+    <div class="step-box">
+      <div class="step-number">1</div>
+      <div class="step-title">Designar Responsable</div>
+      <div class="step-desc">Persona o equipo coordinador. Crear carpeta digital de cumplimiento.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">2</div>
+      <div class="step-title">Levantar Tratamientos</div>
+      <div class="step-desc">Identificar todos procesos con datos personales. Hacer inventario completo.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">3</div>
+      <div class="step-title">Bases de Licitud</div>
+      <div class="step-desc">Justificación legal para cada tratamiento. Documentar y validar.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">4</div>
+      <div class="step-title">Diagnóstico</div>
+      <div class="step-desc">Comparar con exigencias. Clasificar hallazgos por riesgo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FASE 2 -->
+<div class="phase-separator"></div>
+
+<div class="roadmap-section">
+  <div class="roadmap-header">
+    <div class="phase-badge">02</div>
+    <div class="header-text">
+      <h2>Implementación</h2>
+      <p>Agosto — Octubre 2026</p>
+    </div>
+  </div>
+
+  <div class="phase-title-main">Semanas 9-20</div>
+
+  <div class="steps">
+    <div class="step-box">
+      <div class="step-number">5</div>
+      <div class="step-title">Acciones Correctivas</div>
+      <div class="step-desc">Ejecutar medidas. Definir responsables y plazos de cada brecha.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">6</div>
+      <div class="step-title">Documentación</div>
+      <div class="step-desc">Políticas, procedimientos y contratos con cláusulas de protección.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">7</div>
+      <div class="step-title">Procedimientos</div>
+      <div class="step-desc">Operacionalizar: canales ARSOP-B, registros, gestión de incidentes.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">8</div>
+      <div class="step-title">Seguridad</div>
+      <div class="step-desc">Controles técnicos, organizacionales y físicos apropiados.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FASE 3 -->
+<div class="phase-separator"></div>
+
+<div class="roadmap-section">
+  <div class="roadmap-header">
+    <div class="phase-badge">03</div>
+    <div class="header-text">
+      <h2>Capacitación y Cierre</h2>
+      <p>Octubre — Noviembre 2026+</p>
+    </div>
+  </div>
+
+  <div class="phase-title-main">Semanas 17-26</div>
+
+  <div class="steps">
+    <div class="step-box">
+      <div class="step-number">9</div>
+      <div class="step-title">Capacitación</div>
+      <div class="step-desc">Entrenar equipo en conceptos, derechos ARSOP-B y buenas prácticas.</div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">10</div>
+      <div class="step-title">Seguimiento</div>
+      <div class="step-desc">Revisar periódicamente. Monitorear incidentes y solicitudes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="roadmap-section">
+  <div class="timeline-visual">
+    <div class="timeline-title">Línea de Tiempo</div>
+
+    <div class="timeline">
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Junio</div>
+        <div class="month-activity">Gobernanza</div>
+      </div>
+
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Julio</div>
+        <div class="month-activity">Levantamiento</div>
+      </div>
+
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Agosto</div>
+        <div class="month-activity">Diagnóstico</div>
+      </div>
+
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Septiembre</div>
+        <div class="month-activity">Acciones</div>
+      </div>
+
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Octubre</div>
+        <div class="month-activity">Implementación</div>
+      </div>
+
+      <div class="month">
+        <div class="month-dot"></div>
+        <div class="month-name">Noviembre</div>
+        <div class="month-activity">Capacitación</div>
+      </div>
+
+      <div class="month highlight">
+        <div class="month-dot"></div>
+        <div class="month-name">1 Dic</div>
+        <div class="month-activity">Vigencia</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>¿Comenzamos?</h2>
+  <p>ShellTI acompaña a empresas chilenas en cada paso del proceso de adecuación a Ley 21.719.</p>
+  <button class="btn" onclick="window.location.href='https://shellti.com/#contacto'">Agendar Evaluación</button>
+</div>
+
+</body>
+</html>
