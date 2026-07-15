@@ -88,7 +88,6 @@
         }
         .question-item {
             background: rgba(255, 255, 255, 0.02);
-            border-left: 3px solid var(--cyan);
             padding: 20px;
             margin-bottom: 16px;
             border-radius: 8px;
@@ -143,9 +142,53 @@
         .error.show {
             display: block;
         }
+        .site-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .header-content h1 {
+            font-size: 24px;
+            color: var(--cyan);
+            margin: 0;
+        }
+        .header-content p {
+            margin: 5px 0 0 0;
+            color: var(--silver);
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        .site-footer {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 30px 0;
+            margin-top: 60px;
+            color: var(--silver);
+            opacity: 0.7;
+            text-align: center;
+            font-size: 14px;
+        }
+        main {
+            min-height: calc(100vh - 400px);
+        }
     </style>
 </head>
 <body>
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-content">
+            <h1>🔍 ShellTI</h1>
+            <p>Deep Diagnostic - Evaluación de Cumplimiento Ley 21.719</p>
+        </div>
+    </header>
+
+    <main>
     <div class="container">
         <div class="header">
             <h1>🔍 Deep Diagnostic - Ley 21.719</h1>
@@ -224,6 +267,13 @@
             </div>
         </div>
     </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p>&copy; 2026 ShellTI Technology Consultancy. Todos los derechos reservados.</p>
+        <p>Ley N° 21.719 - Protección de Datos Personales</p>
+    </footer>
 
     <script>
         const firebaseConfig = {
