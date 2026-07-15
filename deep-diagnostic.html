@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<!-- v1721068800 -->
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep Diagnostic - Ley N° 21.719</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
     <style>
         :root {
             --cyan: #00D4FF;
@@ -277,8 +274,8 @@
         <p>Ley N° 21.719 - Protección de Datos Personales</p>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
@@ -366,13 +363,14 @@
             { section: "X. Cumplimiento y Documentación", text: "¿Cumplen con obligaciones de retención de datos?" }
         ];
 
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-
-        allQuestions = questions.map((q, idx) => ({
-            ...q,
-            id: `q${idx + 1}`
-        }));
+        window.addEventListener('load', function() {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            allQuestions = questions.map((q, idx) => ({
+                ...q,
+                id: `q${idx + 1}`
+            }));
+        });
 
         function showError(msg) {
             const el = document.getElementById('errorMessage');
