@@ -302,8 +302,9 @@
                 </form>
 
                 <div class="summary" id="summary" style="display:none;">
-                    <h3>✅ Respuestas guardadas</h3>
-                    <p>Trazabilidad completada en Firebase</p>
+                    <h3>✅ Evaluación completada</h3>
+                    <div id="resultsContent" style="margin-top: 30px; text-align: left;"></div>
+                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>
                 </div>
             </div>
         </div>
@@ -599,6 +600,85 @@
             }
         }
 
+        function calculateScores() {
+            const sections = {};
+            allQuestions.forEach(q => {
+                if (!sections[q.section]) {
+                    sections[q.section] = { total: 0, si: 0, parcial: 0, no: 0 };
+                }
+                sections[q.section].total++;
+                const answer = responses[q.id];
+                if (answer === 'Si') sections[q.section].si++;
+                else if (answer === 'Parcial') sections[q.section].parcial++;
+                else if (answer === 'No') sections[q.section].no++;
+            });
+            return sections;
+        }
+
+        function generateResultsHTML() {
+            const sections = calculateScores();
+            let html = '<div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 30px;">';
+
+            const totalAnswered = Object.keys(responses).length;
+            const overallScore = Math.round((totalAnswered / allQuestions.length) * 100);
+
+            html += `<h2 style="color: var(--cyan); margin-bottom: 20px;">Score General: ${overallScore}%</h2>`;
+            html += `<p style="color: var(--silver); margin-bottom: 30px;">Preguntas respondidas: ${totalAnswered}/${allQuestions.length}</p>`;
+
+            html += '<h3 style="color: var(--green); margin-top: 30px; margin-bottom: 15px;">Análisis por Sección:</h3>';
+
+            for (let section in sections) {
+                const s = sections[section];
+                const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
+                html += `
+                    <div style="background: rgba(255,255,255,0.02); padding: 15px; margin-bottom: 12px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>${section}</strong>
+                            <span style="color: var(--cyan); font-weight: bold;">${sectionScore}%</span>
+                        </div>
+                        <div style="height: 6px; background: rgba(0,212,255,0.1); border-radius: 3px;">
+                            <div style="height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); width: ${sectionScore}%; border-radius: 3px;"></div>
+                        </div>
+                        <small style="color: var(--silver); opacity: 0.7; margin-top: 8px; display: block;">✓ ${s.si} | ⊘ ${s.parcial} | ✗ ${s.no}</small>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function downloadPDF() {
+            const sections = calculateScores();
+            const totalAnswered = Object.keys(responses).length;
+            const overallScore = Math.round((totalAnswered / allQuestions.length) * 100);
+
+            let content = `INFORME DE EVALUACIÓN - LEY 21.719\n\n`;
+            content += `Empresa: ${clientData.empresa || 'N/A'}\n`;
+            content += `Email: ${clientData.email || 'N/A'}\n`;
+            content += `Fecha: ${new Date().toLocaleDateString('es-CL')}\n\n`;
+            content += `SCORE GENERAL: ${overallScore}%\n`;
+            content += `Preguntas respondidas: ${totalAnswered}/${allQuestions.length}\n\n`;
+
+            content += `ANÁLISIS POR SECCIÓN:\n`;
+            content += `${'='.repeat(50)}\n\n`;
+
+            for (let section in sections) {
+                const s = sections[section];
+                const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
+                content += `${section}: ${sectionScore}%\n`;
+                content += `  ✓ Sí: ${s.si} | ⊘ Parcial: ${s.parcial} | ✗ No: ${s.no}\n\n`;
+            }
+
+            const filename = `Informe_Diagnostico_${clientData.empresa}_${new Date().getTime()}.txt`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+        }
+
         document.getElementById('form').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -622,9 +702,12 @@
 
                 console.log('Formulario completado:', data);
 
-                // Mostrar resumen
+                // Mostrar resumen con análisis
+                document.getElementById('resultsContent').innerHTML = generateResultsHTML();
                 document.getElementById('questionsSection').style.display = 'none';
                 document.getElementById('summary').style.display = 'block';
+
+                window.scrollTo(0, 0);
             } catch (error) {
                 console.error('Error:', error);
                 showError('Error al procesar: ' + error.message);
