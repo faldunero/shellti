@@ -33,7 +33,7 @@ nav{position:fixed;top:0;width:100%;z-index:300;height:68px;padding:0 2.5rem;dis
 .breadcrumb a:hover{color:var(--cyan)}
 .breadcrumb-current{color:var(--cyan)}
 .hero{padding:40px 2.5rem 80px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background-image:url('https://images.pexels.com/photos/3587997/pexels-photo-3587997.jpeg?auto=compress&cs=tinysrgb&w=1440');background-size:cover;background-position:center}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=1440');background-size:cover;background-position:center}
 .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(2,6,23,0.88) 0%,rgba(2,6,23,0.75) 100%)}
 .hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .overline{font-family:'JetBrains Mono',monospace;color:var(--green);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:12px}
@@ -50,7 +50,7 @@ h2.sec-title{font-size:clamp(1.7rem,3vw,2.4rem);font-weight:800;margin-bottom:2r
 .phases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:2rem}
 .phase-card{background:var(--card);border:1px solid var(--border);border-radius:3px;overflow:hidden;transition:border-color .3s,box-shadow .3s,transform .3s}
 .phase-card:hover{border-color:rgba(0,212,255,.32);box-shadow:0 0 36px rgba(0,212,255,0.13);transform:translateY(-4px)}
-.phase-img{width:100%;height:180px;object-fit:cover;opacity:.85}
+.phase-img{width:100%;height:160px;background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(52,211,153,.08));display:flex;align-items:center;justify-content:center;font-size:3rem;border-bottom:1px solid var(--border)}
 .phase-body{padding:2rem}
 .phase-badge{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;margin-bottom:1rem;background:rgba(0,212,255,.08);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
 .phase-badge.g{background:rgba(52,211,153,.08);color:var(--green);border-color:rgba(52,211,153,.2)}
@@ -159,7 +159,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--d
     <div class="phases-grid">
       <!-- FASE 1 -->
       <div class="phase-card">
-        <img src="https://images.pexels.com/photos/3587997/pexels-photo-3587997.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fase 1" class="phase-img"/>
+        <div class="phase-img">🛡️</div>
         <div class="phase-body">
           <span class="phase-badge">Fase 01</span>
           <h3>Gobernanza y Diagnóstico</h3>
@@ -188,7 +188,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--d
 
       <!-- FASE 2 -->
       <div class="phase-card">
-        <img src="https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fase 2" class="phase-img"/>
+        <div class="phase-img">⚙️</div>
         <div class="phase-body">
           <span class="phase-badge g">Fase 02</span>
           <h3>Implementación</h3>
@@ -217,7 +217,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);background:var(--d
 
       <!-- FASE 3 -->
       <div class="phase-card">
-        <img src="https://images.pexels.com/photos/3194519/pexels-photo-3194519.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fase 3" class="phase-img"/>
+        <div class="phase-img">✓</div>
         <div class="phase-body">
           <span class="phase-badge">Fase 03</span>
           <h3>Capacitación y Cierre</h3>
