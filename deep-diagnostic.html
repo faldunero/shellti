@@ -330,6 +330,7 @@
         let currentPage = 0;
         const questionsPerPage = 5;
         let allQuestions = [];
+        let responses = {};
 
         const questions = [
             // I. Gobernanza (5)
@@ -462,19 +463,19 @@
                         <div class="question-text">${q.text} *</div>
                         <div class="options">
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required onchange="updateProgress()">
+                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required onchange="saveResponse('${q.id}', 'Si')">
                                 Sí
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''} onchange="updateProgress()">
+                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'Parcial')">
                                 Parcial
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''} onchange="updateProgress()">
+                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'No')">
                                 No
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''} onchange="updateProgress()">
+                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'NA')">
                                 N/A
                             </label>
                         </div>
@@ -492,8 +493,12 @@
         }
 
         function getQuestionValue(questionId) {
-            const input = document.querySelector(`input[name="${questionId}"]:checked`);
-            return input ? input.value : '';
+            return responses[questionId] || '';
+        }
+
+        function saveResponse(questionId, value) {
+            responses[questionId] = value;
+            updateProgress();
         }
 
         function updateNavigation() {
@@ -539,18 +544,13 @@
             }
         }
 
-        document.addEventListener('change', updateProgress);
-
         document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const formData = new FormData(this);
-            const responses = {};
             const stats = { Si: 0, Parcial: 0, No: 0, NA: 0 };
 
-            for (let [key, value] of formData.entries()) {
-                responses[key] = value;
-                stats[value]++;
+            for (let key in responses) {
+                stats[responses[key]]++;
             }
 
             const responseId = 'deep-' + Date.now();
