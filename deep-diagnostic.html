@@ -685,16 +685,31 @@
                 console.log('Formulario completado:', data);
 
                 // Mostrar resumen con análisis
+                console.log('Mostrando resumen...');
                 try {
                     const resultsHTML = generateResultsHTML();
+                    console.log('HTML generado:', resultsHTML);
                     document.getElementById('resultsContent').innerHTML = resultsHTML;
+                    console.log('innerHTML asignado');
                 } catch (e) {
                     console.error('Error generando resultados:', e);
                     document.getElementById('resultsContent').innerHTML = '<p style="color: red;">Error al generar análisis</p>';
                 }
 
-                document.getElementById('questionsSection').style.display = 'none';
-                document.getElementById('summary').style.display = 'block';
+                console.log('Buscando questionsSection...');
+                const qs = document.getElementById('questionsSection');
+                console.log('questionsSection encontrado:', qs);
+                if (qs) qs.style.display = 'none';
+
+                console.log('Buscando summary...');
+                const summary = document.getElementById('summary');
+                console.log('summary encontrado:', summary);
+                if (summary) {
+                    summary.style.display = 'block';
+                    console.log('Summary mostrado');
+                } else {
+                    console.error('SUMMARY NO ENCONTRADO');
+                }
 
                 window.scrollTo(0, 0);
             } catch (error) {
