@@ -1025,34 +1025,236 @@
         }
 
         function getAreaRecommendations(score, section) {
-            const criticalAreas = ['II. Seguridad Técnica', 'III. Gestión de Incidentes', 'X. Cumplimiento y Documentación'];
-            const isCritical = criticalAreas.includes(section);
+            const recommendations = {
+                "I. Gobernanza": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'URGENTE: Designar formalmente un Responsable de Protección de Datos (DPO/RPD)',
+                        'Documentar y aprobar política de protección de datos en junta directiva',
+                        'Crear comité de protección de datos con representantes multidisciplinarios',
+                        'Implementar auditorías internas semestrales de cumplimiento',
+                        'Establecer matriz de roles y responsabilidades por función',
+                        'Plazo: 30-45 días'
+                    ] : score < 80 ? [
+                        'Fortalecer capacidad del DPO con recursos y budget dedicado',
+                        'Documentar procedimiento de auditoría interna y ejecutar piloto',
+                        'Crear registro de decisiones sobre protección de datos',
+                        'Revisar y mejorar políticas existentes con consejo legal',
+                        'Plazo: 90 días'
+                    ] : [
+                        'Mantener función DPO con recursos suficientes',
+                        'Ejecutar auditorías internas semestrales programadas',
+                        'Revisar anualmente política de protección de datos',
+                        'Plazo: Revisiones anuales'
+                    ]
+                },
+                "II. Seguridad Técnica": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'CRÍTICO: Implementar cifrado en reposo para todas las bases de datos',
+                        'Implementar HTTPS/TLS para todas las comunicaciones de datos',
+                        'Desplegar autenticación multifactor en acceso administrativo',
+                        'Implementar control de acceso basado en roles (RBAC)',
+                        'Activar logging y monitoreo de acceso a datos sensibles',
+                        'Realizar auditoría de seguridad externa',
+                        'Plazo crítico: 30-60 días'
+                    ] : score < 80 ? [
+                        'Completar implementación de cifrado en datos no asegurados',
+                        'Expandir MFA a usuarios con acceso a datos sensibles',
+                        'Implementar monitoreo de eventos anómalo',
+                        'Realizar penetration testing de sistemas críticos',
+                        'Plazo: 60-90 días'
+                    ] : [
+                        'Mantener cifrado y MFA operativos',
+                        'Ejecutar pruebas de seguridad trimestrales',
+                        'Revisar logs de acceso mensualmente',
+                        'Plazo: Revisiones trimestrales'
+                    ]
+                },
+                "III. Gestión de Incidentes": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'URGENTE: Documentar Plan de Respuesta a Incidentes de Seguridad',
+                        'Establecer cadena de escalamiento y responsables de respuesta',
+                        'Crear procedimiento de investigación forense de brechas',
+                        'Implementar notificación obligatoria a afectados en 72 horas',
+                        'Establecer registro permanente de incidentes históricos',
+                        'Simular ejercicio de respuesta a incidente',
+                        'Plazo: 45-60 días'
+                    ] : score < 80 ? [
+                        'Mejorar documentación del plan de respuesta',
+                        'Capacitar equipo de respuesta a incidentes',
+                        'Ejecutar simulacro de respuesta a incidente',
+                        'Establecer métricas de tiempo de respuesta (MTTR)',
+                        'Plazo: 90 días'
+                    ] : [
+                        'Ejecutar ejercicios de respuesta anualmente',
+                        'Revisar y mejorar plan basado en lecciones aprendidas',
+                        'Mantener registro de incidentes actualizado',
+                        'Plazo: Revisiones anuales'
+                    ]
+                },
+                "IV. Derechos de los Titulares": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Implementar mecanismo formal para recibir solicitudes de acceso',
+                        'Crear procedimiento para responder solicitudes en 10 días',
+                        'Implementar proceso de rectificación de datos',
+                        'Desarrollar capacidad de supresión (derecho al olvido)',
+                        'Crear procedimiento de portabilidad de datos',
+                        'Capacitar personal en gestión de derechos',
+                        'Plazo: 60-90 días'
+                    ] : score < 80 ? [
+                        'Optimizar proceso de respuesta a solicitudes',
+                        'Implementar seguimiento de plazos de respuesta',
+                        'Mejorar documentación de procedimientos',
+                        'Ejecutar auditoría de cumplimiento de plazos',
+                        'Plazo: 90 días'
+                    ] : [
+                        'Monitorear cumplimiento de plazos mensualmente',
+                        'Revisar y mejorar procedimientos anualmente',
+                        'Mantener registro de solicitudes recibidas',
+                        'Plazo: Revisiones mensuales'
+                    ]
+                },
+                "V. Consentimiento y Transparencia": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Redactar política de privacidad clara en lenguaje comprensible',
+                        'Publicar política en sitio web y puntos de recopilación de datos',
+                        'Implementar consentimiento explícito previo (opt-in)',
+                        'Crear avisos de privacidad en formularios y aplicaciones',
+                        'Documentar propósito y base legal de cada tratamiento',
+                        'Capacitar personal en obtención de consentimiento informado',
+                        'Plazo: 60-90 días'
+                    ] : score < 80 ? [
+                        'Revisar política de privacidad con especialista legal',
+                        'Mejorar claridad y accesibilidad de avisos de privacidad',
+                        'Implementar registro de consentimientos',
+                        'Plazo: 90 días'
+                    ] : [
+                        'Revisar política anualmente',
+                        'Mantener registro de consentimientos',
+                        'Comunicar cambios oportunamente',
+                        'Plazo: Revisiones anuales'
+                    ]
+                },
+                "VI. Evaluación de Impacto": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Desarrollar metodología de Evaluación de Impacto en Privacidad (DPIA)',
+                        'Identificar tratamientos nuevos o modificados que requieran DPIA',
+                        'Ejecutar DPIA para los 3-5 proyectos prioritarios',
+                        'Documentar riesgos y medidas mitigantes identificadas',
+                        'Obtener revisión legal de DPIAs completadas',
+                        'Crear procedimiento para DPIAs futuras',
+                        'Plazo: 90-120 días'
+                    ] : score < 80 ? [
+                        'Completar DPIAs pendientes de proyectos activos',
+                        'Capacitar personal en metodología DPIA',
+                        'Integrar DPIA en proceso de aprobación de proyectos',
+                        'Plazo: 120 días'
+                    ] : [
+                        'Ejecutar DPIA para nuevos proyectos',
+                        'Revisar DPIAs existentes anualmente',
+                        'Mantener documentación actualizada',
+                        'Plazo: Según nuevos proyectos'
+                    ]
+                },
+                "VII. Personal y Capacitación": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Mapear permisos de acceso actuales y documentar',
+                        'Implementar segregación de funciones (quién aprueba vs. quién ejecuta)',
+                        'Diseñar matriz de control de acceso por rol y datos',
+                        'Capacitar personal en política de protección de datos',
+                        'Implementar cláusulas de confidencialidad en nuevos contratos',
+                        'Revisar accesos de empleados separados',
+                        'Plazo: 60-90 días'
+                    ] : score < 80 ? [
+                        'Revisar permisos de acceso trimestralmente',
+                        'Expandir capacitación a todos los empleados',
+                        'Implementar certifi caciones de confidencialidad',
+                        'Plazo: 90 días'
+                    ] : [
+                        'Realizar revisión de accesos semestralmente',
+                        'Mantener programa de capacitación anual',
+                        'Documentar segregación de funciones críticas',
+                        'Plazo: Revisiones semestrales'
+                    ]
+                },
+                "VIII. Transferencias Internacionales": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Mapear todas las transferencias internacionales actuales',
+                        'Evaluar nivel de protección en países destino',
+                        'Implementar cláusulas contractuales estándar de la UE si aplica',
+                        'Documentar base legal para cada transferencia',
+                        'Implementar registro de transferencias',
+                        'Revisar restricciones legales de destino',
+                        'Plazo: 90-120 días'
+                    ] : score < 80 ? [
+                        'Completar evaluación de destinos pendientes',
+                        'Firmar acuerdos de transferencia faltantes',
+                        'Revisar restricciones de destino anualmente',
+                        'Plazo: 120 días'
+                    ] : [
+                        'Revisar destinos de transferencia anualmente',
+                        'Mantener documentación de acuerdos actualizada',
+                        'Monitorear cambios legislativos en destinos',
+                        'Plazo: Revisiones anuales'
+                    ]
+                },
+                "IX. Terceros y Proveedores": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'Auditar proveedores actuales de datos personales',
+                        'Implementar cláusulas de protección de datos en contratos',
+                        'Crear cuestionario de evaluación de proveedores',
+                        'Evaluar y documentar capacidad de seguridad de proveedores',
+                        'Implementar acuerdos de procesamiento de datos (DPA)',
+                        'Establecer cronograma de auditorías periódicas',
+                        'Plazo: 120-150 días'
+                    ] : score < 80 ? [
+                        'Completar evaluación de proveedores pendientes',
+                        'Firmar DPAs faltantes',
+                        'Implementar auditorías semestrales de proveedores',
+                        'Plazo: 120 días'
+                    ] : [
+                        'Auditar proveedores anualmente',
+                        'Mantener DPAs vigentes y actualizados',
+                        'Revisar capacidad de seguridad periódicamente',
+                        'Plazo: Auditorías anuales'
+                    ]
+                },
+                "X. Cumplimiento y Documentación": {
+                    critical: score < 60,
+                    items: score < 60 ? [
+                        'CRÍTICO: Crear Registro de Actividades de Tratamiento (RDAT) completo',
+                        'Documentar todos los tratamientos de datos personales',
+                        'Crear matriz de responsables por tratamiento',
+                        'Implementar sistema de gestión de documentación',
+                        'Realizar auditoría externa de cumplimiento',
+                        'Documentar evidencia de cumplimiento normativo',
+                        'Plazo crítico: 60-90 días'
+                    ] : score < 80 ? [
+                        'Completar RDAT para todos los tratamientos',
+                        'Mejorar documentación de procedimientos',
+                        'Implementar auditorías internas periódicas',
+                        'Plazo: 90-120 días'
+                    ] : [
+                        'Mantener RDAT actualizado',
+                        'Realizar auditorías internas anuales',
+                        'Documentar cambios en tratamientos',
+                        'Plazo: Auditorías anuales'
+                    ]
+                }
+            };
 
-            if (score < 60) {
-                return [
-                    `PRIORITARIO (${isCritical ? 'CRÍTICO' : 'Alto'}): Iniciar implementación inmediata de controles faltantes`,
-                    'Asignar presupuesto y recursos dedicados con responsable claro',
-                    'Establecer plan de cierre de brecha con hitos mensuales y dueño de proyecto',
-                    'Realizar auditoría externa de esta área para identificar gaps específicos',
-                    `Plazo de cierre: ${isCritical ? '30-60 días' : '60-90 días'}`
-                ];
-            } else if (score < 80) {
-                return [
-                    'Fortalecer implementación de controles existentes',
-                    'Mejorar documentación de procedimientos y políticas',
-                    'Capacitar personal en responsabilidades y procedimientos',
-                    'Aumentar frecuencia de revisiones de efectividad de controles',
-                    'Plazo de mejora: 90-120 días'
-                ];
-            } else {
-                return [
-                    'Mantener controles operativos con revisiones periódicas',
-                    'Realizar auditorías de cumplimiento (cada 12 meses)',
-                    'Documentar cambios en procesos e implementar procedimiento de cambio',
-                    'Continuar con formación y conciencia en protección de datos',
-                    'Plazo: Revisiones periódicas (anual o según políticas internas)'
-                ];
-            }
+            return (recommendations[section] || {
+                critical: false,
+                items: ['Contactar a especialista en protección de datos']
+            }).items;
         }
 
         document.getElementById('form').addEventListener('submit', function(e) {
