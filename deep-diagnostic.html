@@ -302,9 +302,9 @@
                 </form>
 
                 <div class="summary" id="summary" style="display:none;">
-                    <h3>✅ Evaluación completada</h3>
+                    <h3>Evaluación completada</h3>
                     <div id="resultsContent" style="margin-top: 30px; text-align: left;"></div>
-                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>
+                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">Descargar Informe PDF</button>
                 </div>
             </div>
         </div>
@@ -608,22 +608,36 @@
             const sections = {};
             allQuestions.forEach(q => {
                 if (!sections[q.section]) {
-                    sections[q.section] = { total: 0, si: 0, parcial: 0, no: 0 };
+                    sections[q.section] = { total: 0, si: 0, parcial: 0, no: 0, na: 0, score: 0 };
                 }
-                sections[q.section].total++;
                 const answer = responses[q.id];
-                if (answer === 'Si') sections[q.section].si++;
-                else if (answer === 'Parcial') sections[q.section].parcial++;
-                else if (answer === 'No') sections[q.section].no++;
+                if (answer !== 'N/A' && answer) {
+                    sections[q.section].total++;
+                    if (answer === 'Si') sections[q.section].si++;
+                    else if (answer === 'Parcial') sections[q.section].parcial++;
+                    else if (answer === 'No') sections[q.section].no++;
+                } else if (answer === 'N/A') {
+                    sections[q.section].na++;
+                }
             });
+
+            // Calcular scores: Si=100%, Parcial=50%, No=0%
+            Object.keys(sections).forEach(section => {
+                const s = sections[section];
+                if (s.total > 0) {
+                    s.score = Math.round(((s.si * 100 + s.parcial * 50) / (s.total * 100)) * 100);
+                }
+            });
+
             return sections;
         }
 
         function generateResultsHTML() {
             try {
-                const totalAnswered = Object.keys(responses).length;
-                const overallScore = Math.round((totalAnswered / 50) * 100);
                 const sections = calculateScores();
+                const scores = Object.values(sections).map(s => s.score);
+                const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+                const totalAnswered = Object.keys(responses).filter(id => responses[id] !== 'N/A').length;
 
                 let html = `<p style="color: var(--cyan); font-size: 18px; margin-bottom: 20px;"><strong>Score General: ${overallScore}%</strong></p>`;
                 html += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
@@ -741,7 +755,7 @@
 
             let pdfHTML = `
                 <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
-                    <h1 style="text-align: center; color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 15px;">
+                    <h1 style="text-align: center; color: #00D4FF; padding-bottom: 15px;">
                         INFORME DE EVALUACIÓN DE CUMPLIMIENTO
                     </h1>
                     <p style="text-align: center; font-size: 14px; color: #666;">
@@ -759,9 +773,9 @@
                         </table>
                     </div>
 
-                    <div style="page-break-after: always;">
+                    <div style="page-break-after: avoid;">
                         <h2 style="color: #00D4FF;">2. RESUMEN EJECUTIVO</h2>
-                        <div style="background: #f9f9f9; padding: 20px; border-left: 4px solid #00D4FF; margin: 15px 0;">
+                        <div style="background: #f9f9f9; padding: 20px; margin: 15px 0;">
                             <p style="font-size: 16px;"><strong>Score General de Cumplimiento: <span style="color: #34D399; font-size: 24px;">${overallScore}%</span></strong></p>
                             <p style="margin-top: 10px;">Preguntas Respondidas: <strong>${totalAnswered}/50</strong></p>
                             <p style="margin-top: 10px;">Estado: <strong>
@@ -776,7 +790,7 @@
                         </div>
                     </div>
 
-                    <div style="page-break-after: always;">
+                    <div style="page-break-after: avoid;">
                         <h2 style="color: #00D4FF;">3. ANÁLISIS DETALLADO POR ÁREA</h2>
                         ${generateDetailedAnalysis(sections)}
                     </div>
@@ -794,12 +808,12 @@
                         </table>
                     </div>
 
-                    <div style="page-break-after: always;">
+                    <div style="page-break-after: avoid; margin-top: 30px;">
                         <h2 style="color: #00D4FF;">3.2 Roadmap de Implementación (12 Meses)</h2>
                         ${generateRoadmap(sections)}
                     </div>
 
-                    <div style="page-break-after: always;">
+                    <div style="page-break-after: avoid; margin-top: 30px;">
                         <h2 style="color: #00D4FF;">4. MARCO NORMATIVO APLICABLE</h2>
                         <h3 style="color: #34D399;">Ley Nº 21.719 - Protección de Datos Personales</h3>
                         <p>Esta evaluación mapea directamente a los siguientes artículos:</p>
@@ -823,7 +837,7 @@
 
                     <div>
                         <h2 style="color: #00D4FF;">5. CONCLUSIONES Y PLAN DE ACCIÓN</h2>
-                        <div style="background: #f9f9f9; padding: 20px; border-left: 4px solid #34D399;">
+                        <div style="background: #f9f9f9; padding: 20px;">
                             <p><strong>Hallazgo Principal:</strong></p>
                             <p>${
                                 overallScore >= 80 ?
@@ -885,7 +899,7 @@
                         <div style="background: #f5f5f5; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
                             <div style="margin-bottom: 8px;">
                                 <span style="font-weight: bold;">Respuestas:</span>
-                                <span style="color: #34D399; margin-left: 10px;">✓ ${s.si}</span>
+                                <span style="color: #34D399; margin-left: 10px;">${s.si}</span>
                                 <span style="color: #FFA500; margin-left: 10px;">⊘ ${s.parcial}</span>
                                 <span style="color: #FF6B6B; margin-left: 10px;">✗ ${s.no}</span>
                             </div>
