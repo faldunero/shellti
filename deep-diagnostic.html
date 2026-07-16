@@ -633,32 +633,100 @@
         function downloadPDF() {
             const sections = calculateScores();
             const totalAnswered = Object.keys(responses).length;
-            const overallScore = Math.round((totalAnswered / allQuestions.length) * 100);
+            const overallScore = Math.round((totalAnswered / 50) * 100);
 
-            let content = `INFORME DE EVALUACIÓN - LEY 21.719\n\n`;
+            let content = `INFORME PROFESIONAL DE EVALUACIÓN\nCUMPLIMIENTO LEY Nº 21.719 E ISO/IEC 27001:2022\n\n`;
+            content += `${'='.repeat(80)}\n`;
+            content += `DATOS DE LA EVALUACIÓN\n`;
+            content += `${'='.repeat(80)}\n`;
             content += `Empresa: ${clientData.empresa || 'N/A'}\n`;
-            content += `Email: ${clientData.email || 'N/A'}\n`;
-            content += `Fecha: ${new Date().toLocaleDateString('es-CL')}\n\n`;
-            content += `SCORE GENERAL: ${overallScore}%\n`;
-            content += `Preguntas respondidas: ${totalAnswered}/${allQuestions.length}\n\n`;
+            content += `Contacto: ${clientData.email || 'N/A'}\n`;
+            content += `Fecha: ${new Date().toLocaleDateString('es-CL')}\n`;
+            content += `Token: ${clientData.token}\n\n`;
 
-            content += `ANÁLISIS POR SECCIÓN:\n`;
-            content += `${'='.repeat(50)}\n\n`;
+            content += `${'='.repeat(80)}\n`;
+            content += `RESUMEN EJECUTIVO\n`;
+            content += `${'='.repeat(80)}\n`;
+            content += `Score General de Cumplimiento: ${overallScore}%\n`;
+            content += `Total de Preguntas Evaluadas: 50\n`;
+            content += `Preguntas Respondidas: ${totalAnswered}\n`;
+            content += `Estado: ${overallScore >= 80 ? 'CUMPLIMIENTO SATISFACTORIO' : overallScore >= 60 ? 'CUMPLIMIENTO PARCIAL' : 'CUMPLIMIENTO DEFICIENTE'}\n\n`;
+
+            content += `${'='.repeat(80)}\n`;
+            content += `ANÁLISIS POR ÁREA DE CONTROL\n`;
+            content += `${'='.repeat(80)}\n\n`;
 
             for (let section in sections) {
                 const s = sections[section];
                 const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
-                content += `${section}: ${sectionScore}%\n`;
-                content += `  ✓ Sí: ${s.si} | ⊘ Parcial: ${s.parcial} | ✗ No: ${s.no}\n\n`;
+                const brecha = 100 - sectionScore;
+
+                content += `${section}\n`;
+                content += `${'-'.repeat(60)}\n`;
+                content += `Score: ${sectionScore}%\n`;
+                content += `Brecha: ${brecha}%\n`;
+                content += `Respuestas - Sí: ${s.si} | Parcial: ${s.parcial} | No: ${s.no} | Total: ${s.total}\n`;
+                content += `\nRecomendaciones:\n`;
+
+                if (sectionScore < 60) {
+                    content += `• PRIORITARIO: Implementar controles inmediatos en esta área\n`;
+                    content += `• Realizar auditoría específica del área\n`;
+                    content += `• Asignar recursos para cierre de brecha\n`;
+                } else if (sectionScore < 80) {
+                    content += `• MODERADO: Mejorar implementación de controles existentes\n`;
+                    content += `• Fortalecer procedimientos documentados\n`;
+                } else {
+                    content += `• ADECUADO: Mantener controles implementados\n`;
+                    content += `• Realizar revisiones periódicas\n`;
+                }
+                content += `\n`;
             }
 
-            const filename = `Informe_Diagnostico_${clientData.empresa}_${new Date().getTime()}.txt`;
-            const blob = new Blob([content], { type: 'text/plain' });
+            content += `${'='.repeat(80)}\n`;
+            content += `MARCO NORMATIVO\n`;
+            content += `${'='.repeat(80)}\n`;
+            content += `Esta evaluación mapea directamente a:\n\n`;
+            content += `1. LEY Nº 21.719 - Protección de Datos Personales en Chile\n`;
+            content += `   - Artículos 2-29: Principios, derechos de titulares, obligaciones\n`;
+            content += `   - Artículos 24: Medidas de seguridad\n`;
+            content += `   - Artículos 28-29: Transferencias internacionales\n\n`;
+            content += `2. ISO/IEC 27001:2022 - Gestión de Seguridad de la Información\n`;
+            content += `   - Anexo A: Objetivos y Controles (93 controles)\n`;
+            content += `   - Áreas: Gobernanza, Seguridad Técnica, Incidentes, Derechos\n\n`;
+
+            content += `${'='.repeat(80)}\n`;
+            content += `CONCLUSIONES Y PRÓXIMOS PASOS\n`;
+            content += `${'='.repeat(80)}\n`;
+            content += `Con un score de ${overallScore}%, su organización:\n`;
+            if (overallScore >= 80) {
+                content += `✓ Demuestra cumplimiento sustancial con la normativa\n`;
+                content += `✓ Mantiene controles de seguridad efectivos\n`;
+                content += `• Continuar con auditorías periódicas (cada 12 meses)\n`;
+                content += `• Mantener formación en protección de datos\n`;
+            } else if (overallScore >= 60) {
+                content += `⊘ Tiene cumplimiento parcial con vulnerabilidades identificadas\n`;
+                content += `⊘ Requiere mejoras en implementación de controles\n`;
+                content += `• Desarrollar plan de remediación por área\n`;
+                content += `• Asignar responsables y plazos de cierre\n`;
+                content += `• Re-evaluar en 6 meses\n`;
+            } else {
+                content += `✗ Requiere mejoras significativas y urgentes\n`;
+                content += `✗ Presenta brechas críticas de cumplimiento\n`;
+                content += `• Activar plan de acción inmediato\n`;
+                content += `• Consultar con especialista legal en protección de datos\n`;
+                content += `• Implementar controles críticos en 90 días\n`;
+            }
+
+            content += `\n${new Date().toLocaleDateString('es-CL')} - ShellTI Technology Consultancy`;
+
+            const filename = `Informe_Cumplimiento_${clientData.empresa}_${new Date().getTime()}.txt`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = filename;
             a.click();
+            window.URL.revokeObjectURL(url);
         }
 
         document.getElementById('form').addEventListener('submit', function(e) {
@@ -709,40 +777,28 @@
 
                 let reportHTML = `
                     <div style="padding: 40px 20px; max-width: 1000px; margin: 0 auto;">
-                        <h1 style="color: var(--cyan); text-align: center; margin-bottom: 10px;">Informe de Evaluación</h1>
-                        <p style="text-align: center; color: var(--silver); margin-bottom: 40px;">Cumplimiento Ley N° 21.719 e ISO 27001:2022</p>
+                        <h1 style="color: var(--cyan); text-align: center; margin-bottom: 30px;">Informe de Cumplimiento Normativo</h1>
 
-                        <div style="background: rgba(0,212,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px;">
-                            <h2 style="color: var(--cyan); margin-bottom: 20px;">Score General</h2>
-                            <p style="font-size: 48px; color: var(--green); font-weight: bold; text-align: center; margin: 20px 0;">${overallScore}%</p>
-                            <p style="text-align: center; color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>
-                        </div>
-
-                        <div style="background: rgba(52,211,153,0.05); padding: 30px; border-radius: 12px; margin-bottom: 40px; border-left: 4px solid var(--green);">
-                            <h3 style="color: var(--green); margin-bottom: 15px;">Introducción</h3>
-                            <p style="color: var(--silver); line-height: 1.6;">
-                                Este informe evalúa el nivel de cumplimiento de su organización con respecto a la Ley N° 21.719 de Protección de Datos Personales en Chile e ISO/IEC 27001:2022.
-                                La evaluación cubre 50 aspectos críticos distribuidos en 10 áreas temáticas, desde gobernanza hasta retención de datos.
+                        <div style="padding: 30px; margin-bottom: 40px;">
+                            <h2 style="color: var(--cyan); margin-bottom: 20px;">Score General: <span style="color: var(--green); font-size: 28px;">${overallScore}%</span></h2>
+                            <p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>
+                            <p style="color: var(--silver); margin-top: 15px;">
+                                Este informe evalúa el cumplimiento con Ley N° 21.719 (Protección de Datos Personales Chile) e ISO/IEC 27001:2022.
                             </p>
                         </div>
 
-                        <h3 style="color: var(--cyan); margin-bottom: 20px;">Análisis por Área</h3>
+                        <h3 style="color: var(--cyan); margin-bottom: 20px;">Evaluación por Área</h3>
                         ${sectionHTML}
 
-                        <div style="background: rgba(52,211,153,0.05); padding: 30px; border-radius: 12px; margin-top: 40px; border-left: 4px solid var(--green);">
-                            <h3 style="color: var(--green); margin-bottom: 15px;">Conclusión</h3>
+                        <div style="padding: 30px; margin-top: 40px;">
+                            <h3 style="color: var(--cyan); margin-bottom: 15px;">Observaciones Finales</h3>
                             <p style="color: var(--silver); line-height: 1.6;">
-                                Con un score del <strong>${overallScore}%</strong>, su organización
-                                ${overallScore >= 80 ? 'demuestra un buen nivel de cumplimiento normativo. Se recomienda continuar con auditorías periódicas y mantener los controles implementados.' :
-                                  overallScore >= 60 ? 'tiene un nivel moderado de cumplimiento. Requiere acciones de mejora en las áreas identificadas.' :
-                                  'requiere mejoras significativas en el cumplimiento normativo. Se sugiere desarrollar un plan de acción prioritario.'}
-                            </p>
-                            <p style="color: var(--silver); margin-top: 15px; line-height: 1.6;">
-                                Descargue el informe completo para ver recomendaciones específicas por área.
+                                El informe detallado con análisis por área, brecha de cumplimiento, recomendaciones específicas y mapeo a Ley 21.719 e ISO 27001:2022
+                                está disponible en el documento descargable.
                             </p>
                         </div>
 
-                        <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px; padding: 15px;">📥 Descargar Informe Completo PDF</button>
+                        <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px; padding: 15px; font-size: 16px;">📥 Descargar Informe Profesional Completo</button>
                     </div>
                 `;
 
