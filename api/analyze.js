@@ -6,8 +6,13 @@ export default async function handler(req, res) {
     const { responses, empresa, email } = req.body;
     const GROQ_API_KEY = process.env.GROQ_API_KEY_SHELLTI;
 
+    console.log('ENV VARS DISPONIBLES:', Object.keys(process.env).filter(k => k.includes('GROQ')));
+    console.log('GROQ_API_KEY presente:', !!GROQ_API_KEY);
+    console.log('GROQ_API_KEY value:', GROQ_API_KEY ? 'Set' : 'Not set');
+
     if (!GROQ_API_KEY) {
-        return res.status(500).json({ error: 'API key no configurada' });
+        console.error('GROQ_API_KEY_SHELLTI no está configurada en Vercel');
+        return res.status(500).json({ error: 'API key GROQ_API_KEY_SHELLTI no configurada en Vercel Environment Variables' });
     }
 
     if (!responses) {
