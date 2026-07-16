@@ -272,11 +272,6 @@
                     <label>Token *</label>
                     <input type="text" id="token" placeholder="shellti-client-" required>
                 </div>
-                <div class="form-group">
-                    <label>API Key Groq (opcional)</label>
-                    <input type="password" id="groqApiKey" placeholder="gsk_...">
-                    <small style="color: #999; font-size: 11px; margin-top: 4px; display: block;">Obtenla en https://console.groq.com para análisis profundo</small>
-                </div>
                 <button class="btn" onclick="authenticate()" style="width: 100%;">Acceder</button>
             </div>
 
@@ -343,10 +338,8 @@
         let allQuestions = [];
         let responses = {};
 
-        // Groq API
-        window.GROQ_API_KEY = null;
-        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-        let groqAnalysis = {};
+        // Análisis (backend)
+        let analysisContent = null;
 
         const questionMappings = {
             "q1": { ley: ["Art. 2(a)", "Art. 12"], iso: ["A.5.1", "A.6.1"], desc: "Política de privacidad y protección de datos" },
@@ -494,19 +487,10 @@
             const empresa = document.getElementById('empresa').value;
             const email = document.getElementById('email').value;
             const token = document.getElementById('token').value;
-            const groqApiKey = document.getElementById('groqApiKey')?.value || '';
 
             if (!empresa || !email || !token) {
-                showError('Completa todos los campos requeridos');
+                showError('Completa todos los campos');
                 return;
-            }
-
-            // Guardar API key de Groq en sessionStorage
-            if (groqApiKey) {
-                window.GROQ_API_KEY = groqApiKey;
-                sessionStorage.setItem('groqApiKey', groqApiKey);
-            } else {
-                window.GROQ_API_KEY = sessionStorage.getItem('groqApiKey');
             }
 
             if (!token.startsWith('shellti-client-')) {
@@ -832,74 +816,37 @@
             }
         }
 
-        async function generateGroqAnalysis() {
-            if (!window.GROQ_API_KEY) return null;
-
-            const sections = calculateScores();
-            const prompt = `Analiza profundamente este cuestionario de cumplimiento de Ley 21.719 e ISO 27001:2022.
-
-Empresa: ${clientData.empresa || 'N/A'}
-Email: ${clientData.email || 'N/A'}
-
-RESPUESTAS POR ÁREA:
-`;
-
-            let fullPrompt = prompt;
-            for (let section in sections) {
-                const sectionQuestions = allQuestions.filter(q => q.section === section);
-                fullPrompt += `\n${section}:\n`;
-                sectionQuestions.forEach(q => {
-                    const answer = responses[q.id] || 'No respondida';
-                    fullPrompt += `• ${q.question} → ${answer}\n`;
-                });
-            }
-
-            fullPrompt += `\nGenera un análisis COHERENTE que no diga "satisfactorio" si hay muchos "No". Por cada área, explica: estado actual, brechas, riesgos, recomendaciones.`;
-
-            try {
-                const response = await fetch(GROQ_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${window.GROQ_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'mixtral-8x7b-32768',
-                        messages: [{
-                            role: 'system',
-                            content: 'Eres experto en compliance normativo. Hablas español. Genera análisis profundo y coherente.'
-                        }, {
-                            role: 'user',
-                            content: fullPrompt
-                        }],
-                        temperature: 0.7,
-                        max_tokens: 2000
-                    })
-                });
-
-                const data = await response.json();
-                if (data.choices && data.choices[0].message) {
-                    return data.choices[0].message.content;
-                }
-            } catch (e) {
-                console.error('Error Groq:', e);
-            }
-            return null;
-        }
-
         async function downloadPDF() {
             const btn = event.target;
             btn.disabled = true;
             btn.textContent = 'Generando análisis...';
 
-            let groqContent = null;
-            if (window.GROQ_API_KEY) {
-                groqContent = await generateGroqAnalysis();
+            // Llamar a backend para análisis profundo
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        responses: responses,
+                        empresa: clientData.empresa,
+                        email: clientData.email
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    analysisContent = data.analysis;
+                } else {
+                    console.warn('Análisis no disponible');
+                }
+            } catch (e) {
+                console.warn('Error llamando backend:', e);
             }
 
             const sections = calculateScores();
-            const totalAnswered = Object.keys(responses).length;
-            const overallScore = Math.round((totalAnswered / 50) * 100);
+            const scores = Object.values(sections).map(s => s.score);
+            const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+            const totalAnswered = Object.keys(responses).filter(id => responses[id] !== 'N/A').length;
 
             let pdfHTML = `
                 <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
@@ -931,10 +878,10 @@ RESPUESTAS POR ÁREA:
                                   overallScore >= 60 ? '<span style="color: #FFA500;">CUMPLIMIENTO PARCIAL</span>' :
                                   '<span style="color: #FF6B6B;">CUMPLIMIENTO DEFICIENTE</span>'}
                             </strong></p>
-                            ${groqContent ? `
+                            ${analysisContent ? `
                             <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 6px; font-size: 13px; line-height: 1.6; color: #444;">
-                                <strong style="color: #00D4FF;">Análisis Profundo (Groq):</strong>
-                                <p style="margin-top: 10px;">${groqContent.substring(0, 1000)}...</p>
+                                <strong style="color: #00D4FF;">Análisis Profundo:</strong>
+                                <p style="margin-top: 10px;">${analysisContent.substring(0, 1000)}...</p>
                             </div>
                             ` : `
                             <p style="margin-top: 15px; font-style: italic; color: #666;">
