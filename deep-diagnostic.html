@@ -819,9 +819,9 @@
         async function downloadPDF() {
             const btn = event.target;
             btn.disabled = true;
-            btn.textContent = 'Generando análisis...';
+            btn.textContent = 'Generando informe...';
 
-            // Llamar a backend para análisis profundo
+            // Intentar llamar a backend para análisis profundo (opcional)
             try {
                 const response = await fetch('/api/analyze', {
                     method: 'POST',
@@ -830,17 +830,18 @@
                         responses: responses,
                         empresa: clientData.empresa,
                         email: clientData.email
-                    })
+                    }),
+                    timeout: 10000
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    analysisContent = data.analysis;
-                } else {
-                    console.warn('Análisis no disponible');
+                    if (data.analysis) {
+                        analysisContent = data.analysis;
+                    }
                 }
             } catch (e) {
-                console.warn('Error llamando backend:', e);
+                console.log('Análisis no disponible - generando PDF sin análisis Groq');
             }
 
             const sections = calculateScores();
