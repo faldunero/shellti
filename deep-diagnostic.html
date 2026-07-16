@@ -684,34 +684,25 @@
 
                 console.log('Formulario completado:', data);
 
-                // Mostrar resumen con análisis
+                // Mostrar resumen
                 console.log('Mostrando resumen...');
-                try {
-                    const resultsHTML = generateResultsHTML();
-                    console.log('HTML generado:', resultsHTML);
-                    document.getElementById('resultsContent').innerHTML = resultsHTML;
-                    console.log('innerHTML asignado');
-                } catch (e) {
-                    console.error('Error generando resultados:', e);
-                    document.getElementById('resultsContent').innerHTML = '<p style="color: red;">Error al generar análisis</p>';
-                }
 
-                console.log('Buscando questionsSection...');
-                const qs = document.getElementById('questionsSection');
-                console.log('questionsSection encontrado:', qs);
-                if (qs) qs.style.display = 'none';
+                const totalAnswered = Object.keys(responses).length;
+                const overallScore = Math.round((totalAnswered / 50) * 100);
 
-                console.log('Buscando summary...');
+                let summaryHTML = `<h3>✅ Evaluación completada</h3>`;
+                summaryHTML += `<div style="margin-top: 30px; padding: 20px; background: rgba(0,212,255,0.05); border-radius: 12px;">`;
+                summaryHTML += `<p style="color: var(--cyan); font-size: 20px; font-weight: bold;">Score General: ${overallScore}%</p>`;
+                summaryHTML += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
+                summaryHTML += `</div>`;
+                summaryHTML += `<button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>`;
+
+                document.getElementById('questionsSection').style.display = 'none';
                 const summary = document.getElementById('summary');
-                console.log('summary encontrado:', summary);
-                if (summary) {
-                    summary.style.display = 'block';
-                    console.log('Summary mostrado');
-                } else {
-                    console.error('SUMMARY NO ENCONTRADO');
-                }
+                summary.innerHTML = summaryHTML;
+                summary.style.display = 'block';
 
-                window.scrollTo(0, 0);
+                setTimeout(() => window.scrollTo(0, 300), 100);
             } catch (error) {
                 console.error('Error:', error);
                 showError('Error al procesar: ' + error.message);
