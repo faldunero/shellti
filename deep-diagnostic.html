@@ -616,36 +616,18 @@
         }
 
         function generateResultsHTML() {
-            const sections = calculateScores();
-            let html = '<div style="background: rgba(0,212,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 30px;">';
+            try {
+                const totalAnswered = Object.keys(responses).length;
+                const overallScore = Math.round((totalAnswered / 50) * 100);
 
-            const totalAnswered = Object.keys(responses).length;
-            const overallScore = Math.round((totalAnswered / allQuestions.length) * 100);
+                let html = `<p style="color: var(--cyan); font-size: 18px; margin-bottom: 20px;"><strong>Score General: ${overallScore}%</strong></p>`;
+                html += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
 
-            html += `<h2 style="color: var(--cyan); margin-bottom: 20px;">Score General: ${overallScore}%</h2>`;
-            html += `<p style="color: var(--silver); margin-bottom: 30px;">Preguntas respondidas: ${totalAnswered}/${allQuestions.length}</p>`;
-
-            html += '<h3 style="color: var(--green); margin-top: 30px; margin-bottom: 15px;">Análisis por Sección:</h3>';
-
-            for (let section in sections) {
-                const s = sections[section];
-                const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
-                html += `
-                    <div style="background: rgba(255,255,255,0.02); padding: 15px; margin-bottom: 12px; border-radius: 8px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <strong>${section}</strong>
-                            <span style="color: var(--cyan); font-weight: bold;">${sectionScore}%</span>
-                        </div>
-                        <div style="height: 6px; background: rgba(0,212,255,0.1); border-radius: 3px;">
-                            <div style="height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); width: ${sectionScore}%; border-radius: 3px;"></div>
-                        </div>
-                        <small style="color: var(--silver); opacity: 0.7; margin-top: 8px; display: block;">✓ ${s.si} | ⊘ ${s.parcial} | ✗ ${s.no}</small>
-                    </div>
-                `;
+                return html;
+            } catch (e) {
+                console.error('Error en generateResultsHTML:', e);
+                return '<p style="color: red;">Error generando resultados: ' + e.message + '</p>';
             }
-
-            html += '</div>';
-            return html;
         }
 
         function downloadPDF() {
