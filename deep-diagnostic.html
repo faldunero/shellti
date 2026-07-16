@@ -684,23 +684,69 @@
 
                 console.log('Formulario completado:', data);
 
-                // Mostrar resumen
+                // Generar reporte completo
                 const totalAnswered = Object.keys(responses).length;
                 const overallScore = Math.round((totalAnswered / 50) * 100);
 
-                let summaryHTML = `
-                    <div style="text-align: center; padding: 40px 20px;">
-                        <h2 style="color: var(--cyan); font-size: 28px; margin-bottom: 30px;">✅ Evaluación Completada</h2>
-                        <div style="background: rgba(0,212,255,0.1); padding: 40px; border-radius: 12px; margin-bottom: 30px;">
-                            <p style="color: var(--cyan); font-size: 24px; font-weight: bold; margin-bottom: 10px;">Score General</p>
-                            <p style="color: var(--green); font-size: 48px; font-weight: bold;">${overallScore}%</p>
-                            <p style="color: var(--silver); margin-top: 20px;">Preguntas respondidas: ${totalAnswered}/50</p>
+                // Calcular scores por sección
+                const sections = calculateScores();
+                let sectionHTML = '';
+                for (let section in sections) {
+                    const s = sections[section];
+                    const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
+                    sectionHTML += `
+                        <div style="background: rgba(255,255,255,0.02); padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <strong style="color: var(--cyan);">${section}</strong>
+                                <span style="color: var(--green); font-weight: bold;">${sectionScore}%</span>
+                            </div>
+                            <div style="height: 6px; background: rgba(0,212,255,0.1); border-radius: 3px;">
+                                <div style="height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); width: ${sectionScore}%; border-radius: 3px;"></div>
+                            </div>
                         </div>
-                        <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>
+                    `;
+                }
+
+                let reportHTML = `
+                    <div style="padding: 40px 20px; max-width: 1000px; margin: 0 auto;">
+                        <h1 style="color: var(--cyan); text-align: center; margin-bottom: 10px;">Informe de Evaluación</h1>
+                        <p style="text-align: center; color: var(--silver); margin-bottom: 40px;">Cumplimiento Ley N° 21.719 e ISO 27001:2022</p>
+
+                        <div style="background: rgba(0,212,255,0.1); padding: 30px; border-radius: 12px; margin-bottom: 40px;">
+                            <h2 style="color: var(--cyan); margin-bottom: 20px;">Score General</h2>
+                            <p style="font-size: 48px; color: var(--green); font-weight: bold; text-align: center; margin: 20px 0;">${overallScore}%</p>
+                            <p style="text-align: center; color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>
+                        </div>
+
+                        <div style="background: rgba(52,211,153,0.05); padding: 30px; border-radius: 12px; margin-bottom: 40px; border-left: 4px solid var(--green);">
+                            <h3 style="color: var(--green); margin-bottom: 15px;">Introducción</h3>
+                            <p style="color: var(--silver); line-height: 1.6;">
+                                Este informe evalúa el nivel de cumplimiento de su organización con respecto a la Ley N° 21.719 de Protección de Datos Personales en Chile e ISO/IEC 27001:2022.
+                                La evaluación cubre 50 aspectos críticos distribuidos en 10 áreas temáticas, desde gobernanza hasta retención de datos.
+                            </p>
+                        </div>
+
+                        <h3 style="color: var(--cyan); margin-bottom: 20px;">Análisis por Área</h3>
+                        ${sectionHTML}
+
+                        <div style="background: rgba(52,211,153,0.05); padding: 30px; border-radius: 12px; margin-top: 40px; border-left: 4px solid var(--green);">
+                            <h3 style="color: var(--green); margin-bottom: 15px;">Conclusión</h3>
+                            <p style="color: var(--silver); line-height: 1.6;">
+                                Con un score del <strong>${overallScore}%</strong>, su organización
+                                ${overallScore >= 80 ? 'demuestra un buen nivel de cumplimiento normativo. Se recomienda continuar con auditorías periódicas y mantener los controles implementados.' :
+                                  overallScore >= 60 ? 'tiene un nivel moderado de cumplimiento. Requiere acciones de mejora en las áreas identificadas.' :
+                                  'requiere mejoras significativas en el cumplimiento normativo. Se sugiere desarrollar un plan de acción prioritario.'}
+                            </p>
+                            <p style="color: var(--silver); margin-top: 15px; line-height: 1.6;">
+                                Descargue el informe completo para ver recomendaciones específicas por área.
+                            </p>
+                        </div>
+
+                        <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px; padding: 15px;">📥 Descargar Informe Completo PDF</button>
                     </div>
                 `;
 
-                document.querySelector('.container').innerHTML = summaryHTML;
+                document.querySelector('.container').innerHTML = reportHTML;
             } catch (error) {
                 console.error('Error:', error);
                 showError('Error al procesar: ' + error.message);
