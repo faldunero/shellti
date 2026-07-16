@@ -317,6 +317,7 @@
 
     <!-- Librería para generar PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <!-- Firebase temporalmente deshabilitado -->
     <!-- <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
@@ -622,14 +623,114 @@
             try {
                 const totalAnswered = Object.keys(responses).length;
                 const overallScore = Math.round((totalAnswered / 50) * 100);
+                const sections = calculateScores();
 
                 let html = `<p style="color: var(--cyan); font-size: 18px; margin-bottom: 20px;"><strong>Score General: ${overallScore}%</strong></p>`;
                 html += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
+
+                // Gráfico de score general (doughnut)
+                html += `<div style="margin-top: 40px;">
+                    <h3 style="color: var(--cyan); margin-bottom: 20px;">Cumplimiento General</h3>
+                    <div style="position: relative; width: 100%; max-width: 300px; margin: 0 auto;">
+                        <canvas id="overallChart"></canvas>
+                    </div>
+                </div>`;
+
+                // Gráfico de barras por área
+                html += `<div style="margin-top: 50px;">
+                    <h3 style="color: var(--cyan); margin-bottom: 20px;">Score por Área</h3>
+                    <div style="position: relative; width: 100%; height: 400px;">
+                        <canvas id="areasChart"></canvas>
+                    </div>
+                </div>`;
+
+                setTimeout(() => {
+                    renderCharts(sections, overallScore);
+                }, 100);
 
                 return html;
             } catch (e) {
                 console.error('Error en generateResultsHTML:', e);
                 return '<p style="color: red;">Error generando resultados: ' + e.message + '</p>';
+            }
+        }
+
+        function renderCharts(sections, overallScore) {
+            // Gráfico de doughnut (score general)
+            const overallCtx = document.getElementById('overallChart');
+            if (overallCtx) {
+                new Chart(overallCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Cumplimiento', 'Brecha'],
+                        datasets: [{
+                            data: [overallScore, 100 - overallScore],
+                            backgroundColor: [
+                                'rgba(52, 211, 153, 0.8)',
+                                'rgba(100, 116, 139, 0.3)'
+                            ],
+                            borderColor: ['#34D399', '#64748b'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#E2E8F0', font: { size: 14 } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Gráfico de barras por área
+            const areasCtx = document.getElementById('areasChart');
+            if (areasCtx) {
+                const labels = Object.keys(sections);
+                const data = Object.values(sections).map(s => s.score);
+                const colors = data.map(score => {
+                    if (score >= 80) return 'rgba(52, 211, 153, 0.8)';
+                    if (score >= 60) return 'rgba(255, 165, 0, 0.8)';
+                    return 'rgba(255, 107, 107, 0.8)';
+                });
+
+                new Chart(areasCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Score (%)',
+                            data: data,
+                            backgroundColor: colors,
+                            borderColor: colors.map(c => c.replace('0.8', '1')),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#E2E8F0', font: { size: 12 } }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { color: '#E2E8F0' },
+                                grid: { color: 'rgba(226, 232, 240, 0.1)' }
+                            },
+                            y: {
+                                ticks: { color: '#E2E8F0', font: { size: 12 } },
+                                grid: { color: 'rgba(226, 232, 240, 0.1)' }
+                            }
+                        }
+                    }
+                });
             }
         }
 
