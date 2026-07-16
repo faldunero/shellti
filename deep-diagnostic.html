@@ -632,6 +632,71 @@
             return sections;
         }
 
+        function analyzeAreaDetailed(section) {
+            const sectionQuestions = allQuestions.filter(q => q.section === section);
+            const sectionResponses = sectionQuestions.map(q => ({
+                question: q.question,
+                answer: responses[q.id] || 'No respondida',
+                id: q.id
+            }));
+
+            const noResponses = sectionResponses.filter(r => r.answer === 'No');
+            const parcialResponses = sectionResponses.filter(r => r.answer === 'Parcial');
+            const siResponses = sectionResponses.filter(r => r.answer === 'Sí');
+
+            // Calcular score real
+            const totalAnswered = sectionResponses.filter(r => r.answer !== 'N/A' && r.answer !== 'No respondida').length;
+            const scoreValue = totalAnswered > 0 ? Math.round(((siResponses.length * 100 + parcialResponses.length * 50) / (totalAnswered * 100)) * 100) : 0;
+
+            // Generar hallazgos
+            let findings = [];
+            if (noResponses.length > 0) {
+                findings.push(`Se identificaron ${noResponses.length} control(es) sin implementación: ${noResponses.map(r => r.question).join('; ')}`);
+            }
+            if (parcialResponses.length > 0) {
+                findings.push(`Se encontraron ${parcialResponses.length} control(es) parcialmente implementado(s) que requieren refuerzo`);
+            }
+
+            // Riesgo
+            let riskLevel = 'BAJO';
+            let riskDescription = 'Riesgo mínimo';
+            if (scoreValue < 40) {
+                riskLevel = 'CRÍTICO';
+                riskDescription = 'Incumplimiento severo con exposición regulatoria y de datos significativa';
+            } else if (scoreValue < 60) {
+                riskLevel = 'ALTO';
+                riskDescription = 'Brechas sustanciales en controles críticos';
+            } else if (scoreValue < 80) {
+                riskLevel = 'MEDIO';
+                riskDescription = 'Mejoras necesarias para cumplimiento robusto';
+            } else if (scoreValue < 100) {
+                riskLevel = 'BAJO';
+                riskDescription = 'Implementación sólida con mejoras menores';
+            }
+
+            return {
+                section: section,
+                score: scoreValue,
+                totalQuestions: sectionQuestions.length,
+                answered: totalAnswered,
+                siCount: siResponses.length,
+                parcialCount: parcialResponses.length,
+                noCount: noResponses.length,
+                currentState: scoreValue,
+                gap: 100 - scoreValue,
+                findings: findings,
+                riskLevel: riskLevel,
+                riskDescription: riskDescription,
+                priorityRecommendations: getPriorityRecommendations(section, noResponses, scoreValue)
+            };
+        }
+
+        function getPriorityRecommendations(section, failures, score) {
+            const recommendations = getAreaRecommendations(score, section);
+            // Retorna las primeras 3 recomendaciones más críticas
+            return recommendations.slice(0, 3);
+        }
+
         function generateResultsHTML() {
             try {
                 const sections = calculateScores();
@@ -881,29 +946,39 @@
             const areaDetails = getAreaDetails();
 
             for (let section in sections) {
-                const s = sections[section];
-                const sectionScore = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
-                const brecha = 100 - sectionScore;
+                const analysis = analyzeAreaDetailed(section);
                 const details = areaDetails[section] || {};
+                const brecha = analysis.gap;
 
                 html += `
-                    <div style="margin-bottom: 35px; page-break-inside: avoid; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+                    <div style="margin-bottom: 35px; page-break-inside: avoid; padding: 20px; border-radius: 8px; background: #fafafa;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h3 style="color: #00D4FF; margin: 0;">${section}</h3>
                             <div style="text-align: right;">
-                                <div style="font-size: 24px; font-weight: bold; color: ${sectionScore >= 80 ? '#34D399' : sectionScore >= 60 ? '#FFA500' : '#FF6B6B'};">${sectionScore}%</div>
+                                <div style="font-size: 24px; font-weight: bold; color: ${analysis.score >= 80 ? '#34D399' : analysis.score >= 60 ? '#FFA500' : '#FF6B6B'};">${analysis.score}%</div>
                                 <div style="font-size: 12px; color: #666;">Cumplimiento</div>
                             </div>
                         </div>
 
-                        <div style="background: #f5f5f5; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                        <div style="background: white; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                            <div style="margin-bottom: 8px;">
+                                <span style="font-weight: bold;">Estado Actual:</span> ${analysis.score}% implementado
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <span style="font-weight: bold;">Brecha Identificada:</span> <span style="color: #FF6B6B;">${brecha}% por cerrar</span>
+                            </div>
                             <div style="margin-bottom: 8px;">
                                 <span style="font-weight: bold;">Respuestas:</span>
-                                <span style="color: #34D399; margin-left: 10px;">${s.si}</span>
-                                <span style="color: #FFA500; margin-left: 10px;">⊘ ${s.parcial}</span>
-                                <span style="color: #FF6B6B; margin-left: 10px;">✗ ${s.no}</span>
+                                <span style="color: #34D399; margin-left: 10px;">Sí: ${analysis.siCount}</span>
+                                <span style="color: #FFA500; margin-left: 10px;">Parcial: ${analysis.parcialCount}</span>
+                                <span style="color: #FF6B6B; margin-left: 10px;">No: ${analysis.noCount}</span>
                             </div>
-                            <div><span style="font-weight: bold;">Brecha:</span> <span style="color: #FF6B6B;">${brecha}%</span></div>
+                            <div>
+                                <span style="font-weight: bold;">Nivel de Riesgo:</span>
+                                <span style="background: ${analysis.riskLevel === 'CRÍTICO' ? '#FF6B6B' : analysis.riskLevel === 'ALTO' ? '#FFA500' : analysis.riskLevel === 'MEDIO' ? '#FFD700' : '#34D399'}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px;">
+                                    ${analysis.riskLevel}
+                                </span>
+                            </div>
                         </div>
 
                         <div style="margin-bottom: 15px;">
@@ -922,17 +997,22 @@
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <p style="font-weight: bold; margin: 0 0 8px 0;">Hallazgos Clave:</p>
+                            <p style="font-weight: bold; margin: 0 0 8px 0;">Hallazgos de la Evaluación:</p>
+                            <div style="background: #fff3cd; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
+                                <p style="margin: 0; color: #666; font-size: 13px;">${analysis.riskDescription}</p>
+                            </div>
+                            ${analysis.findings.length > 0 ? `
                             <ul style="margin: 0; padding-left: 20px; color: #444; font-size: 13px;">
-                                ${details.findings.map(f => `<li>${f}</li>`).join('')}
+                                ${analysis.findings.map(f => `<li style="margin-bottom: 6px;">${f}</li>`).join('')}
                             </ul>
+                            ` : '<p style="margin: 0; color: #666; font-size: 13px;">No se identificaron brechas significativas en esta área.</p>'}
                         </div>
 
                         <div>
-                            <p style="font-weight: bold; margin: 0 0 8px 0;">Plan de Acción Recomendado:</p>
-                            <ul style="margin: 0; padding-left: 20px; color: #444; font-size: 13px;">
-                                ${getAreaRecommendations(sectionScore, section).map(r => `<li>${r}</li>`).join('')}
-                            </ul>
+                            <p style="font-weight: bold; margin: 0 0 8px 0;">Acciones Prioritarias:</p>
+                            <ol style="margin: 0; padding-left: 20px; color: #444; font-size: 13px;">
+                                ${analysis.priorityRecommendations.map(r => `<li style="margin-bottom: 6px;">${r}</li>`).join('')}
+                            </ol>
                         </div>
                     </div>
                 `;
