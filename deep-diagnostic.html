@@ -685,24 +685,22 @@
                 console.log('Formulario completado:', data);
 
                 // Mostrar resumen
-                console.log('Mostrando resumen...');
-
                 const totalAnswered = Object.keys(responses).length;
                 const overallScore = Math.round((totalAnswered / 50) * 100);
 
-                let summaryHTML = `<h3>✅ Evaluación completada</h3>`;
-                summaryHTML += `<div style="margin-top: 30px; padding: 20px; background: rgba(0,212,255,0.05); border-radius: 12px;">`;
-                summaryHTML += `<p style="color: var(--cyan); font-size: 20px; font-weight: bold;">Score General: ${overallScore}%</p>`;
-                summaryHTML += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
-                summaryHTML += `</div>`;
-                summaryHTML += `<button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>`;
+                let summaryHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <h2 style="color: var(--cyan); font-size: 28px; margin-bottom: 30px;">✅ Evaluación Completada</h2>
+                        <div style="background: rgba(0,212,255,0.1); padding: 40px; border-radius: 12px; margin-bottom: 30px;">
+                            <p style="color: var(--cyan); font-size: 24px; font-weight: bold; margin-bottom: 10px;">Score General</p>
+                            <p style="color: var(--green); font-size: 48px; font-weight: bold;">${overallScore}%</p>
+                            <p style="color: var(--silver); margin-top: 20px;">Preguntas respondidas: ${totalAnswered}/50</p>
+                        </div>
+                        <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">📥 Descargar Informe PDF</button>
+                    </div>
+                `;
 
-                document.getElementById('questionsSection').style.display = 'none';
-                const summary = document.getElementById('summary');
-                summary.innerHTML = summaryHTML;
-                summary.style.display = 'block';
-
-                setTimeout(() => window.scrollTo(0, 300), 100);
+                document.querySelector('.container').innerHTML = summaryHTML;
             } catch (error) {
                 console.error('Error:', error);
                 showError('Error al procesar: ' + error.message);
