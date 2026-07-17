@@ -10,56 +10,80 @@
             --green: #34D399;
             --deep: #020617;
             --silver: #E2E8F0;
+            --muted: #94A3B8;
         }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        html, body {
+            height: 100%;
+        }
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, var(--deep) 0%, #1a2332 100%);
             color: var(--silver);
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
         }
+
+        /* HEADER */
         .site-header {
             background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-            padding: 20px 0;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
-        .header-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .header-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
         }
-        .header-content h1 {
-            font-size: 24px;
-            color: var(--cyan);
-            margin: 0;
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
-        .header-content p {
-            margin: 5px 0 0 0;
+        .header-brand-name {
+            font-weight: 800;
+            font-size: 1.1rem;
             color: var(--silver);
-            opacity: 0.8;
-            font-size: 14px;
+            letter-spacing: -0.5px;
         }
+        .header-brand-name span {
+            color: var(--cyan);
+        }
+        .header-brand-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
         main {
+            flex: 1;
             padding: 40px 20px;
         }
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 16px;
+            border-radius: 8px;
             padding: 40px;
         }
+
+        /* FORM STYLING - NO BORDERS */
         .auth-section {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid var(--cyan);
-            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.03);
+            border-radius: 8px;
             padding: 24px;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 16px;
@@ -69,81 +93,95 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--cyan);
+            font-size: 13px;
         }
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 10px 12px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--cyan);
-            border-radius: 8px;
+            border: none;
+            border-radius: 4px;
             color: var(--silver);
+            font-size: 13px;
         }
         .form-group input::placeholder {
-            color: rgba(226, 232, 240, 0.5);
+            color: rgba(226, 232, 240, 0.4);
         }
+        .form-group input:focus {
+            outline: none;
+            background: rgba(0, 212, 255, 0.08);
+        }
+
         .btn {
             padding: 12px 24px;
-            background: var(--cyan);
+            background: linear-gradient(135deg, var(--cyan), var(--cyan2, var(--cyan)));
             color: var(--deep);
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 4px;
+            font-weight: 700;
             cursor: pointer;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
         }
         .btn:hover {
-            background: var(--green);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 212, 255, 0.25);
         }
         .btn-secondary {
             background: transparent;
-            border: 1px solid var(--cyan);
             color: var(--cyan);
+            padding: 10px 20px;
         }
         .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.1);
+            background: rgba(0, 212, 255, 0.08);
         }
+
         .section {
             margin-bottom: 30px;
         }
         .section h3 {
             color: var(--cyan);
             margin-bottom: 20px;
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 700;
         }
         .question-item {
             background: rgba(255, 255, 255, 0.02);
             padding: 20px;
             margin-bottom: 16px;
-            border-radius: 8px;
+            border-radius: 6px;
         }
         .question-text {
             margin-bottom: 12px;
             font-weight: 500;
             color: var(--silver);
+            font-size: 13px;
         }
         .options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
             margin-top: 12px;
         }
         .option-label {
             display: flex;
             align-items: center;
-            padding: 10px;
+            padding: 8px 10px;
             background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 12px;
         }
         .option-label:hover {
             background: rgba(0, 212, 255, 0.1);
-            border-color: rgba(0, 212, 255, 0.4);
         }
         .option-label input {
-            margin-right: 8px;
+            margin-right: 6px;
             cursor: pointer;
         }
+
         .progress-section {
             display: flex;
             justify-content: space-between;
@@ -189,6 +227,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
             margin-bottom: 12px;
+            overflow: hidden;
         }
         .progress-fill {
             height: 100%;
@@ -199,58 +238,208 @@
         }
         .progress-text {
             font-size: 12px;
-            color: var(--silver);
-            opacity: 0.8;
+            color: var(--muted);
         }
+
         .navigation {
             display: flex;
             gap: 12px;
-            justify-content: space-between;
+            justify-content: center;
             margin-top: 30px;
         }
         .nav-btn {
-            flex: 1;
+            padding: 10px 20px;
+            font-size: 12px;
         }
+
         .summary {
-            background: rgba(52, 211, 153, 0.1);
-            border: 1px solid var(--green);
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 30px;
-            text-align: center;
+            margin-top: 40px;
         }
         .summary h3 {
-            color: var(--green);
-            margin-bottom: 10px;
+            color: var(--cyan);
+            margin-bottom: 30px;
+            font-size: 18px;
+            text-align: center;
         }
+
+        /* RESULTS STYLING */
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .overall-score {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -1px;
+        }
+        .overall-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 8px;
+        }
+
+        .analysis-section {
+            margin-bottom: 40px;
+        }
+        .analysis-title {
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .domain-card {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+        }
+        .domain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .domain-name {
+            font-weight: 600;
+            color: var(--silver);
+            font-size: 13px;
+        }
+        .domain-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .score-ok { color: var(--green); }
+        .score-warn { color: #F59E0B; }
+        .score-danger { color: #FF6B6B; }
+
+        .semaforo {
+            display: flex;
+            gap: 4px;
+            margin-left: 12px;
+        }
+        .semaforo-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .semaforo-ok { background: var(--green); }
+        .semaforo-warn { background: #F59E0B; }
+        .semaforo-danger { background: #FF6B6B; }
+
+        .score-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .score-bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .score-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--cyan));
+            border-radius: 3px;
+        }
+        .score-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .findings-list {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 12px;
+        }
+        .findings-item {
+            margin: 6px 0;
+            padding-left: 12px;
+            text-align: justify;
+        }
+        .findings-item::before {
+            content: "→ ";
+            color: var(--cyan);
+            margin-right: 4px;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+        .risk-critical {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+        .risk-high {
+            background: rgba(255, 165, 0, 0.2);
+            color: #F59E0B;
+        }
+        .risk-medium {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+        }
+        .risk-low {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--green);
+        }
+
+        /* FOOTER */
+        .site-footer {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+            padding: 30px 40px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--muted);
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: auto;
+        }
+        .site-footer p {
+            margin: 4px 0;
+        }
+
         .error {
             background: rgba(255, 107, 107, 0.1);
-            border: 1px solid #FF6B6B;
             color: #FF6B6B;
             padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            text-align: justify;
             display: none;
         }
         .error.show {
             display: block;
         }
-        .site-footer {
-            background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
-            border-top: 1px solid rgba(0, 212, 255, 0.1);
-            padding: 30px 20px;
-            color: var(--silver);
-            opacity: 0.7;
-            text-align: center;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
     <header class="site-header">
-        <div class="header-content">
-            <h1>ShellTI</h1>
-            <p>Deep Diagnostic - Evaluación de Cumplimiento Ley 21.719</p>
+        <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" class="header-logo">
+        <div class="header-brand">
+            <div class="header-brand-name">Shell<span>TI</span></div>
+            <div class="header-brand-sub">.com · Digital Ecosystems</div>
         </div>
     </header>
 
@@ -259,7 +448,7 @@
             <div class="error" id="errorMessage"></div>
 
             <div class="auth-section" id="authSection">
-                <h2 style="color: var(--cyan); margin-bottom: 20px;">Acceso</h2>
+                <h2 style="color: var(--cyan); margin-bottom: 20px; font-size: 16px;">Acceso a Evaluación</h2>
                 <div class="form-group">
                     <label>Empresa *</label>
                     <input type="text" id="empresa" required>
@@ -296,32 +485,27 @@
 
                     <div class="navigation">
                         <button type="button" class="btn btn-secondary nav-btn" onclick="prevQuestion()" id="prevBtn" style="display:none;">← Anterior</button>
-                        <button type="submit" class="btn nav-btn" id="submitBtn" style="display:none;">Enviar</button>
+                        <button type="submit" class="btn nav-btn" id="submitBtn" style="display:none;">Enviar Evaluación</button>
                         <button type="button" class="btn nav-btn" onclick="nextQuestion()" id="nextBtn" style="display:none;">Siguiente →</button>
                     </div>
                 </form>
 
                 <div class="summary" id="summary" style="display:none;">
-                    <h3>Evaluación completada</h3>
+                    <h3>Evaluación Completada</h3>
                     <div id="resultsContent" style="margin-top: 30px; text-align: left;"></div>
-                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 30px;">Descargar Informe PDF</button>
+                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF Completo</button>
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="site-footer">
-        <p>&copy; 2026 ShellTI Technology Consultancy. Todos los derechos reservados.</p>
-        <p>Ley N° 21.719 - Protección de Datos Personales</p>
+        <p>Deep Diagnostic — Evaluación de Cumplimiento Ley N° 21.719 e ISO/IEC 27001:2022</p>
+        <p>© 2026 ShellTI Technology Consultancy · Todos los derechos reservados</p>
     </footer>
 
-    <!-- Librería para generar PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <!-- Firebase temporalmente deshabilitado -->
-    <!-- <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script async defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script> -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
@@ -332,13 +516,11 @@
             appId: "1:808197164295:web:4d863b69d6df9ee3e249a2"
         };
 
-        let db, clientData = {};
+        let clientData = {};
         let currentPage = 0;
         const questionsPerPage = 5;
         let allQuestions = [];
         let responses = {};
-
-        // Analysis
         let analysisContent = null;
 
         const questionMappings = {
@@ -397,491 +579,312 @@
         const questions = [
             // I. Gobernanza (5)
             { section: "I. Gobernanza", text: "¿Tiene usted una Política documentada de protección de datos?" },
-            { section: "I. Gobernanza", text: "¿Tiene usted un Responsable de protección de datos designado?" },
-            { section: "I. Gobernanza", text: "¿Cuenta con Auditorías internas de cumplimiento?" },
-            { section: "I. Gobernanza", text: "¿Existe un Registro de tratamiento de datos personales?" },
-            { section: "I. Gobernanza", text: "¿Tiene políticas de privacidad actualizadas?" },
+            { section: "I. Gobernanza", text: "¿Ha designado un Responsable o Oficial de Protección de Datos (DPO)?" },
+            { section: "I. Gobernanza", text: "¿Realiza auditorías internas periódicas sobre cumplimiento?" },
+            { section: "I. Gobernanza", text: "¿Mantiene un Registro de Actividades de Tratamiento (RAT) actualizado?" },
+            { section: "I. Gobernanza", text: "¿Revisa y actualiza regularmente sus políticas de privacidad?" },
 
             // II. Seguridad Técnica (5)
-            { section: "II. Seguridad Técnica", text: "¿Implementa cifrado de datos en reposo?" },
-            { section: "II. Seguridad Técnica", text: "¿Utiliza cifrado en tránsito (HTTPS/TLS)?" },
-            { section: "II. Seguridad Técnica", text: "¿Tiene controles de acceso basados en roles?" },
-            { section: "II. Seguridad Técnica", text: "¿Implementa autenticación multifactor?" },
-            { section: "II. Seguridad Técnica", text: "¿Mantiene logs de acceso a datos personales?" },
+            { section: "II. Seguridad Técnica", text: "¿Cifra datos personales en reposo?" },
+            { section: "II. Seguridad Técnica", text: "¿Utiliza HTTPS/TLS para toda comunicación de datos personales?" },
+            { section: "II. Seguridad Técnica", text: "¿Implementa control de acceso basado en roles (RBAC)?" },
+            { section: "II. Seguridad Técnica", text: "¿Requiere autenticación multifactor (MFA) para acceso crítico?" },
+            { section: "II. Seguridad Técnica", text: "¿Registra y monitorea acceso a datos personales?" },
 
             // III. Gestión de Incidentes (5)
-            { section: "III. Gestión de Incidentes", text: "¿Tiene un Plan de respuesta a brechas de datos?" },
-            { section: "III. Gestión de Incidentes", text: "¿Realiza notificaciones oportunas de incidentes?" },
-            { section: "III. Gestión de Incidentes", text: "¿Tiene procesos de investigación de incidentes?" },
-            { section: "III. Gestión de Incidentes", text: "¿Mantiene registro de incidentes históricos?" },
+            { section: "III. Gestión de Incidentes", text: "¿Tiene un plan documentado de respuesta a brechas de datos?" },
+            { section: "III. Gestión de Incidentes", text: "¿Notifica brechas de datos en el plazo de 72 horas?" },
+            { section: "III. Gestión de Incidentes", text: "¿Realiza investigaciones formales de incidentes de seguridad?" },
+            { section: "III. Gestión de Incidentes", text: "¿Mantiene registro histórico de incidentes?" },
             { section: "III. Gestión de Incidentes", text: "¿Realiza análisis post-incidente (lecciones aprendidas)?" },
 
-            // IV. Derechos de los Titulares (5)
-            { section: "IV. Derechos de los Titulares", text: "¿Facilita acceso a datos personales solicitados?" },
-            { section: "IV. Derechos de los Titulares", text: "¿Permite rectificación de datos inexactos?" },
-            { section: "IV. Derechos de los Titulares", text: "¿Implementa derecho a supresión ('derecho al olvido')?" },
-            { section: "IV. Derechos de los Titulares", text: "¿Permite limitación del tratamiento de datos?" },
-            { section: "IV. Derechos de los Titulares", text: "¿Ofrece portabilidad de datos?" },
+            // IV. Derechos de Titulares (5)
+            { section: "IV. Derechos de Titulares", text: "¿Facilita acceso a datos personales solicitados?" },
+            { section: "IV. Derechos de Titulares", text: "¿Permite rectificación de datos personales?" },
+            { section: "IV. Derechos de Titulares", text: "¿Implementa derecho al olvido (supresión)?" },
+            { section: "IV. Derechos de Titulares", text: "¿Limita el tratamiento cuando se solicita?" },
+            { section: "IV. Derechos de Titulares", text: "¿Facilita portabilidad de datos?" },
 
-            // V. Consentimiento y Transparencia (5)
+            // V. Consentimiento (5)
             { section: "V. Consentimiento y Transparencia", text: "¿Obtiene consentimiento explícito previo?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Proporciona información clara sobre tratamiento?" },
-            { section: "V. Consentimiento y Transparencia", text: "¿Documenta todas las bases legales de tratamiento?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Documenta bases legales del tratamiento?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Informa sobre derechos disponibles?" },
-            { section: "V. Consentimiento y Transparencia", text: "¿Tiene declaraciones de privacidad accesibles?" },
+            { section: "V. Consentimiento y Transparencia", text: "¿Mantiene declaraciones de privacidad accesibles?" },
 
             // VI. Evaluación de Impacto (5)
-            { section: "VI. Evaluación de Impacto", text: "¿Realiza Evaluaciones de Impacto en privacidad?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Realiza Evaluación de Impacto en Privacidad (DPIA)?" },
             { section: "VI. Evaluación de Impacto", text: "¿Evalúa riesgos antes de nuevos tratamientos?" },
-            { section: "VI. Evaluación de Impacto", text: "¿Documentan análisis de riesgos?" },
-            { section: "VI. Evaluación de Impacto", text: "¿Implementan medidas mitigantes identificadas?" },
-            { section: "VI. Evaluación de Impacto", text: "¿Revisan evaluaciones periódicamente?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Documenta análisis de riesgos?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Implementa medidas mitigantes identificadas?" },
+            { section: "VI. Evaluación de Impacto", text: "¿Revisa periódicamente evaluaciones de impacto?" },
 
-            // VII. Personal y Capacitación (5)
-            { section: "VII. Personal y Capacitación", text: "¿Capacita a personal sobre protección de datos?" },
-            { section: "VII. Personal y Capacitación", text: "¿Tienen clausulas de confidencialidad en contratos?" },
-            { section: "VII. Personal y Capacitación", text: "¿Implementan segregación de funciones?" },
-            { section: "VII. Personal y Capacitación", text: "¿Revisan permisos de acceso regularmente?" },
-            { section: "VII. Personal y Capacitación", text: "¿Hay políticas de acceso remoto seguro?" },
+            // VII. Personal (5)
+            { section: "VII. Personal y Capacitación", text: "¿Capacita al personal en protección de datos?" },
+            { section: "VII. Personal y Capacitación", text: "¿Incluye cláusulas de confidencialidad en contratos?" },
+            { section: "VII. Personal y Capacitación", text: "¿Implementa segregación de funciones?" },
+            { section: "VII. Personal y Capacitación", text: "¿Revisa periódicamente permisos de acceso?" },
+            { section: "VII. Personal y Capacitación", text: "¿Tiene políticas de acceso remoto seguro?" },
 
             // VIII. Transferencias Internacionales (5)
-            { section: "VIII. Transferencias Internacionales", text: "¿Evalúan destinos de transferencia de datos?" },
-            { section: "VIII. Transferencias Internacionales", text: "¿Utilizan cláusulas contractuales estándar?" },
-            { section: "VIII. Transferencias Internacionales", text: "¿Cumplen con restricciones de destinos?" },
-            { section: "VIII. Transferencias Internacionales", text: "¿Tienen acuerdos de procesamiento de datos?" },
-            { section: "VIII. Transferencias Internacionales", text: "¿Notifican sobre transferencias a terceros?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Evalúa destinos de transferencia de datos?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Utiliza cláusulas contractuales estándar?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Cumple restricciones de destinos de transferencia?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Tiene acuerdos de procesamiento de datos (DPA)?" },
+            { section: "VIII. Transferencias Internacionales", text: "¿Notifica sobre transferencias a terceros países?" },
 
-            // IX. Terceros y Proveedores (5)
-            { section: "IX. Terceros y Proveedores", text: "¿Evalúan proveedores antes de contratar?" },
-            { section: "IX. Terceros y Proveedores", text: "¿Tienen contratos que garanticen protección?" },
-            { section: "IX. Terceros y Proveedores", text: "¿Auditan proveedores regularmente?" },
-            { section: "IX. Terceros y Proveedores", text: "¿Tienen clausulas de terminación en contratos?" },
-            { section: "IX. Terceros y Proveedores", text: "¿Controlan subcontratistas de proveedores?" },
+            // IX. Terceros (5)
+            { section: "IX. Terceros y Proveedores", text: "¿Evalúa proveedores de seguridad y privacidad?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Incluye cláusulas de protección en contratos?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Audita proveedores regularmente?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Incluye cláusulas de terminación en contratos?" },
+            { section: "IX. Terceros y Proveedores", text: "¿Controla subcontratistas?" },
 
-            // X. Cumplimiento y Documentación (5)
-            { section: "X. Cumplimiento y Documentación", text: "¿Mantienen Registro de Actividades de Tratamiento?" },
-            { section: "X. Cumplimiento y Documentación", text: "¿Documentan decisiones sobre privacidad?" },
-            { section: "X. Cumplimiento y Documentación", text: "¿Tienen procedimientos documentados?" },
-            { section: "X. Cumplimiento y Documentación", text: "¿Realizan auditorías externas periódicamente?" },
-            { section: "X. Cumplimiento y Documentación", text: "¿Cumplen con obligaciones de retención de datos?" }
+            // X. Cumplimiento (5)
+            { section: "X. Cumplimiento y Documentación", text: "¿Mantiene Registro de Actividades de Tratamiento (RAT)?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Documenta decisiones sobre privacidad?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Tiene procedimientos documentados?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Realiza auditorías externas periódicas?" },
+            { section: "X. Cumplimiento y Documentación", text: "¿Cumple con obligaciones de retención de datos?" }
         ];
 
-        window.addEventListener('load', function() {
-            // Firebase temporalmente deshabilitado
-            // firebase.initializeApp(firebaseConfig);
-            // db = firebase.database();
-            allQuestions = questions.map((q, idx) => ({
-                ...q,
-                id: `q${idx + 1}`
-            }));
-        });
-
-        function showError(msg) {
-            const el = document.getElementById('errorMessage');
-            el.textContent = msg;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 3000);
-        }
-
         function authenticate() {
-            const empresa = document.getElementById('empresa').value;
-            const email = document.getElementById('email').value;
-            const token = document.getElementById('token').value;
+            const empresa = document.getElementById('empresa').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const token = document.getElementById('token').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
 
             if (!empresa || !email || !token) {
-                showError('Completa todos los campos');
+                errorDiv.textContent = 'Por favor completa todos los campos';
+                errorDiv.classList.add('show');
                 return;
             }
 
             if (!token.startsWith('shellti-client-')) {
-                showError('Token inválido');
+                errorDiv.textContent = 'Token inválido. Debe comenzar con shellti-client-';
+                errorDiv.classList.add('show');
                 return;
             }
 
             clientData = { empresa, email, token };
-            renderQuestions();
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('questionsSection').style.display = 'block';
-            updateProgress();
+            errorDiv.classList.remove('show');
+
+            allQuestions = questions.map((q, i) => ({ ...q, id: `q${i + 1}` }));
+            document.getElementById('totalQuestions').textContent = allQuestions.length;
+
+            renderQuestions();
         }
 
         function renderQuestions() {
             const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
             const start = currentPage * questionsPerPage;
-            const end = start + questionsPerPage;
+            const end = Math.min(start + questionsPerPage, allQuestions.length);
             const pageQuestions = allQuestions.slice(start, end);
 
-            let html = '';
-            let currentSection = '';
-
-            pageQuestions.forEach(q => {
-                if (q.section !== currentSection) {
-                    currentSection = q.section;
-                    html += `<div class="section"><h3>${currentSection}</h3>`;
-                }
-
-                const value = getQuestionValue(q.id);
-                html += `
+            pageQuestions.forEach((q, idx) => {
+                const section = idx === 0 ? `<h3 class="section">${q.section}</h3>` : '';
+                const html = `
+                    ${section}
                     <div class="question-item">
-                        <div class="question-text">${q.text} *</div>
+                        <div class="question-text">${q.text}</div>
                         <div class="options">
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Si" ${value === 'Si' ? 'checked' : ''} required onchange="saveResponse('${q.id}', 'Si')">
-                                Sí
+                                <input type="radio" name="${q.id}" value="Sí" ${responses[q.id] === 'Sí' ? 'checked' : ''}>
+                                <span>Sí</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Parcial" ${value === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'Parcial')">
-                                Parcial
+                                <input type="radio" name="${q.id}" value="Parcial" ${responses[q.id] === 'Parcial' ? 'checked' : ''}>
+                                <span>Parcial</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="No" ${value === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'No')">
-                                No
+                                <input type="radio" name="${q.id}" value="No" ${responses[q.id] === 'No' ? 'checked' : ''}>
+                                <span>No</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="NA" ${value === 'NA' ? 'checked' : ''} onchange="saveResponse('${q.id}', 'NA')">
-                                N/A
+                                <input type="radio" name="${q.id}" value="N/A" ${responses[q.id] === 'N/A' ? 'checked' : ''}>
+                                <span>N/A</span>
                             </label>
                         </div>
                     </div>
                 `;
+                container.innerHTML += html;
             });
 
-            if (pageQuestions.length > 0) {
-                html += '</div>';
-            }
-
-            container.innerHTML = html;
-            updateNavigation();
             updateProgress();
-        }
-
-        function getQuestionValue(questionId) {
-            return responses[questionId] || '';
-        }
-
-        function saveResponse(questionId, value) {
-            responses[questionId] = value;
-            updateProgress();
-        }
-
-        function updateNavigation() {
-            const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-
-            prevBtn.style.display = currentPage > 0 ? 'block' : 'none';
-            nextBtn.style.display = currentPage < totalPages - 1 ? 'block' : 'none';
-            submitBtn.style.display = currentPage === totalPages - 1 ? 'block' : 'none';
+            updateButtons();
         }
 
         function updateProgress() {
-            const totalQuestions = allQuestions.length;
-            const answeredQuestions = allQuestions.filter(q => getQuestionValue(q.id)).length;
-            const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
-            const angleInDegrees = (percentage / 100) * 360;
+            const answered = Object.keys(responses).filter(id => responses[id] && responses[id] !== 'N/A').length;
+            const percent = Math.round((answered / allQuestions.length) * 100);
+            const angle = (percent / 100) * 360;
 
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('currentQuestion').textContent = answeredQuestions;
-            document.getElementById('totalQuestions').textContent = totalQuestions;
-            document.getElementById('progressPercent').textContent = percentage + '%';
-
-            // Actualizar círculo de progreso
-            document.getElementById('progressCircle').style.setProperty('--progress-angle', angleInDegrees + 'deg');
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressCircle').style.setProperty('--progress-angle', angle + 'deg');
+            document.getElementById('currentQuestion').textContent = answered;
         }
 
-        function nextQuestion() {
-            const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
-            if (currentPage < totalPages - 1) {
-                currentPage++;
-                renderQuestions();
-                window.scrollTo(0, 0);
-            }
+        function updateButtons() {
+            document.getElementById('prevBtn').style.display = currentPage > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = currentPage < Math.ceil(allQuestions.length / questionsPerPage) - 1 ? 'block' : 'none';
+            document.getElementById('submitBtn').style.display = currentPage === Math.ceil(allQuestions.length / questionsPerPage) - 1 ? 'block' : 'none';
         }
 
         function prevQuestion() {
-            if (currentPage > 0) {
-                currentPage--;
+            if (currentPage > 0) currentPage--;
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextQuestion() {
+            const start = currentPage * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, allQuestions.length);
+            for (let i = start; i < end; i++) {
+                const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
+                if (checked) responses[`q${i + 1}`] = checked.value;
+            }
+
+            if (currentPage < Math.ceil(allQuestions.length / questionsPerPage) - 1) {
+                currentPage++;
                 renderQuestions();
-                window.scrollTo(0, 0);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
+
+        document.getElementById('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const start = currentPage * questionsPerPage;
+            const end = Math.min(start + questionsPerPage, allQuestions.length);
+            for (let i = start; i < end; i++) {
+                const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
+                if (checked) responses[`q${i + 1}`] = checked.value;
+            }
+
+            const sections = calculateScores();
+            const scores = Object.values(sections).map(s => s.score);
+            const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+
+            document.getElementById('questionsSection').style.display = 'none';
+            document.getElementById('summary').style.display = 'block';
+
+            let resultsHTML = `
+                <div class="results-header">
+                    <div class="overall-score">${overallScore}%</div>
+                    <div class="overall-label">Cumplimiento General</div>
+                </div>
+
+                <div class="analysis-section">
+                    <div class="analysis-title">Resultados por Dominio</div>
+            `;
+
+            for (const [section, data] of Object.entries(sections)) {
+                const riskClass = data.score >= 80 ? 'risk-low' : data.score >= 60 ? 'risk-medium' : data.score >= 40 ? 'risk-high' : 'risk-critical';
+                const semaforoClass = data.score >= 80 ? 'semaforo-ok' : data.score >= 60 ? 'semaforo-warn' : 'semaforo-danger';
+
+                resultsHTML += `
+                    <div class="domain-card">
+                        <div class="domain-header">
+                            <span class="domain-name">${section}</span>
+                            <div style="display: flex; align-items: center;">
+                                <span class="domain-score score-${semaforoClass === 'semaforo-ok' ? 'ok' : semaforoClass === 'semaforo-warn' ? 'warn' : 'danger'}">${data.score}%</span>
+                                <div class="semaforo">
+                                    <div class="semaforo-dot ${semaforoClass}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-track">
+                                <div class="score-bar-fill" style="width: ${data.score}%; background: ${semaforoClass === 'semaforo-ok' ? 'var(--green)' : semaforoClass === 'semaforo-warn' ? '#F59E0B' : '#FF6B6B'};"></div>
+                            </div>
+                            <div class="score-value">${data.score}%</div>
+                        </div>
+                        ${data.findings.length > 0 ? `<div class="findings-list">${data.findings.map(f => `<div class="findings-item">${f}</div>`).join('')}</div>` : ''}
+                        <div class="risk-badge ${riskClass}">Riesgo: ${data.riskLevel}</div>
+                    </div>
+                `;
+            }
+
+            resultsHTML += `
+                </div>
+                <p style="font-size: 12px; color: var(--muted); margin-top: 30px; text-align: justify;">
+                    Descarga el informe PDF para análisis técnico detallado por dominio, mappeo a Ley 21.719 e ISO 27001:2022,
+                    matriz de riesgos y roadmap de implementación de 12 meses.
+                </p>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+        });
 
         function calculateScores() {
             const sections = {};
-            allQuestions.forEach(q => {
-                if (!sections[q.section]) {
-                    sections[q.section] = { total: 0, si: 0, parcial: 0, no: 0, na: 0, score: 0 };
-                }
-                const answer = responses[q.id];
-                if (answer !== 'N/A' && answer) {
-                    sections[q.section].total++;
-                    if (answer === 'Si') sections[q.section].si++;
-                    else if (answer === 'Parcial') sections[q.section].parcial++;
-                    else if (answer === 'No') sections[q.section].no++;
-                } else if (answer === 'N/A') {
-                    sections[q.section].na++;
-                }
+
+            allQuestions.forEach((q, idx) => {
+                const sectionName = q.section;
+                if (!sections[sectionName]) sections[sectionName] = [];
+                sections[sectionName].push({ id: q.id, question: q.text, answer: responses[q.id] || 'No respondida' });
             });
 
-            // Calcular scores: Si=100%, Parcial=50%, No=0%
-            Object.keys(sections).forEach(section => {
-                const s = sections[section];
-                if (s.total > 0) {
-                    s.score = Math.round(((s.si * 100 + s.parcial * 50) / (s.total * 100)) * 100);
+            const result = {};
+            for (const [section, sectionResponses] of Object.entries(sections)) {
+                const siResponses = sectionResponses.filter(r => r.answer === 'Sí');
+                const parcialResponses = sectionResponses.filter(r => r.answer === 'Parcial');
+                const noResponses = sectionResponses.filter(r => r.answer === 'No');
+
+                const totalAnswered = sectionResponses.filter(r => r.answer !== 'N/A' && r.answer !== 'No respondida').length;
+                const scoreValue = totalAnswered > 0 ? Math.round(((siResponses.length * 100 + parcialResponses.length * 50) / (totalAnswered * 100)) * 100) : 0;
+
+                let findings = [];
+                if (noResponses.length > 0) {
+                    findings.push(`${noResponses.length} control(es) sin implementación`);
                 }
-            });
-
-            return sections;
-        }
-
-        function analyzeAreaDetailed(section) {
-            const sectionQuestions = allQuestions.filter(q => q.section === section);
-            const sectionResponses = sectionQuestions.map(q => ({
-                question: q.question,
-                answer: responses[q.id] || 'No respondida',
-                id: q.id
-            }));
-
-            const noResponses = sectionResponses.filter(r => r.answer === 'No');
-            const parcialResponses = sectionResponses.filter(r => r.answer === 'Parcial');
-            const siResponses = sectionResponses.filter(r => r.answer === 'Sí');
-
-            // Calcular score real
-            const totalAnswered = sectionResponses.filter(r => r.answer !== 'N/A' && r.answer !== 'No respondida').length;
-            const scoreValue = totalAnswered > 0 ? Math.round(((siResponses.length * 100 + parcialResponses.length * 50) / (totalAnswered * 100)) * 100) : 0;
-
-            // Generar hallazgos
-            let findings = [];
-            if (noResponses.length > 0) {
-                findings.push(`Se identificaron ${noResponses.length} control(es) sin implementación: ${noResponses.map(r => r.question).join('; ')}`);
-            }
-            if (parcialResponses.length > 0) {
-                findings.push(`Se encontraron ${parcialResponses.length} control(es) parcialmente implementado(s) que requieren refuerzo`);
-            }
-
-            // Riesgo
-            let riskLevel = 'BAJO';
-            let riskDescription = 'Riesgo mínimo';
-            if (scoreValue < 40) {
-                riskLevel = 'CRÍTICO';
-                riskDescription = 'Incumplimiento severo con exposición regulatoria y de datos significativa';
-            } else if (scoreValue < 60) {
-                riskLevel = 'ALTO';
-                riskDescription = 'Brechas sustanciales en controles críticos';
-            } else if (scoreValue < 80) {
-                riskLevel = 'MEDIO';
-                riskDescription = 'Mejoras necesarias para cumplimiento robusto';
-            } else if (scoreValue < 100) {
-                riskLevel = 'BAJO';
-                riskDescription = 'Implementación sólida con mejoras menores';
-            }
-
-            return {
-                section: section,
-                score: scoreValue,
-                totalQuestions: sectionQuestions.length,
-                answered: totalAnswered,
-                siCount: siResponses.length,
-                parcialCount: parcialResponses.length,
-                noCount: noResponses.length,
-                currentState: scoreValue,
-                gap: 100 - scoreValue,
-                findings: findings,
-                riskLevel: riskLevel,
-                riskDescription: riskDescription,
-                priorityRecommendations: getPriorityRecommendations(section, noResponses, scoreValue)
-            };
-        }
-
-        function getPriorityRecommendations(section, failures, score) {
-            const recommendations = getAreaRecommendations(score, section);
-            // Retorna las primeras 3 recomendaciones más críticas
-            return recommendations.slice(0, 3);
-        }
-
-        function generateResultsHTML() {
-            try {
-                const sections = calculateScores();
-                const scores = Object.values(sections).map(s => s.score);
-                const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-                const totalAnswered = Object.keys(responses).filter(id => responses[id] !== 'N/A').length;
-
-                let html = `<p style="color: var(--cyan); font-size: 18px; margin-bottom: 20px;"><strong>Score General: ${overallScore}%</strong></p>`;
-                html += `<p style="color: var(--silver);">Preguntas respondidas: ${totalAnswered}/50</p>`;
-
-                // Gráfico de score general (doughnut)
-                html += `<div style="margin-top: 40px;">
-                    <h3 style="color: var(--cyan); margin-bottom: 20px;">Cumplimiento General</h3>
-                    <div style="position: relative; width: 100%; max-width: 300px; margin: 0 auto;">
-                        <canvas id="overallChart"></canvas>
-                    </div>
-                </div>`;
-
-                // Gráfico de barras por área
-                html += `<div style="margin-top: 50px;">
-                    <h3 style="color: var(--cyan); margin-bottom: 20px;">Score por Área</h3>
-                    <div style="position: relative; width: 100%; height: 400px;">
-                        <canvas id="areasChart"></canvas>
-                    </div>
-                </div>`;
-
-                setTimeout(() => {
-                    renderCharts(sections, overallScore);
-                }, 100);
-
-                return html;
-            } catch (e) {
-                console.error('Error en generateResultsHTML:', e);
-                return '<p style="color: red;">Error generando resultados: ' + e.message + '</p>';
-            }
-        }
-
-        function renderCharts(sections, overallScore) {
-            // Gráfico de doughnut (score general)
-            const overallCtx = document.getElementById('overallChart');
-            if (overallCtx) {
-                new Chart(overallCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Cumplimiento', 'Brecha'],
-                        datasets: [{
-                            data: [overallScore, 100 - overallScore],
-                            backgroundColor: [
-                                'rgba(52, 211, 153, 0.8)',
-                                'rgba(100, 116, 139, 0.3)'
-                            ],
-                            borderColor: ['#34D399', '#64748b'],
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                labels: { color: '#E2E8F0', font: { size: 14 } }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Gráfico de barras por área
-            const areasCtx = document.getElementById('areasChart');
-            if (areasCtx) {
-                const labels = Object.keys(sections);
-                const data = Object.values(sections).map(s => s.score);
-                const colors = data.map(score => {
-                    if (score >= 80) return 'rgba(52, 211, 153, 0.8)';
-                    if (score >= 60) return 'rgba(255, 165, 0, 0.8)';
-                    return 'rgba(255, 107, 107, 0.8)';
-                });
-
-                new Chart(areasCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Score (%)',
-                            data: data,
-                            backgroundColor: colors,
-                            borderColor: colors.map(c => c.replace('0.8', '1')),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                labels: { color: '#E2E8F0', font: { size: 12 } }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: { color: '#E2E8F0' },
-                                grid: { color: 'rgba(226, 232, 240, 0.1)' }
-                            },
-                            y: {
-                                ticks: { color: '#E2E8F0', font: { size: 12 } },
-                                grid: { color: 'rgba(226, 232, 240, 0.1)' }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        async function analyzeWithGroq() {
-            try {
-                const res = await fetch('https://web-production-372660.up.railway.app/api/analyze-questionnaire', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        responses: responses,
-                        empresa: clientData.empresa,
-                        email: clientData.email
-                    })
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    return data.analysis || null;
+                if (parcialResponses.length > 0) {
+                    findings.push(`${parcialResponses.length} control(es) parcialmente implementado(s)`);
                 }
-            } catch (e) {
-                console.log('Error Railway:', e);
+
+                let riskLevel = 'BAJO';
+                if (scoreValue < 40) riskLevel = 'CRÍTICO';
+                else if (scoreValue < 60) riskLevel = 'ALTO';
+                else if (scoreValue < 80) riskLevel = 'MEDIO';
+
+                result[section] = {
+                    score: scoreValue,
+                    findings: findings,
+                    riskLevel: riskLevel
+                };
             }
-            return null;
+
+            return result;
         }
 
         async function downloadPDF() {
             const btn = event.target;
             btn.disabled = true;
-            btn.textContent = 'Generando análisis...';
+            btn.textContent = 'Generando PDF...';
 
-            analysisContent = await analyzeWithGroq();
             const sections = calculateScores();
             const scores = Object.values(sections).map(s => s.score);
             const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-            const totalAnswered = Object.keys(responses).filter(id => responses[id] !== 'N/A').length;
 
             let pdfHTML = `
                 <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #333; line-height: 1.6; font-size: 11px;">
-                    <!-- HEADER EN TODAS LAS PÁGINAS -->
                     <style>
                         @page { margin: 40px 40px 60px; }
                         body { margin: 0; padding: 0; }
-                        .page-header { padding: 15px 0; border-bottom: 1px solid #e0e0e0; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
-                        .page-header-logo { font-size: 18px; font-weight: bold; color: #00D4FF; }
-                        .page-header-text { font-size: 10px; color: #666; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
-                        .page-footer { padding: 15px 0; border-top: 1px solid #e0e0e0; margin-top: 40px; text-align: center; font-size: 9px; color: #999; }
-                        .semaforo { display: flex; gap: 6px; }
-                        .semaforo-luz { width: 12px; height: 12px; border-radius: 50%; }
-                        .semaforo-ok { background: #34D399; }
-                        .semaforo-warn { background: #F59E0B; }
-                        .semaforo-danger { background: #FF6B6B; }
-                        .score-bar { display: flex; align-items: center; gap: 8px; }
-                        .score-bar-track { flex: 1; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
-                        .score-bar-fill { height: 100%; background: #34D399; border-radius: 3px; }
-                        h1, h2, h3, h4, h5, h6 { font-size: 13px; font-weight: 600; color: #00D4FF; margin: 20px 0 10px; }
-                        table { width: 100%; border-collapse: collapse; font-size: 10px; }
-                        th { background: #f5f5f5; padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid #ddd; }
-                        td { padding: 8px; border-bottom: 1px solid #eee; }
-                        .tech-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; color: #999; }
-                        .tech-value { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #333; }
+                        h1, h2, h3 { color: #00D4FF; margin: 20px 0 10px; }
                         p { margin: 8px 0; text-align: justify; }
+                        .page-break { page-break-after: always; }
                     </style>
 
                     <!-- PORTADA -->
-                    <div style="page-break-after: always; padding: 80px 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; text-align: center;">
+                    <div class="page-break" style="padding: 80px 40px; background: #020617; color: white; text-align: center;">
                         <div style="font-size: 36px; font-weight: bold; color: #00D4FF; margin-bottom: 40px;">ShellTI</div>
-                        <h1 style="color: white; font-size: 28px; margin: 40px 0; line-height: 1.4;">INFORME DE EVALUACIÓN<br/>DE CUMPLIMIENTO NORMATIVO</h1>
+                        <h1 style="color: white; font-size: 28px; margin: 40px 0; line-height: 1.4;">INFORME DE EVALUACIÓN DE CUMPLIMIENTO NORMATIVO</h1>
                         <p style="font-size: 12px; color: #E2E8F0; margin: 30px 0;">Ley Nº 21.719 — ISO/IEC 27001:2022</p>
                         <div style="border-top: 1px solid #00D4FF; border-bottom: 1px solid #00D4FF; padding: 30px 0; margin: 60px 0; font-size: 11px; line-height: 1.8;">
                             <div><strong>ORGANIZACIÓN:</strong> ${clientData.empresa || 'Por determinar'}</div>
@@ -892,734 +895,41 @@
                         <p style="font-size: 10px; color: #E2E8F0; opacity: 0.7; margin-top: 60px;">Documento Confidencial | ShellTI Technology Consultancy</p>
                     </div>
 
-                    <!-- HEADER RECURRENTE -->
-                    <div class="page-header">
-                        <div class="page-header-logo">ShellTI</div>
-                        <div class="page-header-text">EVALUACIÓN DE CUMPLIMIENTO | LEY 21.719 E ISO 27001:2022</div>
-                    </div>
-
-
-                    <!-- INTRODUCCIÓN Y OBJETIVOS -->
-                    <h2>1. Introducción</h2>
-                    <p>La Ley Nº 21.719 constituye el principal marco regulatorio chileno para protección de datos personales, estableciendo obligaciones sobre responsables del tratamiento. El artículo 24 requiere medidas técnicas y organizacionales apropiadas: cifrado de datos, seudoización, disponibilidad, resiliencia, restauración y procedimientos de evaluación. La Ley incorpora por referencia controles de ISO/IEC 27001:2022.</p>
-                    <p>Este diagnóstico evalúa conformidad con Ley Nº 21.719 (Arts. 2-29) e ISO/IEC 27001:2022 mediante 50 controles en 10 dominios: Gobernanza, Seguridad Técnica, Gestión de Incidentes, Derechos de Titulares, Consentimiento y Transparencia, Evaluación de Impacto, Gestión de Personal, Transferencias Internacionales, Gestión de Terceros y Cumplimiento Documentario.</p>
-
-                    <h2>2. Objetivos</h2>
-                    <p><strong>Evaluación de Conformidad:</strong> Determinar grado de cumplimiento con Ley 21.719 e ISO 27001:2022. <strong>Identificación de Brechas:</strong> Mapear deficiencias en controles de seguridad y gobernanza. <strong>Cuantificación de Riesgos:</strong> Estimar exposición regulatoria y riesgos operacionales. <strong>Recomendaciones Priorizado:</strong> Plan de remediación ordenado por criticidad. <strong>Roadmap:</strong> Cronograma de 12 meses para cierre de brechas.</p>
-
-
                     <!-- RESUMEN EJECUTIVO -->
-                    <h2 id="ejecutivo">3. Resumen Ejecutivo</h2>
-                    <table>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>Valor</th>
-                            <th>Estado</th>
-                        </tr>
-                        <tr>
-                            <td class="tech-label">Índice General</td>
-                            <td class="tech-value">${overallScore}%</td>
-                            <td><div class="semaforo"><div class="semaforo-luz ${overallScore >= 80 ? 'semaforo-ok' : overallScore >= 60 ? 'semaforo-warn' : 'semaforo-danger'}"></div></div></td>
-                        </tr>
-                        <tr>
-                            <td class="tech-label">Conformidad</td>
-                            <td class="tech-value">${overallScore >= 80 ? 'CONFORME' : overallScore >= 60 ? 'PARCIALMENTE CONFORME' : 'NO CONFORME'}</td>
-                            <td class="tech-label">${totalAnswered}/50 evaluados</td>
-                        </tr>
-                    </table>
-                    ${analysisContent ? `<p><strong>Análisis IA:</strong> ${analysisContent.substring(0, 600)}${analysisContent.length > 600 ? '...' : ''}</p>` : ''}
-                    </div>
+                    <h2>1. Resumen Ejecutivo</h2>
+                    <p><strong>Score General de Cumplimiento:</strong> ${overallScore}%</p>
+                    <p>La evaluación diagnostica el estado actual de cumplimiento normativo conforme a la Ley N° 21.719 de Protección de Datos Personales e ISO/IEC 27001:2022. Este informe proporciona análisis técnico por dominio, identificación de brechas críticas y roadmap de implementación.</p>
 
-                    <h2>4. Gráficos por Dominio</h2>
-                    <table>
-                        <tr><th>Dominio</th><th>Score</th><th>Estado</th></tr>
-                        ${Object.keys(sections).map((section) => {
-                            const score = sections[section].score;
-                            const state = score >= 80 ? 'OK' : score >= 60 ? 'WARN' : 'FAIL';
-                            return `<tr>
-                                <td>${section}</td>
-                                <td><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${score >= 80 ? '#34D399' : score >= 60 ? '#F59E0B' : '#FF6B6B'};"></div></div><span>${score}%</span></div></td>
-                                <td><div class="semaforo"><div class="semaforo-luz ${score >= 80 ? 'semaforo-ok' : score >= 60 ? 'semaforo-warn' : 'semaforo-danger'}"></div></div></td>
-                            </tr>`;
-                        }).join('')}
-                    </table>
-
-                    <!-- ANÁLISIS DETALLADO -->
-                    <h2 id="analisis">5. Análisis Detallado por Dominio</h2>
-
-                    <div style="page-break-after: always; margin-top: 40px;">
-                        <h2 style="color: #00D4FF;">1. DATOS DE LA EVALUACIÓN</h2>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tr style="background: #f0f0f0;"><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Empresa:</td><td style="padding: 8px; border: 1px solid #ddd;">${clientData.empresa || 'N/A'}</td></tr>
-                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Contacto:</td><td style="padding: 8px; border: 1px solid #ddd;">${clientData.email || 'N/A'}</td></tr>
-                            <tr style="background: #f0f0f0;"><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Fecha:</td><td style="padding: 8px; border: 1px solid #ddd;">${new Date().toLocaleDateString('es-CL')}</td></tr>
-                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Total Evaluaciones:</td><td style="padding: 8px; border: 1px solid #ddd;">50 áreas de control</td></tr>
-                        </table>
-                    </div>
-
-                    <div style="page-break-after: avoid;">
-                        <h2 style="color: #00D4FF;">2. RESUMEN EJECUTIVO</h2>
-                        <div style="background: #f9f9f9; padding: 20px; margin: 15px 0;">
-                            <p style="font-size: 16px;"><strong>Score General de Cumplimiento: <span style="color: #34D399; font-size: 24px;">${overallScore}%</span></strong></p>
-                            <p style="margin-top: 10px;">Preguntas Respondidas: <strong>${totalAnswered}/50</strong></p>
-                            <p style="margin-top: 10px;">Estado: <strong>
-                                ${overallScore >= 80 ? '<span style="color: #34D399;">CUMPLIMIENTO SATISFACTORIO</span>' :
-                                  overallScore >= 60 ? '<span style="color: #FFA500;">CUMPLIMIENTO PARCIAL</span>' :
-                                  '<span style="color: #FF6B6B;">CUMPLIMIENTO DEFICIENTE</span>'}
-                            </strong></p>
-                            ${analysisContent ? `
-                            <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 6px; font-size: 13px; line-height: 1.6; color: #444;">
-                                <strong style="color: #00D4FF;">Análisis Profundo:</strong>
-                                <p style="margin-top: 10px;">${analysisContent.substring(0, 1000)}...</p>
-                            </div>
-                            ` : `
-                            <p style="margin-top: 15px; font-style: italic; color: #666;">
-                                Esta evaluación cubre 50 aspectos críticos en 10 áreas temáticas, desde gobernanza de datos
-                                hasta retención y disposición final de información, mapeados directamente a Ley 21.719 e ISO 27001:2022.
-                            </p>
-                            `}
-                        </div>
-                    </div>
-
-                    ${generateDetailedAnalysis(sections)}
-
-                    <!-- MATRIZ DE RIESGO -->
-                    <h2 id="riesgos">6. Matriz de Riesgo</h2>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                            <tr style="background: #00D4FF; color: white;">
-                                <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Área</th>
-                                <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Score</th>
-                                <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Riesgo</th>
-                                <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Impacto</th>
-                            </tr>
-                            ${generateRiskMatrix(sections)}
-                        </table>
-                    </div>
-
-                    <!-- ROADMAP -->
-                    <h2 id="roadmap">7. Roadmap (12 Meses)</h2>
-                        ${generateRoadmap(sections)}
-                    </div>
-
-                    <!-- NORMATIVO -->
-                    <h2 id="normativo">8. Marco Normativo</h2>
-                        <h3 style="color: #34D399;">Ley Nº 21.719 - Protección de Datos Personales</h3>
-                        <p>Esta evaluación mapea directamente a los siguientes artículos:</p>
-                        <ul>
-                            <li><strong>Artículos 2-10:</strong> Principios de protección de datos (consentimiento, licitud, etc.)</li>
-                            <li><strong>Artículos 16-23:</strong> Derechos de los titulares (acceso, rectificación, supresión, portabilidad)</li>
-                            <li><strong>Artículos 24-26:</strong> Obligaciones del responsable (medidas de seguridad, auditorías, trazabilidad)</li>
-                            <li><strong>Artículos 28-29:</strong> Transferencias internacionales y encargados de tratamiento</li>
-                        </ul>
-
-                        <h3 style="color: #34D399; margin-top: 20px;">ISO/IEC 27001:2022</h3>
-                        <p>Alineación con dominios de control de seguridad de la información:</p>
-                        <ul>
-                            <li><strong>A.5:</strong> Gobernanza y gestión organizacional</li>
-                            <li><strong>A.6:</strong> Personas (roles, responsabilidades, capacitación)</li>
-                            <li><strong>A.7:</strong> Operaciones (políticas, procedimientos)</li>
-                            <li><strong>A.8:</strong> Prestación de TI (seguridad técnica, acceso)</li>
-                            <li><strong>A.10-A.14:</strong> Seguridad operacional, comunicaciones, sistemas</li>
-                        </ul>
-                    </div>
-
-                    <!-- CONCLUSIONES -->
-                    <h2 id="conclusiones">9. Conclusiones</h2>
-                    <p>${
-                        overallScore >= 80 ?
-                        'Conformidad sustancial con Ley 21.719 e ISO 27001:2022. Implementación efectiva de controles en gobernanza, seguridad técnica e incidentes. Recomendación: fortalecer áreas menores y mantener revisión anual.' :
-                        overallScore >= 60 ?
-                        'Conformidad parcial con obligaciones normativas. Brechas significativas en controles críticos con exposición regulatoria. Requerimiento: implementación inmediata de medidas correctivas en áreas de alto riesgo.' :
-                        'No conforme con Ley 21.719 e ISO 27001:2022. Brechas sustanciales en gobernanza, seguridad técnica y gestión de datos. Requerimiento urgente: activar plan de remediación.'
-                    }</p>
-
-                    <!-- DISCLAIMER -->
-                    <h2>Declaración Legal</h2>
-                    <p class="tech-label">CONFIDENCIALIDAD: Información técnica/legal exclusiva para ${clientData.empresa || 'la organización'}. Prohibida reproducción sin consentimiento de ShellTI.</p>
-                    <p class="tech-label">ALCANCE: Diagnóstico basado en información al momento de evaluación. No constituye auditoría completa ni garantiza ausencia de vulnerabilidades.</p>
-                    <p class="tech-label">RESPONSABILIDAD: Implementación es exclusiva responsabilidad de la organización. ShellTI no asume responsabilidad por incumplimientos derivados de falta de implementación.</p>
-
-                    <!-- FOOTER -->
-                    <div class="page-footer">
-                        <div style="font-weight: bold; margin-bottom: 8px;">ShellTI Technology Consultancy</div>
-                        <div>Ley 21.719 | ISO/IEC 27001:2022 | Protección de Datos Personales</div>
-                        <div style="margin-top: 8px;">© 2026 | contacto@shellti.com</div>
-                    </div>
-                </div>
+                    <!-- RESULTADOS POR DOMINIO -->
+                    <h2>2. Resultados por Dominio</h2>
             `;
+
+            for (const [section, data] of Object.entries(sections)) {
+                pdfHTML += `
+                    <h3>${section} — ${data.score}%</h3>
+                    <p><strong>Estado de Riesgo:</strong> ${data.riskLevel}</p>
+                    ${data.findings.length > 0 ? `<p><strong>Hallazgos:</strong> ${data.findings.join('; ')}</p>` : ''}
+                `;
+            }
+
+            pdfHTML += `</div>`;
+
+            const element = document.createElement('div');
+            element.innerHTML = pdfHTML;
 
             const opt = {
-                margin: [15, 15, 15, 15],
-                filename: `Informe_Cumplimiento_${clientData.empresa}_${new Date().getTime()}.pdf`,
+                margin: 10,
+                filename: `ShellTI_Diagnostic_${clientData.empresa}_${new Date().getTime()}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, allowTaint: true },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'letter', compress: true },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                html2canvas: { scale: 2, logging: false },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
             };
 
-            html2pdf().set(opt).from(pdfHTML).save();
+            html2pdf().set(opt).from(element).save();
 
-            // Restaurar botón
             btn.disabled = false;
-            btn.textContent = 'Descargar Informe PDF';
+            btn.textContent = 'Descargar Informe PDF Completo';
         }
-
-        function generateDetailedAnalysis(sections) {
-            let html = '';
-            const areaDetails = getAreaDetails();
-
-            for (let section in sections) {
-                const analysis = analyzeAreaDetailed(section);
-                const details = areaDetails[section] || {};
-                const brecha = analysis.gap;
-
-                html += `
-                    <div style="margin-bottom: 35px; page-break-inside: avoid; padding: 20px; border-radius: 8px; background: white;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="color: #00D4FF; margin: 0; font-size: 15px;">${section}</h3>
-                            <div style="text-align: right;">
-                                <div style="font-size: 24px; font-weight: bold; color: ${analysis.score >= 80 ? '#34D399' : analysis.score >= 60 ? '#FFA500' : '#FF6B6B'};">${analysis.score}%</div>
-                                <div style="font-size: 11px; color: #666;">Conformidad</div>
-                            </div>
-                        </div>
-
-                        <div style="background: #fafafa; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 12px;">
-                            <div style="margin-bottom: 8px; text-align: justify;">
-                                <span style="font-weight: bold;">Estado Actual:</span> ${analysis.score}% conforme
-                            </div>
-                            <div style="margin-bottom: 8px;">
-                                <span style="font-weight: bold;">Brecha:</span> <span style="color: #FF6B6B; font-weight: bold;">${brecha}%</span>
-                            </div>
-                            <div style="margin-bottom: 8px; font-size: 11px;">
-                                <span style="font-weight: bold;">Respuestas:</span>
-                                <span style="color: #34D399; margin-left: 8px;">Sí: ${analysis.siCount}</span>
-                                <span style="color: #FFA500; margin-left: 8px;">Parcial: ${analysis.parcialCount}</span>
-                                <span style="color: #FF6B6B; margin-left: 8px;">No: ${analysis.noCount}</span>
-                            </div>
-                            <div>
-                                <span style="font-weight: bold; font-size: 11px;">Nivel de Riesgo:</span>
-                                <span style="background: ${analysis.riskLevel === 'CRÍTICO' ? '#FF6B6B' : analysis.riskLevel === 'ALTO' ? '#FFA500' : analysis.riskLevel === 'MEDIO' ? '#FFD700' : '#34D399'}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px; font-weight: bold;">
-                                    ${analysis.riskLevel}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <p style="font-weight: bold; margin: 0 0 8px 0; font-size: 12px;">Descripción y Contexto:</p>
-                            <p style="margin: 0; color: #444; font-size: 12px; line-height: 1.6; text-align: justify;">${details.description || ''}</p>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <p style="font-weight: bold; margin: 0 0 8px 0; font-size: 12px;">Importancia e Impacto:</p>
-                            <p style="margin: 0; color: #444; font-size: 12px; line-height: 1.6; text-align: justify;">${details.importance || ''}</p>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <p style="font-weight: bold; margin: 0 0 8px 0; font-size: 12px;">Normas Aplicables:</p>
-                            <p style="margin: 0; color: #444; font-size: 12px; line-height: 1.6; text-align: justify;">${details.norms || ''}</p>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <p style="font-weight: bold; margin: 0 0 8px 0; font-size: 12px;">Hallazgos de la Evaluación:</p>
-                            <div style="background: #fafafa; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
-                                <p style="margin: 0; color: #444; font-size: 12px; text-align: justify;">${analysis.riskDescription}</p>
-                            </div>
-                            ${analysis.findings.length > 0 ? `
-                            <ul style="margin: 0; padding-left: 20px; color: #444; font-size: 13px;">
-                                ${analysis.findings.map(f => `<li style="margin-bottom: 6px;">${f}</li>`).join('')}
-                            </ul>
-                            ` : '<p style="margin: 0; color: #666; font-size: 13px;">No se identificaron brechas significativas en esta área.</p>'}
-                        </div>
-
-                        <div>
-                            <p style="font-weight: bold; margin: 0 0 8px 0;">Acciones Prioritarias:</p>
-                            <ol style="margin: 0; padding-left: 20px; color: #444; font-size: 13px;">
-                                ${analysis.priorityRecommendations.map(r => `<li style="margin-bottom: 6px;">${r}</li>`).join('')}
-                            </ol>
-                        </div>
-                    </div>
-                `;
-            }
-            return html;
-        }
-
-        function generateRiskMatrix(sections) {
-            let html = '';
-            for (let section in sections) {
-                const s = sections[section];
-                const score = Math.round(((s.si + s.parcial*0.5) / s.total) * 100);
-
-                let riskLevel, riskColor, impactDesc;
-                if (score >= 80) {
-                    riskLevel = 'BAJO';
-                    riskColor = '#34D399';
-                    impactDesc = 'Mínimo';
-                } else if (score >= 60) {
-                    riskLevel = 'MEDIO';
-                    riskColor = '#FFA500';
-                    impactDesc = 'Moderado';
-                } else {
-                    riskLevel = 'ALTO';
-                    riskColor = '#FF6B6B';
-                    impactDesc = 'Crítico';
-                }
-
-                html += `
-                    <tr style="background: ${score < 60 ? '#fff0f0' : score < 80 ? '#fffaf0' : '#f0fdf4'};">
-                        <td style="padding: 8px; border: 1px solid #ddd;">${section}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">${score}%</td>
-                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center; color: ${riskColor}; font-weight: bold;">${riskLevel}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${impactDesc}</td>
-                    </tr>
-                `;
-            }
-            return html;
-        }
-
-        function generateRoadmap(sections) {
-            const roadmapHTML = `
-                <div style="font-size: 12px; line-height: 1.8;">
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; margin-bottom: 10px;">Q1 (Enero - Marzo) - FASE URGENTE</p>
-                        <ul style="margin: 0; padding-left: 20px;">
-                            <li>Implementar controles críticos en áreas con score < 60%</li>
-                            <li>Establecer gobernanza y roles de protección de datos</li>
-                            <li>Iniciar auditoría externa de cumplimiento</li>
-                            <li>Capacitación inicial a personal clave</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; margin-bottom: 10px;">Q2 (Abril - Junio) - FASE OPERATIVA</p>
-                        <ul style="margin: 0; padding-left: 20px;">
-                            <li>Documentar Registro de Actividades de Tratamiento (RDAT)</li>
-                            <li>Implementar medidas técnicas de seguridad (cifrado, acceso)</li>
-                            <li>Establecer procedimientos de respuesta a incidentes</li>
-                            <li>Formación en privacidad a toda la organización</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; margin-bottom: 10px;">Q3 (Julio - Septiembre) - FASE DE FORTALECIMIENTO</p>
-                        <ul style="margin: 0; padding-left: 20px;">
-                            <li>Completar implementación de controles pendientes</li>
-                            <li>Realizar evaluaciones de impacto en privacidad (DPIA)</li>
-                            <li>Evaluar y auditar terceros procesadores de datos</li>
-                            <li>Revisar y mejorar políticas documentadas</li>
-                        </ul>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; margin-bottom: 10px;">Q4 (Octubre - Diciembre) - FASE DE CONSOLIDACIÓN</p>
-                        <ul style="margin: 0; padding-left: 20px;">
-                            <li>Re-evaluación de cumplimiento post-implementación</li>
-                            <li>Auditoría externa de validación</li>
-                            <li>Documentación final de evidencias de cumplimiento</li>
-                            <li>Planificación de mejoras continuas para año siguiente</li>
-                        </ul>
-                    </div>
-
-                    <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; border-left: 3px solid #FFA500;">
-                        <p style="margin: 0;"><strong>⚠️ Nota:</strong> El roadmap es adaptable según recursos disponibles. Las áreas con riesgo ALTO deben ser prioritarias. Se recomienda asignar un Project Manager dedicado para garantizar cumplimiento de hitos.</p>
-                    </div>
-                </div>
-            `;
-            return roadmapHTML;
-        }
-
-        function getAreaDetails() {
-            return {
-                "I. Gobernanza": {
-                    description: "La gobernanza de protección de datos es el fundamento de un programa de cumplimiento sólido. Establece la estructura organizacional, roles, responsabilidades y políticas documentadas que guían todas las actividades de tratamiento de datos personales dentro de la organización.",
-                    importance: "Sin una gobernanza clara, la organización carece de dirección estratégica y control efectivo. Esto genera riesgos de incumplimiento normativo, brechas de seguridad y pérdida de confianza de clientes. Es requisito crítico de Ley 21.719 Art. 24.",
-                    norms: "Ley 21.719 Art. 2, 12, 24 | ISO 27001 A.5.1 (Gobernanza), A.6.1 (Funciones)",
-                    findings: [
-                        'Política documentada y comunicada a toda la organización',
-                        'Responsable de protección de datos designado formalmente',
-                        'Auditorías internas programadas y ejecutadas',
-                        'Registro de actividades de tratamiento actualizado'
-                    ]
-                },
-                "II. Seguridad Técnica": {
-                    description: "Comprende los mecanismos técnicos implementados para proteger la confidencialidad, integridad y disponibilidad de los datos personales. Incluye cifrado, controles de acceso, autenticación multifactor y otros controles preventivos que evitan acceso no autorizado.",
-                    importance: "Las medidas técnicas son la defensa principal contra amenazas cibernéticas y acceso no autorizado. Su ausencia o debilidad es causa principal de brechas de datos. Ley 21.719 Art. 2(j) exige medidas de seguridad apropiadas.",
-                    norms: "Ley 21.719 Art. 2(j), 24(g) | ISO 27001 A.10.1 (Cifrado), A.8.3 (Acceso)",
-                    findings: [
-                        'Datos cifrados en reposo y en tránsito',
-                        'Control de acceso basado en roles (RBAC)',
-                        'Autenticación multifactor implementada',
-                        'Logs de acceso y auditoría disponibles'
-                    ]
-                },
-                "III. Gestión de Incidentes": {
-                    description: "Establece procedimientos para identificar, investigar, contener y notificar incidentes de seguridad o brechas de datos. Incluye plan de respuesta, canales de reporte, investigación forense y comunicación oportuna a autoridades y afectados.",
-                    importance: "Un incidente mal gestionado multiplica el daño. La respuesta rápida y efectiva minimiza impacto, cumple requisitos legales y preserva confianza. Ley 21.719 Art. 24(f) exige capacidad de respuesta.",
-                    norms: "Ley 21.719 Art. 24(f) | ISO 27001 A.16.1 (Gestión de Incidentes)",
-                    findings: [
-                        'Plan de respuesta a incidentes documentado',
-                        'Procesos de notificación definidos',
-                        'Capacidad de investigación y análisis',
-                        'Registro histórico de incidentes'
-                    ]
-                },
-                "IV. Derechos de los Titulares": {
-                    description: "Garantiza que las personas cuyos datos se tratan pueden ejercer sus derechos: acceso, rectificación, supresión y portabilidad. Requiere procesos ágiles, documentados y transparentes para responder solicitudes en plazo legal.",
-                    importance: "Es derecho fundamental reconocido por Ley 21.719. Su incumplimiento genera denuncias, sanciones regulatorias y daño reputacional. Demuestra respeto por privacidad del titular.",
-                    norms: "Ley 21.719 Art. 19-23 | ISO 27001 A.8.2.3 (Solicitudes de Titulares)",
-                    findings: [
-                        'Mecanismo para ejercer derechos de acceso',
-                        'Proceso de rectificación implementado',
-                        'Opción de supresión disponible',
-                        'Portabilidad de datos facilitada'
-                    ]
-                },
-                "V. Consentimiento y Transparencia": {
-                    description: "Requiere obtener consentimiento informado, explícito y libre antes de recopilar datos personales. Incluye políticas de privacidad claras, accesibles y en lenguaje comprensible que expliquen qué datos se recopilan, por qué y quién los usa.",
-                    importance: "El consentimiento es la base legal para el tratamiento. Sin él, toda actividad es ilegal. La transparencia genera confianza y cumple requisito fundamental de Ley 21.719 Art. 7-8.",
-                    norms: "Ley 21.719 Art. 7-8, 16 | ISO 27001 A.6.1 (Política)",
-                    findings: [
-                        'Consentimiento obtenido previo al tratamiento',
-                        'Política de privacidad clara y accesible',
-                        'Información sobre derechos disponible',
-                        'Avisos de privacidad en puntos de recopilación'
-                    ]
-                },
-                "VI. Evaluación de Impacto": {
-                    description: "Análisis preventivo de riesgos antes de implementar nuevos tratamientos de datos. Evalúa qué podría salir mal, quién podría ser afectado, y qué medidas se requieren para mitigar riesgos. Documento crítico para cumplimiento.",
-                    importance: "Previene problemas antes de que ocurran. Demuestra diligencia debida ante reguladores. Ley 21.719 Art. 24(e) exige que se realicen cuando haya riesgo.",
-                    norms: "Ley 21.719 Art. 24(e) | ISO 27001 A.12.6.1 (DPIA)",
-                    findings: [
-                        'DPIA ejecutada para nuevos proyectos',
-                        'Riesgos evaluados antes de implementación',
-                        'Medidas mitigantes identificadas',
-                        'Documentación de decisiones disponible'
-                    ]
-                },
-                "VII. Personal y Capacitación": {
-                    description: "Gestión de acceso de empleados y contratistas, incluyendo roles, responsabilidades y capacitación en protección de datos. Incluye segregación de funciones, revisión periódica de permisos y formación continua.",
-                    importance: "El 80% de brechas involucran factor humano. Personal capacitado es primera línea de defensa. Ley 21.719 Art. 24(c) exige capacitación.",
-                    norms: "Ley 21.719 Art. 24(c), (d) | ISO 27001 A.6.2 (Competencia), A.7.3 (Conciencia)",
-                    findings: [
-                        'Roles y responsabilidades claramente definidos',
-                        'Capacitación en protección de datos realizada',
-                        'Cláusulas de confidencialidad en contratos',
-                        'Revisión periódica de permisos de acceso'
-                    ]
-                },
-                "VIII. Transferencias Internacionales": {
-                    description: "Controles específicos para transferir datos personales fuera de Chile. Requiere evaluación del país destino, cláusulas contractuales estándar y verificación de protección equivalente.",
-                    importance: "La transferencia internacional genera riesgo regulatorio y de privacidad. Ley 21.719 Art. 28-29 prohíbe transferencias a países sin protección equivalente sin medidas adicionales.",
-                    norms: "Ley 21.719 Art. 28-29 | ISO 27001 A.8.4 (Transferencias)",
-                    findings: [
-                        'Evaluación de destino previo a transferencia',
-                        'Cláusulas contractuales estándar implementadas',
-                        'Cumplimiento con restricciones de destino',
-                        'Acuerdos de procesamiento documentados'
-                    ]
-                },
-                "IX. Terceros y Proveedores": {
-                    description: "Evaluación, auditoría y gestión de terceros que procesan datos en nombre de la organización. Incluye due diligence previo, contratos con cláusulas de protección, auditorías periódicas y control de subcontratistas.",
-                    importance: "La responsabilidad por terceros es compartida. Un proveedor comprometido compromete toda la organización. Ley 21.719 Art. 24(b), 28 requiere evaluación de terceros.",
-                    norms: "Ley 21.719 Art. 24(b), 28 | ISO 27001 A.8.4 (Terceros)",
-                    findings: [
-                        'Proveedores evaluados antes de contratar',
-                        'Contratos con cláusulas de protección de datos',
-                        'Auditorías de proveedores realizadas',
-                        'Contratos de procesamiento formalizados'
-                    ]
-                },
-                "X. Cumplimiento y Documentación": {
-                    description: "Registro centralizado de todas las actividades de tratamiento de datos (RDAT), auditorías de cumplimiento, documentación de decisiones y evidencia de cumplimiento normativo. Demuestra diligencia debida ante reguladores.",
-                    importance: "La documentación es prueba de cumplimiento. Sin ella, no se puede demostrar que se cumple la ley. RDAT es requisito obligatorio de Ley 21.719 Art. 17.",
-                    norms: "Ley 21.719 Art. 17, 24 | ISO 27001 A.8.3.2 (RDAT)",
-                    findings: [
-                        'Registro de Actividades de Tratamiento (RDAT) actualizado',
-                        'Decisiones y políticas documentadas',
-                        'Procedimientos formalizados por escrito',
-                        'Auditorías externas realizadas periódicamente'
-                    ]
-                }
-            };
-        }
-
-        function getAreaRecommendations(score, section) {
-            const recommendations = {
-                "I. Gobernanza": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'URGENTE: Designar formalmente un Responsable de Protección de Datos (DPO/RPD)',
-                        'Documentar y aprobar política de protección de datos en junta directiva',
-                        'Crear comité de protección de datos con representantes multidisciplinarios',
-                        'Implementar auditorías internas semestrales de cumplimiento',
-                        'Establecer matriz de roles y responsabilidades por función',
-                        'Plazo: 30-45 días'
-                    ] : score < 80 ? [
-                        'Fortalecer capacidad del DPO con recursos y budget dedicado',
-                        'Documentar procedimiento de auditoría interna y ejecutar piloto',
-                        'Crear registro de decisiones sobre protección de datos',
-                        'Revisar y mejorar políticas existentes con consejo legal',
-                        'Plazo: 90 días'
-                    ] : [
-                        'Mantener función DPO con recursos suficientes',
-                        'Ejecutar auditorías internas semestrales programadas',
-                        'Revisar anualmente política de protección de datos',
-                        'Plazo: Revisiones anuales'
-                    ]
-                },
-                "II. Seguridad Técnica": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'CRÍTICO: Implementar cifrado en reposo para todas las bases de datos',
-                        'Implementar HTTPS/TLS para todas las comunicaciones de datos',
-                        'Desplegar autenticación multifactor en acceso administrativo',
-                        'Implementar control de acceso basado en roles (RBAC)',
-                        'Activar logging y monitoreo de acceso a datos sensibles',
-                        'Realizar auditoría de seguridad externa',
-                        'Plazo crítico: 30-60 días'
-                    ] : score < 80 ? [
-                        'Completar implementación de cifrado en datos no asegurados',
-                        'Expandir MFA a usuarios con acceso a datos sensibles',
-                        'Implementar monitoreo de eventos anómalo',
-                        'Realizar penetration testing de sistemas críticos',
-                        'Plazo: 60-90 días'
-                    ] : [
-                        'Mantener cifrado y MFA operativos',
-                        'Ejecutar pruebas de seguridad trimestrales',
-                        'Revisar logs de acceso mensualmente',
-                        'Plazo: Revisiones trimestrales'
-                    ]
-                },
-                "III. Gestión de Incidentes": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'URGENTE: Documentar Plan de Respuesta a Incidentes de Seguridad',
-                        'Establecer cadena de escalamiento y responsables de respuesta',
-                        'Crear procedimiento de investigación forense de brechas',
-                        'Implementar notificación obligatoria a afectados en 72 horas',
-                        'Establecer registro permanente de incidentes históricos',
-                        'Simular ejercicio de respuesta a incidente',
-                        'Plazo: 45-60 días'
-                    ] : score < 80 ? [
-                        'Mejorar documentación del plan de respuesta',
-                        'Capacitar equipo de respuesta a incidentes',
-                        'Ejecutar simulacro de respuesta a incidente',
-                        'Establecer métricas de tiempo de respuesta (MTTR)',
-                        'Plazo: 90 días'
-                    ] : [
-                        'Ejecutar ejercicios de respuesta anualmente',
-                        'Revisar y mejorar plan basado en lecciones aprendidas',
-                        'Mantener registro de incidentes actualizado',
-                        'Plazo: Revisiones anuales'
-                    ]
-                },
-                "IV. Derechos de los Titulares": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Implementar mecanismo formal para recibir solicitudes de acceso',
-                        'Crear procedimiento para responder solicitudes en 10 días',
-                        'Implementar proceso de rectificación de datos',
-                        'Desarrollar capacidad de supresión (derecho al olvido)',
-                        'Crear procedimiento de portabilidad de datos',
-                        'Capacitar personal en gestión de derechos',
-                        'Plazo: 60-90 días'
-                    ] : score < 80 ? [
-                        'Optimizar proceso de respuesta a solicitudes',
-                        'Implementar seguimiento de plazos de respuesta',
-                        'Mejorar documentación de procedimientos',
-                        'Ejecutar auditoría de cumplimiento de plazos',
-                        'Plazo: 90 días'
-                    ] : [
-                        'Monitorear cumplimiento de plazos mensualmente',
-                        'Revisar y mejorar procedimientos anualmente',
-                        'Mantener registro de solicitudes recibidas',
-                        'Plazo: Revisiones mensuales'
-                    ]
-                },
-                "V. Consentimiento y Transparencia": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Redactar política de privacidad clara en lenguaje comprensible',
-                        'Publicar política en sitio web y puntos de recopilación de datos',
-                        'Implementar consentimiento explícito previo (opt-in)',
-                        'Crear avisos de privacidad en formularios y aplicaciones',
-                        'Documentar propósito y base legal de cada tratamiento',
-                        'Capacitar personal en obtención de consentimiento informado',
-                        'Plazo: 60-90 días'
-                    ] : score < 80 ? [
-                        'Revisar política de privacidad con especialista legal',
-                        'Mejorar claridad y accesibilidad de avisos de privacidad',
-                        'Implementar registro de consentimientos',
-                        'Plazo: 90 días'
-                    ] : [
-                        'Revisar política anualmente',
-                        'Mantener registro de consentimientos',
-                        'Comunicar cambios oportunamente',
-                        'Plazo: Revisiones anuales'
-                    ]
-                },
-                "VI. Evaluación de Impacto": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Desarrollar metodología de Evaluación de Impacto en Privacidad (DPIA)',
-                        'Identificar tratamientos nuevos o modificados que requieran DPIA',
-                        'Ejecutar DPIA para los 3-5 proyectos prioritarios',
-                        'Documentar riesgos y medidas mitigantes identificadas',
-                        'Obtener revisión legal de DPIAs completadas',
-                        'Crear procedimiento para DPIAs futuras',
-                        'Plazo: 90-120 días'
-                    ] : score < 80 ? [
-                        'Completar DPIAs pendientes de proyectos activos',
-                        'Capacitar personal en metodología DPIA',
-                        'Integrar DPIA en proceso de aprobación de proyectos',
-                        'Plazo: 120 días'
-                    ] : [
-                        'Ejecutar DPIA para nuevos proyectos',
-                        'Revisar DPIAs existentes anualmente',
-                        'Mantener documentación actualizada',
-                        'Plazo: Según nuevos proyectos'
-                    ]
-                },
-                "VII. Personal y Capacitación": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Mapear permisos de acceso actuales y documentar',
-                        'Implementar segregación de funciones (quién aprueba vs. quién ejecuta)',
-                        'Diseñar matriz de control de acceso por rol y datos',
-                        'Capacitar personal en política de protección de datos',
-                        'Implementar cláusulas de confidencialidad en nuevos contratos',
-                        'Revisar accesos de empleados separados',
-                        'Plazo: 60-90 días'
-                    ] : score < 80 ? [
-                        'Revisar permisos de acceso trimestralmente',
-                        'Expandir capacitación a todos los empleados',
-                        'Implementar certifi caciones de confidencialidad',
-                        'Plazo: 90 días'
-                    ] : [
-                        'Realizar revisión de accesos semestralmente',
-                        'Mantener programa de capacitación anual',
-                        'Documentar segregación de funciones críticas',
-                        'Plazo: Revisiones semestrales'
-                    ]
-                },
-                "VIII. Transferencias Internacionales": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Mapear todas las transferencias internacionales actuales',
-                        'Evaluar nivel de protección en países destino',
-                        'Implementar cláusulas contractuales estándar de la UE si aplica',
-                        'Documentar base legal para cada transferencia',
-                        'Implementar registro de transferencias',
-                        'Revisar restricciones legales de destino',
-                        'Plazo: 90-120 días'
-                    ] : score < 80 ? [
-                        'Completar evaluación de destinos pendientes',
-                        'Firmar acuerdos de transferencia faltantes',
-                        'Revisar restricciones de destino anualmente',
-                        'Plazo: 120 días'
-                    ] : [
-                        'Revisar destinos de transferencia anualmente',
-                        'Mantener documentación de acuerdos actualizada',
-                        'Monitorear cambios legislativos en destinos',
-                        'Plazo: Revisiones anuales'
-                    ]
-                },
-                "IX. Terceros y Proveedores": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'Auditar proveedores actuales de datos personales',
-                        'Implementar cláusulas de protección de datos en contratos',
-                        'Crear cuestionario de evaluación de proveedores',
-                        'Evaluar y documentar capacidad de seguridad de proveedores',
-                        'Implementar acuerdos de procesamiento de datos (DPA)',
-                        'Establecer cronograma de auditorías periódicas',
-                        'Plazo: 120-150 días'
-                    ] : score < 80 ? [
-                        'Completar evaluación de proveedores pendientes',
-                        'Firmar DPAs faltantes',
-                        'Implementar auditorías semestrales de proveedores',
-                        'Plazo: 120 días'
-                    ] : [
-                        'Auditar proveedores anualmente',
-                        'Mantener DPAs vigentes y actualizados',
-                        'Revisar capacidad de seguridad periódicamente',
-                        'Plazo: Auditorías anuales'
-                    ]
-                },
-                "X. Cumplimiento y Documentación": {
-                    critical: score < 60,
-                    items: score < 60 ? [
-                        'CRÍTICO: Crear Registro de Actividades de Tratamiento (RDAT) completo',
-                        'Documentar todos los tratamientos de datos personales',
-                        'Crear matriz de responsables por tratamiento',
-                        'Implementar sistema de gestión de documentación',
-                        'Realizar auditoría externa de cumplimiento',
-                        'Documentar evidencia de cumplimiento normativo',
-                        'Plazo crítico: 60-90 días'
-                    ] : score < 80 ? [
-                        'Completar RDAT para todos los tratamientos',
-                        'Mejorar documentación de procedimientos',
-                        'Implementar auditorías internas periódicas',
-                        'Plazo: 90-120 días'
-                    ] : [
-                        'Mantener RDAT actualizado',
-                        'Realizar auditorías internas anuales',
-                        'Documentar cambios en tratamientos',
-                        'Plazo: Auditorías anuales'
-                    ]
-                }
-            };
-
-            return (recommendations[section] || {
-                critical: false,
-                items: ['Contactar a especialista en protección de datos']
-            }).items;
-        }
-
-        document.getElementById('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            try {
-                const stats = { Si: 0, Parcial: 0, No: 0, NA: 0 };
-
-                for (let key in responses) {
-                    if (responses[key]) {
-                        stats[responses[key]]++;
-                    }
-                }
-
-                const responseId = 'deep-' + Date.now();
-                const data = {
-                    responseId,
-                    timestamp: new Date().toISOString(),
-                    cliente: clientData,
-                    respuestas: responses,
-                    estadisticas: stats
-                };
-
-                console.log('Formulario completado:', data);
-
-                const totalAnswered = Object.keys(responses).length;
-                const overallScore = Math.round((totalAnswered / 50) * 100);
-
-                let reportHTML = `
-                    <div style="padding: 40px 20px; text-align: center;">
-                        <h1 style="color: var(--cyan); margin-bottom: 20px;">Evaluación Completada</h1>
-                        <p style="color: var(--green); font-size: 36px; font-weight: bold; margin: 30px 0;">${overallScore}%</p>
-                        <p style="color: var(--silver); margin-bottom: 40px;">Preguntas respondidas: ${totalAnswered}/50</p>
-                        <p style="color: var(--silver); margin-bottom: 40px; line-height: 1.6;">
-                            El informe profesional con análisis detallado por área, brecha de cumplimiento,
-                            recomendaciones específicas y mapeo a Ley 21.719 e ISO 27001:2022 se genera en PDF.
-                        </p>
-                        <button class="btn" onclick="downloadPDF()" style="width: 100%; padding: 15px; font-size: 16px;">Descargar Informe Completo (PDF)</button>
-                    </div>
-                `;
-
-                document.querySelector('.container').innerHTML = reportHTML;
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Error al procesar: ' + error.message);
-            }
-        });
     </script>
 </body>
 </html>
