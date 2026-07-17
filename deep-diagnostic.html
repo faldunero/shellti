@@ -336,70 +336,36 @@
         }
 
         function submitForm() {
-            try {
-                const sectionScores = {};
-                sections.forEach(section => {
-                    const sectionQs = allQuestions.filter(q => q.section === section);
-                    const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
-                    const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
-                    const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
-                    const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
-                    sectionScores[section] = score;
-                });
+            const sectionScores = {};
+            sections.forEach(section => {
+                const sectionQs = allQuestions.filter(q => q.section === section);
+                const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
+                const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
+                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
+                sectionScores[section] = score;
+            });
 
-                const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
+            const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
 
-                db.ref(`evaluaciones/${clientData.token}`).update({
-                    estado: 'completada',
-                    fechaCompletada: new Date().toISOString(),
-                    scoreGeneral: overallScore
-                });
+            db.ref(`evaluaciones/${clientData.token}`).update({
+                estado: 'completada',
+                fechaCompletada: new Date().toISOString(),
+                scoreGeneral: overallScore
+            });
 
-                const questionsEl = document.getElementById('questionsSection');
-                const summaryEl = document.getElementById('summary');
-
-                if (questionsEl) questionsEl.style.display = 'none';
-                if (!summaryEl) {
-                    console.error('Error: elemento summary no encontrado');
-                    return;
-                }
-
-                summaryEl.style.display = 'block';
-
-                let html = `
-                <div class="results-header">
-                    <div class="overall-score">${overallScore}%</div>
-                    <div class="overall-label">Cumplimiento General</div>
-                </div>
-                <div style="margin-top: 40px;">
-            `;
+            let html = `<div class="summary"><h3>Evaluación Completada</h3><div class="results-header"><div class="overall-score">${overallScore}%</div><div class="overall-label">Cumplimiento General</div></div><div style="margin-top: 40px;">`;
 
             sections.forEach(section => {
                 const score = sectionScores[section];
                 const risk = score >= 80 ? 'low' : score >= 60 ? 'medium' : score >= 40 ? 'high' : 'critical';
                 const bgColor = risk === 'low' ? 'var(--green)' : risk === 'medium' ? '#FFC107' : risk === 'high' ? '#F59E0B' : '#FF6B6B';
-
-                html += `
-                    <div class="domain-card">
-                        <div class="domain-header">
-                            <span class="domain-name">${section}</span>
-                            <span style="color: ${bgColor}; font-weight: 700;">${score}%</span>
-                        </div>
-                        <div class="score-bar">
-                            <div class="score-bar-track">
-                                <div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div>
-                            </div>
-                        </div>
-                        <div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div>
-                    </div>
-                `;
+                html += `<div class="domain-card"><div class="domain-header"><span class="domain-name">${section}</span><span style="color: ${bgColor}; font-weight: 700;">${score}%</span></div><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div>`;
             });
 
-                html += `</div>`;
-                document.getElementById('resultsContent').innerHTML = html;
-            } catch (err) {
-                console.error('Error en submitForm:', err);
-            }
+            html += `</div><button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button></div>`;
+
+            document.getElementById('questionsSection').innerHTML = html;
         }
 
         function downloadPDF() {
