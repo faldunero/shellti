@@ -816,9 +816,14 @@
         }
 
         function updateButtons() {
+            const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
+            console.log('updateButtons: currentPage=', currentPage, 'maxPage=', maxPage, 'allQuestions.length=', allQuestions.length);
+
             document.getElementById('prevBtn').style.display = currentPage > 0 ? 'block' : 'none';
-            document.getElementById('nextBtn').style.display = currentPage < Math.ceil(allQuestions.length / questionsPerPage) - 1 ? 'block' : 'none';
-            document.getElementById('submitBtn').style.display = currentPage === Math.ceil(allQuestions.length / questionsPerPage) - 1 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = currentPage < maxPage ? 'block' : 'none';
+            document.getElementById('submitBtn').style.display = currentPage === maxPage ? 'block' : 'none';
+
+            console.log('nextBtn display:', document.getElementById('nextBtn').style.display);
         }
 
         function prevQuestion() {
