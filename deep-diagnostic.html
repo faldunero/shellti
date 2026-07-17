@@ -535,6 +535,8 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -545,6 +547,9 @@
             messagingSenderId: "808197164295",
             appId: "1:808197164295:web:4d863b69d6df9ee3e249a2"
         };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         let clientData = {};
         let currentPage = 0;
@@ -678,7 +683,7 @@
             { section: "X. Cumplimiento y Documentación", text: "¿Cumple con obligaciones de retención de datos?" }
         ];
 
-        function authenticate() {
+        async function authenticate() {
             const empresa = document.getElementById('empresa').value.trim();
             const email = document.getElementById('email').value.trim();
             const token = document.getElementById('token').value.trim();
@@ -697,12 +702,35 @@
             }
 
             clientData = { empresa, email, token };
+            allQuestions = questions.map((q, i) => ({ ...q, id: `q${i + 1}` }));
+            document.getElementById('totalQuestions').textContent = allQuestions.length;
+
+            // Guardar/actualizar datos de la evaluación en Firebase
+            const evaluacionRef = db.ref(`evaluaciones/${token}`);
+            evaluacionRef.set({
+                empresa,
+                email,
+                token,
+                fechaInicio: new Date().toISOString(),
+                estado: 'en_progreso'
+            }, (error) => {
+                if (error) console.log('Error guardando evaluación:', error.message);
+            });
+
+            // Recuperar respuestas previas de Firebase
+            try {
+                const snapshot = await db.ref(`evaluaciones/${token}/respuestas`).once('value');
+                if (snapshot.exists()) {
+                    responses = snapshot.val();
+                    console.log('Respuestas previas recuperadas:', responses);
+                }
+            } catch (e) {
+                console.log('No se pudieron recuperar respuestas previas:', e.message);
+            }
+
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('questionsSection').style.display = 'block';
             errorDiv.classList.remove('show');
-
-            allQuestions = questions.map((q, i) => ({ ...q, id: `q${i + 1}` }));
-            document.getElementById('totalQuestions').textContent = allQuestions.length;
 
             renderQuestions();
         }
@@ -723,19 +751,19 @@
                         <div class="question-text">${q.text}</div>
                         <div class="options">
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Sí" ${responses[q.id] === 'Sí' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="Sí" ${responses[q.id] === 'Sí' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
                                 <span>Sí</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Parcial" ${responses[q.id] === 'Parcial' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="Parcial" ${responses[q.id] === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
                                 <span>Parcial</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="No" ${responses[q.id] === 'No' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="No" ${responses[q.id] === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
                                 <span>No</span>
                             </label>
                             <label class="option-label">
-                                <input type="radio" name="${q.id}" value="N/A" ${responses[q.id] === 'N/A' ? 'checked' : ''}>
+                                <input type="radio" name="${q.id}" value="N/A" ${responses[q.id] === 'N/A' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
                                 <span>N/A</span>
                             </label>
                         </div>
@@ -746,6 +774,17 @@
 
             updateProgress();
             updateButtons();
+        }
+
+        function saveResponse(questionId, value) {
+            responses[questionId] = value;
+            updateProgress();
+
+            // Guardar en Firebase
+            if (clientData.token) {
+                db.ref(`evaluaciones/${clientData.token}/respuestas/${questionId}`).set(value)
+                    .catch(e => console.log('Error guardando en Firebase:', e.message));
+            }
         }
 
         function updateProgress() {
@@ -786,6 +825,16 @@
             }
         }
 
+        function saveBatch() {
+            if (clientData.token) {
+                const updates = {};
+                for (const [qId, value] of Object.entries(responses)) {
+                    updates[`evaluaciones/${clientData.token}/respuestas/${qId}`] = value;
+                }
+                db.ref().update(updates).catch(e => console.log('Error guardando batch:', e.message));
+            }
+        }
+
         document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -799,6 +848,15 @@
             const sections = calculateScores();
             const scores = Object.values(sections).map(s => s.score);
             const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+
+            // Guardar evaluación como completada en Firebase
+            if (clientData.token) {
+                db.ref(`evaluaciones/${clientData.token}`).update({
+                    estado: 'completada',
+                    fechaCompletada: new Date().toISOString(),
+                    scoreGeneral: overallScore
+                }).catch(e => console.log('Error actualizando estado:', e.message));
+            }
 
             document.getElementById('questionsSection').style.display = 'none';
             document.getElementById('summary').style.display = 'block';
