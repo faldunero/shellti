@@ -750,44 +750,57 @@
         }
 
         function renderQuestions() {
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
+            try {
+                console.log('renderQuestions: currentPage=', currentPage);
+                const container = document.getElementById('questionsContainer');
+                if (!container) {
+                    console.error('questionsContainer no encontrado');
+                    return;
+                }
 
-            const start = currentPage * questionsPerPage;
-            const end = Math.min(start + questionsPerPage, allQuestions.length);
-            const pageQuestions = allQuestions.slice(start, end);
+                const start = currentPage * questionsPerPage;
+                const end = Math.min(start + questionsPerPage, allQuestions.length);
+                const pageQuestions = allQuestions.slice(start, end);
 
-            pageQuestions.forEach((q, idx) => {
-                const section = idx === 0 ? `<h3 class="section">${q.section}</h3>` : '';
-                const html = `
-                    ${section}
-                    <div class="question-item">
-                        <div class="question-text">${q.text}</div>
-                        <div class="options">
-                            <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Sí" ${responses[q.id] === 'Sí' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                <span>Sí</span>
-                            </label>
-                            <label class="option-label">
-                                <input type="radio" name="${q.id}" value="Parcial" ${responses[q.id] === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                <span>Parcial</span>
-                            </label>
-                            <label class="option-label">
-                                <input type="radio" name="${q.id}" value="No" ${responses[q.id] === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                <span>No</span>
-                            </label>
-                            <label class="option-label">
-                                <input type="radio" name="${q.id}" value="N/A" ${responses[q.id] === 'N/A' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                <span>N/A</span>
-                            </label>
+                console.log('Rendering questions', start, 'to', end, ':', pageQuestions.length, 'questions');
+
+                let html = '';
+                pageQuestions.forEach((q, idx) => {
+                    const section = idx === 0 ? `<h3 class="section">${q.section}</h3>` : '';
+                    const checked = responses[q.id] || '';
+                    html += `
+                        ${section}
+                        <div class="question-item">
+                            <div class="question-text">${q.text}</div>
+                            <div class="options">
+                                <label class="option-label">
+                                    <input type="radio" name="${q.id}" value="Sí" ${checked === 'Sí' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                    <span>Sí</span>
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="${q.id}" value="Parcial" ${checked === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                    <span>Parcial</span>
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="${q.id}" value="No" ${checked === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                    <span>No</span>
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="${q.id}" value="N/A" ${checked === 'N/A' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                    <span>N/A</span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                `;
-                container.innerHTML += html;
-            });
+                    `;
+                });
 
-            updateProgress();
-            updateButtons();
+                container.innerHTML = html;
+                console.log('Questions rendered');
+                updateProgress();
+                updateButtons();
+            } catch (err) {
+                console.error('Error en renderQuestions:', err);
+            }
         }
 
         function saveResponse(questionId, value) {
@@ -848,8 +861,16 @@
             if (currentPage < maxPage) {
                 currentPage++;
                 console.log('Moving to page:', currentPage);
-                renderQuestions();
+                console.log('About to call renderQuestions...');
+                try {
+                    renderQuestions();
+                    console.log('renderQuestions completed');
+                } catch (err) {
+                    console.error('ERROR in renderQuestions:', err);
+                }
+                console.log('About to scroll...');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                console.log('Scroll done');
             } else {
                 console.log('Ya estás en la última página');
             }
