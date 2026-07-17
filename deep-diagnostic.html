@@ -558,6 +558,7 @@
         let allQuestions = [];
         let responses = {};
         let analysisContent = null;
+        let isProcessing = false;
 
         const questionMappings = {
             "q1": { ley: ["Art. 2(a)", "Art. 12"], iso: ["A.5.1", "A.6.1"], desc: "Política de privacidad y protección de datos" },
@@ -846,33 +847,37 @@
         }
 
         function nextQuestion() {
-            console.log('nextQuestion called. currentPage:', currentPage);
-            const start = currentPage * questionsPerPage;
-            const end = Math.min(start + questionsPerPage, allQuestions.length);
-
-            for (let i = start; i < end; i++) {
-                const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
-                if (checked) responses[`q${i + 1}`] = checked.value;
+            if (isProcessing) {
+                console.log('Already processing, ignoring click');
+                return;
             }
 
-            const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
-            console.log('maxPage:', maxPage, 'currentPage:', currentPage);
+            isProcessing = true;
+            console.log('nextQuestion called. currentPage:', currentPage);
 
-            if (currentPage < maxPage) {
-                currentPage++;
-                console.log('Moving to page:', currentPage);
-                console.log('About to call renderQuestions...');
-                try {
-                    renderQuestions();
-                    console.log('renderQuestions completed');
-                } catch (err) {
-                    console.error('ERROR in renderQuestions:', err);
+            try {
+                const start = currentPage * questionsPerPage;
+                const end = Math.min(start + questionsPerPage, allQuestions.length);
+
+                for (let i = start; i < end; i++) {
+                    const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
+                    if (checked) responses[`q${i + 1}`] = checked.value;
                 }
-                console.log('About to scroll...');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                console.log('Scroll done');
-            } else {
-                console.log('Ya estás en la última página');
+
+                const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
+                console.log('maxPage:', maxPage, 'currentPage:', currentPage);
+
+                if (currentPage < maxPage) {
+                    currentPage++;
+                    console.log('Moving to page:', currentPage);
+                    renderQuestions();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    console.log('Scroll done');
+                } else {
+                    console.log('Ya estás en la última página');
+                }
+            } finally {
+                isProcessing = false;
             }
         }
 
