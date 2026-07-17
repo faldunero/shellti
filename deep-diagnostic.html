@@ -354,7 +354,10 @@
                 scoreGeneral: overallScore
             });
 
-            let html = `<div class="summary"><h3>Evaluación Completada</h3><div class="results-header"><div class="overall-score">${overallScore}%</div><div class="overall-label">Cumplimiento General</div></div><div style="margin-top: 40px;">`;
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelectorAll('.navigation')[0].style.display = 'none';
+
+            let html = `<h3>Evaluación Completada</h3><div class="results-header"><div class="overall-score">${overallScore}%</div><div class="overall-label">Cumplimiento General</div></div><div style="margin-top: 40px;">`;
 
             sections.forEach(section => {
                 const score = sectionScores[section];
@@ -363,9 +366,10 @@
                 html += `<div class="domain-card"><div class="domain-header"><span class="domain-name">${section}</span><span style="color: ${bgColor}; font-weight: 700;">${score}%</span></div><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div>`;
             });
 
-            html += `</div><button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button></div>`;
+            html += `</div><button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button>`;
 
-            document.getElementById('questionsSection').innerHTML = html;
+            document.getElementById('resultsContent').innerHTML = html;
+            document.getElementById('summary').style.display = 'block';
         }
 
         function downloadPDF() {
