@@ -845,7 +845,7 @@
             btn.disabled = true;
             btn.textContent = 'Generando análisis...';
 
-            // Llamar a Railway para análisis
+            // Obtener análisis de Railway
             analysisContent = await analyzeWithGroq();
 
             const sections = calculateScores();
@@ -855,69 +855,82 @@
 
             let pdfHTML = `
                 <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #333; line-height: 1.6;">
-                    <!-- PORTADA -->
-                    <div style="page-break-after: always; text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="margin-bottom: 40px;">
-                            <div style="font-size: 48px; font-weight: bold; color: #00D4FF; margin-bottom: 10px;">ShellTI</div>
-                            <div style="font-size: 14px; color: #E2E8F0; opacity: 0.8;">.com · Digital Ecosystems</div>
-                        </div>
-
-                        <h1 style="font-size: 42px; margin: 40px 0; color: #00D4FF; font-weight: 700;">
-                            EVALUACIÓN DE CUMPLIMIENTO
-                        </h1>
-
-                        <p style="font-size: 18px; color: #E2E8F0; margin-bottom: 10px;">Ley Nº 21.719 - Protección de Datos Personales</p>
-                        <p style="font-size: 16px; color: #E2E8F0; opacity: 0.8;">ISO/IEC 27001:2022 - Gestión de Seguridad de la Información</p>
-
-                        <div style="margin-top: 60px; border-top: 2px solid #00D4FF; padding-top: 40px; width: 100%; max-width: 400px;">
-                            <div style="text-align: left; font-size: 14px; color: #E2E8F0;">
-                                <p><strong>Empresa:</strong> ${clientData.empresa || 'N/A'}</p>
-                                <p><strong>Contacto:</strong> ${clientData.email || 'N/A'}</p>
-                                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-CL', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
-                            </div>
-                        </div>
+                    <!-- HEADER -->
+                    <div style="padding: 20px 40px; border-bottom: 1px solid #e0e0e0; background: white; display: flex; align-items: center; gap: 15px; margin-bottom: 40px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #00D4FF;">ShellTI</div>
+                        <div style="font-size: 12px; color: #666;">Diagnóstico de Cumplimiento | Ley 21.719 e ISO 27001:2022</div>
                     </div>
 
-                    <!-- INTRODUCCIÓN Y OBJETIVO -->
-                    <div style="page-break-after: avoid; padding: 40px;">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">Introducción</h2>
-                        <p style="margin-bottom: 15px; text-align: justify;">
-                            La Ley Nº 21.719, promulgada el 22 de octubre de 2023, constituye el marco regulatorio principal para la protección de datos personales en Chile,
-                            estableciendo obligaciones sustanciales sobre responsables del tratamiento de datos. La ley exige la implementación de medidas técnicas y organizacionales
-                            apropiadas para garantizar la confidencialidad, integridad, disponibilidad y autenticidad de los datos personales bajo su custodia.
-                            <br/><br/>
-                            El presente diagnóstico evalúa el grado de adecuación de la organización a los artículos 2-29 de Ley 21.719 e ISO/IEC 27001:2022, cobriendo 50 controles
-                            críticos distribuidos en diez áreas de seguridad: Gobernanza, Seguridad Técnica, Gestión de Incidentes, Derechos de Titulares, Consentimiento y Transparencia,
-                            Evaluación de Impacto en Privacidad, Gestión de Personal, Transferencias Internacionales, Gestión de Terceros y Cumplimiento Documentario.
-                        </p>
+                    <!-- PORTADA -->
+                    <div style="page-break-after: always; text-align: center; padding: 80px 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; min-height: 90vh; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="margin-bottom: 60px; font-size: 32px; font-weight: bold; color: #00D4FF;">ShellTI</div>
+                        <h1 style="font-size: 48px; margin: 0 0 30px 0; font-weight: 700; line-height: 1.3;">INFORME DE EVALUACIÓN DE CUMPLIMIENTO NORMATIVO</h1>
+                        <p style="font-size: 16px; color: #E2E8F0; margin: 30px 0;">Ley Nº 21.719 | Protección de Datos Personales en Chile</p>
+                        <p style="font-size: 14px; color: #E2E8F0; opacity: 0.9; margin-bottom: 60px;">ISO/IEC 27001:2022 | Sistemas de Gestión de Seguridad de la Información</p>
+                        <div style="border-top: 1px solid #00D4FF; border-bottom: 1px solid #00D4FF; padding: 30px 0; margin: 60px 0;">
+                            <div style="text-align: center; font-size: 13px; color: #E2E8F0; line-height: 1.8;">
+                                <div><strong>ORGANIZACIÓN:</strong> ${clientData.empresa || 'Por determinar'}</div>
+                                <div><strong>CONTACTO:</strong> ${clientData.email || 'Por determinar'}</div>
+                                <div><strong>FECHA DE EVALUACIÓN:</strong> ${new Date().toLocaleDateString('es-CL', {year: 'numeric', month: 'long', day: 'numeric'})}</div>
+                                <div><strong>CONTROLES EVALUADOS:</strong> 50 áreas de control en 10 dominios</div>
+                            </div>
+                        </div>
+                        <p style="font-size: 11px; color: #E2E8F0; opacity: 0.7; margin-top: 60px;">Documento Confidencial | ShellTI Technology Consultancy</p>
+                    </div>
 
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px; margin-top: 30px;">Objetivos del Diagnóstico</h2>
-                        <p style="margin-bottom: 15px; text-align: justify;">
-                            (1) Evaluar el estado actual de cumplimiento de la organización conforme a Ley Nº 21.719 e ISO/IEC 27001:2022;
-                            (2) Identificar brechas normativas específicas en controles de seguridad y gobernanza de datos;
-                            (3) Cuantificar el nivel de riesgo regulatorio y operacional asociado a incumplimientos;
-                            (4) Proporcionar recomendaciones priorizado conforme a criticidad, impacto y esfuerzo de implementación;
-                            (5) Desarrollar roadmap de implementación faseado de 12 meses con hitos verificables.
+                    <!-- INTRODUCCIÓN -->
+                    <div style="page-break-after: avoid; padding: 40px;">
+                        <h2 style="color: #00D4FF; font-size: 20px; margin-bottom: 20px; padding-bottom: 10px;">1. Introducción</h2>
+                        <p style="text-align: justify; margin-bottom: 15px;">
+                            La Ley Nº 21.719, promulgada el 22 de octubre de 2023 y publicada en el Diario Oficial el 25 de octubre de 2023, constituye el principal marco regulatorio
+                            chileno para la protección de datos personales, estableciendo obligaciones sustanciales sobre cualquier responsable del tratamiento de información personal.
+                            La ley responde a la necesidad de Chile de alinearse con estándares internacionales de protección de datos y, en particular, con normas comparables a la
+                            Regulación General de Protección de Datos de la Unión Europea (RGPD).
                         </p>
+                        <p style="text-align: justify; margin-bottom: 15px;">
+                            Conforme al artículo 24 de Ley 21.719, los responsables del tratamiento deben implementar medidas técnicas y organizacionales apropiadas para garantizar
+                            un nivel de seguridad acorde al riesgo, incluyendo: (a) cifrado de datos; (b) seudoización; (c) capacidad de garantizar disponibilidad y resiliencia;
+                            (d) capacidad de restauración; y (e) procedimientos de prueba y evaluación de la efectividad de las medidas. Adicionalmente, la Ley 21.719 incorpora
+                            por referencia los controles de seguridad definidos en ISO/IEC 27001:2022.
+                        </p>
+                        <p style="text-align: justify;">
+                            El presente diagnóstico evalúa la conformidad de la organización con los artículos 2 a 29 de Ley Nº 21.719 e ISO/IEC 27001:2022, mediante la evaluación
+                            de 50 controles técnicos y organizacionales agrupados en 10 dominios: (i) Gobernanza; (ii) Seguridad Técnica; (iii) Gestión de Incidentes; (iv) Derechos
+                            de Titulares; (v) Consentimiento y Transparencia; (vi) Evaluación de Impacto en Privacidad; (vii) Gestión de Personal; (viii) Transferencias Internacionales;
+                            (ix) Gestión de Terceros; y (x) Cumplimiento Documentario.
+                        </p>
+                    </div>
+
+                    <!-- OBJETIVOS -->
+                    <div style="page-break-after: avoid; padding: 40px;">
+                        <h2 style="color: #00D4FF; font-size: 20px; margin-bottom: 20px; padding-bottom: 10px;">2. Objetivos del Diagnóstico</h2>
+                        <ol style="text-align: justify; line-height: 1.8; font-size: 13px;">
+                            <li style="margin-bottom: 12px;"><strong>Evaluación de Conformidad:</strong> Determinar el grado de cumplimiento de la organización con obligaciones específicas establecidas en Ley 21.719 (Arts. 2-29) e ISO/IEC 27001:2022 (Anexo A).</li>
+                            <li style="margin-bottom: 12px;"><strong>Identificación de Brechas Normativas:</strong> Mapear deficiencias específicas en controles de seguridad, gobernanza, gestión de incidentes y administración de datos, identificando desviaciones respecto de estándares aplicables.</li>
+                            <li style="margin-bottom: 12px;"><strong>Cuantificación de Riesgos:</strong> Estimar el nivel de exposición regulatoria (sanciones conforme Art. 47) y riesgos operacionales asociados a cada brecha identificada.</li>
+                            <li style="margin-bottom: 12px;"><strong>Recomendaciones Priorizado:</strong> Proporcionar plan de remediación con acciones ordenadas por criticidad, impacto operacional, riesgo legal y requerimientos de recursos.</li>
+                            <li><strong>Roadmap de Implementación:</strong> Desarrollar cronograma de 12 meses para cierre de brechas, con hitos medibles y responsabilidades asignadas.</li>
+                        </ol>
                     </div>
 
                     <!-- TABLA DE CONTENIDOS -->
                     <div style="page-break-after: always; padding: 40px;">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 30px;">Tabla de Contenidos</h2>
-                        <ol style="font-size: 14px; line-height: 2;">
-                            <li><a href="#ejecutivo" style="color: #00D4FF; text-decoration: none;">Resumen Ejecutivo</a></li>
-                            <li><a href="#analisis" style="color: #00D4FF; text-decoration: none;">Análisis Detallado por Área</a></li>
-                            <li><a href="#riesgos" style="color: #00D4FF; text-decoration: none;">Matriz de Riesgo Consolidada</a></li>
-                            <li><a href="#roadmap" style="color: #00D4FF; text-decoration: none;">Roadmap de Implementación (12 Meses)</a></li>
-                            <li><a href="#normativo" style="color: #00D4FF; text-decoration: none;">Marco Normativo Aplicable</a></li>
-                            <li><a href="#conclusiones" style="color: #00D4FF; text-decoration: none;">Conclusiones y Plan de Acción</a></li>
+                        <h2 style="color: #00D4FF; font-size: 20px; margin-bottom: 30px; padding-bottom: 10px;">Tabla de Contenidos</h2>
+                        <ol style="font-size: 13px; line-height: 2.2; color: #333;">
+                            <li>Resumen Ejecutivo de Conformidad</li>
+                            <li>Visualización de Resultados y Gráficos Analíticos</li>
+                            <li>Análisis Detallado por Dominio de Control</li>
+                            <li>Matriz de Riesgo Consolidada</li>
+                            <li>Roadmap de Implementación (12 Meses)</li>
+                            <li>Marco Normativo Aplicable</li>
+                            <li>Conclusiones Técnicas y Plan de Acción</li>
                         </ol>
                     </div>
 
 
                     <!-- RESUMEN EJECUTIVO -->
                     <div style="page-break-after: avoid; padding: 40px;" id="ejecutivo">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">1. Resumen Ejecutivo</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">3. Resumen Ejecutivo de Conformidad</h2>
                         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                                 <div>
@@ -944,9 +957,44 @@
                         ` : ''}
                     </div>
 
+                    <!-- GRÁFICOS Y VISUALIZACIÓN -->
+                    <div style="page-break-after: always; padding: 40px;">
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">4. Visualización de Resultados y Gráficos Analíticos</h2>
+                        <h3 style="color: #34D399; font-size: 15px; margin-bottom: 15px;">Cumplimiento por Dominio de Control</h3>
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                                <tr style="background: #f5f5f5;">
+                                    <td style="padding: 10px; text-align: left; font-weight: bold;">Dominio</td>
+                                    <td style="padding: 10px; text-align: center; font-weight: bold; width: 60px;">Score %</td>
+                                    <td style="padding: 10px; text-align: center; font-weight: bold; width: 90px;">Conformidad</td>
+                                    <td style="padding: 10px; text-align: center; font-weight: bold; width: 80px;">Nivel Riesgo</td>
+                                </tr>
+                                ${Object.keys(sections).map((section, idx) => {
+                                    const score = sections[section].score;
+                                    const state = score >= 80 ? 'CONFORME' : score >= 60 ? 'PARCIAL' : 'NO CONFORME';
+                                    const risk = score >= 80 ? 'BAJO' : score >= 60 ? 'MEDIO' : 'ALTO';
+                                    return `<tr style="background: ${idx % 2 === 0 ? 'white' : '#fafafa'}; border-bottom: 1px solid #eee;">
+                                        <td style="padding: 10px; text-align: left;">${section}</td>
+                                        <td style="padding: 10px; text-align: center; font-weight: bold; color: ${score >= 80 ? '#34D399' : score >= 60 ? '#FFA500' : '#FF6B6B'};">${score}%</td>
+                                        <td style="padding: 10px; text-align: center; font-size: 10px; font-weight: bold; color: ${score >= 80 ? '#34D399' : score >= 60 ? '#FFA500' : '#FF6B6B'};">${state}</td>
+                                        <td style="padding: 10px; text-align: center; font-size: 10px; font-weight: bold; color: ${score >= 80 ? '#34D399' : score >= 60 ? '#FFA500' : '#FF6B6B'};">${risk}</td>
+                                    </tr>`;
+                                }).join('')}
+                            </table>
+                        </div>
+                        <div style="background: #fafafa; padding: 15px; border-radius: 8px;">
+                            <p style="margin: 0; font-size: 12px; text-align: justify;">
+                                <strong>Índice General de Conformidad:</strong> ${overallScore}% |
+                                <strong>Controles Evaluados:</strong> ${totalAnswered}/50 |
+                                <strong>Estado General:</strong> <span style="color: ${overallScore >= 80 ? '#34D399' : overallScore >= 60 ? '#FFA500' : '#FF6B6B'}; font-weight: bold;">
+                                ${overallScore >= 80 ? 'CONFORME' : overallScore >= 60 ? 'PARCIALMENTE CONFORME' : 'NO CONFORME'}</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- ANÁLISIS DETALLADO POR ÁREA -->
                     <div style="page-break-after: avoid; padding: 40px;" id="analisis">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">2. Análisis Detallado por Área</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">5. Análisis Detallado por Dominio de Control</h2>
 
                     <div style="page-break-after: always; margin-top: 40px;">
                         <h2 style="color: #00D4FF;">1. DATOS DE LA EVALUACIÓN</h2>
@@ -984,35 +1032,9 @@
 
                     ${generateDetailedAnalysis(sections)}
 
-                    <!-- GRÁFICOS Y VISUALIZACIÓN -->
-                    <div style="page-break-after: always; padding: 40px;">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">3. Visualización de Resultados</h2>
-                        <div style="margin-bottom: 40px;">
-                            <h3 style="color: #34D399; font-size: 16px; margin-bottom: 15px;">Cumplimiento por Área</h3>
-                            <div style="background: white; padding: 20px; border-radius: 8px;">
-                                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                                    <tr style="background: #f5f5f5;">
-                                        <td style="padding: 10px; text-align: left; font-weight: bold;">Área de Control</td>
-                                        <td style="padding: 10px; text-align: center; font-weight: bold; width: 80px;">Score</td>
-                                        <td style="padding: 10px; text-align: center; font-weight: bold; width: 100px;">Estado</td>
-                                    </tr>
-                                    ${Object.keys(sections).map((section, idx) => {
-                                        const score = sections[section].score;
-                                        const state = score >= 80 ? 'CONFORME' : score >= 60 ? 'PARCIAL' : 'NO CONFORME';
-                                        return `<tr style="background: ${idx % 2 === 0 ? 'white' : '#fafafa'}; border-bottom: 1px solid #eee;">
-                                            <td style="padding: 10px;">${section}</td>
-                                            <td style="padding: 10px; text-align: center; font-weight: bold; color: ${score >= 80 ? '#34D399' : score >= 60 ? '#FFA500' : '#FF6B6B'};">${score}%</td>
-                                            <td style="padding: 10px; text-align: center; font-size: 11px; font-weight: bold; color: ${score >= 80 ? '#34D399' : score >= 60 ? '#FFA500' : '#FF6B6B'};">${state}</td>
-                                        </tr>`;
-                                    }).join('')}
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- MATRIZ DE RIESGO -->
                     <div style="page-break-after: always; padding: 40px;" id="riesgos">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">4. Matriz de Riesgo Consolidada</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">6. Matriz de Riesgo Consolidada</h2>
                         <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                             <tr style="background: #00D4FF; color: white;">
                                 <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Área</th>
@@ -1026,13 +1048,13 @@
 
                     <!-- ROADMAP DE IMPLEMENTACIÓN -->
                     <div style="page-break-after: always; padding: 40px; margin-top: 30px;" id="roadmap">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">5. Roadmap de Implementación (12 Meses)</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">7. Roadmap de Implementación (12 Meses)</h2>
                         ${generateRoadmap(sections)}
                     </div>
 
                     <!-- MARCO NORMATIVO -->
                     <div style="page-break-after: avoid; padding: 40px;" id="normativo">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">6. Marco Normativo Aplicable</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">8. Marco Normativo Aplicable</h2>
                         <h3 style="color: #34D399;">Ley Nº 21.719 - Protección de Datos Personales</h3>
                         <p>Esta evaluación mapea directamente a los siguientes artículos:</p>
                         <ul>
@@ -1055,7 +1077,7 @@
 
                     <!-- CONCLUSIONES Y PLAN DE ACCIÓN -->
                     <div style="page-break-after: avoid; padding: 40px;" id="conclusiones">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">7. Conclusiones y Plan de Acción</h2>
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">9. Conclusiones Técnicas y Plan de Acción</h2>
                         <div style="background: white; padding: 20px; margin-bottom: 20px;">
                             <p style="text-align: justify;"><strong>Conclusión General:</strong></p>
                             <p style="text-align: justify; margin-top: 0;">${
@@ -1083,36 +1105,35 @@
                         </p>
                     </div>
 
-                    <!-- DISCLAIMER FINAL -->
-                    <div style="page-break-before: always; padding: 40px;" id="disclaimer">
-                        <h2 style="color: #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">Declaración Legal y Técnica</h2>
-                        <p style="font-size: 11px; text-align: justify; line-height: 1.6; color: #333; margin: 0;">
-                            Este informe es información confidencial preparada exclusivamente para ${clientData.empresa || 'la organización'}.
-                            No puede reproducirse, distribuirse ni revelarse a terceros sin consentimiento previo escrito de ShellTI Technology Consultancy.
-                            Las evaluaciones y recomendaciones se basan en información y datos proporcionados, y reflejan condiciones al momento de la evaluación.
-                            La seguridad de la información es proceso continuo; este diagnóstico no constituye certificación de cumplimiento pleno.
-                            La implementación de recomendaciones es responsabilidad exclusiva de la organización evaluada.
-                            ShellTI Technology Consultancy no asume responsabilidad por incumplimientos normativos derivados de falta de implementación de medidas recomendadas.
+                    <!-- DISCLAIMER LEGAL - FINAL -->
+                    <div style="page-break-before: always; padding: 40px; background: white;">
+                        <h2 style="color: #00D4FF; font-size: 20px; padding-bottom: 10px; margin-bottom: 20px;">Declaración Legal y Técnica</h2>
+                        <p style="font-size: 11px; text-align: justify; line-height: 1.7; color: #333; margin: 0;">
+                            CONFIDENCIALIDAD: Este informe contiene información técnica y legal sensible preparada exclusivamente para ${clientData.empresa || 'la organización'}.
+                            Su reproducción, distribución o revelación a terceros sin consentimiento previo escrito de ShellTI Technology Consultancy constituye violación de derecho de propiedad intelectual.
+                            <br/><br/>
+                            ALCANCE Y LIMITACIONES: Este diagnóstico evalúa conformidad con Ley Nº 21.719 e ISO/IEC 27001:2022 basado en información proporcionada al momento de la evaluación.
+                            No constituye auditoría de seguridad completa, certificación de cumplimiento pleno, ni garantía de ausencia de vulnerabilidades no identificadas.
+                            <br/><br/>
+                            RESPONSABILIDAD: La implementación de recomendaciones es responsabilidad exclusiva de la organización. ShellTI Technology Consultancy no asume responsabilidad por incumplimientos normativos,
+                            sanciones administrativas (Art. 47 Ley 21.719), reclamaciones de terceros o consecuencias derivadas de falta de implementación o implementación inadecuada de controles recomendados.
+                            <br/><br/>
+                            VIGENCIA: Las conclusiones reflejan el estado de conformidad al momento de la evaluación. Cambios en legislación, estándares internacionales u operaciones de la organización pueden afectar vigencia del análisis.
                         </p>
                     </div>
 
                     <!-- FOOTER CON LOGO -->
                     <div style="page-break-before: always; padding: 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; text-align: center;">
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-size: 32px; font-weight: bold; color: #00D4FF; margin-bottom: 5px;">ShellTI</div>
-                            <div style="font-size: 13px; color: #E2E8F0; opacity: 0.8;">.com · Digital Ecosystems</div>
-                        </div>
-
-                        <div style="padding: 20px 0; margin: 20px 0;">
-                            <p style="font-size: 12px; color: #E2E8F0; margin: 0; text-align: justify;">
-                                Consultoría especializada en Ciberseguridad, Cumplimiento Normativo y Gestión de Riesgos de Información.
-                                Expertise en Ley Nº 21.719, ISO/IEC 27001:2022, NIST CSF y regulaciones internacionales de protección de datos.
+                        <div style="margin-bottom: 30px; font-size: 24px; font-weight: bold; color: #00D4FF;">ShellTI</div>
+                        <div style="border-bottom: 1px solid #00D4FF; padding-bottom: 20px; margin-bottom: 20px;">
+                            <p style="font-size: 12px; color: #E2E8F0; margin: 0; text-align: center;">
+                                Especialistas en Cumplimiento Normativo y Seguridad de la Información<br>
+                                Ley Nº 21.719 | ISO/IEC 27001:2022 | Protección de Datos Personales
                             </p>
                         </div>
-
-                        <p style="font-size: 10px; color: #E2E8F0; opacity: 0.7; margin: 20px 0;">
-                            © 2026 ShellTI Technology Consultancy. Todos los derechos reservados.<br>
-                            contacto@shellti.com | www.shellti.com
+                        <p style="font-size: 10px; color: #E2E8F0; opacity: 0.7; margin: 0;">
+                            © 2026 ShellTI Technology Consultancy<br>
+                            contacto@shellti.com
                         </p>
                     </div>
                 </div>
