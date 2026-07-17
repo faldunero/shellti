@@ -542,6 +542,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAGn_dUYJI8WiQ6QfaTBGHOgr6FDHIbiI0",
             authDomain: "shellti-diagnostico.firebaseapp.com",
+            databaseURL: "https://shellti-diagnostico.firebaseio.com",
             projectId: "shellti-diagnostico",
             storageBucket: "shellti-diagnostico.appspot.com",
             messagingSenderId: "808197164295",
@@ -717,15 +718,28 @@
                 if (error) console.log('Error guardando evaluación:', error.message);
             });
 
-            // Recuperar respuestas previas de Firebase
+            // Recuperar respuestas previas: Firebase primero, luego localStorage
+            let responsesFromFirebase = false;
             try {
                 const snapshot = await db.ref(`evaluaciones/${token}/respuestas`).once('value');
                 if (snapshot.exists()) {
                     responses = snapshot.val();
-                    console.log('Respuestas previas recuperadas:', responses);
+                    responsesFromFirebase = true;
+                    console.log('Respuestas recuperadas de Firebase:', responses);
                 }
             } catch (e) {
-                console.log('No se pudieron recuperar respuestas previas:', e.message);
+                console.warn('No se pudieron recuperar de Firebase:', e.message);
+            }
+
+            // Si Firebase no tiene respuestas, recuperar de localStorage
+            if (!responsesFromFirebase) {
+                allQuestions.forEach(q => {
+                    const stored = localStorage.getItem(`shellti_${token}_${q.id}`);
+                    if (stored) responses[q.id] = stored;
+                });
+                if (Object.keys(responses).length > 0) {
+                    console.log('Respuestas recuperadas de localStorage:', responses);
+                }
             }
 
             document.getElementById('authSection').style.display = 'none';
@@ -780,10 +794,13 @@
             responses[questionId] = value;
             updateProgress();
 
-            // Guardar en Firebase
+            // Guardar en localStorage como fallback
+            localStorage.setItem(`shellti_${clientData.token}_${questionId}`, value);
+
+            // Guardar en Firebase (no-blocking)
             if (clientData.token) {
                 db.ref(`evaluaciones/${clientData.token}/respuestas/${questionId}`).set(value)
-                    .catch(e => console.log('Error guardando en Firebase:', e.message));
+                    .catch(e => console.error('Firebase error:', e.message));
             }
         }
 
