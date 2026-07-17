@@ -855,28 +855,33 @@
         document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const start = currentPage * questionsPerPage;
-            const end = Math.min(start + questionsPerPage, allQuestions.length);
-            for (let i = start; i < end; i++) {
-                const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
-                if (checked) responses[`q${i + 1}`] = checked.value;
+            try {
+                const start = currentPage * questionsPerPage;
+                const end = Math.min(start + questionsPerPage, allQuestions.length);
+                for (let i = start; i < end; i++) {
+                    const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
+                    if (checked) responses[`q${i + 1}`] = checked.value;
+                }
+
+                const sections = calculateScores();
+                const scores = Object.values(sections).map(s => s.score);
+                const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+
+                // Guardar evaluación como completada en Firebase
+                if (clientData.token) {
+                    db.ref(`evaluaciones/${clientData.token}`).update({
+                        estado: 'completada',
+                        fechaCompletada: new Date().toISOString(),
+                        scoreGeneral: overallScore
+                    }).catch(e => console.error('Error Firebase:', e.message));
+                }
+
+                document.getElementById('questionsSection').style.display = 'none';
+                document.getElementById('summary').style.display = 'block';
+            } catch (err) {
+                console.error('Error en submit:', err);
+                alert('Error: ' + err.message);
             }
-
-            const sections = calculateScores();
-            const scores = Object.values(sections).map(s => s.score);
-            const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
-
-            // Guardar evaluación como completada en Firebase
-            if (clientData.token) {
-                db.ref(`evaluaciones/${clientData.token}`).update({
-                    estado: 'completada',
-                    fechaCompletada: new Date().toISOString(),
-                    scoreGeneral: overallScore
-                }).catch(e => console.log('Error actualizando estado:', e.message));
-            }
-
-            document.getElementById('questionsSection').style.display = 'none';
-            document.getElementById('summary').style.display = 'block';
 
             let resultsHTML = `
                 <div class="results-header">
@@ -891,6 +896,7 @@
             for (const [section, data] of Object.entries(sections)) {
                 const riskClass = data.score >= 80 ? 'risk-low' : data.score >= 60 ? 'risk-medium' : data.score >= 40 ? 'risk-high' : 'risk-critical';
                 const semaforoClass = data.score >= 80 ? 'semaforo-ok' : data.score >= 60 ? 'semaforo-warn' : 'semaforo-danger';
+                const bgColor = semaforoClass === 'semaforo-ok' ? 'var(--green)' : semaforoClass === 'semaforo-warn' ? '#F59E0B' : '#FF6B6B';
 
                 resultsHTML += `
                     <div class="domain-card">
@@ -905,7 +911,7 @@
                         </div>
                         <div class="score-bar">
                             <div class="score-bar-track">
-                                <div class="score-bar-fill" style="width: ${data.score}%; background: ${semaforoClass === 'semaforo-ok' ? 'var(--green)' : semaforoClass === 'semaforo-warn' ? '#F59E0B' : '#FF6B6B'};"></div>
+                                <div class="score-bar-fill" style="width: ${data.score}%; background: ${bgColor};"></div>
                             </div>
                             <div class="score-value">${data.score}%</div>
                         </div>
@@ -923,7 +929,12 @@
                 </p>
             `;
 
-            document.getElementById('resultsContent').innerHTML = resultsHTML;
+            const resultsDiv = document.getElementById('resultsContent');
+            if (resultsDiv) {
+                resultsDiv.innerHTML = resultsHTML;
+            } else {
+                console.error('No se encontró resultsContent');
+            }
         });
 
         function calculateScores() {
