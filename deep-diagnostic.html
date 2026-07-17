@@ -48,7 +48,9 @@
         .results-header { text-align: center; margin-bottom: 40px; }
         .overall-score { font-size: 48px; font-weight: 900; color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
         .overall-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 8px; }
-        .domain-card { background: rgba(255, 255, 255, 0.02); padding: 20px; margin-bottom: 16px; border-radius: 6px; }
+        .domain-card { background: rgba(255, 255, 255, 0.02); padding: 20px; margin-bottom: 16px; border-radius: 6px; cursor: pointer; }
+        .domain-card.collapsed .domain-details { display: none; }
+        .domain-details { margin-top: 12px; }
         .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .domain-name { font-weight: 600; color: var(--silver); font-size: 13px; }
         .score-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -363,7 +365,7 @@
                 const score = sectionScores[section];
                 const risk = score >= 80 ? 'low' : score >= 60 ? 'medium' : score >= 40 ? 'high' : 'critical';
                 const bgColor = risk === 'low' ? 'var(--green)' : risk === 'medium' ? '#FFC107' : risk === 'high' ? '#F59E0B' : '#FF6B6B';
-                html += `<div class="domain-card"><div class="domain-header"><span class="domain-name">${section}</span><span style="color: ${bgColor}; font-weight: 700;">${score}%</span></div><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div>`;
+                html += `<div class="domain-card collapsed" onclick="this.classList.toggle('collapsed')"><div class="domain-header"><span class="domain-name">${section}</span><span style="color: ${bgColor}; font-weight: 700;">${score}%</span></div><div class="domain-details"><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div></div>`;
             });
 
             html += `</div><button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button>`;
