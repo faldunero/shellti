@@ -336,28 +336,37 @@
         }
 
         function submitForm() {
-            const sectionScores = {};
-            sections.forEach(section => {
-                const sectionQs = allQuestions.filter(q => q.section === section);
-                const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
-                const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
-                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
-                const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
-                sectionScores[section] = score;
-            });
+            try {
+                const sectionScores = {};
+                sections.forEach(section => {
+                    const sectionQs = allQuestions.filter(q => q.section === section);
+                    const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
+                    const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
+                    const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                    const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
+                    sectionScores[section] = score;
+                });
 
-            const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
+                const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
 
-            db.ref(`evaluaciones/${clientData.token}`).update({
-                estado: 'completada',
-                fechaCompletada: new Date().toISOString(),
-                scoreGeneral: overallScore
-            });
+                db.ref(`evaluaciones/${clientData.token}`).update({
+                    estado: 'completada',
+                    fechaCompletada: new Date().toISOString(),
+                    scoreGeneral: overallScore
+                });
 
-            document.getElementById('questionsSection').style.display = 'none';
-            document.getElementById('summary').style.display = 'block';
+                const questionsEl = document.getElementById('questionsSection');
+                const summaryEl = document.getElementById('summary');
 
-            let html = `
+                if (questionsEl) questionsEl.style.display = 'none';
+                if (!summaryEl) {
+                    console.error('Error: elemento summary no encontrado');
+                    return;
+                }
+
+                summaryEl.style.display = 'block';
+
+                let html = `
                 <div class="results-header">
                     <div class="overall-score">${overallScore}%</div>
                     <div class="overall-label">Cumplimiento General</div>
@@ -386,8 +395,11 @@
                 `;
             });
 
-            html += `</div>`;
-            document.getElementById('resultsContent').innerHTML = html;
+                html += `</div>`;
+                document.getElementById('resultsContent').innerHTML = html;
+            } catch (err) {
+                console.error('Error en submitForm:', err);
+            }
         }
 
         function downloadPDF() {
