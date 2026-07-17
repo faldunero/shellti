@@ -828,17 +828,25 @@
         }
 
         function nextQuestion() {
+            console.log('nextQuestion called. currentPage:', currentPage);
             const start = currentPage * questionsPerPage;
             const end = Math.min(start + questionsPerPage, allQuestions.length);
+
             for (let i = start; i < end; i++) {
                 const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
                 if (checked) responses[`q${i + 1}`] = checked.value;
             }
 
-            if (currentPage < Math.ceil(allQuestions.length / questionsPerPage) - 1) {
+            const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
+            console.log('maxPage:', maxPage, 'currentPage:', currentPage);
+
+            if (currentPage < maxPage) {
                 currentPage++;
+                console.log('Moving to page:', currentPage);
                 renderQuestions();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                console.log('Ya estás en la última página');
             }
         }
 
