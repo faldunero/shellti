@@ -29,15 +29,14 @@
             min-height: 100vh;
         }
 
-        /* HEADER */
-        .site-header {
+        header {
             background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
             padding: 16px 40px;
             display: flex;
             align-items: center;
             gap: 20px;
         }
-        .header-logo {
+        header img {
             height: 40px;
             width: 40px;
             object-fit: contain;
@@ -78,7 +77,6 @@
             padding: 40px;
         }
 
-        /* FORM STYLING - NO BORDERS */
         .auth-section {
             background: rgba(0, 212, 255, 0.03);
             border-radius: 8px;
@@ -104,9 +102,6 @@
             color: var(--silver);
             font-size: 13px;
         }
-        .form-group input::placeholder {
-            color: rgba(226, 232, 240, 0.4);
-        }
         .form-group input:focus {
             outline: none;
             background: rgba(0, 212, 255, 0.08);
@@ -114,7 +109,7 @@
 
         .btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, var(--cyan), var(--cyan2, var(--cyan)));
+            background: linear-gradient(135deg, var(--cyan), var(--cyan));
             color: var(--deep);
             border: none;
             border-radius: 4px;
@@ -135,51 +130,6 @@
         }
         .btn-secondary:hover {
             background: rgba(0, 212, 255, 0.08);
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-        .section h3 {
-            color: var(--cyan);
-            margin-bottom: 20px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-        .question-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 20px;
-            margin-bottom: 16px;
-            border-radius: 6px;
-        }
-        .question-text {
-            margin-bottom: 12px;
-            font-weight: 500;
-            color: var(--silver);
-            font-size: 13px;
-        }
-        .options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            background: rgba(0, 212, 255, 0.05);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 12px;
-        }
-        .option-label:hover {
-            background: rgba(0, 212, 255, 0.1);
-        }
-        .option-label input {
-            margin-right: 6px;
-            cursor: pointer;
         }
 
         .progress-section {
@@ -241,11 +191,56 @@
             color: var(--muted);
         }
 
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: var(--cyan);
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .question-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 6px;
+        }
+        .question-text {
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--silver);
+            font-size: 13px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+        }
+        .option-label:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .option-label input {
+            margin-right: 6px;
+            cursor: pointer;
+        }
+
         .navigation {
             display: flex;
             gap: 12px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 40px;
         }
         .nav-btn {
             padding: 10px 20px;
@@ -262,7 +257,6 @@
             text-align: center;
         }
 
-        /* RESULTS STYLING */
         .results-header {
             text-align: center;
             margin-bottom: 40px;
@@ -282,20 +276,6 @@
             margin-top: 8px;
         }
 
-        .analysis-section {
-            margin-bottom: 40px;
-        }
-        .analysis-title {
-            color: var(--green);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(52, 211, 153, 0.2);
-        }
-
         .domain-card {
             background: rgba(255, 255, 255, 0.02);
             padding: 20px;
@@ -313,15 +293,6 @@
             color: var(--silver);
             font-size: 13px;
         }
-        .domain-score {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 13px;
-        }
-        .score-ok { color: var(--green); }
-        .score-warn { color: #F59E0B; }
-        .score-danger { color: #FF6B6B; }
-
         .semaforo {
             display: flex;
             gap: 4px;
@@ -332,10 +303,6 @@
             height: 10px;
             border-radius: 50%;
         }
-        .semaforo-ok { background: var(--green); }
-        .semaforo-warn { background: #F59E0B; }
-        .semaforo-danger { background: #FF6B6B; }
-
         .score-bar {
             display: flex;
             align-items: center;
@@ -351,32 +318,8 @@
         }
         .score-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--green), var(--cyan));
             border-radius: 3px;
         }
-        .score-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            min-width: 30px;
-            text-align: right;
-        }
-
-        .findings-list {
-            font-size: 12px;
-            color: var(--muted);
-            margin-top: 12px;
-        }
-        .findings-item {
-            margin: 6px 0;
-            padding-left: 12px;
-            text-align: justify;
-        }
-        .findings-item::before {
-            content: "→ ";
-            color: var(--cyan);
-            margin-right: 4px;
-        }
-
         .risk-badge {
             display: inline-block;
             padding: 4px 8px;
@@ -388,24 +331,11 @@
             letter-spacing: 0.5px;
             margin-top: 8px;
         }
-        .risk-critical {
-            background: rgba(255, 107, 107, 0.2);
-            color: #FF6B6B;
-        }
-        .risk-high {
-            background: rgba(255, 165, 0, 0.2);
-            color: #F59E0B;
-        }
-        .risk-medium {
-            background: rgba(255, 193, 7, 0.2);
-            color: #FFC107;
-        }
-        .risk-low {
-            background: rgba(52, 211, 153, 0.2);
-            color: var(--green);
-        }
+        .risk-critical { background: rgba(255, 107, 107, 0.2); color: #FF6B6B; }
+        .risk-high { background: rgba(255, 165, 0, 0.2); color: #F59E0B; }
+        .risk-medium { background: rgba(255, 193, 7, 0.2); color: #FFC107; }
+        .risk-low { background: rgba(52, 211, 153, 0.2); color: var(--green); }
 
-        /* FOOTER */
         footer {
             background: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
             padding: 30px 40px;
@@ -428,9 +358,6 @@
             font-weight: 700;
             color: var(--silver);
         }
-        footer p {
-            margin: 4px 0;
-        }
 
         .error {
             background: rgba(255, 107, 107, 0.1);
@@ -448,8 +375,8 @@
     </style>
 </head>
 <body>
-    <header class="site-header">
-        <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" class="header-logo">
+    <header>
+        <img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI">
         <div class="header-brand">
             <div class="header-brand-name">Shell<span>TI</span></div>
             <div class="header-brand-sub">.com · Digital Ecosystems</div>
@@ -489,7 +416,7 @@
                         <div class="progress-bar">
                             <div class="progress-fill" id="progressFill"></div>
                         </div>
-                        <div class="progress-text"><span id="currentQuestion">0</span>/<span id="totalQuestions">0</span> preguntas respondidas</div>
+                        <div class="progress-text"><span id="currentQuestion">0</span>/50 respondidas</div>
                     </div>
                 </div>
 
@@ -497,9 +424,9 @@
                     <div id="questionsContainer"></div>
 
                     <div class="navigation">
-                        <button type="button" class="btn btn-secondary nav-btn" onclick="prevQuestion()" id="prevBtn" style="display:none;">← Anterior</button>
+                        <button type="button" class="btn btn-secondary nav-btn" onclick="prevSection()" id="prevBtn" style="display:none;">← Anterior</button>
                         <button type="submit" class="btn nav-btn" id="submitBtn" style="display:none;">Enviar Evaluación</button>
-                        <button type="button" class="btn nav-btn" onclick="nextQuestion()" id="nextBtn" style="display:none;">Siguiente →</button>
+                        <button type="button" class="btn nav-btn" onclick="nextSection()" id="nextBtn" style="display:none;">Siguiente →</button>
                     </div>
                 </form>
 
@@ -553,131 +480,68 @@
         const db = firebase.database();
 
         let clientData = {};
-        let currentPage = 0;
-        const questionsPerPage = 5;
+        let currentSection = 0;
         let allQuestions = [];
         let responses = {};
-        let analysisContent = null;
-        let isProcessing = false;
-
-        const questionMappings = {
-            "q1": { ley: ["Art. 2(a)", "Art. 12"], iso: ["A.5.1", "A.6.1"], desc: "Política de privacidad y protección de datos" },
-            "q2": { ley: ["Art. 24(h)"], iso: ["A.6.1.1"], desc: "Responsable de protección de datos (DPO)" },
-            "q3": { ley: ["Art. 24(i)"], iso: ["A.6.2", "A.14.2"], desc: "Auditorías internas de cumplimiento" },
-            "q4": { ley: ["Art. 17"], iso: ["A.8.3.2"], desc: "Registro de Actividades de Tratamiento (RAT)" },
-            "q5": { ley: ["Art. 16"], iso: ["A.5.1"], desc: "Políticas de privacidad actualizadas y accesibles" },
-            "q6": { ley: ["Art. 2(j)"], iso: ["A.10.1.1"], desc: "Cifrado de datos en reposo" },
-            "q7": { ley: ["Art. 2(j)"], iso: ["A.10.1.1"], desc: "Cifrado en tránsito (HTTPS/TLS)" },
-            "q8": { ley: ["Art. 24(g)"], iso: ["A.6.1.2", "A.9.2.1"], desc: "Control de acceso basado en roles (RBAC)" },
-            "q9": { ley: ["Art. 24(g)"], iso: ["A.8.3"], desc: "Autenticación multifactor (MFA)" },
-            "q10": { ley: ["Art. 24(i)"], iso: ["A.12.4.1"], desc: "Logs de acceso a datos personales" },
-            "q11": { ley: ["Art. 24(f)"], iso: ["A.16.1"], desc: "Plan de respuesta a brechas de datos" },
-            "q12": { ley: ["Art. 24(f)"], iso: ["A.16.1.5"], desc: "Notificación oportuna de incidentes" },
-            "q13": { ley: ["Art. 24(i)"], iso: ["A.16.1"], desc: "Procesos de investigación de incidentes" },
-            "q14": { ley: ["Art. 24(i)"], iso: ["A.16.1"], desc: "Registro histórico de incidentes" },
-            "q15": { ley: ["Art. 24(i)"], iso: ["A.16.1"], desc: "Análisis post-incidente (lecciones aprendidas)" },
-            "q16": { ley: ["Art. 19"], iso: ["A.8.2.3"], desc: "Acceso a datos personales solicitados" },
-            "q17": { ley: ["Art. 20"], iso: ["A.8.2.3"], desc: "Derecho a rectificación de datos" },
-            "q18": { ley: ["Art. 21"], iso: ["A.8.2.3"], desc: "Derecho a supresión (derecho al olvido)" },
-            "q19": { ley: ["Art. 22"], iso: ["A.8.2.3"], desc: "Limitación del tratamiento de datos" },
-            "q20": { ley: ["Art. 23"], iso: ["A.8.2.3"], desc: "Portabilidad de datos" },
-            "q21": { ley: ["Art. 7", "Art. 8"], iso: ["A.6.1"], desc: "Consentimiento explícito previo" },
-            "q22": { ley: ["Art. 16"], iso: ["A.6.1"], desc: "Información clara sobre tratamiento" },
-            "q23": { ley: ["Art. 2(c)"], iso: ["A.6.1"], desc: "Documentación de bases legales" },
-            "q24": { ley: ["Art. 16", "Art. 19-23"], iso: ["A.6.1"], desc: "Información sobre derechos disponibles" },
-            "q25": { ley: ["Art. 16"], iso: ["A.6.1"], desc: "Declaraciones de privacidad accesibles" },
-            "q26": { ley: ["Art. 24(e)"], iso: ["A.12.6.1"], desc: "Evaluación de Impacto en Privacidad (DPIA)" },
-            "q27": { ley: ["Art. 24(e)"], iso: ["A.12.6.1"], desc: "Evaluación de riesgos antes de nuevos tratamientos" },
-            "q28": { ley: ["Art. 24(e)"], iso: ["A.12.6.1"], desc: "Documentación de análisis de riesgos" },
-            "q29": { ley: ["Art. 24(e)"], iso: ["A.12.6.1"], desc: "Implementación de medidas mitigantes" },
-            "q30": { ley: ["Art. 24(e)"], iso: ["A.12.6.1"], desc: "Revisión periódica de evaluaciones" },
-            "q31": { ley: ["Art. 24(c)"], iso: ["A.6.2", "A.7.3"], desc: "Capacitación en protección de datos" },
-            "q32": { ley: ["Art. 24(d)"], iso: ["A.6.1.1"], desc: "Cláusulas de confidencialidad en contratos" },
-            "q33": { ley: ["Art. 24(g)"], iso: ["A.6.1.2"], desc: "Segregación de funciones" },
-            "q34": { ley: ["Art. 24(g)"], iso: ["A.9.2.1"], desc: "Revisión periódica de permisos de acceso" },
-            "q35": { ley: ["Art. 2(j)"], iso: ["A.6.1.2"], desc: "Políticas de acceso remoto seguro" },
-            "q36": { ley: ["Art. 28", "Art. 29"], iso: ["A.8.4", "A.10.2"], desc: "Evaluación de destinos de transferencia" },
-            "q37": { ley: ["Art. 28", "Art. 29"], iso: ["A.8.4"], desc: "Cláusulas contractuales estándar" },
-            "q38": { ley: ["Art. 28", "Art. 29"], iso: ["A.8.4"], desc: "Cumplimiento con restricciones de destinos" },
-            "q39": { ley: ["Art. 28"], iso: ["A.8.3.1"], desc: "Acuerdos de procesamiento de datos (DPA)" },
-            "q40": { ley: ["Art. 28", "Art. 29"], iso: ["A.8.4"], desc: "Notificación sobre transferencias a terceros" },
-            "q41": { ley: ["Art. 24(b)"], iso: ["A.8.4"], desc: "Evaluación de proveedores" },
-            "q42": { ley: ["Art. 28"], iso: ["A.8.4"], desc: "Contratos con garantías de protección" },
-            "q43": { ley: ["Art. 24(b)"], iso: ["A.14.2.1"], desc: "Auditoría de proveedores" },
-            "q44": { ley: ["Art. 28"], iso: ["A.8.4"], desc: "Cláusulas de terminación en contratos" },
-            "q45": { ley: ["Art. 28"], iso: ["A.8.4"], desc: "Control de subcontratistas" },
-            "q46": { ley: ["Art. 17"], iso: ["A.8.3.2"], desc: "Registro de Actividades de Tratamiento (RAT)" },
-            "q47": { ley: ["Art. 24"], iso: ["A.5.1"], desc: "Documentación de decisiones de privacidad" },
-            "q48": { ley: ["Art. 24"], iso: ["A.6.2"], desc: "Procedimientos documentados" },
-            "q49": { ley: ["Art. 24(i)"], iso: ["A.14.2.1"], desc: "Auditorías externas periódicas" },
-            "q50": { ley: ["Art. 27"], iso: ["A.8.2.2"], desc: "Cumplimiento de obligaciones de retención" }
-        };
+        const sections = [
+            "I. Gobernanza",
+            "II. Seguridad Técnica",
+            "III. Gestión de Incidentes",
+            "IV. Derechos de Titulares",
+            "V. Consentimiento y Transparencia",
+            "VI. Evaluación de Impacto",
+            "VII. Personal y Capacitación",
+            "VIII. Transferencias Internacionales",
+            "IX. Terceros y Proveedores",
+            "X. Cumplimiento y Documentación"
+        ];
 
         const questions = [
-            // I. Gobernanza (5)
             { section: "I. Gobernanza", text: "¿Tiene usted una Política documentada de protección de datos?" },
             { section: "I. Gobernanza", text: "¿Ha designado un Responsable o Oficial de Protección de Datos (DPO)?" },
             { section: "I. Gobernanza", text: "¿Realiza auditorías internas periódicas sobre cumplimiento?" },
             { section: "I. Gobernanza", text: "¿Mantiene un Registro de Actividades de Tratamiento (RAT) actualizado?" },
             { section: "I. Gobernanza", text: "¿Revisa y actualiza regularmente sus políticas de privacidad?" },
-
-            // II. Seguridad Técnica (5)
             { section: "II. Seguridad Técnica", text: "¿Cifra datos personales en reposo?" },
             { section: "II. Seguridad Técnica", text: "¿Utiliza HTTPS/TLS para toda comunicación de datos personales?" },
             { section: "II. Seguridad Técnica", text: "¿Implementa control de acceso basado en roles (RBAC)?" },
             { section: "II. Seguridad Técnica", text: "¿Requiere autenticación multifactor (MFA) para acceso crítico?" },
             { section: "II. Seguridad Técnica", text: "¿Registra y monitorea acceso a datos personales?" },
-
-            // III. Gestión de Incidentes (5)
             { section: "III. Gestión de Incidentes", text: "¿Tiene un plan documentado de respuesta a brechas de datos?" },
             { section: "III. Gestión de Incidentes", text: "¿Notifica brechas de datos en el plazo de 72 horas?" },
             { section: "III. Gestión de Incidentes", text: "¿Realiza investigaciones formales de incidentes de seguridad?" },
             { section: "III. Gestión de Incidentes", text: "¿Mantiene registro histórico de incidentes?" },
             { section: "III. Gestión de Incidentes", text: "¿Realiza análisis post-incidente (lecciones aprendidas)?" },
-
-            // IV. Derechos de Titulares (5)
             { section: "IV. Derechos de Titulares", text: "¿Facilita acceso a datos personales solicitados?" },
             { section: "IV. Derechos de Titulares", text: "¿Permite rectificación de datos personales?" },
             { section: "IV. Derechos de Titulares", text: "¿Implementa derecho al olvido (supresión)?" },
             { section: "IV. Derechos de Titulares", text: "¿Limita el tratamiento cuando se solicita?" },
             { section: "IV. Derechos de Titulares", text: "¿Facilita portabilidad de datos?" },
-
-            // V. Consentimiento (5)
             { section: "V. Consentimiento y Transparencia", text: "¿Obtiene consentimiento explícito previo?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Proporciona información clara sobre tratamiento?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Documenta bases legales del tratamiento?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Informa sobre derechos disponibles?" },
             { section: "V. Consentimiento y Transparencia", text: "¿Mantiene declaraciones de privacidad accesibles?" },
-
-            // VI. Evaluación de Impacto (5)
             { section: "VI. Evaluación de Impacto", text: "¿Realiza Evaluación de Impacto en Privacidad (DPIA)?" },
             { section: "VI. Evaluación de Impacto", text: "¿Evalúa riesgos antes de nuevos tratamientos?" },
             { section: "VI. Evaluación de Impacto", text: "¿Documenta análisis de riesgos?" },
             { section: "VI. Evaluación de Impacto", text: "¿Implementa medidas mitigantes identificadas?" },
             { section: "VI. Evaluación de Impacto", text: "¿Revisa periódicamente evaluaciones de impacto?" },
-
-            // VII. Personal (5)
             { section: "VII. Personal y Capacitación", text: "¿Capacita al personal en protección de datos?" },
             { section: "VII. Personal y Capacitación", text: "¿Incluye cláusulas de confidencialidad en contratos?" },
             { section: "VII. Personal y Capacitación", text: "¿Implementa segregación de funciones?" },
             { section: "VII. Personal y Capacitación", text: "¿Revisa periódicamente permisos de acceso?" },
             { section: "VII. Personal y Capacitación", text: "¿Tiene políticas de acceso remoto seguro?" },
-
-            // VIII. Transferencias Internacionales (5)
             { section: "VIII. Transferencias Internacionales", text: "¿Evalúa destinos de transferencia de datos?" },
             { section: "VIII. Transferencias Internacionales", text: "¿Utiliza cláusulas contractuales estándar?" },
             { section: "VIII. Transferencias Internacionales", text: "¿Cumple restricciones de destinos de transferencia?" },
             { section: "VIII. Transferencias Internacionales", text: "¿Tiene acuerdos de procesamiento de datos (DPA)?" },
             { section: "VIII. Transferencias Internacionales", text: "¿Notifica sobre transferencias a terceros países?" },
-
-            // IX. Terceros (5)
             { section: "IX. Terceros y Proveedores", text: "¿Evalúa proveedores de seguridad y privacidad?" },
             { section: "IX. Terceros y Proveedores", text: "¿Incluye cláusulas de protección en contratos?" },
             { section: "IX. Terceros y Proveedores", text: "¿Audita proveedores regularmente?" },
             { section: "IX. Terceros y Proveedores", text: "¿Incluye cláusulas de terminación en contratos?" },
             { section: "IX. Terceros y Proveedores", text: "¿Controla subcontratistas?" },
-
-            // X. Cumplimiento (5)
             { section: "X. Cumplimiento y Documentación", text: "¿Mantiene Registro de Actividades de Tratamiento (RAT)?" },
             { section: "X. Cumplimiento y Documentación", text: "¿Documenta decisiones sobre privacidad?" },
             { section: "X. Cumplimiento y Documentación", text: "¿Tiene procedimientos documentados?" },
@@ -705,124 +569,87 @@
 
             clientData = { empresa, email, token };
             allQuestions = questions.map((q, i) => ({ ...q, id: `q${i + 1}` }));
-            document.getElementById('totalQuestions').textContent = allQuestions.length;
 
-            // Guardar/actualizar datos de la evaluación en Firebase
-            const evaluacionRef = db.ref(`evaluaciones/${token}`);
-            evaluacionRef.set({
-                empresa,
-                email,
-                token,
+            db.ref(`evaluaciones/${token}`).set({
+                empresa, email, token,
                 fechaInicio: new Date().toISOString(),
                 estado: 'en_progreso'
-            }, (error) => {
-                if (error) console.log('Error guardando evaluación:', error.message);
             });
 
-            // Recuperar respuestas previas: Firebase primero, luego localStorage
-            let responsesFromFirebase = false;
             try {
                 const snapshot = await db.ref(`evaluaciones/${token}/respuestas`).once('value');
                 if (snapshot.exists()) {
                     responses = snapshot.val();
-                    responsesFromFirebase = true;
-                    console.log('Respuestas recuperadas de Firebase:', responses);
                 }
             } catch (e) {
-                console.warn('No se pudieron recuperar de Firebase:', e.message);
+                console.warn('Firebase error:', e.message);
             }
 
-            // Si Firebase no tiene respuestas, recuperar de localStorage
-            if (!responsesFromFirebase) {
-                allQuestions.forEach(q => {
-                    const stored = localStorage.getItem(`shellti_${token}_${q.id}`);
-                    if (stored) responses[q.id] = stored;
-                });
-                if (Object.keys(responses).length > 0) {
-                    console.log('Respuestas recuperadas de localStorage:', responses);
-                }
-            }
+            allQuestions.forEach(q => {
+                const stored = localStorage.getItem(`shellti_${token}_${q.id}`);
+                if (stored && !responses[q.id]) responses[q.id] = stored;
+            });
 
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('questionsSection').style.display = 'block';
             errorDiv.classList.remove('show');
 
-            renderQuestions();
+            currentSection = 0;
+            renderSection();
         }
 
-        function renderQuestions() {
-            try {
-                console.log('renderQuestions: currentPage=', currentPage);
-                const container = document.getElementById('questionsContainer');
-                if (!container) {
-                    console.error('questionsContainer no encontrado');
-                    return;
-                }
+        function renderSection() {
+            const container = document.getElementById('questionsContainer');
+            const sectionName = sections[currentSection];
+            const sectionQuestions = allQuestions.filter(q => q.section === sectionName);
 
-                const start = currentPage * questionsPerPage;
-                const end = Math.min(start + questionsPerPage, allQuestions.length);
-                const pageQuestions = allQuestions.slice(start, end);
-
-                console.log('Rendering questions', start, 'to', end, ':', pageQuestions.length, 'questions');
-
-                let html = '';
-                pageQuestions.forEach((q, idx) => {
-                    const section = idx === 0 ? `<h3 class="section">${q.section}</h3>` : '';
-                    const checked = responses[q.id] || '';
-                    html += `
-                        ${section}
-                        <div class="question-item">
-                            <div class="question-text">${q.text}</div>
-                            <div class="options">
-                                <label class="option-label">
-                                    <input type="radio" name="${q.id}" value="Sí" ${checked === 'Sí' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                    <span>Sí</span>
-                                </label>
-                                <label class="option-label">
-                                    <input type="radio" name="${q.id}" value="Parcial" ${checked === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                    <span>Parcial</span>
-                                </label>
-                                <label class="option-label">
-                                    <input type="radio" name="${q.id}" value="No" ${checked === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                    <span>No</span>
-                                </label>
-                                <label class="option-label">
-                                    <input type="radio" name="${q.id}" value="N/A" ${checked === 'N/A' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
-                                    <span>N/A</span>
-                                </label>
-                            </div>
+            let html = `<div class="section"><h3>${sectionName}</h3>`;
+            sectionQuestions.forEach(q => {
+                const checked = responses[q.id] || '';
+                html += `
+                    <div class="question-item">
+                        <div class="question-text">${q.text}</div>
+                        <div class="options">
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="Sí" ${checked === 'Sí' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                <span>Sí</span>
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="Parcial" ${checked === 'Parcial' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                <span>Parcial</span>
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="No" ${checked === 'No' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                <span>No</span>
+                            </label>
+                            <label class="option-label">
+                                <input type="radio" name="${q.id}" value="N/A" ${checked === 'N/A' ? 'checked' : ''} onchange="saveResponse('${q.id}', this.value)">
+                                <span>N/A</span>
+                            </label>
                         </div>
-                    `;
-                });
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
 
-                container.innerHTML = html;
-                console.log('Questions rendered');
-                updateProgress();
-                updateButtons();
-            } catch (err) {
-                console.error('Error en renderQuestions:', err);
-            }
+            updateProgress();
+            updateButtons();
         }
 
         function saveResponse(questionId, value) {
             responses[questionId] = value;
             updateProgress();
-
-            // Guardar en localStorage como fallback
             localStorage.setItem(`shellti_${clientData.token}_${questionId}`, value);
-
-            // Guardar en Firebase (no-blocking)
             if (clientData.token) {
-                db.ref(`evaluaciones/${clientData.token}/respuestas/${questionId}`).set(value)
-                    .catch(e => console.error('Firebase error:', e.message));
+                db.ref(`evaluaciones/${clientData.token}/respuestas/${questionId}`).set(value).catch(e => {});
             }
         }
 
         function updateProgress() {
             const answered = Object.keys(responses).filter(id => responses[id] && responses[id] !== 'N/A').length;
-            const percent = Math.round((answered / allQuestions.length) * 100);
+            const percent = Math.round((answered / 50) * 100);
             const angle = (percent / 100) * 360;
-
             document.getElementById('progressPercent').textContent = percent + '%';
             document.getElementById('progressFill').style.width = percent + '%';
             document.getElementById('progressCircle').style.setProperty('--progress-angle', angle + 'deg');
@@ -830,260 +657,134 @@
         }
 
         function updateButtons() {
-            const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
-            console.log('updateButtons: currentPage=', currentPage, 'maxPage=', maxPage, 'allQuestions.length=', allQuestions.length);
-
-            document.getElementById('prevBtn').style.display = currentPage > 0 ? 'block' : 'none';
-            document.getElementById('nextBtn').style.display = currentPage < maxPage ? 'block' : 'none';
-            document.getElementById('submitBtn').style.display = currentPage === maxPage ? 'block' : 'none';
-
-            console.log('nextBtn display:', document.getElementById('nextBtn').style.display);
+            document.getElementById('prevBtn').style.display = currentSection > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = currentSection < sections.length - 1 ? 'block' : 'none';
+            document.getElementById('submitBtn').style.display = currentSection === sections.length - 1 ? 'block' : 'none';
         }
 
-        function prevQuestion() {
-            if (currentPage > 0) currentPage--;
-            renderQuestions();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function nextQuestion() {
-            if (isProcessing) {
-                console.log('Already processing, ignoring click');
-                return;
-            }
-
-            isProcessing = true;
-            console.log('nextQuestion called. currentPage:', currentPage);
-
-            try {
-                const start = currentPage * questionsPerPage;
-                const end = Math.min(start + questionsPerPage, allQuestions.length);
-
-                for (let i = start; i < end; i++) {
-                    const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
-                    if (checked) responses[`q${i + 1}`] = checked.value;
-                }
-
-                const maxPage = Math.ceil(allQuestions.length / questionsPerPage) - 1;
-                console.log('maxPage:', maxPage, 'currentPage:', currentPage);
-
-                if (currentPage < maxPage) {
-                    currentPage++;
-                    console.log('Moving to page:', currentPage);
-                    renderQuestions();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    console.log('Scroll done');
-                } else {
-                    console.log('Ya estás en la última página');
-                }
-            } finally {
-                isProcessing = false;
+        function prevSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                renderSection();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        function saveBatch() {
-            if (clientData.token) {
-                const updates = {};
-                for (const [qId, value] of Object.entries(responses)) {
-                    updates[`evaluaciones/${clientData.token}/respuestas/${qId}`] = value;
-                }
-                db.ref().update(updates).catch(e => console.log('Error guardando batch:', e.message));
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                currentSection++;
+                renderSection();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
         document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            try {
-                const start = currentPage * questionsPerPage;
-                const end = Math.min(start + questionsPerPage, allQuestions.length);
-                for (let i = start; i < end; i++) {
-                    const checked = document.querySelector(`input[name="q${i + 1}"]:checked`);
-                    if (checked) responses[`q${i + 1}`] = checked.value;
-                }
+            const sectionScores = {};
+            sections.forEach(section => {
+                const sectionQs = allQuestions.filter(q => q.section === section);
+                const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
+                const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
+                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
+                sectionScores[section] = score;
+            });
 
-                const sections = calculateScores();
-                const scores = Object.values(sections).map(s => s.score);
-                const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+            const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
 
-                // Guardar evaluación como completada en Firebase
-                if (clientData.token) {
-                    db.ref(`evaluaciones/${clientData.token}`).update({
-                        estado: 'completada',
-                        fechaCompletada: new Date().toISOString(),
-                        scoreGeneral: overallScore
-                    }).catch(e => console.error('Error Firebase:', e.message));
-                }
-
-                document.getElementById('questionsSection').style.display = 'none';
-                document.getElementById('summary').style.display = 'block';
-            } catch (err) {
-                console.error('Error en submit:', err);
-                alert('Error: ' + err.message);
+            if (clientData.token) {
+                db.ref(`evaluaciones/${clientData.token}`).update({
+                    estado: 'completada',
+                    fechaCompletada: new Date().toISOString(),
+                    scoreGeneral: overallScore
+                });
             }
 
-            let resultsHTML = `
+            document.getElementById('questionsSection').style.display = 'none';
+            document.getElementById('summary').style.display = 'block';
+
+            let html = `
                 <div class="results-header">
                     <div class="overall-score">${overallScore}%</div>
                     <div class="overall-label">Cumplimiento General</div>
                 </div>
-
-                <div class="analysis-section">
-                    <div class="analysis-title">Resultados por Dominio</div>
+                <div style="margin-top: 40px;">
             `;
 
-            for (const [section, data] of Object.entries(sections)) {
-                const riskClass = data.score >= 80 ? 'risk-low' : data.score >= 60 ? 'risk-medium' : data.score >= 40 ? 'risk-high' : 'risk-critical';
-                const semaforoClass = data.score >= 80 ? 'semaforo-ok' : data.score >= 60 ? 'semaforo-warn' : 'semaforo-danger';
-                const bgColor = semaforoClass === 'semaforo-ok' ? 'var(--green)' : semaforoClass === 'semaforo-warn' ? '#F59E0B' : '#FF6B6B';
+            sections.forEach(section => {
+                const score = sectionScores[section];
+                const risk = score >= 80 ? 'low' : score >= 60 ? 'medium' : score >= 40 ? 'high' : 'critical';
+                const bgColor = risk === 'low' ? 'var(--green)' : risk === 'medium' ? '#FFC107' : risk === 'high' ? '#F59E0B' : '#FF6B6B';
 
-                resultsHTML += `
+                html += `
                     <div class="domain-card">
                         <div class="domain-header">
                             <span class="domain-name">${section}</span>
-                            <div style="display: flex; align-items: center;">
-                                <span class="domain-score score-${semaforoClass === 'semaforo-ok' ? 'ok' : semaforoClass === 'semaforo-warn' ? 'warn' : 'danger'}">${data.score}%</span>
-                                <div class="semaforo">
-                                    <div class="semaforo-dot ${semaforoClass}"></div>
-                                </div>
-                            </div>
+                            <span style="color: ${bgColor}; font-weight: 700;">${score}%</span>
                         </div>
                         <div class="score-bar">
                             <div class="score-bar-track">
-                                <div class="score-bar-fill" style="width: ${data.score}%; background: ${bgColor};"></div>
+                                <div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div>
                             </div>
-                            <div class="score-value">${data.score}%</div>
                         </div>
-                        ${data.findings.length > 0 ? `<div class="findings-list">${data.findings.map(f => `<div class="findings-item">${f}</div>`).join('')}</div>` : ''}
-                        <div class="risk-badge ${riskClass}">Riesgo: ${data.riskLevel}</div>
+                        <div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div>
                     </div>
                 `;
-            }
-
-            resultsHTML += `
-                </div>
-                <p style="font-size: 12px; color: var(--muted); margin-top: 30px; text-align: justify;">
-                    Descarga el informe PDF para análisis técnico detallado por dominio, mappeo a Ley 21.719 e ISO 27001:2022,
-                    matriz de riesgos y roadmap de implementación de 12 meses.
-                </p>
-            `;
-
-            const resultsDiv = document.getElementById('resultsContent');
-            if (resultsDiv) {
-                resultsDiv.innerHTML = resultsHTML;
-            } else {
-                console.error('No se encontró resultsContent');
-            }
-        });
-
-        function calculateScores() {
-            const sections = {};
-
-            allQuestions.forEach((q, idx) => {
-                const sectionName = q.section;
-                if (!sections[sectionName]) sections[sectionName] = [];
-                sections[sectionName].push({ id: q.id, question: q.text, answer: responses[q.id] || 'No respondida' });
             });
 
-            const result = {};
-            for (const [section, sectionResponses] of Object.entries(sections)) {
-                const siResponses = sectionResponses.filter(r => r.answer === 'Sí');
-                const parcialResponses = sectionResponses.filter(r => r.answer === 'Parcial');
-                const noResponses = sectionResponses.filter(r => r.answer === 'No');
-
-                const totalAnswered = sectionResponses.filter(r => r.answer !== 'N/A' && r.answer !== 'No respondida').length;
-                const scoreValue = totalAnswered > 0 ? Math.round(((siResponses.length * 100 + parcialResponses.length * 50) / (totalAnswered * 100)) * 100) : 0;
-
-                let findings = [];
-                if (noResponses.length > 0) {
-                    findings.push(`${noResponses.length} control(es) sin implementación`);
-                }
-                if (parcialResponses.length > 0) {
-                    findings.push(`${parcialResponses.length} control(es) parcialmente implementado(s)`);
-                }
-
-                let riskLevel = 'BAJO';
-                if (scoreValue < 40) riskLevel = 'CRÍTICO';
-                else if (scoreValue < 60) riskLevel = 'ALTO';
-                else if (scoreValue < 80) riskLevel = 'MEDIO';
-
-                result[section] = {
-                    score: scoreValue,
-                    findings: findings,
-                    riskLevel: riskLevel
-                };
-            }
-
-            return result;
-        }
+            html += `</div>`;
+            document.getElementById('resultsContent').innerHTML = html;
+        });
 
         async function downloadPDF() {
             const btn = event.target;
             btn.disabled = true;
             btn.textContent = 'Generando PDF...';
 
-            const sections = calculateScores();
-            const scores = Object.values(sections).map(s => s.score);
-            const overallScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+            const sectionScores = {};
+            sections.forEach(section => {
+                const sectionQs = allQuestions.filter(q => q.section === section);
+                const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
+                const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
+                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
+                sectionScores[section] = score;
+            });
 
-            let pdfHTML = `
-                <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #333; line-height: 1.6; font-size: 11px;">
-                    <style>
-                        @page { margin: 40px 40px 60px; }
-                        body { margin: 0; padding: 0; }
-                        h1, h2, h3 { color: #00D4FF; margin: 20px 0 10px; }
-                        p { margin: 8px 0; text-align: justify; }
-                        .page-break { page-break-after: always; }
-                    </style>
+            const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
 
-                    <!-- PORTADA -->
-                    <div class="page-break" style="padding: 80px 40px; background: #020617; color: white; text-align: center;">
-                        <div style="font-size: 36px; font-weight: bold; color: #00D4FF; margin-bottom: 40px;">ShellTI</div>
-                        <h1 style="color: white; font-size: 28px; margin: 40px 0; line-height: 1.4;">INFORME DE EVALUACIÓN DE CUMPLIMIENTO NORMATIVO</h1>
-                        <p style="font-size: 12px; color: #E2E8F0; margin: 30px 0;">Ley Nº 21.719 — ISO/IEC 27001:2022</p>
-                        <div style="border-top: 1px solid #00D4FF; border-bottom: 1px solid #00D4FF; padding: 30px 0; margin: 60px 0; font-size: 11px; line-height: 1.8;">
-                            <div><strong>ORGANIZACIÓN:</strong> ${clientData.empresa || 'Por determinar'}</div>
-                            <div><strong>CONTACTO:</strong> ${clientData.email || 'Por determinar'}</div>
-                            <div><strong>FECHA:</strong> ${new Date().toLocaleDateString('es-CL', {year: 'numeric', month: 'long', day: 'numeric'})}</div>
-                            <div><strong>CONTROLES EVALUADOS:</strong> 50 áreas en 10 dominios</div>
-                        </div>
-                        <p style="font-size: 10px; color: #E2E8F0; opacity: 0.7; margin-top: 60px;">Documento Confidencial | ShellTI Technology Consultancy</p>
-                    </div>
-
-                    <!-- RESUMEN EJECUTIVO -->
-                    <h2>1. Resumen Ejecutivo</h2>
-                    <p><strong>Score General de Cumplimiento:</strong> ${overallScore}%</p>
-                    <p>La evaluación diagnostica el estado actual de cumplimiento normativo conforme a la Ley N° 21.719 de Protección de Datos Personales e ISO/IEC 27001:2022. Este informe proporciona análisis técnico por dominio, identificación de brechas críticas y roadmap de implementación.</p>
-
-                    <!-- RESULTADOS POR DOMINIO -->
-                    <h2>2. Resultados por Dominio</h2>
+            let pdf = `<div style="font-family: Arial; color: #333; font-size: 11px; line-height: 1.6;">
+                <style>@page { margin: 40px; }</style>
+                <h1 style="color: #00D4FF; text-align: center; font-size: 24px; margin-bottom: 40px;">INFORME DE CUMPLIMIENTO</h1>
+                <p><strong>Organización:</strong> ${clientData.empresa}</p>
+                <p><strong>Email:</strong> ${clientData.email}</p>
+                <p><strong>Score General:</strong> ${overallScore}%</p>
+                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
+                <hr style="border: 1px solid #ddd; margin: 30px 0;">
+                <h2 style="color: #00D4FF; font-size: 16px;">Resultados por Dominio</h2>
             `;
 
-            for (const [section, data] of Object.entries(sections)) {
-                pdfHTML += `
-                    <h3>${section} — ${data.score}%</h3>
-                    <p><strong>Estado de Riesgo:</strong> ${data.riskLevel}</p>
-                    ${data.findings.length > 0 ? `<p><strong>Hallazgos:</strong> ${data.findings.join('; ')}</p>` : ''}
-                `;
-            }
+            sections.forEach(section => {
+                const score = sectionScores[section];
+                pdf += `<p><strong>${section}:</strong> ${score}%</p>`;
+            });
 
-            pdfHTML += `</div>`;
+            pdf += `</div>`;
 
             const element = document.createElement('div');
-            element.innerHTML = pdfHTML;
+            element.innerHTML = pdf;
 
-            const opt = {
+            html2pdf().set({
                 margin: 10,
-                filename: `ShellTI_Diagnostic_${clientData.empresa}_${new Date().getTime()}.pdf`,
+                filename: `ShellTI_Diagnostic_${clientData.empresa}_${Date.now()}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, logging: false },
+                html2canvas: { scale: 2 },
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
-            };
-
-            html2pdf().set(opt).from(element).save();
+            }).from(element).save();
 
             btn.disabled = false;
-            btn.textContent = 'Descargar Informe PDF Completo';
+            btn.textContent = 'Descargar Informe PDF';
         }
     </script>
 </body>
