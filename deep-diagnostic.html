@@ -854,14 +854,100 @@
             const totalAnswered = Object.keys(responses).filter(id => responses[id] !== 'N/A').length;
 
             let pdfHTML = `
-                <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
-                    <h1 style="text-align: center; color: #00D4FF; padding-bottom: 15px;">
-                        INFORME DE EVALUACIÓN DE CUMPLIMIENTO
-                    </h1>
-                    <p style="text-align: center; font-size: 14px; color: #666;">
-                        Ley Nº 21.719 - Protección de Datos Personales en Chile<br>
-                        ISO/IEC 27001:2022 - Gestión de Seguridad de la Información
-                    </p>
+                <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #333; line-height: 1.6;">
+                    <!-- PORTADA -->
+                    <div style="page-break-after: always; text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="margin-bottom: 40px;">
+                            <div style="font-size: 48px; font-weight: bold; color: #00D4FF; margin-bottom: 10px;">ShellTI</div>
+                            <div style="font-size: 14px; color: #E2E8F0; opacity: 0.8;">.com · Digital Ecosystems</div>
+                        </div>
+
+                        <h1 style="font-size: 42px; margin: 40px 0; color: #00D4FF; font-weight: 700;">
+                            EVALUACIÓN DE CUMPLIMIENTO
+                        </h1>
+
+                        <p style="font-size: 18px; color: #E2E8F0; margin-bottom: 10px;">Ley Nº 21.719 - Protección de Datos Personales</p>
+                        <p style="font-size: 16px; color: #E2E8F0; opacity: 0.8;">ISO/IEC 27001:2022 - Gestión de Seguridad de la Información</p>
+
+                        <div style="margin-top: 60px; border-top: 2px solid #00D4FF; padding-top: 40px; width: 100%; max-width: 400px;">
+                            <div style="text-align: left; font-size: 14px; color: #E2E8F0;">
+                                <p><strong>Empresa:</strong> ${clientData.empresa || 'N/A'}</p>
+                                <p><strong>Contacto:</strong> ${clientData.email || 'N/A'}</p>
+                                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-CL', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INTRODUCCIÓN Y OBJETIVO -->
+                    <div style="page-break-after: avoid; padding: 40px;">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">Introducción</h2>
+                        <p style="margin-bottom: 15px;">
+                            Este informe presenta una evaluación integral de cumplimiento normativo conforme a la Ley Nº 21.719 sobre Protección de Datos Personales
+                            en Chile e ISO/IEC 27001:2022. El diagnostico cubre 50 áreas críticas de control organizadas en 10 dominios de seguridad y cumplimiento.
+                        </p>
+
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px; margin-top: 30px;">Objetivo</h2>
+                        <p style="margin-bottom: 15px;">
+                            Identificar el estado actual de cumplimiento de su organización, evaluar brechas normativas, cuantificar riesgos y proporcionar
+                            un roadmap de implementación priorizado para alcanzar cumplimiento robusto con legislación chilena e estándares internacionales.
+                        </p>
+                    </div>
+
+                    <!-- TABLA DE CONTENIDOS -->
+                    <div style="page-break-after: always; padding: 40px;">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 30px;">Tabla de Contenidos</h2>
+                        <ol style="font-size: 14px; line-height: 2;">
+                            <li><a href="#ejecutivo" style="color: #00D4FF; text-decoration: none;">Resumen Ejecutivo</a></li>
+                            <li><a href="#analisis" style="color: #00D4FF; text-decoration: none;">Análisis Detallado por Área</a></li>
+                            <li><a href="#riesgos" style="color: #00D4FF; text-decoration: none;">Matriz de Riesgo Consolidada</a></li>
+                            <li><a href="#roadmap" style="color: #00D4FF; text-decoration: none;">Roadmap de Implementación (12 Meses)</a></li>
+                            <li><a href="#normativo" style="color: #00D4FF; text-decoration: none;">Marco Normativo Aplicable</a></li>
+                            <li><a href="#conclusiones" style="color: #00D4FF; text-decoration: none;">Conclusiones y Plan de Acción</a></li>
+                        </ol>
+                    </div>
+
+                    <!-- DISCLAIMER -->
+                    <div style="page-break-after: avoid; padding: 40px; background: #f9f9f9; border-left: 4px solid #FFA500; margin-bottom: 40px;">
+                        <h3 style="color: #FFA500; margin-top: 0;">Disclaimer</h3>
+                        <p style="font-size: 12px; color: #666; margin: 0;">
+                            Este informe es confidencial y contiene información técnica y legal sensible. Ha sido preparado específicamente para ${clientData.empresa || 'la empresa'}
+                            y no puede ser reproducido, distribuido o revelado a terceros sin consentimiento previo de ShellTI Technology Consultancy.
+                            Las recomendaciones se basan en información proporcionada y análisis realizado en la fecha especificada. La seguridad de la información
+                            es un proceso continuo; este diagnostico refleja el estado en el momento de la evaluación.
+                        </p>
+                    </div>
+
+                    <!-- RESUMEN EJECUTIVO -->
+                    <div style="page-break-after: avoid; padding: 40px;" id="ejecutivo">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">1. Resumen Ejecutivo</h2>
+                        <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Score General de Cumplimiento</div>
+                                    <div style="font-size: 48px; font-weight: bold; color: #34D399;">${overallScore}%</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Estado</div>
+                                    <div style="font-size: 24px; font-weight: bold; color: ${overallScore >= 80 ? '#34D399' : overallScore >= 60 ? '#FFA500' : '#FF6B6B'};">
+                                        ${overallScore >= 80 ? 'CUMPLIMIENTO SATISFACTORIO' : overallScore >= 60 ? 'CUMPLIMIENTO PARCIAL' : 'CUMPLIMIENTO DEFICIENTE'}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; font-size: 14px; color: #666;">
+                                <p style="margin: 0;"><strong>Preguntas Respondidas:</strong> ${totalAnswered}/50</p>
+                            </div>
+                        </div>
+                        ${analysisContent ? `
+                        <div style="background: white; padding: 20px; border-left: 4px solid #00D4FF; margin-bottom: 20px;">
+                            <h4 style="color: #00D4FF; margin-top: 0;">Análisis de Groq</h4>
+                            <p style="font-size: 13px; line-height: 1.8; color: #444;">${analysisContent.substring(0, 1500)}${analysisContent.length > 1500 ? '...' : ''}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- ANÁLISIS DETALLADO POR ÁREA -->
+                    <div style="page-break-after: avoid; padding: 40px;" id="analisis">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">2. Análisis Detallado por Área</h2>
 
                     <div style="page-break-after: always; margin-top: 40px;">
                         <h2 style="color: #00D4FF;">1. DATOS DE LA EVALUACIÓN</h2>
@@ -897,13 +983,11 @@
                         </div>
                     </div>
 
-                    <div style="page-break-after: avoid;">
-                        <h2 style="color: #00D4FF;">3. ANÁLISIS DETALLADO POR ÁREA</h2>
-                        ${generateDetailedAnalysis(sections)}
-                    </div>
+                    ${generateDetailedAnalysis(sections)}
 
-                    <div style="page-break-after: always;">
-                        <h2 style="color: #00D4FF;">3.1 Matriz de Riesgo Consolidada</h2>
+                    <!-- MATRIZ DE RIESGO -->
+                    <div style="page-break-after: always; padding: 40px;" id="riesgos">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">3. Matriz de Riesgo Consolidada</h2>
                         <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                             <tr style="background: #00D4FF; color: white;">
                                 <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Área</th>
@@ -915,13 +999,15 @@
                         </table>
                     </div>
 
-                    <div style="page-break-after: avoid; margin-top: 30px;">
-                        <h2 style="color: #00D4FF;">3.2 Roadmap de Implementación (12 Meses)</h2>
+                    <!-- ROADMAP DE IMPLEMENTACIÓN -->
+                    <div style="page-break-after: always; padding: 40px; margin-top: 30px;" id="roadmap">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">4. Roadmap de Implementación (12 Meses)</h2>
                         ${generateRoadmap(sections)}
                     </div>
 
-                    <div style="page-break-after: avoid; margin-top: 30px;">
-                        <h2 style="color: #00D4FF;">4. MARCO NORMATIVO APLICABLE</h2>
+                    <!-- MARCO NORMATIVO -->
+                    <div style="page-break-after: avoid; padding: 40px;" id="normativo">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">5. MARCO NORMATIVO APLICABLE</h2>
                         <h3 style="color: #34D399;">Ley Nº 21.719 - Protección de Datos Personales</h3>
                         <p>Esta evaluación mapea directamente a los siguientes artículos:</p>
                         <ul>
@@ -942,8 +1028,9 @@
                         </ul>
                     </div>
 
-                    <div>
-                        <h2 style="color: #00D4FF;">5. CONCLUSIONES Y PLAN DE ACCIÓN</h2>
+                    <!-- CONCLUSIONES Y PLAN DE ACCIÓN -->
+                    <div style="page-break-after: avoid; padding: 40px;" id="conclusiones">
+                        <h2 style="color: #00D4FF; border-bottom: 3px solid #00D4FF; padding-bottom: 10px; margin-bottom: 20px;">6. CONCLUSIONES Y PLAN DE ACCIÓN</h2>
                         <div style="background: #f9f9f9; padding: 20px;">
                             <p><strong>Hallazgo Principal:</strong></p>
                             <p>${
@@ -969,15 +1056,38 @@
                             ${new Date().toLocaleDateString('es-CL')}
                         </p>
                     </div>
+
+                    <!-- FOOTER CON LOGO -->
+                    <div style="page-break-before: always; padding: 40px; background: linear-gradient(135deg, #020617 0%, #1a2332 100%); color: white; text-align: center; margin-top: 60px;">
+                        <div style="margin-bottom: 20px;">
+                            <div style="font-size: 32px; font-weight: bold; color: #00D4FF; margin-bottom: 5px;">ShellTI</div>
+                            <div style="font-size: 13px; color: #E2E8F0; opacity: 0.8;">.com · Digital Ecosystems</div>
+                        </div>
+
+                        <div style="border-top: 1px solid #00D4FF; padding: 20px 0; margin: 20px 0;">
+                            <p style="font-size: 12px; color: #E2E8F0; margin: 0;">
+                                Consultoría especializada en Ciberseguridad y Cumplimiento Normativo
+                            </p>
+                            <p style="font-size: 12px; color: #E2E8F0; margin: 5px 0 0 0;">
+                                Ley Nº 21.719 · ISO 27001:2022 · Protección de Datos Personales
+                            </p>
+                        </div>
+
+                        <p style="font-size: 11px; color: #E2E8F0; opacity: 0.7; margin: 20px 0;">
+                            © 2026 ShellTI Technology Consultancy. Todos los derechos reservados.<br>
+                            Este documento es confidencial. contacto@shellti.com
+                        </p>
+                    </div>
                 </div>
             `;
 
             const opt = {
-                margin: 15,
+                margin: [15, 15, 15, 15],
                 filename: `Informe_Cumplimiento_${clientData.empresa}_${new Date().getTime()}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'letter' }
+                html2canvas: { scale: 2, useCORS: true, allowTaint: true },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'letter', compress: true },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
             };
 
             html2pdf().set(opt).from(pdfHTML).save();
