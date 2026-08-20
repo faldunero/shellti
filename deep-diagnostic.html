@@ -48,9 +48,11 @@
         .results-header { text-align: center; margin-bottom: 40px; }
         .overall-score { font-size: 48px; font-weight: 900; color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
         .overall-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 8px; }
-        .domain-card { background: rgba(255, 255, 255, 0.02); padding: 20px; margin-bottom: 16px; border-radius: 6px; cursor: pointer; }
+        .domain-card { background: rgba(255, 255, 255, 0.02); padding: 20px; margin-bottom: 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
         .domain-card.collapsed .domain-details { display: none !important; }
         .domain-card:not(.collapsed) .domain-details { display: block !important; }
+        .domain-card .chevron { display: inline-block; transition: transform 0.2s; }
+        .domain-card.collapsed .chevron { transform: rotate(-90deg); }
         .domain-details { margin-top: 12px; }
         .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .domain-name { font-weight: 600; color: var(--silver); font-size: 13px; }
@@ -124,9 +126,8 @@
                 </div>
 
                 <div class="summary" id="summary" style="display:none;">
-                    <h3>Evaluación Completada</h3>
-                    <div id="resultsContent" style="margin-top: 30px; text-align: left;"></div>
-                    <button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button>
+                    <h3 style="text-align: center; margin-bottom: 40px;">Evaluación Completada</h3>
+                    <div id="resultsContent" style="text-align: left;"></div>
                 </div>
             </div>
         </div>
@@ -311,7 +312,7 @@
         }
 
         function updateProgress() {
-            const answered = Object.keys(responses).filter(id => responses[id] && responses[id] !== 'N/A').length;
+            const answered = Object.keys(responses).filter(id => responses[id]).length;
             const percent = Math.round((answered / 50) * 100);
             const angle = (percent / 100) * 360;
             document.getElementById('progressPercent').textContent = percent + '%';
@@ -344,7 +345,7 @@
                 const sectionQs = allQuestions.filter(q => q.section === section);
                 const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
                 const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
-                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                const answered = sectionQs.filter(q => responses[q.id]).length;
                 const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
                 sectionScores[section] = score;
             });
@@ -366,10 +367,10 @@
                 const score = sectionScores[section];
                 const risk = score >= 80 ? 'low' : score >= 60 ? 'medium' : score >= 40 ? 'high' : 'critical';
                 const bgColor = risk === 'low' ? 'var(--green)' : risk === 'medium' ? '#FFC107' : risk === 'high' ? '#F59E0B' : '#FF6B6B';
-                html += `<div class="domain-card" onclick="this.classList.toggle('collapsed')" style="cursor: pointer;"><div class="domain-header"><span class="domain-name">${section}</span><span style="color: ${bgColor}; font-weight: 700;">${score}%</span></div><div class="domain-details"><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div></div>`;
+                html += `<div class="domain-card collapsed" onclick="this.classList.toggle('collapsed')" style="cursor: pointer;"><div class="domain-header"><span class="domain-name">${section}</span><span style="display: flex; align-items: center; gap: 8px;"><span style="color: ${bgColor}; font-weight: 700;">${score}%</span><span class="chevron" style="color: var(--muted); font-size: 12px;">▼</span></span></div><div class="domain-details"><div class="score-bar"><div class="score-bar-track"><div class="score-bar-fill" style="width: ${score}%; background: ${bgColor};"></div></div></div><div class="risk-badge risk-${risk}">Riesgo: ${risk.toUpperCase()}</div></div></div>`;
             });
 
-            html += `</div>`;
+            html += `</div><button class="btn" onclick="downloadPDF()" style="width: 100%; margin-top: 40px;">Descargar Informe PDF</button>`;
 
             document.getElementById('resultsContent').innerHTML = html;
             document.getElementById('summary').style.display = 'block';
@@ -381,42 +382,45 @@
                 const sectionQs = allQuestions.filter(q => q.section === section);
                 const si = sectionQs.filter(q => responses[q.id] === 'Sí').length;
                 const parcial = sectionQs.filter(q => responses[q.id] === 'Parcial').length;
-                const answered = sectionQs.filter(q => responses[q.id] && responses[q.id] !== 'N/A').length;
+                const answered = sectionQs.filter(q => responses[q.id]).length;
                 const score = answered > 0 ? Math.round(((si * 100 + parcial * 50) / (answered * 100)) * 100) : 0;
                 sectionScores[section] = score;
             });
 
             const overallScore = Math.round(Object.values(sectionScores).reduce((a, b) => a + b, 0) / sections.length);
 
-            let pdf = `<div style="font-family: Arial; color: #333; font-size: 11px; line-height: 1.6;">
-                <style>@page { margin: 40px; }</style>
-                <h1 style="color: #00D4FF; text-align: center; font-size: 24px; margin: 40px 0;">ShellTI - INFORME DE CUMPLIMIENTO</h1>
+            let html = `<div style="font-family: Arial, sans-serif; color: #333; font-size: 12px; line-height: 1.6; padding: 20px;">
+                <h1 style="color: #00D4FF; text-align: center; font-size: 22px; margin: 20px 0;">ShellTI - INFORME DE CUMPLIMIENTO</h1>
                 <p><strong>Ley N° 21.719 - Protección de Datos Personales</strong></p>
                 <p><strong>Organización:</strong> ${clientData.empresa}</p>
                 <p><strong>Contacto:</strong> ${clientData.email}</p>
                 <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
-                <hr style="border: 1px solid #ddd; margin: 30px 0;">
-                <h2 style="color: #00D4FF; font-size: 16px;">Score General: ${overallScore}%</h2>
-                <h3 style="color: #00D4FF; font-size: 14px; margin-top: 30px;">Resultados por Dominio</h3>
-            `;
+                <hr style="border: 1px solid #ddd; margin: 20px 0;">
+                <h2 style="color: #00D4FF; font-size: 16px; margin-top: 20px;">Score General: ${overallScore}%</h2>
+                <h2 style="color: #00D4FF; font-size: 16px; margin-top: 20px;">Resultados por Dominio</h2>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">`;
 
             sections.forEach(section => {
                 const score = sectionScores[section];
-                pdf += `<p><strong>${section}:</strong> ${score}%</p>`;
+                html += `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${section}</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;"><strong>${score}%</strong></td></tr>`;
             });
 
-            pdf += `</div>`;
+            html += `</table></div>`;
 
             const element = document.createElement('div');
-            element.innerHTML = pdf;
+            element.innerHTML = html;
+            document.body.appendChild(element);
 
-            html2pdf().set({
-                margin: 10,
-                filename: `ShellTI_Diagnostic_${clientData.empresa}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
-            }).from(element).save();
+            setTimeout(() => {
+                html2pdf().set({
+                    margin: 10,
+                    filename: `ShellTI_Diagnostic_${clientData.empresa}.pdf`,
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                }).from(element).save().then(() => {
+                    document.body.removeChild(element);
+                });
+            }, 500);
         }
 
         // Auto-login si hay token guardado
