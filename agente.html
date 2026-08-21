@@ -131,7 +131,7 @@
     .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden;}
     .chat-head{padding:0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;background:var(--bg)}
 
-    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+    .chat-head-top{padding:11px 20px;display:none;align-items:center;justify-content:space-between}
     .chat-head-session{padding:4px 20px 5px;border-top:1px solid var(--border);background:rgba(0,212,255,.03);display:none;align-items:center;justify-content:space-between}
     .chat-head-session.show{display:flex}
     .chat-head-session-title{font-size:.63rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
@@ -187,7 +187,7 @@
     .wcard-d{font-size:.67rem;color:var(--muted);line-height:1.4}
 
     /* Disclaimer + Input */
-    .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
+    .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0;display:none}
     .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
     .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
     .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 36px 9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
@@ -199,7 +199,7 @@
     .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .14s}
     .send-btn:hover{opacity:.85}
     .send-btn:disabled{opacity:.35;cursor:default}
-    .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
+    .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px;display:none}
 
     /* Toast */
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:8px 16px;font-size:.75rem;color:var(--text2);font-family:var(--mono);transition:transform .3s ease;z-index:300;pointer-events:none;white-space:nowrap}
@@ -330,6 +330,8 @@
     .scroll-down-btn .unread-dot.show { display: block; }
     .messages-wrap { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column-reverse; }
     .messages { display: flex; flex-direction: column-reverse; }
+    .clean-btn-float{position:fixed;top:80px;right:20px;width:28px;height:28px;border-radius:50%;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:var(--red);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.7rem;transition:all .15s;z-index:50}
+    .clean-btn-float:hover{background:rgba(248,113,113,.25);border-color:rgba(248,113,113,.5)}
 
         @media(max-width:1024px){
       .chat-head-r .ctag-g,.chat-head-r .ctag-a{display:none}
@@ -768,7 +770,7 @@
 
     <div class="input-wrap">
       <div class="input-row">
-        <textarea id="msg-input" placeholder="Pregunte sobre la Ley 21.719, su empresa y sus obligaciones..." rows="1"
+        <textarea id="msg-input" placeholder="Pregunta..." rows="1"
 ></textarea>
         <button class="send-btn" id="send-btn" onclick="sendMessage()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -776,6 +778,8 @@
       </div>
       <div class="input-hint">Shift+Enter para salto de l&#237;nea &middot; Enter para enviar</div>
     </div>
+
+    <button class="clean-btn-float" onclick="clearChat()" title="Limpiar">✕</button>
 
     <div class="messages-wrap">
       <div class="messages" id="messages">
