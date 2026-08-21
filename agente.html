@@ -150,16 +150,57 @@
     .messages{overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0}
     .messages::-webkit-scrollbar{width:3px}
     .messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-    .msg{display:flex;gap:8px;max-width:800px}
+    .msg{
+      display:flex;
+      gap:12px;
+      max-width:900px;
+      margin-bottom:16px;
+      align-items:flex-start;
+      word-break:break-word;
+      overflow-wrap:break-word;
+      width:100%;
+    }
     .msg.user{flex-direction:row-reverse;align-self:flex-end}
     .msg.assistant{align-self:flex-start}
     .msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;flex-shrink:0;margin-top:3px}
     .msg.user .msg-av{background:var(--cyan-dim);color:var(--cyan)}
     .msg.assistant .msg-av{background:rgba(52,211,153,.1);color:var(--emerald)}
-    .msg-bubble{padding:10px 14px;border-radius:var(--r);font-size:.82rem;line-height:1.65}
+    .msg-bubble{
+      padding:14px 16px;
+      border-radius:var(--r);
+      font-size:.9rem;
+      line-height:1.8;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+      white-space:normal;
+      max-width:100%;
+      overflow:hidden;
+    }
     .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
     .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
-    .msg-bubble strong{color:var(--cyan)}
+    .msg-bubble strong{color:var(--cyan);font-weight:600}
+    .msg-bubble em{color:var(--cyan);font-style:normal;font-weight:500}
+    .msg-bubble code{
+      font-family:var(--mono);
+      font-size:.85rem;
+      background:rgba(0,212,170,.1);
+      color:var(--cyan);
+      padding:2px 6px;
+      border-radius:4px;
+      white-space:pre-wrap;
+    }
+    .msg-bubble p{margin:12px 0;line-height:1.8}
+    .msg-bubble p:first-child{margin-top:0}
+    .msg-bubble p:last-child{margin-bottom:0}
+    .msg-bubble h1,.msg-bubble h2,.msg-bubble h3{
+      margin:16px 0 8px 0;
+      font-weight:600;
+      color:#fff;
+      line-height:1.4;
+    }
+    .msg-bubble h3{font-size:1rem}
+    .msg-bubble h2{font-size:1.1rem}
+    .msg-bubble h1{font-size:1.2rem}
     .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
     .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
     .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
@@ -1169,7 +1210,14 @@ const URL_ITIL      = 'https://www.axelos.com/certifications/itil-service-manage
 const URL_PMI       = 'https://www.pmi.org/pmbok-guide-standards';
 
 function renderMarkdown(text) {
-  // ── Step 1: Replace known marcos with placeholders BEFORE HTML escaping ──
+  // ── Limpiar ruido: caracteres especiales repetidos, líneas de guiones ──
+  text = text
+    .replace(/[\━━━═════╔╗╚╝║╠╣╦╩╬─┌┐└┘│├┤┬┴┼]+/g, '')
+    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '')
+    .replace(/[\s]*\|[─=\s|]+\|[\s]*/g, '')
+    .replace(/\n\n+/g, '\n\n');
+
+  // ── Step 1: Replace known marcos con placeholders ANTES de HTML escaping ──
   const pills = [];
   function pill(label, url, cls) {
     const idx = pills.length;
@@ -1190,31 +1238,49 @@ function renderMarkdown(text) {
     .replace(/\bPMI\b/gi,                        m => pill(m, URL_PMI,         'art-tag-pink'))
     .replace(/\b(Art\.?\s*\d+\s*(?:bis|ter)?)\b/gi, m => pill(m, BCN_LEY_21719, ''));
 
-  // ── Step 2: Escape HTML in the remaining text ──
+  // ── Step 2: Escape HTML ──
   let html = text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // Headers
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    // Bold
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    // Code inline
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // Unordered lists
- .replace(/^\s*[-•]\s+(.+)$/gm, '<li>$1</li>')
- // Ordered lists
- .replace(/^\s*\d+\.\s+(.+)$/gm, '<li>$1</li>')
- // Wrap consecutive <li> in <ul>
- .replace(/(<li>.*<\/li>\n?)+/gs, match => '<ul>' + match + '</ul>')
- // Paragraphs (double newlines)
- .replace(/\n\n/g, '</p><p>')
- // Single newlines
- .replace(/\n/g, '<br/>');
+    .replace(/>/g, '&gt;');
 
-  // ── Step 3: Restore pill HTML ──
+  // ── Step 3: Format text markup ──
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic (pero no dentro de bold)
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Code inline
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // ── Step 4: Handle headers ──
+  html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+
+  // ── Step 5: Handle lists (mantener simple, sin <ul>/<ol>) ──
+  const lines = html.split('\n');
+  const processedLines = [];
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    // Detectar puntos y enumerados, pero mantener formato limpio
+    if (/^\s*[-•*]\s+/.test(line)) {
+      line = line.replace(/^\s*[-•*]\s+/, '• ');
+    } else if (/^\s*\d+\.\s+/.test(line)) {
+      line = line.replace(/^\s*(\d+)\.\s+/, '$1. ');
+    }
+    processedLines.push(line);
+  }
+  html = processedLines.join('\n');
+
+  // ── Step 6: Handle paragraphs (doble salto = párrafo nuevo) ──
+  // Dividir por doble newline y envolver en <p>
+  const paragraphs = html.split(/\n\n+/).filter(p => p.trim());
+  html = paragraphs.map(p => {
+    // Reemplazar single newlines dentro de párrafos con <br>
+    return p.replace(/\n/g, '<br>');
+  }).join('</p><p>');
+
+  // ── Step 7: Restore pills ──
   html = html.replace(/\x00PILL(\d+)\x00/g, (_, i) => pills[+i]);
 
   return '<p>' + html + '</p>';
