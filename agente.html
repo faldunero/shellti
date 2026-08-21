@@ -72,6 +72,13 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
+    /* Shell de altura fija: sin un alto DEFINIDO en body, el flex-basis:0 de <main>
+       se resuelve contra un alto que depende del contenido y la fila 1fr del grid
+       vuelve a crecer con cada mensaje. Se condiciona a :has(main) porque
+       shellti-guard.js reemplaza el body por su formulario, que sí debe poder scrollear. */
+    html:has(main){height:100vh;overflow:hidden}
+    html:has(main) body{height:100%;min-height:0;overflow:hidden}
+
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
     .nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text);font-weight:700;font-size:.92rem}
@@ -90,12 +97,15 @@
 
 
     /* LAYOUT */
-    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
+    /* grid-template-rows fija la fila al alto de main; sin esto la fila se
+       auto-dimensiona al contenido y la columna de chat crece con cada mensaje
+       hasta empujar el input fuera de la pantalla. */
+    main{flex:1;min-height:0;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;grid-template-rows:minmax(0,1fr);height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
     /* El layout de la columna de chat vive en .chat-wrap; no colgar de :last-child,
        que gana en especificidad a cualquier .clase y afecta al último div que se agregue. */
 
     /* SIDEBAR */
-    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
     .sidebar::-webkit-scrollbar{width:3px}
     .sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
     .sb-sect{padding:14px 12px 10px;border-bottom:1px solid var(--border)}
@@ -128,7 +138,9 @@
     .hist-empty{padding:20px 14px;font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5}
 
     /* CHAT */
-    .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden;}
+    /* min-height:0 permite que la columna encoja bajo el alto de su contenido;
+       con el min-height:auto por defecto, .messages nunca alcanza a hacer scroll. */
+    .chat-wrap{display:flex;flex-direction:column;height:100%;min-height:0;overflow:hidden}
     .chat-head{padding:0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;background:var(--bg)}
 
     .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
