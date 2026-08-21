@@ -180,6 +180,17 @@
     .msg-bubble hr{border:none;border-top:1px solid var(--border2);margin:1em 0}
     .msg-bubble a{color:var(--cyan)}
 
+    /* Tablas: scroll propio para que nunca desborden la burbuja */
+    .msg-bubble .table-wrap{overflow-x:auto;margin:0 0 .9em;border:1px solid var(--border2);border-radius:6px}
+    .msg-bubble table{border-collapse:collapse;width:100%;font-size:.8rem;line-height:1.55}
+    .msg-bubble th,.msg-bubble td{padding:8px 11px;vertical-align:top;border-bottom:1px solid var(--border2);border-right:1px solid var(--border2)}
+    .msg-bubble th:last-child,.msg-bubble td:last-child{border-right:none}
+    .msg-bubble tbody tr:last-child td{border-bottom:none}
+    .msg-bubble th{background:rgba(0,212,255,.07);color:var(--text);font-weight:700;white-space:nowrap}
+    .msg-bubble td{color:var(--text2)}
+    .msg-bubble tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+    .msg-bubble td br{content:"";display:block;margin-bottom:3px}
+
     /* Cursor de streaming */
     .stream-caret{display:inline-block;width:2px;height:.95em;margin-left:2px;vertical-align:-2px;background:var(--cyan);animation:caret 1s steps(2) infinite}
     @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
@@ -738,6 +749,12 @@
 
 <script>
 const SYSTEM_PROMPT = `Eres el agente de compliance y gestión tecnológica de ShellTI (shellti.com), con expertise en 10 marcos normativos y de gestión. Para consultas completamente fuera de estos marcos, indica amablemente que escapa de tu alcance y deriva a contacto@shellti.com.
+
+FORMATO DE SALIDA (obligatorio): responde en Markdown simple y nada más.
+Párrafos separados por una línea en blanco; listas con "- "; tablas con "|" y su fila
+de separación "|---|---|"; negrita con **texto**. NUNCA escribas etiquetas HTML: nada
+de <br>, <div>, <p> ni <table>. Para separar líneas dentro de una celda de tabla, usa
+" · " en vez de <br>.
 
 TU COBERTURA TEMÁTICA:
 
@@ -1398,35 +1415,69 @@ function renderMarkdown(text) {
   src = escapeHtml(src)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>');
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // El modelo suele emitir <br> literal, sobre todo dentro de tablas.
+    // Ya viene escapado, así que reconvertimos solo esta etiqueta concreta.
+    .replace(/&lt;br\s*\/?&gt;/gi, '<br/>');
 
   // 3) Armar bloques línea a línea (evita <ul> dentro de <p>)
+  const lines = src.split('\n');
   let html = '', listTag = null, para = [];
 
   const flushPara = () => { if (para.length) { html += '<p>' + para.join('<br/>') + '</p>'; para = []; } };
   const flushList = () => { if (listTag) { html += '</' + listTag + '>'; listTag = null; } };
   const openList  = tag => { if (listTag !== tag) { flushList(); html += '<' + tag + '>'; listTag = tag; } };
 
-  src.split('\n').forEach(raw => {
-    const line = raw.trim();
-    if (!line) { flushPara(); flushList(); return; }
+  // Fila de tabla → celdas, tolerando pipes de borde ausentes
+  const cellsOf = line => line.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+  const isRow   = line => line.includes('|') && /\|/.test(line.replace(/^\||\|$/g, '') + '|');
+  const isSep   = line => /^\|?[\s:]*-{2,}[\s:|-]*\|[\s:|-]*$/.test(line);
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) { flushPara(); flushList(); continue; }
+
+    // ── Tabla: fila de encabezado seguida de un separador |---|---| ──
+    if (isRow(line) && i + 1 < lines.length && isSep(lines[i + 1].trim())) {
+      flushPara(); flushList();
+
+      const headers = cellsOf(line);
+      const aligns  = cellsOf(lines[i + 1].trim()).map(c =>
+        /^:-+:$/.test(c) ? 'center' : /-+:$/.test(c) ? 'right' : 'left');
+
+      let table = '<div class="table-wrap"><table><thead><tr>' +
+        headers.map((h, k) => '<th style="text-align:' + (aligns[k] || 'left') + '">' + h + '</th>').join('') +
+        '</tr></thead><tbody>';
+
+      i += 2;
+      while (i < lines.length && lines[i].trim() && isRow(lines[i].trim())) {
+        const cells = cellsOf(lines[i].trim());
+        table += '<tr>' + headers.map((_, k) =>
+          '<td style="text-align:' + (aligns[k] || 'left') + '">' + (cells[k] || '') + '</td>').join('') + '</tr>';
+        i++;
+      }
+      i--; // el for vuelve a incrementar
+
+      html += table + '</tbody></table></div>';
+      continue;
+    }
 
     let m;
     if ((m = line.match(/^#{1,4}\s+(.+)$/))) {
-      flushPara(); flushList(); html += '<h3>' + m[1] + '</h3>'; return;
+      flushPara(); flushList(); html += '<h3>' + m[1] + '</h3>'; continue;
     }
     if (/^(?:[━─—=*_-]\s*){3,}$/.test(line)) {
-      flushPara(); flushList(); html += '<hr/>'; return;
+      flushPara(); flushList(); html += '<hr/>'; continue;
     }
     if ((m = line.match(/^[-•*]\s+(.+)$/))) {
-      flushPara(); openList('ul'); html += '<li>' + m[1] + '</li>'; return;
+      flushPara(); openList('ul'); html += '<li>' + m[1] + '</li>'; continue;
     }
     if ((m = line.match(/^\d+[.)]\s+(.+)$/))) {
-      flushPara(); openList('ol'); html += '<li>' + m[1] + '</li>'; return;
+      flushPara(); openList('ol'); html += '<li>' + m[1] + '</li>'; continue;
     }
     flushList();
     para.push(line);
-  });
+  }
   flushPara(); flushList();
 
   // 4) Restaurar los enlaces
