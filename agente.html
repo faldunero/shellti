@@ -92,6 +92,7 @@
 
     /* LAYOUT */
     main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
+    main > div:last-child {display:flex;flex-direction:column;height:100%}
 
     /* SIDEBAR */
     .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
@@ -327,7 +328,8 @@
       display: none;
     }
     .scroll-down-btn .unread-dot.show { display: block; }
-    .messages-wrap { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    .messages-wrap { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column-reverse; }
+    .messages { display: flex; flex-direction: column-reverse; }
 
         @media(max-width:1024px){
       .chat-head-r .ctag-g,.chat-head-r .ctag-a{display:none}
@@ -764,6 +766,17 @@
       </div>
     </div>
 
+    <div class="input-wrap">
+      <div class="input-row">
+        <textarea id="msg-input" placeholder="Pregunte sobre la Ley 21.719, su empresa y sus obligaciones..." rows="1"
+></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Shift+Enter para salto de l&#237;nea &middot; Enter para enviar</div>
+    </div>
+
     <div class="messages-wrap">
       <div class="messages" id="messages">
         <div class="welcome" id="welcome">
@@ -798,17 +811,6 @@
     </div>
 
     <div class="disclaimer">Aviso: Este agente entrega orientaci&#243;n general sobre marcos normativos. No constituye asesor&#237;a legal. Para casos espec&#237;ficos consulta a un abogado o contacta a ShellTI.</div>
-
-    <div class="input-wrap">
-      <div class="input-row">
-        <textarea id="msg-input" placeholder="Pregunte sobre la Ley 21.719, su empresa y sus obligaciones..." rows="1"
-></textarea>
-        <button class="send-btn" id="send-btn" onclick="sendMessage()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-      <div class="input-hint">Shift+Enter para salto de l&#237;nea &middot; Enter para enviar</div>
-    </div>
 
   </div>
 </main>
@@ -1173,9 +1175,9 @@ function appendMessage(role, content) {
  body.appendChild(bubble);
  msg.appendChild(avatar);
  msg.appendChild(body);
- container.appendChild(msg);
+ container.insertBefore(msg, container.firstChild);
 
- container.scrollTop = container.scrollHeight;
+ container.scrollTop = 0;
  return bubble;
 }
 
@@ -1206,8 +1208,8 @@ function appendTyping() {
  body.appendChild(bubble);
  msg.appendChild(avatar);
  msg.appendChild(body);
- container.appendChild(msg);
- container.scrollTop = container.scrollHeight;
+ container.insertBefore(msg, container.firstChild);
+ container.scrollTop = 0;
 }
 
 function removeTyping() {
@@ -1570,7 +1572,7 @@ function closeHist() {
 function newChat() { clearChat(); closeHist(); }
 function scrollToBottom() {
   var msgs = document.getElementById('messages');
-  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+  if (msgs) msgs.scrollTop = 0;
 }
 function toggleMobInfo() {
   var panel = document.getElementById('mobTagsPanel');
