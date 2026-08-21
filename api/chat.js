@@ -73,23 +73,28 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Formato de solicitud inválido.' });
   }
 
-  // Sanitizar: máximo 16 mensajes, máximo 6000 chars por mensaje.
-  // El tope anterior (2000) truncaba las respuestas largas del propio agente
-  // al reenviarlas como contexto, rompiendo la continuidad de la conversación.
+  // ── Presupuesto de tokens ──────────────────────────────────────────────
+  // El plan actual de Groq limita a 8.000 tokens por minuto POR ORGANIZACIÓN
+  // (entrada + salida, compartidos entre todos los visitantes del sitio).
+  // Como ~4 chars ≈ 1 token, los topes de abajo mantienen cada petición
+  // alrededor de 6.000-7.000 tokens y dejan margen bajo el techo.
+  //
+  // No subir estos números sin subir también el plan: si la petición excede
+  // el TPM, Groq responde 413 y el agente deja de contestar por completo.
+  const MAX_OUTPUT_TOKENS   = 1200;
+  const SYSTEM_CHAR_BUDGET  = 12000;  // ~3.000 tokens
+  const HISTORY_MSG_LIMIT   = 8;
+  const HISTORY_CHAR_BUDGET = 1500;   // por mensaje, ~375 tokens
+
   const safeMessages = messages
-    .slice(-16)
+    .slice(-HISTORY_MSG_LIMIT)
     .map(m => ({
       role: m.role === 'assistant' ? 'assistant' : 'user',
-      content: String(m.content || '').slice(0, 6000)
+      content: String(m.content || '').slice(0, HISTORY_CHAR_BUDGET)
     }));
 
-  // Construir payload Groq.
-  // OJO: este tope está acoplado al largo de SYSTEM_PROMPT en agente.html.
-  // El original (8000) descartaba los marcos 8-10 y todas las reglas de estilo
-  // y coherencia sin avisar. Hoy el prompt narrativo ronda los 36k chars;
-  // si vuelve a crecer, hay que subir este número o se truncará en silencio.
   const groqMessages = system
-    ? [{ role: 'system', content: String(system).slice(0, 48000) }, ...safeMessages]
+    ? [{ role: 'system', content: String(system).slice(0, SYSTEM_CHAR_BUDGET) }, ...safeMessages]
     : safeMessages;
 
   // Headers de caché y seguridad (comunes a ambos modos)
@@ -109,7 +114,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         temperature: 0.2,
-        max_tokens:  1200,
+        max_tokens:  MAX_OUTPUT_TOKENS,
         stream:      wantsStream,
         messages:    groqMessages
       })
@@ -117,9 +122,19 @@ export default async function handler(req, res) {
 
     if (!groqRes.ok) {
       const err = await groqRes.json().catch(() => ({}));
-      return res.status(groqRes.status).json({
-        error: err.error?.message || `Error al procesar la consulta (${groqRes.status})`
-      });
+
+      // El mensaje del proveedor puede traer el ID de la organización, los
+      // límites del plan y enlaces de facturación: se registra, no se muestra.
+      console.error('[api/chat] groq %d: %s', groqRes.status, err.error?.message || '(sin detalle)');
+
+      const friendly = {
+        413: 'La consulta es demasiado extensa. Inicia una conversación nueva e inténtalo otra vez.',
+        429: 'Hay muchas consultas en curso. Espera unos segundos y vuelve a intentarlo.',
+        401: 'El servicio no está disponible en este momento. Escríbenos a contacto@shellti.com.',
+        403: 'El servicio no está disponible en este momento. Escríbenos a contacto@shellti.com.'
+      }[groqRes.status] || 'No se pudo procesar la consulta. Inténtalo nuevamente en unos segundos.';
+
+      return res.status(groqRes.status).json({ error: friendly });
     }
 
     // ── Modo no-streaming (fallback) ──
