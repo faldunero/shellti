@@ -68,23 +68,34 @@ export default async function handler(req, res) {
   }
 
   // Validar body
-  const { messages, system } = req.body || {};
+  const { messages, system, stream } = req.body || {};
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'Formato de solicitud inválido.' });
   }
 
-  // Sanitizar: máximo 12 mensajes, máximo 2000 chars por mensaje
+  // Sanitizar: máximo 16 mensajes, máximo 6000 chars por mensaje.
+  // El tope anterior (2000) truncaba las respuestas largas del propio agente
+  // al reenviarlas como contexto, rompiendo la continuidad de la conversación.
   const safeMessages = messages
-    .slice(-12)
+    .slice(-16)
     .map(m => ({
       role: m.role === 'assistant' ? 'assistant' : 'user',
-      content: String(m.content || '').slice(0, 2000)
+      content: String(m.content || '').slice(0, 6000)
     }));
 
-  // Construir payload Groq
+  // Construir payload Groq.
+  // El system prompt del agente supera los 20k chars: el tope anterior (8000)
+  // descartaba los marcos 8-10 y todas las reglas de estilo y coherencia.
   const groqMessages = system
-    ? [{ role: 'system', content: String(system).slice(0, 8000) }, ...safeMessages]
+    ? [{ role: 'system', content: String(system).slice(0, 32000) }, ...safeMessages]
     : safeMessages;
+
+  // Headers de caché y seguridad (comunes a ambos modos)
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+
+  const wantsStream = stream === true;
 
   try {
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -97,6 +108,7 @@ export default async function handler(req, res) {
         model: 'openai/gpt-oss-120b',
         temperature: 0.2,
         max_tokens:  1200,
+        stream:      wantsStream,
         messages:    groqMessages
       })
     });
@@ -108,18 +120,62 @@ export default async function handler(req, res) {
       });
     }
 
-    const data = await groqRes.json();
-    const text = data.choices?.[0]?.message?.content || '';
+    // ── Modo no-streaming (fallback) ──
+    if (!wantsStream || !groqRes.body) {
+      const data = await groqRes.json();
+      const text = data.choices?.[0]?.message?.content || '';
+      return res.status(200).json({ text });
+    }
 
-    // Headers de caché y seguridad
-    res.setHeader('Cache-Control', 'no-store');
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
+    // ── Modo streaming: SSE con framing propio ──
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no'); // evita el buffering de proxies
+    if (typeof res.flushHeaders === 'function') res.flushHeaders();
 
-    return res.status(200).json({ text });
+    const send = obj => res.write('data: ' + JSON.stringify(obj) + '\n\n');
+
+    const reader  = groqRes.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let emitted = 0;
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // la última puede venir incompleta
+
+        for (const raw of lines) {
+          const line = raw.trim();
+          if (!line.startsWith('data:')) continue;
+
+          const payload = line.slice(5).trim();
+          if (payload === '[DONE]') continue;
+
+          let chunk;
+          try { chunk = JSON.parse(payload); } catch { continue; }
+
+          const delta = chunk.choices?.[0]?.delta?.content;
+          if (delta) { emitted += delta.length; send({ delta }); }
+        }
+      }
+    } catch (streamErr) {
+      console.error('[api/chat] stream error:', streamErr.message);
+      send({ error: 'La respuesta se interrumpió. Intenta nuevamente.' });
+    }
+
+    if (emitted === 0) send({ error: 'El agente no devolvió contenido.' });
+
+    res.write('data: [DONE]\n\n');
+    return res.end();
 
   } catch (err) {
     console.error('[api/chat] error:', err.message);
+    if (res.headersSent) return res.end();
     return res.status(500).json({ error: 'Error al contactar el servicio. Intenta nuevamente.' });
   }
 }
