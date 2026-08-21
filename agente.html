@@ -361,9 +361,11 @@
     .diag-divider{height:1px;background:var(--border);margin:10px 0 8px}
 
     .acc-parent{margin-bottom:5px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-    .acc-parent-header{width:100%;font-family:var(--sans);border:none;display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;transition:background .14s;user-select:none;background:rgba(255,255,255,.02)}
+    /* text-align:left es necesario: <button> centra por defecto y eso desalinea
+       las etiquetas que ocupan más de una línea. */
+    .acc-parent-header{width:100%;font-family:var(--sans);text-align:left;border:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;cursor:pointer;transition:background .14s;user-select:none;background:rgba(255,255,255,.02)}
     .acc-parent-header:hover{background:rgba(255,255,255,.04)}
-    .acc-parent-label{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+    .acc-parent-label{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;line-height:1.45}
     .acc-parent-arrow{font-size:.6rem;color:var(--muted);transition:transform .2s}
     .acc-parent-header.open .acc-parent-arrow{transform:rotate(180deg)}
     .acc-parent-body{overflow:hidden;max-height:0;transition:max-height .3s ease;padding:0 5px}
