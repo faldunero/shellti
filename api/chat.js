@@ -84,10 +84,12 @@ export default async function handler(req, res) {
     }));
 
   // Construir payload Groq.
-  // El system prompt del agente supera los 20k chars: el tope anterior (8000)
-  // descartaba los marcos 8-10 y todas las reglas de estilo y coherencia.
+  // OJO: este tope está acoplado al largo de SYSTEM_PROMPT en agente.html.
+  // El original (8000) descartaba los marcos 8-10 y todas las reglas de estilo
+  // y coherencia sin avisar. Hoy el prompt narrativo ronda los 36k chars;
+  // si vuelve a crecer, hay que subir este número o se truncará en silencio.
   const groqMessages = system
-    ? [{ role: 'system', content: String(system).slice(0, 32000) }, ...safeMessages]
+    ? [{ role: 'system', content: String(system).slice(0, 48000) }, ...safeMessages]
     : safeMessages;
 
   // Headers de caché y seguridad (comunes a ambos modos)
