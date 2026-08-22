@@ -1,61 +1,43 @@
 // api/stats.js — Vercel Serverless Function
-// Logging system: Registra consultas de usuarios y genera reportes
+const path = require('path');
+const QueryLogger = require(path.join(__dirname, '../services/queryLogger'));
 
-const QueryLogger = require('../services/queryLogger');
-
-const logger = new QueryLogger('./logs', 7); // Rotación cada 7 días
+const logger = new QueryLogger(path.join(__dirname, '../logs'), 7);
 
 export default function handler(req, res) {
   const { method, query, body } = req;
 
-  // GET /api/stats?type=dashboard|usuarios|agentes
   if (method === 'GET') {
     const type = query.type || 'dashboard';
+    const stats = logger.getStats();
 
     if (type === 'dashboard') {
-      const stats = logger.getStats();
-      if (!stats) {
-        return res.status(404).json({ error: 'No hay datos de logging' });
-      }
-      return res.status(200).json(stats);
+      return res.status(stats ? 200 : 404).json(stats || { error: 'No hay datos' });
     }
-
     if (type === 'usuarios') {
-      const stats = logger.getStats();
-      if (!stats) {
-        return res.status(404).json({ error: 'No hay datos' });
-      }
-      return res.status(200).json({
-        usuarios_activos: stats.por_usuario,
-        usuarios_inactivos: stats.usuarios_inactivos
+      return res.status(stats ? 200 : 404).json({
+        usuarios_activos: stats?.por_usuario || {},
+        usuarios_inactivos: stats?.usuarios_inactivos || []
       });
     }
-
     if (type === 'agentes') {
-      const stats = logger.getStats();
-      if (!stats) {
-        return res.status(404).json({ error: 'No hay datos' });
-      }
-      return res.status(200).json(stats.por_agente);
+      return res.status(stats ? 200 : 404).json(stats?.por_agente || {});
     }
-
-    return res.status(400).json({ error: 'Tipo inválido. Use: dashboard, usuarios, agentes' });
+    return res.status(400).json({ error: 'Tipo inválido' });
   }
 
-  // POST /api/stats — Registrar consulta
   if (method === 'POST') {
     try {
       const consultaId = logger.logQuery(body);
-      if (!consultaId) {
-        return res.status(500).json({ error: 'Error al registrar consulta' });
-      }
-      return res.status(200).json({ consulta_id: consultaId, status: 'logged' });
+      return res.status(consultaId ? 200 : 500).json({
+        consulta_id: consultaId,
+        status: consultaId ? 'logged' : 'error'
+      });
     } catch (error) {
-      console.error('[Stats API] Error:', error.message);
+      console.error('[Stats]', error);
       return res.status(500).json({ error: error.message });
     }
   }
 
-  // Método no permitido
   res.status(405).json({ error: 'Method not allowed' });
 }
