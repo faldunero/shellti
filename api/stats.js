@@ -1,7 +1,18 @@
 const QueryLoggerTurso = require('../services/queryLoggerTurso');
 
 // Initialize logger once at module load
-const logger = new QueryLoggerTurso();
+let logger;
+let initError = null;
+
+try {
+  logger = new QueryLoggerTurso();
+  console.log('[stats.js] Logger initialized successfully');
+  console.log('[stats.js] TURSO_DATABASE_URL exists:', !!process.env.TURSO_DATABASE_URL);
+  console.log('[stats.js] TURSO_AUTH_TOKEN exists:', !!process.env.TURSO_AUTH_TOKEN);
+} catch (error) {
+  console.error('[stats.js] Error initializing logger:', error.message);
+  initError = error;
+}
 
 module.exports = async function handler(req, res) {
   // CORS headers
@@ -15,6 +26,15 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // Check if logger initialized properly
+    if (!logger) {
+      console.error('[stats.js] Logger not initialized');
+      return res.status(500).json({
+        error: 'Logger initialization failed',
+        details: initError ? initError.message : 'Unknown error'
+      });
+    }
+
     // GET endpoints: /api/stats?type=dashboard|usuarios|agentes
     if (req.method === 'GET') {
       const type = req.query.type || 'dashboard';
