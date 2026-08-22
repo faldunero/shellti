@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — ShellTI Logging</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    header {
+      color: white;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    header p {
+      opacity: 0.9;
+      font-size: 1.1em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    .card h3 {
+      color: #667eea;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+    .card .value {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #333;
+    }
+    .card .detail {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 10px;
+    }
+    .section {
+      background: white;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #667eea;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: #f5f5f5;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    tr:hover {
+      background: #f9f9f9;
+    }
+    .badge {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 4px 12px;
+      margin: 2px;
+      font-size: 0.85em;
+    }
+    .badge.agente {
+      background: #764ba2;
+    }
+    .refresh-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+    .refresh-btn:hover {
+      background: #764ba2;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #667eea;
+      font-size: 1.2em;
+    }
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .last-update {
+      text-align: right;
+      color: #999;
+      font-size: 0.9em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Dashboard Admin</h1>
+      <p>ShellTI Logging System — Estadísticas en vivo</p>
+    </header>
+
+    <div style="text-align: center; margin-bottom: 30px;">
+      <button class="refresh-btn" onclick="loadData()">Actualizar ahora</button>
+    </div>
+
+    <div id="loading" class="loading">Cargando datos...</div>
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div id="content" style="display:none;">
+      <!-- Resumen General -->
+      <div class="grid">
+        <div class="card">
+          <h3>Total Consultas</h3>
+          <div class="value" id="total-consultas">0</div>
+          <div class="detail" id="periodo-info"></div>
+        </div>
+        <div class="card">
+          <h3>Usuarios Activos</h3>
+          <div class="value" id="usuarios-activos">0</div>
+          <div class="detail">en el período actual</div>
+        </div>
+        <div class="card">
+          <h3>Agentes en Uso</h3>
+          <div class="value" id="agentes-count">0</div>
+          <div class="detail" id="agentes-list"></div>
+        </div>
+        <div class="card">
+          <h3>Promedio Tokens</h3>
+          <div class="value" id="promedio-tokens">0</div>
+          <div class="detail">por consulta</div>
+        </div>
+      </div>
+
+      <!-- Uso por Agente -->
+      <div class="section">
+        <h2>Uso por Agente</h2>
+        <table id="agentes-table">
+          <thead>
+            <tr>
+              <th>Agente</th>
+              <th>Consultas</th>
+              <th>Usuarios Únicos</th>
+              <th>Total Tokens</th>
+            </tr>
+          </thead>
+          <tbody id="agentes-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Usuarios Activos -->
+      <div class="section">
+        <h2>Usuarios Activos</h2>
+        <table id="usuarios-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Consultas</th>
+              <th>Agentes</th>
+              <th>Última Actividad</th>
+              <th>Tokens</th>
+            </tr>
+          </thead>
+          <tbody id="usuarios-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="last-update">
+        Última actualización: <span id="last-update">--:--:--</span>
+        <br>
+        <small>Auto-actualiza cada 30 segundos</small>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('error').style.display = 'none';
+        document.getElementById('content').style.display = 'none';
+
+        const response = await fetch('/api/stats?type=dashboard');
+        if (!response.ok) throw new Error('Error al cargar datos');
+        
+        const stats = await response.json();
+        renderDashboard(stats);
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+      } catch (error) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('error').textContent = 'Error: ' + error.message;
+      }
+
+      updateTime();
+    }
+
+    function renderDashboard(stats) {
+      // Resumen
+      const resumen = stats.resumen || {};
+      document.getElementById('total-consultas').textContent = resumen.total_consultas || 0;
+      document.getElementById('usuarios-activos').textContent = resumen.usuarios_activos || 0;
+      document.getElementById('agentes-count').textContent = resumen.agentes_usados?.length || 0;
+      document.getElementById('promedio-tokens').textContent = (resumen.promedio_tokens_por_consulta || 0).toFixed(0);
+
+      if (stats.periodo) {
+        document.getElementById('periodo-info').textContent = 
+          `${stats.periodo.inicio} a ${stats.periodo.fin}`;
+      }
+
+      const agentes = resumen.agentes_usados || [];
+      document.getElementById('agentes-list').innerHTML = 
+        agentes.map(a => `<div class="badge agente">${a}</div>`).join('');
+
+      // Tabla de agentes
+      const porAgente = stats.por_agente || {};
+      const agentesHtml = Object.entries(porAgente).map(([agente, data]) => `
+        <tr>
+          <td><strong>${agente}</strong></td>
+          <td>${data.total}</td>
+          <td>${data.usuarios_unicos}</td>
+          <td>${data.tokens}</td>
+        </tr>
+      `).join('');
+      document.getElementById('agentes-tbody').innerHTML = agentesHtml;
+
+      // Tabla de usuarios
+      const porUsuario = stats.por_usuario || {};
+      const usuariosHtml = Object.entries(porUsuario).map(([uid, user]) => `
+        <tr>
+          <td><strong>${user.nombre}</strong></td>
+          <td>${user.email}</td>
+          <td>${user.total}</td>
+          <td>${(user.agentes || []).map(a => `<span class="badge">${a}</span>`).join('')}</td>
+          <td>${new Date(user.ultima_actividad).toLocaleString('es-ES')}</td>
+          <td>${user.tokens}</td>
+        </tr>
+      `).join('');
+      document.getElementById('usuarios-tbody').innerHTML = usuariosHtml || 
+        '<tr><td colspan="6" style="text-align:center;color:#999;">Sin datos</td></tr>';
+    }
+
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('last-update').textContent = 
+        now.toLocaleTimeString('es-ES');
+    }
+
+    // Auto-refresh cada 30 segundos
+    setInterval(loadData, 30000);
+
+    // Cargar al iniciar
+    loadData();
+  </script>
+</body>
+</html>
