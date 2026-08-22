@@ -1,10 +1,12 @@
 // api/stats.js — Vercel Serverless Function
 const path = require('path');
-const QueryLogger = require(path.join(__dirname, '../services/queryLogger'));
+const QueryLogger = require('../services/queryLogger');
 
-const logger = new QueryLogger(path.join(__dirname, '../logs'), 7);
+// Usa un path absoluto para logs
+const logsPath = path.join(process.cwd(), 'logs');
+const logger = new QueryLogger(logsPath, 7);
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   const { method, query, body } = req;
 
   if (method === 'GET') {
@@ -40,4 +42,4 @@ export default function handler(req, res) {
   }
 
   res.status(405).json({ error: 'Method not allowed' });
-}
+};
