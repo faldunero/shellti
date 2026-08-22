@@ -4,7 +4,7 @@ class QueryLoggerTurso {
   constructor() {
     // Initialize Turso client from environment variables
     this.client = createClient({
-      url: process.env.TURSO_CONNECTION_URL,
+      url: process.env.TURSO_DATABASE_URL,
       authToken: process.env.TURSO_AUTH_TOKEN
     });
 
