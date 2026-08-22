@@ -6,3 +6,4 @@ node_modules/
 shellti-platform-firebase-adminsdk*.json
 .DS_Store
 serviceAccountKey.json
+.env.local
