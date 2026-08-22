@@ -64,20 +64,12 @@
       --border:#162032;--border2:#1e2d45;
       --cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-gl:rgba(0,212,255,.05);
       --emerald:#34D399;--amber:#FBBF24;--red:#F87171;
-      --teal:#00D4AA;--blue:#60A5FA;
       --text:#e2e8f0;--text2:#94a3b8;--muted:#475569;
       --sans:"Plus Jakarta Sans",sans-serif;--mono:"JetBrains Mono",monospace;
       --r:8px;--nav-h:60px;--sb-w:252px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-
-    /* Shell de altura fija: sin un alto DEFINIDO en body, el flex-basis:0 de <main>
-       se resuelve contra un alto que depende del contenido y la fila 1fr del grid
-       vuelve a crecer con cada mensaje. Se condiciona a :has(main) porque
-       shellti-guard.js reemplaza el body por su formulario, que sí debe poder scrollear. */
-    html:has(main){height:100vh;overflow:hidden}
-    html:has(main) body{height:100%;min-height:0;overflow:hidden}
 
     /* NAV */
     nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(2,6,23,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100}
@@ -95,17 +87,14 @@
     .user-name{font-size:.65rem;font-weight:600;color:var(--text2);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
     .user-org{font-size:.58rem;color:var(--muted);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
 
+    .eval-trigger{display:flex;align-items:center;gap:7px;background:var(--cyan);border:none;border-radius:var(--r);color:var(--bg);font-size:.74rem;font-family:var(--sans);font-weight:700;padding:8px 16px;cursor:pointer;transition:all .15s;box-shadow:0 0 16px rgba(0,212,255,.25)}
+    .eval-trigger:hover{opacity:.88;box-shadow:0 0 24px rgba(0,212,255,.4);transform:translateY(-1px)}
 
     /* LAYOUT */
-    /* grid-template-rows fija la fila al alto de main; sin esto la fila se
-       auto-dimensiona al contenido y la columna de chat crece con cada mensaje
-       hasta empujar el input fuera de la pantalla. */
-    main{flex:1;min-height:0;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;grid-template-rows:minmax(0,1fr);height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
-    /* El layout de la columna de chat vive en .chat-wrap; no colgar de :last-child,
-       que gana en especificidad a cualquier .clase y afecta al último div que se agregue. */
+    main{flex:1;margin-top:var(--nav-h);display:grid;grid-template-columns:252px 1fr;height:calc(100vh - var(--nav-h));position:relative;overflow:hidden}
 
     /* SIDEBAR */
-    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
     .sidebar::-webkit-scrollbar{width:3px}
     .sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
     .sb-sect{padding:14px 12px 10px;border-bottom:1px solid var(--border)}
@@ -138,12 +127,14 @@
     .hist-empty{padding:20px 14px;font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5}
 
     /* CHAT */
-    /* min-height:0 permite que la columna encoja bajo el alto de su contenido;
-       con el min-height:auto por defecto, .messages nunca alcanza a hacer scroll. */
-    .chat-wrap{display:flex;flex-direction:column;height:100%;min-height:0;overflow:hidden}
+    .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden;}
     .chat-head{padding:0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;background:var(--bg)}
 
-    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .chat-head-top{padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+    .chat-head-session{padding:4px 20px 5px;border-top:1px solid var(--border);background:rgba(0,212,255,.03);display:none;align-items:center;justify-content:space-between}
+    .chat-head-session.show{display:flex}
+    .chat-head-session-title{font-size:.63rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+    .chat-head-session-date{font-size:.58rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
     .chat-head-l h1{font-size:.93rem;font-weight:700;margin-bottom:2px}
     .chat-head-l p{font-size:.68rem;color:var(--muted)}
     .chat-head-r{display:flex;align-items:center;gap:5px}
@@ -159,80 +150,95 @@
     .messages{overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0}
     .messages::-webkit-scrollbar{width:3px}
     .messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-    .msg{display:flex;gap:12px;max-width:900px;width:100%;align-items:flex-start;word-break:break-word;overflow-wrap:break-word}
+    .msg{
+      display:flex;
+      gap:12px;
+      max-width:900px;
+      margin-bottom:16px;
+      align-items:flex-start;
+      word-break:break-word;
+      overflow-wrap:break-word;
+      width:100%;
+    }
     .msg.user{flex-direction:row-reverse;align-self:flex-end}
     .msg.assistant{align-self:flex-start}
-    .msg-bubble{padding:14px 16px;border-radius:var(--r);font-size:.9rem;line-height:1.8;max-width:100%;word-wrap:break-word;overflow-wrap:break-word}
-    .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15);white-space:pre-wrap}
+    .msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;flex-shrink:0;margin-top:3px}
+    .msg.user .msg-av{background:var(--cyan-dim);color:var(--cyan)}
+    .msg.assistant .msg-av{background:rgba(52,211,153,.1);color:var(--emerald)}
+    .msg-bubble{
+      padding:14px 16px;
+      border-radius:var(--r);
+      font-size:.9rem;
+      line-height:1.8;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+      white-space:normal;
+      max-width:100%;
+      overflow:hidden;
+    }
+    .msg.user .msg-bubble{background:var(--cyan-dim);border:1px solid rgba(0,212,255,.15)}
     .msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border)}
+    .msg-bubble strong{color:var(--cyan);font-weight:600}
+    .msg-bubble em{color:var(--cyan);font-style:normal;font-weight:500}
+    .msg-bubble code{
+      font-family:var(--mono);
+      font-size:.85rem;
+      background:rgba(0,212,170,.1);
+      color:var(--cyan);
+      padding:2px 6px;
+      border-radius:4px;
+      white-space:pre-wrap;
+    }
+    .msg-bubble p{margin:12px 0;line-height:1.8}
+    .msg-bubble p:first-child{margin-top:0}
+    .msg-bubble p:last-child{margin-bottom:0}
+    .msg-bubble h1,.msg-bubble h2,.msg-bubble h3{
+      margin:16px 0 8px 0;
+      font-weight:600;
+      color:#fff;
+      line-height:1.4;
+    }
+    .msg-bubble h3{font-size:1rem}
+    .msg-bubble h2{font-size:1.1rem}
+    .msg-bubble h1{font-size:1.2rem}
+    .doc-block{margin-top:10px;background:rgba(2,6,23,.8);border:1px solid var(--border2);border-radius:6px;padding:12px;font-family:var(--mono);font-size:.71rem;white-space:pre-wrap;color:#94a3b8;position:relative}
+    .doc-copy{position:absolute;top:7px;right:7px;background:var(--border2);border:none;color:var(--muted);font-size:.58rem;padding:3px 7px;border-radius:3px;cursor:pointer;font-family:var(--mono);transition:all .14s}
+    .doc-copy:hover{background:var(--cyan-dim);color:var(--cyan)}
+    .typing-dots{display:flex;gap:4px;padding:4px 0}
+    .typing-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:tdot 1.2s infinite}
+    .typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
+    @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 
-    /* Tipografía de las respuestas del agente (markdown renderizado) */
-    .msg-bubble > *:first-child{margin-top:0}
-    .msg-bubble > *:last-child{margin-bottom:0}
-    .msg-bubble p{margin:0 0 .85em;line-height:1.8}
-    .msg-bubble strong{color:var(--cyan);font-weight:700}
-    .msg-bubble em{color:var(--text);font-style:italic}
-    .msg-bubble h3{font-size:1rem;font-weight:600;color:#fff;margin:1.15em 0 .5em;line-height:1.4}
-    .msg-bubble ul,.msg-bubble ol{margin:0 0 .8em;padding-left:1.25em}
-    .msg-bubble li{margin-bottom:.35em;line-height:1.6}
-    .msg-bubble li::marker{color:var(--cyan);font-size:.85em}
-    .msg-bubble code{font-family:var(--mono);font-size:.76em;background:rgba(2,6,23,.7);border:1px solid var(--border2);border-radius:4px;padding:1px 5px;color:var(--text2)}
-    .msg-bubble hr{border:none;border-top:1px solid var(--border2);margin:1em 0}
-    .msg-bubble a{color:var(--cyan)}
-
-    /* Tablas: scroll propio para que nunca desborden la burbuja */
-    .msg-bubble .table-wrap{overflow-x:auto;margin:0 0 .9em;border:1px solid var(--border2);border-radius:6px}
-    .msg-bubble table{border-collapse:collapse;width:100%;font-size:.8rem;line-height:1.55}
-    .msg-bubble th,.msg-bubble td{padding:8px 11px;vertical-align:top;border-bottom:1px solid var(--border2);border-right:1px solid var(--border2)}
-    .msg-bubble th:last-child,.msg-bubble td:last-child{border-right:none}
-    .msg-bubble tbody tr:last-child td{border-bottom:none}
-    .msg-bubble th{background:rgba(0,212,255,.07);color:var(--text);font-weight:700;white-space:nowrap}
-    .msg-bubble td{color:var(--text2)}
-    .msg-bubble tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
-    .msg-bubble td br{content:"";display:block;margin-bottom:3px}
-
-    /* Cursor de streaming */
-    .stream-caret{display:inline-block;width:2px;height:.95em;margin-left:2px;vertical-align:-2px;background:var(--cyan);animation:caret 1s steps(2) infinite}
-    @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
-
-    /* Acciones bajo cada respuesta */
-    .msg-actions{display:flex;gap:6px;margin-top:6px;opacity:0;transition:opacity .14s}
-    .msg:hover .msg-actions,.msg-actions:focus-within{opacity:1}
-    .msg-act{background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:.6rem;font-family:var(--mono);padding:3px 8px;cursor:pointer;transition:all .14s;display:inline-flex;align-items:center;gap:4px}
-    .msg-act:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
-    .msg-act.done{border-color:rgba(52,211,153,.4);color:var(--emerald)}
-    @media(hover:none){.msg-actions{opacity:1}}
+    /* Session title */
+    .session-banner{padding:6px 20px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border);display:none;align-items:center;justify-content:space-between;flex-shrink:0}
+    .session-banner.show{display:flex}
+    .session-banner-title{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+    .session-banner-date{font-size:.6rem;color:var(--muted);font-family:var(--mono);flex-shrink:0}
 
     /* Welcome */
-    .welcome{max-width:620px;width:100%;margin:auto;text-align:center;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .welcome{max-width:520px;width:100%;margin:auto;text-align:center;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .welcome-icon{width:52px;height:52px;border-radius:14px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
     .welcome h2{font-size:1.15rem;font-weight:700;margin-bottom:8px;color:var(--text)}
-    .welcome h2 span{color:var(--cyan)}
-
-    /* Logo: se adapta al alto disponible en vez de quedar fijo en 220px */
-    .welcome-logo{width:clamp(110px,22vh,200px);height:clamp(110px,22vh,200px);object-fit:contain;margin-bottom:14px;
-      filter:drop-shadow(0 0 14px rgba(0,212,255,.55)) drop-shadow(0 0 28px rgba(0,212,255,.28)) brightness(1.15) saturate(1.3)}
-
-    /* Chips de sugerencias */
-    .welcome-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;width:100%;margin-top:6px}
-    .chip{font-family:var(--sans);font-size:.73rem;font-weight:500;line-height:1.3;color:var(--text2);background:var(--surface);
-      border:1px solid var(--border2);border-radius:20px;padding:7px 13px;cursor:pointer;transition:all .14s}
-    .chip:hover{border-color:var(--cyan);color:var(--text);background:var(--cyan-gl)}
-    .chip.primary{border-color:rgba(0,212,170,.4);color:var(--teal);font-weight:600}
-    .chip.primary:hover{border-color:var(--teal);background:rgba(0,212,170,.08);color:var(--teal)}
     .welcome p{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:20px;max-width:380px}
+    .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;width:100%}
+    .wcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .14s}
+    .wcard:hover{border-color:var(--cyan);background:var(--cyan-gl)}
+    .wcard-t{font-size:.78rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+    .wcard-d{font-size:.67rem;color:var(--muted);line-height:1.4}
 
     /* Disclaimer + Input */
-    .disclaimer{padding:6px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.04);font-size:.66rem;color:#c8a34a;line-height:1.45;flex-shrink:0}
+    .disclaimer{padding:5px 20px;border-top:1px solid rgba(251,191,36,.12);background:rgba(251,191,36,.03);font-size:.66rem;color:#92742a;flex-shrink:0}
     .input-wrap{padding:11px 20px 15px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
     .input-row{display:flex;gap:8px;align-items:flex-end;position:relative}
-    .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
+    .input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.82rem;padding:9px 36px 9px 13px;resize:none;outline:none;min-height:40px;max-height:130px;line-height:1.5;transition:border-color .14s}
     .input-row textarea:focus{border-color:var(--cyan)}
     .input-row textarea::placeholder{color:var(--muted)}
-    .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .14s,opacity .14s}
+    .clear-input{position:absolute;right:50px;bottom:10px;width:20px;height:20px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .14s}
+    .clear-input.show{display:flex}
+    .clear-input:hover{background:rgba(248,113,113,.2);color:var(--red)}
+    .send-btn{width:40px;height:40px;border-radius:var(--r);background:var(--cyan);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .14s}
     .send-btn:hover{opacity:.85}
     .send-btn:disabled{opacity:.35;cursor:default}
-    .send-btn:focus-visible{outline:2px solid var(--text);outline-offset:2px}
-    .send-btn.stop{background:var(--red)}
     .input-hint{font-size:.61rem;color:var(--muted);margin-top:5px}
 
     /* Toast */
@@ -241,7 +247,7 @@
     .toast.ok{border-color:rgba(52,211,153,.3);color:var(--emerald)}
     .toast.err{border-color:rgba(248,113,113,.3);color:var(--red)}
 
-    /* MODAL de confirmación */
+    /* MODAL EVALUADOR */
     .modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.85);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
     .modal-overlay.open{display:flex}
     .modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 48px rgba(0,0,0,.5)}
@@ -254,35 +260,129 @@
     .modal-close:hover{border-color:var(--red);color:var(--red)}
     .modal-body{padding:14px 20px}
     .modal-foot{padding:0 20px 18px}
-    .modal-actions{display:flex;gap:8px;justify-content:flex-end}
-    .btn-ghost{background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);font-family:var(--sans);font-size:.76rem;font-weight:600;padding:8px 14px;cursor:pointer;transition:all .14s}
-    .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
-    .btn-danger{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35);border-radius:var(--r);color:var(--red);font-family:var(--sans);font-size:.76rem;font-weight:700;padding:8px 14px;cursor:pointer;transition:all .14s}
-    .btn-danger:hover{background:rgba(248,113,113,.22);border-color:var(--red)}
+    .eval-card{display:grid;grid-template-columns:14px 1fr auto;align-items:start;gap:10px;padding:10px 12px;margin-bottom:5px;border:1px solid var(--border);border-left:3px solid transparent;border-radius:var(--r);cursor:pointer;transition:all .15s;background:transparent}
+    .eval-card:hover{border-color:var(--border2);background:rgba(255,255,255,.02)}
+    .eval-card.active{background:var(--cyan-gl)}
+    .eval-card.active.wh{border-left-color:var(--red);border-color:rgba(248,113,113,.2)}
+    .eval-card.active.wm{border-left-color:var(--amber);border-color:rgba(251,191,36,.2)}
+    .eval-card.active.wl{border-left-color:var(--emerald);border-color:rgba(52,211,153,.2)}
+    .eval-chk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border2);margin-top:2px;transition:all .14s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .eval-card.active .eval-chk{background:var(--cyan);border-color:var(--cyan)}
+    .eval-chk-mark{display:none}
+    .eval-card.active .eval-chk-mark{display:block}
+    .eval-body-t{font-size:.75rem;font-weight:600;color:var(--text);margin-bottom:2px}
+    .eval-body-d{font-size:.64rem;color:var(--muted);line-height:1.3}
+    .eval-pill{font-size:.55rem;font-family:var(--mono);padding:2px 6px;border-radius:3px;white-space:nowrap;margin-top:1px}
+    .eval-pill.ph{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+    .eval-pill.pm{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+    .eval-pill.pl{background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2)}
+    .eval-result{margin-top:12px;padding:11px 13px;border:1px solid var(--border2);border-radius:var(--r);background:var(--surface2);display:none}
+    .eval-result.show{display:block}
+    .eval-bar-track{height:3px;background:var(--border2);border-radius:2px;margin-bottom:8px;overflow:hidden}
+    .eval-bar-fill{height:100%;border-radius:2px;transition:width .4s ease,background .3s}
+    .eval-bar-fill.lv-low{background:var(--emerald)}
+    .eval-bar-fill.lv-medium{background:var(--amber)}
+    .eval-bar-fill.lv-high{background:var(--red)}
+    .eval-r-level{font-size:.62rem;font-family:var(--mono);letter-spacing:.06em;margin-bottom:4px}
+    .eval-r-level.lv-low{color:var(--emerald)}
+    .eval-r-level.lv-medium{color:var(--amber)}
+    .eval-r-level.lv-high{color:var(--red)}
+    .eval-r-text{font-size:.69rem;color:var(--muted);line-height:1.5}
+    .eval-consult-btn{width:100%;margin-top:14px;padding:11px;background:var(--cyan);color:var(--bg);border:none;border-radius:var(--r);font-family:var(--sans);font-weight:700;font-size:.8rem;cursor:pointer;transition:opacity .14s}
+    .eval-consult-btn:hover{opacity:.88}
+
+    /* Access overlay */
+    #access-overlay{position:fixed;inset:0;background:rgba(13,27,46,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .overlay-box{text-align:center}
+    .overlay-icon{width:48px;height:48px;border-radius:12px;background:var(--cyan-dim);border:1px solid rgba(0,212,255,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+    #access-overlay h2{font-size:.95rem;font-weight:700;margin-bottom:6px}
+    #access-overlay p{font-size:.76rem;color:var(--muted);max-width:260px}
+    #access-overlay a{margin-top:14px;display:inline-block;color:var(--cyan);font-size:.74rem;text-decoration:none}
+    #access-overlay a:hover{text-decoration:underline}
+
 
     /* Tags clickables */
     .ctag-link{cursor:pointer;text-decoration:none;transition:opacity .14s}
     .ctag-link:hover{opacity:.75}
+    /* Tag morado para NCh */
+    .ctag-p{color:#c084fc;border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.06)}
+    /* Tag azul para CEAL */
+    .ctag-b{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.06)}
+
+    /* Modal canales denuncia */
+    .den-modal-overlay{position:fixed;inset:0;background:rgba(2,6,23,.88);backdrop-filter:blur(6px);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+    .den-modal-overlay.open{display:flex}
+    .den-modal{background:var(--surface);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+    .den-modal::-webkit-scrollbar{width:3px}
+    .den-modal::-webkit-scrollbar-thumb{background:var(--border2)}
+    .den-modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .den-modal-head h2{font-size:.95rem;font-weight:700;margin-bottom:3px}
+    .den-modal-head p{font-size:.72rem;color:var(--muted);line-height:1.4}
+    .den-modal-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .14s;font-size:.85rem}
+    .den-modal-close:hover{border-color:var(--red);color:var(--red)}
+    .den-modal-body{padding:16px 20px 20px}
+    .den-canal{border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;transition:border-color .14s}
+    .den-canal:hover{border-color:var(--border2)}
+    .den-canal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+    .den-canal-name{font-size:.8rem;font-weight:700;color:var(--text)}
+    .den-canal-badge{font-size:.58rem;font-family:var(--mono);padding:2px 7px;border-radius:10px}
+    .den-canal-badge.prim{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.2)}
+    .den-canal-badge.sec{background:rgba(52,211,153,.1);color:var(--emerald);border:1px solid rgba(52,211,153,.2)}
+    .den-canal-badge.adv{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
+    .den-canal-desc{font-size:.73rem;color:var(--muted);line-height:1.5;margin-bottom:8px}
+    .den-canal-link{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-family:var(--mono);color:var(--cyan);text-decoration:none;border:1px solid rgba(0,212,255,.2);padding:3px 9px;border-radius:6px;transition:all .14s}
+    .den-canal-link:hover{background:var(--cyan-gl);border-color:var(--cyan)}
+    .den-disclaimer{margin-top:14px;padding:10px 12px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:var(--r);font-size:.68rem;color:#92742a;line-height:1.5}
 
 
+    /* Scroll to bottom button */
+    .mob-tags-toggle { display: none; background: transparent; border: 1px solid var(--border2); border-radius: 6px; color: var(--muted); font-size: .6rem; font-family: var(--mono); padding: 4px 8px; cursor: pointer; transition: all .14s; align-items: center; gap: 4px; }
+    .mob-tags-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+    .mob-tags-row { display: none; }
+    .mob-input-row { display: none; }
+    .scroll-down-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 20px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all .15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .scroll-down-btn.show { display: flex; }
+    .scroll-down-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-gl); }
+    .scroll-down-btn .unread-dot {
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      display: none;
+    }
+    .scroll-down-btn .unread-dot.show { display: block; }
+    .messages-wrap { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 
-    /* Botón "ir al final" */
-    .scroll-down-btn{position:absolute;bottom:16px;right:20px;width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);display:none;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-    .scroll-down-btn.show{display:flex}
-    .scroll-down-btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-gl)}
-    .scroll-down-btn .unread-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--cyan);display:none}
-    .scroll-down-btn .unread-dot.show{display:block}
-
-    /* El chat crece desde abajo: column-reverse ancla el scroll al último mensaje */
-    .messages-wrap{position:relative;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
-    .messages{display:flex;flex-direction:column-reverse}
-
-    @media(max-width:1024px){
+        @media(max-width:1024px){
       .chat-head-r .ctag-g,.chat-head-r .ctag-a{display:none}
     }
 
-    /* Filas exclusivas de móvil — ocultas en escritorio */
-    .mob-row1,.mob-row2,.mob-tags-panel{display:none}
+    /* Desktop-only hidden */
+    .mob-row1 { display: none; }
+    .mob-row2 { display: none; }
+    .mob-tags-panel { display: none; }
+    .mob-input-row { display: none; }
+    .mob-tags-toggle { display: none; }
+    .mob-tools-toggle { display: none; }
+    .mob-tools-row { display: none; }
+    .mob-tags-row { display: none; }
 
     /* ═══ MOBILE ════════════════════════════════════════════════ */
     @media (max-width: 768px) {
@@ -302,13 +402,15 @@
       .sidebar { display: none !important; }
       .chat-wrap { flex: 1 !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
       .chat-head { flex-shrink: 0 !important; border-bottom: 1px solid var(--border); background: var(--bg); }
-      .messages-wrap { flex: 1; min-height: 0; overflow: hidden; }
-      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px 20px !important; height: auto !important; overflow-x: hidden !important; }
+      .messages-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+      .messages { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding: 10px 12px 20px !important; height: auto !important; }
 
-      /* Header de escritorio oculto */
+      /* Desktop header hidden */
       .chat-head-top { display: none !important; }
+      .chat-head-session { display: none !important; }
+      .mob-tags-row { display: none !important; }
 
-      /* Filas de móvil visibles */
+      /* Mobile rows shown */
       .mob-row1 { display: flex !important; align-items: center; justify-content: flex-end; padding: 9px 12px 5px; gap: 8px; }
       .mob-row2 { display: flex !important; align-items: center; gap: 5px; padding: 0 12px 7px; }
       .mob-chip { display: flex; align-items: center; gap: 5px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 9px 3px 3px; }
@@ -321,35 +423,45 @@
       .mob-tags-panel.open { display: flex !important; }
       .mob-tags-panel .ctag { display: inline-flex !important; font-size: .55rem; padding: 2px 6px; }
 
-      /* Input al fondo, sobre el teclado — mismo input que en escritorio */
-      .input-wrap { padding: 7px 10px calc(10px + env(safe-area-inset-bottom)); }
-      .input-row textarea { font-size: 16px; /* evita el zoom automático de iOS */ min-height: 38px; max-height: 90px; padding: 8px 11px; }
-      .send-btn { width: 38px; height: 38px; }
-      .input-hint { display: none; }
-      .disclaimer { padding: 5px 12px; font-size: .58rem; }
+      /* Mobile input — bottom of chat-wrap as flex child */
+      .mob-input-row { display: flex !important; align-items: center; gap: 6px; padding: 6px 10px 10px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0 !important; }
+      .mob-input-row textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: var(--sans); font-size: .77rem; padding: 8px 10px; resize: none; outline: none; min-height: 36px; max-height: 70px; line-height: 1.5; transition: border-color .14s; }
+      .mob-input-row textarea:focus { border-color: var(--cyan); }
+      .mob-input-row textarea::placeholder { color: var(--muted); }
+      .mob-send-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--cyan); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-      /* Welcome alineado arriba */
-      .welcome { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; padding: 20px 14px 16px !important; max-width: 100% !important; width: 100% !important; margin: 0 auto !important; }
-      .welcome-logo { width: clamp(90px, 16vh, 140px); height: clamp(90px, 16vh, 140px); margin-bottom: 10px; }
-      .welcome h2 { font-size: 1rem; margin-bottom: 10px; }
-      .chip { font-size: .69rem; padding: 6px 11px; }
-      .welcome-chips { gap: 6px; }
+      /* Hide: disclaimer, desktop input */
+      .disclaimer { display: none !important; }
+      .input-wrap { display: none !important; }
 
-      /* Contenido */
-      .msg { max-width: 100% !important; width: 100% !important; }
-      .msg-bubble { font-size: .78rem; padding: 8px 11px; line-height: 1.55; max-width: calc(100vw - 60px) !important; word-break: break-word !important; overflow-wrap: break-word !important; }
-      .msg-avatar { width: 20px; height: 20px; font-size: .5rem; flex-shrink: 0 !important; }
+      /* Welcome visible en mobile, alineado arriba */
+      .messages { justify-content: flex-start !important; }
+      .welcome { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; padding: 20px 14px 16px !important; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
+      .welcome-icon { width: 44px; height: 44px; margin-bottom: 10px; }
+      .welcome h2 { font-size: 1rem; }
+      .welcome p { font-size: .75rem; margin-bottom: 14px; }
+      .wgrid { width: 100% !important; }
+      .wcard-t { font-size: .72rem; }
+      .wcard-d { font-size: .62rem; }
 
-      /* Modales y drawer a pantalla completa */
-      .modal-overlay { align-items: flex-end; padding: 0; }
-      .modal-box { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
+      /* Content */
+      .messages { overflow-x: hidden !important; }
+      .msg { max-width: 100% !important; width: 100% !important; box-sizing: border-box !important; }
+      .msg.user { max-width: 100% !important; }
+      .msg.assistant { max-width: 100% !important; }
+      .msg-bubble { font-size: .76rem; padding: 8px 11px; line-height: 1.5; max-width: calc(100vw - 60px) !important; word-break: break-word !important; overflow-wrap: break-word !important; white-space: normal !important; }
+      .msg-av { width: 20px; height: 20px; font-size: .5rem; flex-shrink: 0 !important; }
+      .doc-block { font-size: .6rem; padding: 8px; word-break: break-word; max-width: calc(100vw - 80px) !important; overflow-x: auto; }
+
+      /* Modals */
+      .modal-overlay, .den-modal-overlay { align-items: flex-end; padding: 0; }
+      .modal-box, .den-modal { border-radius: 14px 14px 0 0; max-height: 85vh; max-width: 100%; }
       .hist-drawer { position: fixed !important; inset: 0; width: 100%; z-index: 200; }
       .toast { position: fixed !important; bottom: 20px !important; top: auto !important; left: 50% !important; right: auto !important; transform: translateX(-50%) translateY(60px) !important; z-index: 999 !important; }
       .toast.show { transform: translateX(-50%) translateY(0) !important; }
     }
 
-    /* 390px es el ancho del iPhone 13/14: recortar etiquetas recién bajo eso */
-    @media (max-width: 360px) {
+    @media (max-width: 390px) {
       .mob-btn span { display: none; }
     }
 
@@ -361,17 +473,15 @@
     .diag-divider{height:1px;background:var(--border);margin:10px 0 8px}
 
     .acc-parent{margin-bottom:5px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-    /* text-align:left es necesario: <button> centra por defecto y eso desalinea
-       las etiquetas que ocupan más de una línea. */
-    .acc-parent-header{width:100%;font-family:var(--sans);text-align:left;border:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;cursor:pointer;transition:background .14s;user-select:none;background:rgba(255,255,255,.02)}
+    .acc-parent-header{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;transition:background .14s;user-select:none;background:rgba(255,255,255,.02)}
     .acc-parent-header:hover{background:rgba(255,255,255,.04)}
-    .acc-parent-label{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;line-height:1.45}
+    .acc-parent-label{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
     .acc-parent-arrow{font-size:.6rem;color:var(--muted);transition:transform .2s}
     .acc-parent-header.open .acc-parent-arrow{transform:rotate(180deg)}
     .acc-parent-body{overflow:hidden;max-height:0;transition:max-height .3s ease;padding:0 5px}
     .acc-parent-body.open{max-height:1400px}
 
-    .acc-header{width:100%;background:transparent;font-family:var(--sans);text-align:left;display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .14s;user-select:none;border:1px solid transparent;margin-bottom:2px}
+    .acc-header{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .14s;user-select:none;border:1px solid transparent;margin-bottom:2px}
     .acc-header:hover{background:rgba(255,255,255,.03);border-color:var(--border)}
     .acc-header.open{background:rgba(255,255,255,.04);border-color:var(--border)}
     .acc-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono)}
@@ -385,7 +495,7 @@
     .topic-tag{font-size:.55rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);margin-left:auto;flex-shrink:0;font-family:var(--mono);opacity:.8}
 
     /* Escalation */
-    .escalation-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:var(--cyan-gl);border:1px solid rgba(0,212,255,.15);border-radius:var(--r);margin-top:6px;flex-wrap:wrap;align-self:flex-start;width:100%;max-width:900px}
+    .escalation-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:var(--cyan-gl);border:1px solid rgba(0,212,255,.15);border-radius:var(--r);margin-top:6px;flex-wrap:wrap}
     .escalation-text{font-size:.73rem;color:var(--text2);line-height:1.4}
     .escalation-text strong{color:var(--text)}
     .btn-agendar{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid rgba(0,212,255,.3);border-radius:var(--r);color:var(--cyan);font-size:.68rem;font-family:var(--sans);font-weight:600;padding:6px 12px;cursor:pointer;transition:all .14s;text-decoration:none;white-space:nowrap}
@@ -407,12 +517,9 @@
     .msg-role{font-size:.57rem;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
     .msg.user .msg-role{text-align:right}
 
-    /* Barra de error — visible, con reintento */
-    .error-toast{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:var(--r);padding:8px 12px;font-size:.72rem;color:var(--red);display:none;margin:8px 20px 0;flex-shrink:0;align-items:center;gap:10px;line-height:1.45}
-    .error-toast.show{display:flex}
-    .error-toast-msg{flex:1;min-width:0}
-    .error-toast button{background:transparent;border:1px solid rgba(248,113,113,.35);border-radius:5px;color:var(--red);font-family:var(--mono);font-size:.62rem;padding:3px 8px;cursor:pointer;flex-shrink:0;transition:background .14s}
-    .error-toast button:hover{background:rgba(248,113,113,.15)}
+    /* Error toast */
+    .error-toast{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:var(--r);padding:8px 12px;font-size:.72rem;color:var(--red);display:none;margin:0 20px 8px;flex-shrink:0}
+    .error-toast.show{display:block}
 
     /* Typing indicator */
     .typing{display:flex;align-items:center;gap:5px;padding:4px 0}
@@ -420,13 +527,6 @@
     .typing span:nth-child(2){animation-delay:.2s}
     .typing span:nth-child(3){animation-delay:.4s}
     @keyframes typing-anim{0%,60%,100%{opacity:.4;transform:scale(1)}30%{opacity:1;transform:scale(1.2)}}
-
-    /* Accesibilidad */
-    :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media (prefers-reduced-motion: reduce){
-      *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
-    }
 
   </style>
 </head>
@@ -465,48 +565,48 @@
 
 <main>
   <!-- Historial drawer -->
-  <div class="hist-drawer" id="histDrawer" role="dialog" aria-modal="true" aria-label="Historial de conversaciones">
+  <div class="hist-drawer" id="histDrawer">
     <div class="hist-drawer-head">
       <h3>Conversaciones</h3>
-      <button class="hist-close" type="button" onclick="closeHist()" aria-label="Cerrar historial">&#x2715;</button>
+      <button class="hist-close" onclick="closeHist()">&#x2715;</button>
     </div>
-    <button class="hist-new-btn" type="button" onclick="newChat()">
-      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Nueva conversaci&oacute;n
+    <button class="hist-new-btn" onclick="newChat()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nueva conversacion
     </button>
     <div class="hist-list" id="histList"></div>
   </div>
 
   <aside class="sidebar">
     <div class="sb-sect">
-      <button class="diag-btn" type="button" onclick="startDiagnostico()">
+<button class="diag-btn" onclick="startDiagnostico()">
         <div class="diag-icon">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1v6m0 0l-2-2m2 2l2-2M1 9h2a2 2 0 002 2h6a2 2 0 002-2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="11" width="14" height="4" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v6m0 0l-2-2m2 2l2-2M1 9h2a2 2 0 002 2h6a2 2 0 002-2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="11" width="14" height="4" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
         </div>
-        Diagn&oacute;stico r&aacute;pido
+        Diagnostico rapido
       </button>
-      <button type="button" onclick="newChat()" class="icon-btn" style="width:100%;margin-top:6px;justify-content:center">
-        Nueva conversaci&oacute;n
+      <button onclick="clearChat()" class="icon-btn danger" style="width:100%;margin-top:6px;justify-content:center">
+        Nueva conversacion
       </button>
       <div class="diag-divider"></div>
-      <button type="button" class="btn-agendar" onclick="agendarLlamada('')" style="width:100%;margin-bottom:8px;justify-content:center;">
+      <a class="btn-agendar" onclick="agendarLlamada('')" style="width:100%;margin-bottom:8px;justify-content:center;cursor:pointer;">
         Contactar consultor
-      </button>
+      </a>
       <div class="diag-divider"></div>
       <div class="sb-lbl">Temas frecuentes</div>
 
       <!-- ① REGULATORIO CHILE — acordeón padre -->
       <div class="acc-parent">
-        <button type="button" class="acc-parent-header" onclick="toggleAccParent(this)" aria-expanded="false">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
           <span class="acc-parent-label">① Regulatorio Chile</span>
           <span class="acc-parent-arrow">&#9660;</span>
-        </button>
+        </div>
         <div class="acc-parent-body">
           <div class="acc-group" style="margin-top:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:var(--teal);">Ley 21.719</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es el RAT y cómo se construye?')">RAT — Registro de Actividades<span class="topic-tag">Doc</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Cuándo es obligatorio designar un DPO?')">DPO — Encargado de Protección<span class="topic-tag">Rol</span></button>
@@ -516,40 +616,40 @@
             </div>
           </div>
           <div class="acc-group">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#FBB924;">DS 662 — MPI</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?')">MPI — Qué es y para qué sirve<span class="topic-tag">DS 662</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Qué beneficio legal da tener un MPI certificado ante la APDP?')">Beneficio de certificar el MPI<span class="topic-tag">DS 662</span></button>
             </div>
           </div>
           <div class="acc-group">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#00B4D8;">Ley 21.521 — Fintech</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?')">Obligaciones Ley Fintech<span class="topic-tag">CMF</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Qué es el Sistema de Finanzas Abiertas (SFA) y qué exige la NCG 514?')">SFA y NCG 514<span class="topic-tag">API</span></button>
             </div>
           </div>
           <div class="acc-group">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#EF4444;">Ley 21.595 — Delitos Económicos</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?')">Delitos informáticos<span class="topic-tag">Penal</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Qué debe incluir un MPD para sistemas tecnológicos?')">MPD tecnológico<span class="topic-tag">Penal</span></button>
             </div>
           </div>
           <div class="acc-group" style="margin-bottom:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#A78BFA;">Código del Trabajo</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué dice el Código del Trabajo chileno sobre el acceso a datos y correos de empleados?')">Datos de empleados<span class="topic-tag">Laboral</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Qué límites tiene el empleador para monitorear a sus trabajadores según la ley laboral chilena?')">Monitoreo de trabajadores<span class="topic-tag">Laboral</span></button>
@@ -561,16 +661,16 @@
 
       <!-- ② ESTÁNDARES INTERNACIONALES — acordeón padre -->
       <div class="acc-parent">
-        <button type="button" class="acc-parent-header" onclick="toggleAccParent(this)" aria-expanded="false">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
           <span class="acc-parent-label">② Estándares Internacionales</span>
           <span class="acc-parent-arrow">&#9660;</span>
-        </button>
+        </div>
         <div class="acc-parent-body">
           <div class="acc-group" style="margin-top:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:var(--blue);">ISO 27001:2022</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?')">SGSI — Sistema de Gestión<span class="topic-tag">ISO</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Cuáles son los cambios principales entre ISO 27001:2013 e ISO 27001:2022?')">Cambios vs versión 2013<span class="topic-tag">ISO</span></button>
@@ -579,10 +679,10 @@
             </div>
           </div>
           <div class="acc-group">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#FCD34D;">Basilea III / BCBS</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es Basilea III y cómo aplica a bancos e instituciones financieras en Chile?')">Basilea III — qué es y a quién aplica<span class="topic-tag">Riesgo</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Cuáles son los pilares de Basilea III y qué implican en gestión de riesgo operacional?')">Pilares de Basilea III<span class="topic-tag">Capital</span></button>
@@ -591,10 +691,10 @@
             </div>
           </div>
           <div class="acc-group" style="margin-bottom:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#34D399;">GDPR — Unión Europea</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Cuáles son los principios del GDPR y cómo se comparan con la Ley 21.719?')">Principios GDPR vs Ley 21.719<span class="topic-tag">GDPR</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Qué empresas chilenas deben cumplir el GDPR europeo?')">¿A quién aplica el GDPR?<span class="topic-tag">GDPR</span></button>
@@ -606,16 +706,16 @@
 
       <!-- ③ GESTIÓN Y OPERACIONES TI — acordeón padre -->
       <div class="acc-parent">
-        <button type="button" class="acc-parent-header" onclick="toggleAccParent(this)" aria-expanded="false">
+        <div class="acc-parent-header" onclick="toggleAccParent(this)">
           <span class="acc-parent-label">③ Gestión y Operaciones TI</span>
           <span class="acc-parent-arrow">&#9660;</span>
-        </button>
+        </div>
         <div class="acc-parent-body">
           <div class="acc-group" style="margin-top:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#60A5FA;">ITIL 4</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es ITIL 4 y cómo se diferencia de ITIL v3 en la gestión de servicios TI?')">ITIL 4 — qué es y diferencias<span class="topic-tag">ITSM</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Cuáles son las 4 dimensiones y el Sistema de Valor del Servicio de ITIL 4?')">SVS y 4 dimensiones<span class="topic-tag">SVS</span></button>
@@ -624,10 +724,10 @@
             </div>
           </div>
           <div class="acc-group" style="margin-bottom:6px;">
-            <button type="button" class="acc-header" onclick="toggleAcc(this)" aria-expanded="false">
+            <div class="acc-header" onclick="toggleAcc(this)">
               <span class="acc-label" style="color:#F472B6;">PMI / PMBOK</span>
               <span class="acc-arrow">&#9660;</span>
-            </button>
+            </div>
             <div class="acc-body">
               <button class="topic-btn" onclick="sendQuick('¿Qué es el PMBOK 7 y cuáles son sus principios de gestión de proyectos?')">PMBOK 7 — principios clave<span class="topic-tag">PMI</span></button>
               <button class="topic-btn" onclick="sendQuick('¿Cómo se aplica la gestión de riesgos del PMI en proyectos de ciberseguridad o compliance?')">Riesgos PMI en proyectos TI<span class="topic-tag">Riesgo</span></button>
@@ -637,46 +737,54 @@
           </div>
         </div>
       </div>
-      <div style="height:16px"></div>
+      <div style="height:16px;">
     </div>
   </aside>
 
   <div class="chat-wrap">
     <div class="chat-head">
-      <!-- Fila 1 (solo móvil) -->
+      <!-- Mobile Row 1 (shown on mobile only) -->
       <div class="mob-row1">
         <div class="mob-chip" id="mobChip">
           <div class="mob-chip-av" id="mobAv">C</div>
           <span class="mob-chip-nm" id="mobNm">Compliance IA</span>
         </div>
       </div>
-      <!-- Fila 2 (solo móvil) -->
+      <!-- Mobile Row 2 -->
       <div class="mob-row2">
-        <button class="mob-btn" type="button" onclick="startDiagnostico()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <button class="mob-btn" onclick="startDiagnostico()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           <span>Diagn&#243;stico</span>
         </button>
-        <button class="mob-btn" type="button" id="mobInfoBtn" onclick="toggleMobInfo()" aria-expanded="false" aria-controls="mobTagsPanel">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <button class="mob-btn" id="mobInfoBtn" onclick="toggleMobInfo()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>Info</span>
         </button>
-        <button class="mob-btn" type="button" onclick="openHist()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <button class="mob-btn" onclick="openHist()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span>Historial</span>
         </button>
-        <button class="mob-btn" type="button" onclick="newChat()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>Nueva</span>
+        <button class="mob-btn" onclick="clearChat()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          <span>Limpiar</span>
         </button>
       </div>
-      <!-- Panel de tags (solo móvil) -->
+      <!-- Mobile Input -->
+      <div class="mob-input-row" id="mobInputRow">
+        <textarea id="mobUserInput" placeholder="Pregunte sobre compliance..." rows="1"
+          onkeydown="handleMobKey(event)" oninput="handleMobInput(this)"></textarea>
+        <button class="mob-send-btn" id="mobSendBtn" onclick="sendMob()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <!-- Mobile Info Panel (tags) -->
       <div class="mob-tags-panel" id="mobTagsPanel">
         <a href="https://www.bcn.cl/leychile/navegar?idNorma=1209272" target="_blank" rel="noopener" class="ctag ctag-c ctag-link">Ley 21.719</a>
-        <button type="button" class="ctag ctag-g ctag-link" onclick="startDiagnostico()">Diagn&#243;stico</button>
+        <span class="ctag ctag-g ctag-link" onclick="startDiagnostico()" style="cursor:pointer">Diagn&#243;stico</span>
         <a href="https://www.iso.org/standard/27001" target="_blank" rel="noopener" class="ctag ctag-a ctag-link">ISO 27001</a>
       </div>
 
-      <!-- Header de escritorio -->
+      <!-- Desktop header -->
       <div class="chat-head-top">
         <div class="chat-head-l">
           <h1>Agente Compliance</h1>
@@ -685,78 +793,69 @@
         <div class="chat-head-r">
           <a href="https://www.bcn.cl/leychile/navegar?idNorma=1209272" target="_blank" rel="noopener" class="ctag ctag-c ctag-link" title="Ley 21.719">Ley 21.719</a>
           <a href="https://www.iso.org/standard/27001" target="_blank" rel="noopener" class="ctag ctag-g ctag-link" title="ISO 27001">ISO 27001</a>
-          <button class="icon-btn" type="button" onclick="openHist()">
-            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <button class="icon-btn" onclick="openHist()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             Historial
           </button>
-          <button class="icon-btn" type="button" onclick="newChat()">
-            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Nueva
-          </button>
-          <button class="icon-btn danger" type="button" onclick="clearChat()">
-            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
-            Borrar
+          <button class="icon-btn danger" onclick="clearChat()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+            Limpiar
           </button>
         </div>
       </div>
     </div>
 
     <div class="messages-wrap">
-      <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Conversaci&oacute;n con el agente"></div>
-      <button class="scroll-down-btn" type="button" id="scrollDownBtn" onclick="scrollToBottom()" title="Ir al final" aria-label="Ir al final de la conversaci&oacute;n">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        <span class="unread-dot" id="unreadDot"></span>
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <div class="welcome-icon">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#00D4FF" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <h2>Agente Compliance ShellTI</h2>
+          <p>Asistente especializado en 10 marcos normativos: Ley 21.719, ISO 27001, GDPR, ITIL 4, PMI y m&#225;s.</p>
+          <div class="wgrid">
+            <div class="wcard" onclick="startDiagnostico()">
+              <div class="wcard-t">Diagn&#243;stico r&#225;pido</div>
+              <div class="wcard-d">Eval&#250;a el estado de compliance de tu empresa</div>
+            </div>
+            <div class="wcard" onclick="sendQuick('&#191;Qu&#233; obliga la Ley 21.719 a una empresa como la m&#237;a?')">
+              <div class="wcard-t">Ley 21.719</div>
+              <div class="wcard-d">Obligaciones y plazos antes del 1 dic 2026</div>
+            </div>
+            <div class="wcard" onclick="sendQuick('Genera un checklist de cumplimiento de la Ley 21.719 para una PYME')">
+              <div class="wcard-t">Checklist PYME</div>
+              <div class="wcard-d">Lista de requisitos adaptada a tu tama&#241;o</div>
+            </div>
+            <div class="wcard" onclick="sendQuick('&#191;C&#243;mo se implementa un SGSI seg&#250;n ISO 27001:2022?')">
+              <div class="wcard-t">ISO 27001</div>
+              <div class="wcard-d">Gu&#237;a de implementaci&#243;n del SGSI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="scroll-down-btn" id="scrollDownBtn" onclick="scrollToBottom()" title="Ir al final">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
     </div>
 
-    <div class="error-toast" id="error-toast" role="alert">
-      <span class="error-toast-msg" id="error-toast-msg"></span>
-      <button type="button" id="error-retry" onclick="retryLast()">Reintentar</button>
-      <button type="button" onclick="hideError()" aria-label="Cerrar aviso">&#x2715;</button>
-    </div>
-
-    <div class="disclaimer">Este agente entrega orientaci&#243;n general sobre marcos normativos y no constituye asesor&#237;a legal. Para casos espec&#237;ficos, consulta a un abogado o escribe a contacto@shellti.com.</div>
+    <div class="disclaimer">Aviso: Este agente entrega orientaci&#243;n general sobre marcos normativos. No constituye asesor&#237;a legal. Para casos espec&#237;ficos consulta a un abogado o contacta a ShellTI.</div>
 
     <div class="input-wrap">
       <div class="input-row">
-        <label class="sr-only" for="msg-input">Escribe tu consulta</label>
-        <textarea id="msg-input" placeholder="Escribe tu consulta..." rows="1"></textarea>
-        <button class="send-btn" id="send-btn" type="button" onclick="onSendClick()" aria-label="Enviar consulta">
-          <svg id="send-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <textarea id="msg-input" placeholder="Pregunte sobre la Ley 21.719, su empresa y sus obligaciones..." rows="1"
+></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <div class="input-hint">Enter para enviar &middot; Shift+Enter para salto de l&#237;nea</div>
+      <div class="input-hint">Shift+Enter para salto de l&#237;nea &middot; Enter para enviar</div>
     </div>
 
   </div>
-
 </main>
-
-  <!-- Modal de confirmación -->
-  <div class="modal-overlay" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-    <div class="modal-box" style="max-width:380px">
-      <div class="modal-head">
-        <div class="modal-head-l">
-          <h2 id="confirm-title">Borrar conversaci&#243;n</h2>
-          <p id="confirm-text">Esta acci&#243;n no se puede deshacer.</p>
-        </div>
-        <button class="modal-close" type="button" onclick="closeConfirm()" aria-label="Cancelar">&#x2715;</button>
-      </div>
-      <div class="modal-body modal-actions">
-        <button class="btn-ghost" type="button" onclick="closeConfirm()">Cancelar</button>
-        <button class="btn-danger" type="button" id="confirm-ok">Borrar</button>
-      </div>
-    </div>
-  </div>
 
 <script>
 const SYSTEM_PROMPT = `Eres el agente de compliance y gestión tecnológica de ShellTI (shellti.com), con expertise en 10 marcos normativos y de gestión. Para consultas completamente fuera de estos marcos, indica amablemente que escapa de tu alcance y deriva a contacto@shellti.com.
-
-FORMATO DE SALIDA (obligatorio): responde en Markdown simple y nada más.
-Párrafos separados por una línea en blanco; listas con "- "; tablas con "|" y su fila
-de separación "|---|---|"; negrita con **texto**. NUNCA escribas etiquetas HTML: nada
-de <br>, <div>, <p> ni <table>. Para separar líneas dentro de una celda de tabla, usa
-" · " en vez de <br>.
 
 TU COBERTURA TEMÁTICA:
 
@@ -964,423 +1063,143 @@ En análisis complejos o implementaciones que requieren soporte operativo, menci
 
 ════ FIN DE SYSTEM_PROMPT ════`;
 
-/* ═══════════════════════ ESTADO ═══════════════════════ */
-let messages     = [];      // conversación activa: [{role, content}]
-let isLoading    = false;
-let diagMode     = false;   // esperando los datos de empresa del diagnóstico
-let currentAbort = null;    // AbortController de la petición en curso
-let lastAttempt  = null;    // último input, para "Reintentar"
+let messages = [];
+let isLoading = false;
 
-const MAX_CONTEXT = 20;     // mensajes que se mantienen en memoria
-
-const textarea = document.getElementById('msg-input');
-const sendBtn  = document.getElementById('send-btn');
-
-// En móvil el textarea es de una línea: un placeholder largo se corta a media palabra
-const PLACEHOLDER_WIDE   = 'Pregunta sobre la Ley 21.719, ISO 27001 y tus obligaciones...';
-const PLACEHOLDER_NARROW = 'Escribe tu consulta...';
-const PLACEHOLDER_DIAG   = 'Sector, tamaño y tipo de datos que manejan...';
-
-const isNarrow = () => window.matchMedia('(max-width: 768px)').matches;
-function basePlaceholder() { return isNarrow() ? PLACEHOLDER_NARROW : PLACEHOLDER_WIDE; }
-function resetPlaceholder() { textarea.placeholder = diagMode ? PLACEHOLDER_DIAG : basePlaceholder(); }
-
-const ICON_SEND = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020617" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-const ICON_STOP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#020617" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
-
-/* ═══════════════════════ PERSISTENCIA (sesiones) ═══════════════════════ */
-const SESSIONS_KEY = 'shellti_agent_sessions';
-const CURRENT_KEY  = 'shellti_agent_current';
-const LEGACY_KEY   = 'shellti_agent_chat';   // formato anterior: una sola conversación
-const MAX_SESSIONS = 30;
-
-let sessions  = [];
-let currentId = null;
-
-function lsGet(key, fallback) {
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-  catch (e) { return fallback; }
-}
-function lsSet(key, value) {
-  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
-}
-function newId() {
-  return 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-}
-
-function titleFrom(msgs) {
-  const first = (msgs || []).find(m => m.role === 'user');
-  if (!first) return 'Conversación sin título';
-  const t = first.content.replace(/\s+/g, ' ').trim();
-  return t.length > 62 ? t.slice(0, 62) + '…' : t;
-}
-
-function loadSessions() {
-  sessions = lsGet(SESSIONS_KEY, []) || [];
-
-  // Migrar la conversación única del formato anterior
-  const legacy = lsGet(LEGACY_KEY, null);
-  if (Array.isArray(legacy) && legacy.length) {
-    sessions.unshift({ id: newId(), title: titleFrom(legacy), ts: Date.now(), messages: legacy });
-    try { localStorage.removeItem(LEGACY_KEY); } catch (e) {}
-    lsSet(SESSIONS_KEY, sessions);
-  }
-
-  currentId = lsGet(CURRENT_KEY, null);
-}
+// ── PERSISTENCIA localStorage ─────────────────────────────────
+const CHAT_STORAGE_KEY = 'shellti_agent_chat';
 
 function saveChat() {
-  if (!messages.length) return;
-
-  let session = sessions.find(s => s.id === currentId);
-  if (!session) {
-    session = { id: currentId || newId(), title: '', ts: Date.now(), messages: [] };
-    currentId = session.id;
-  }
-  session.messages = messages.slice();
-  session.title    = titleFrom(messages);
-  session.ts       = Date.now();
-
-  sessions = [session, ...sessions.filter(s => s.id !== session.id)].slice(0, MAX_SESSIONS);
-  lsSet(SESSIONS_KEY, sessions);
-  lsSet(CURRENT_KEY, currentId);
-  renderHist();
+  try {
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+  } catch(e) {}
 }
 
-function loadSession(id) {
-  const session = sessions.find(s => s.id === id);
-  if (!session) return;
-
-  abortCurrent();
-  messages  = (session.messages || []).slice();
-  currentId = session.id;
-  diagMode  = false;
-  lsSet(CURRENT_KEY, currentId);
-
-  const container = document.getElementById('messages');
-  container.innerHTML = '';
-  messages.forEach(m => appendMessage(m.role, m.content));
-
-  resetPlaceholder();
-  closeHist();
-  renderHist();
-  scrollToBottom();
+function loadChat() {
+  try {
+    const saved = localStorage.getItem(CHAT_STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch(e) { return null; }
 }
 
-function deleteSession(id) {
-  sessions = sessions.filter(s => s.id !== id);
-  lsSet(SESSIONS_KEY, sessions);
-  if (id === currentId) {
-    currentId = null;
-    lsSet(CURRENT_KEY, null);
-    resetToWelcome();
-  }
-  renderHist();
-}
-
-/* ═══════════════════════ DRAWER DE HISTORIAL ═══════════════════════ */
-function histGroup(ts) {
-  const now   = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-  if (ts >= today)                 return 'Hoy';
-  if (ts >= today - 86400000)      return 'Ayer';
-  if (ts >= today - 7 * 86400000)  return 'Últimos 7 días';
-  return 'Anteriores';
-}
-
-function renderHist() {
-  const list = document.getElementById('histList');
-  if (!list) return;
-  list.innerHTML = '';
-
-  if (!sessions.length) {
-    const empty = document.createElement('div');
-    empty.className   = 'hist-empty';
-    empty.textContent = 'Aún no hay conversaciones guardadas. Las consultas que hagas se guardan aquí, en este navegador.';
-    list.appendChild(empty);
-    return;
-  }
-
-  let lastGroup = null;
-  sessions.forEach(session => {
-    const group = histGroup(session.ts);
-    if (group !== lastGroup) {
-      const label = document.createElement('div');
-      label.className   = 'hist-group-label';
-      label.textContent = group;
-      list.appendChild(label);
-      lastGroup = group;
-    }
-
-    const item = document.createElement('div');
-    item.className = 'hist-item' + (session.id === currentId ? ' active' : '');
-    item.setAttribute('role', 'button');
-    item.setAttribute('tabindex', '0');
-
-    const title = document.createElement('div');
-    title.className   = 'hist-item-title';
-    title.textContent = session.title || 'Conversación sin título';
-
-    const meta = document.createElement('div');
-    meta.className   = 'hist-item-meta';
-    const d = new Date(session.ts);
-    const count = (session.messages || []).filter(m => m.role === 'user').length;
-    meta.textContent = d.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }) +
-                       ' · ' + d.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }) +
-                       ' · ' + count + (count === 1 ? ' consulta' : ' consultas');
-
-    const del = document.createElement('button');
-    del.className = 'hist-item-del';
-    del.type      = 'button';
-    del.innerHTML = '&#x2715;';
-    del.setAttribute('aria-label', 'Eliminar esta conversación');
-    del.addEventListener('click', e => {
-      e.stopPropagation();
-      askConfirm(
-        'Eliminar conversación',
-        'Se borrará "' + (session.title || 'sin título') + '" de este navegador.',
-        'Eliminar',
-        () => { deleteSession(session.id); showToast('Conversación eliminada'); }
-      );
-    });
-
-    item.appendChild(title);
-    item.appendChild(meta);
-    item.appendChild(del);
-    item.addEventListener('click', () => loadSession(session.id));
-    item.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadSession(session.id); }
-    });
-
-    list.appendChild(item);
-  });
-}
-
-function openHist()  {
-  renderHist();
-  const d = document.getElementById('histDrawer');
-  if (d) { d.classList.add('open'); const c = d.querySelector('.hist-close'); if (c) c.focus(); }
-}
-function closeHist() {
-  const d = document.getElementById('histDrawer');
-  if (d) d.classList.remove('open');
-}
-
-/* ═══════════════════════ MODAL DE CONFIRMACIÓN ═══════════════════════ */
-let confirmHandler = null;
-
-function askConfirm(title, text, okLabel, onOk) {
-  document.getElementById('confirm-title').textContent = title;
-  document.getElementById('confirm-text').textContent  = text;
-
-  const ok = document.getElementById('confirm-ok');
-  ok.textContent = okLabel || 'Confirmar';
-  confirmHandler = onOk;
-
-  document.getElementById('confirm-modal').classList.add('open');
-  ok.focus();
-}
-
-function closeConfirm() {
-  document.getElementById('confirm-modal').classList.remove('open');
-  confirmHandler = null;
-}
-
-/* ═══════════════════════ AVISOS ═══════════════════════ */
-function showToast(msg, kind) {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = msg;
-  el.className = 'toast show' + (kind ? ' ' + kind : '');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => { el.className = 'toast'; }, 2600);
-}
-
-function showError(msg, canRetry) {
-  const box = document.getElementById('error-toast');
-  const txt = document.getElementById('error-toast-msg');
-  if (!box || !txt) { showToast(msg, 'err'); return; }
-  txt.textContent = msg;
-  document.getElementById('error-retry').style.display = canRetry ? '' : 'none';
-  box.classList.add('show');
-}
-
-function hideError() {
-  const box = document.getElementById('error-toast');
-  if (box) box.classList.remove('show');
-}
-
-function retryLast() {
-  hideError();
-  if (lastAttempt) sendMessage(lastAttempt);
-}
-
-/* ═══════════════════════ PANTALLA DE BIENVENIDA ═══════════════════════ */
-const WELCOME_CHIPS = [
-  { text: 'Diagnóstico rápido de mi empresa', primary: true, action: startDiagnostico },
-  { text: '¿Qué me obliga la Ley 21.719?',
-    q: '¿Qué obliga la Ley 21.719 a una empresa como la mía?' },
-  { text: 'Plazos clave dic 2026',
-    q: '¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?' },
-  { text: 'Checklist para PYMEs',
-    q: 'Genera un checklist de cumplimiento de la Ley 21.719 para una PYME' },
-  { text: '¿Cómo implementar ISO 27001?',
-    q: '¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?' },
-  { text: '¿Qué es el MPI?',
-    q: '¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?' },
-  { text: 'ISO 27001 + Ley 21.719',
-    q: '¿Cómo se relaciona la ISO 27001:2022 con la Ley 21.719?' },
-  { text: 'Delitos informáticos Ley 21.595',
-    q: '¿Qué delitos informáticos tipifica la Ley 21.595?' },
-  { text: 'Ley Fintech 21.521',
-    q: '¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?' }
-];
-
-function buildWelcome() {
-  const wrap = document.createElement('div');
-  wrap.className = 'welcome';
-  wrap.id        = 'welcome';
-
-  const logo = document.createElement('img');
-  logo.className = 'welcome-logo';
-  logo.src       = '/imagenes/webp/lobo_shellti.webp';
-  logo.alt       = '';               // decorativo: el h2 ya da el nombre
-  logo.setAttribute('aria-hidden', 'true');
-
-  const h2 = document.createElement('h2');
-  h2.appendChild(document.createTextNode('Agente experto en '));
-  const em = document.createElement('span');
-  em.textContent = 'compliance tecnológico';
-  h2.appendChild(em);
-
-  const chips = document.createElement('div');
-  chips.className = 'welcome-chips';
-
-  WELCOME_CHIPS.forEach(item => {
-    const chip = document.createElement('button');
-    chip.type      = 'button';
-    chip.className = 'chip' + (item.primary ? ' primary' : '');
-    chip.textContent = item.text;
-    chip.addEventListener('click', () => {
-      if (item.action) item.action();
-      else sendQuick(item.q);
-    });
-    chips.appendChild(chip);
-  });
-
-  wrap.appendChild(logo);
-  wrap.appendChild(h2);
-  wrap.appendChild(chips);
-  return wrap;
-}
-
-function hideWelcome() {
+function restoreChat() {
+  const saved = loadChat();
+  if (!saved || saved.length === 0) return false;
+  messages = saved;
+  // Hide welcome screen
   const w = document.getElementById('welcome');
   if (w) w.remove();
+  // Re-render all messages
+  saved.forEach(m => appendMessage(m.role, m.content));
+  return true;
 }
 
-function resetToWelcome() {
-  const container = document.getElementById('messages');
-  container.innerHTML = '';
-  container.appendChild(buildWelcome());
+// Auto-resize textarea
+const textarea = document.getElementById('msg-input');
+textarea.addEventListener('input', function() {
+ this.style.height = 'auto';
+ this.style.height = Math.min(this.scrollHeight, 160) + 'px';
+});
+
+// Enter to send, Shift+Enter for newline
+textarea.addEventListener('keydown', function(e) {
+ if (e.key === 'Enter' && !e.shiftKey) {
+ e.preventDefault();
+ if (!isLoading) sendMessage();
+ }
+});
+
+function hideWelcome() {
+ const w = document.getElementById('welcome');
+ if (w) w.remove();
 }
 
-/* ═══════════════════════ RENDER DE MENSAJES ═══════════════════════ */
-function escapeHtml(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+function sendQuick(text) {
+ textarea.value = text;
+ sendMessage();
 }
 
-function buildMessageEl(role) {
-  const msg = document.createElement('div');
-  msg.className = 'msg ' + role;
-
-  const avatar = document.createElement('div');
-  avatar.className   = 'msg-avatar';
-  avatar.textContent = role === 'assistant' ? 'S' : 'U';
-  avatar.setAttribute('aria-hidden', 'true');
-
-  const body = document.createElement('div');
-  body.className = 'msg-body';
-
-  const roleLabel = document.createElement('div');
-  roleLabel.className   = 'msg-role';
-  roleLabel.textContent = role === 'assistant' ? 'Agente ShellTI' : 'Usted';
-
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-
-  body.appendChild(roleLabel);
-  body.appendChild(bubble);
-  msg.appendChild(avatar);
-  msg.appendChild(body);
-
-  return { msg, body, bubble };
+function showError(msg) {
+ const toast = document.getElementById('error-toast');
+ toast.textContent = msg;
+ toast.classList.add('show');
+ setTimeout(() => toast.classList.remove('show'), 5000);
 }
 
-// El contenedor es column-reverse: el primer hijo del DOM se pinta abajo,
-// así que insertar al inicio deja el mensaje más nuevo al final visual.
 function appendMessage(role, content) {
-  hideWelcome();
-  const container = document.getElementById('messages');
-  const { msg, body, bubble } = buildMessageEl(role);
+ hideWelcome();
+ const container = document.getElementById('messages');
 
-  if (role === 'assistant') {
-    bubble.innerHTML = renderMarkdown(content);
-    body.appendChild(buildActions(content));
-  } else {
-    bubble.textContent = content;
-  }
+ const msg = document.createElement('div');
+ msg.className = `msg ${role}`;
 
-  container.insertBefore(msg, container.firstChild);
-  anchorIfAtBottom();
-  return { msg, body, bubble };
+ const avatar = document.createElement('div');
+ avatar.className = 'msg-avatar';
+ avatar.textContent = role === 'assistant' ? 'S' : '';
+
+ const body = document.createElement('div');
+ body.className = 'msg-body';
+
+ const roleLabel = document.createElement('div');
+ roleLabel.className = 'msg-role';
+ roleLabel.textContent = role === 'assistant' ? 'Agente ShellTI' : 'Usted';
+
+ const bubble = document.createElement('div');
+ bubble.className = 'msg-bubble';
+
+ if (role === 'assistant') {
+ bubble.innerHTML = renderMarkdown(content);
+ } else {
+ bubble.textContent = content;
+ }
+
+ body.appendChild(roleLabel);
+ body.appendChild(bubble);
+ msg.appendChild(avatar);
+ msg.appendChild(body);
+ container.appendChild(msg);
+
+ container.scrollTop = container.scrollHeight;
+ return bubble;
 }
 
-function buildActions(text) {
-  const actions = document.createElement('div');
-  actions.className = 'msg-actions';
+function appendTyping() {
+ hideWelcome();
+ const container = document.getElementById('messages');
 
-  const copy = document.createElement('button');
-  copy.type      = 'button';
-  copy.className = 'msg-act';
-  copy.textContent = 'Copiar';
-  copy.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      copy.textContent = 'Copiado';
-      copy.classList.add('done');
-      setTimeout(() => { copy.textContent = 'Copiar'; copy.classList.remove('done'); }, 1800);
-    } catch (e) {
-      showToast('No se pudo copiar', 'err');
-    }
-  });
+ const msg = document.createElement('div');
+ msg.className = 'msg assistant';
+ msg.id = 'typing-msg';
 
-  actions.appendChild(copy);
-  return actions;
+ const avatar = document.createElement('div');
+ avatar.className = 'msg-avatar';
+ avatar.textContent = 'S';
+
+ const body = document.createElement('div');
+ body.className = 'msg-body';
+
+ const roleLabel = document.createElement('div');
+ roleLabel.className = 'msg-role';
+ roleLabel.textContent = 'Agente ShellTI';
+
+ const bubble = document.createElement('div');
+ bubble.className = 'msg-bubble';
+ bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+
+ body.appendChild(roleLabel);
+ body.appendChild(bubble);
+ msg.appendChild(avatar);
+ msg.appendChild(body);
+ container.appendChild(msg);
+ container.scrollTop = container.scrollHeight;
 }
 
-// Burbuja del agente que se va llenando mientras llega el stream
-function appendStreamingMessage() {
-  hideWelcome();
-  const container = document.getElementById('messages');
-  const { msg, body, bubble } = buildMessageEl('assistant');
-
-  msg.id = 'streaming-msg';
-  bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  container.insertBefore(msg, container.firstChild);
-  container.setAttribute('aria-busy', 'true');
-  scrollToBottom();
-
-  return { msg, body, bubble };
+function removeTyping() {
+ const el = document.getElementById('typing-msg');
+ if (el) el.remove();
 }
 
-function removeStreamingMessage() {
-  const el = document.getElementById('streaming-msg');
-  if (el) el.remove();
-  document.getElementById('messages').setAttribute('aria-busy', 'false');
-}
-
-/* ═══════════════════════ MARKDOWN ═══════════════════════ */
+// URLs fuentes normativas
 const BCN_LEY_21719 = 'https://www.bcn.cl/leychile/navegar?idNorma=1209272';
 const BCN_LEY_21521 = 'https://www.bcn.cl/leychile/navegar?idNorma=1187323';
 const BCN_LEY_21595 = 'https://www.bcn.cl/leychile/navegar?idNorma=1195119';
@@ -1391,130 +1210,103 @@ const URL_ITIL      = 'https://www.axelos.com/certifications/itil-service-manage
 const URL_PMI       = 'https://www.pmi.org/pmbok-guide-standards';
 
 function renderMarkdown(text) {
-  // 1) Sustituir los marcos por marcadores ANTES de escapar, para no romper el HTML
+  // ── Limpiar ruido: caracteres especiales repetidos, líneas de guiones ──
+  text = text
+    .replace(/[\━━━═════╔╗╚╝║╠╣╦╩╬─┌┐└┘│├┤┬┴┼]+/g, '')
+    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '')
+    .replace(/[\s]*\|[─=\s|]+\|[\s]*/g, '')
+    .replace(/\n\n+/g, '\n\n');
+
+  // ── Step 1: Replace known marcos con placeholders ANTES de HTML escaping ──
   const pills = [];
   function pill(label, url, cls) {
     const idx = pills.length;
-    pills.push('<a href="' + url + '" target="_blank" rel="noopener" class="art-tag ' + cls + '">' +
-               escapeHtml(label) + '</a>');
+    pills.push('<a href="' + url + '" target="_blank" rel="noopener" class="art-tag ' + cls + '">' + label + '</a>');
     return '\x00PILL' + idx + '\x00';
   }
 
-  let src = String(text || '')
-    .replace(/\bLey\s*21[.\s]?719\b/gi,          m => pill(m, BCN_LEY_21719, ''))
-    .replace(/\bLey\s*21[.\s]?521\b/gi,          m => pill(m, BCN_LEY_21521, 'art-tag-blue'))
-    .replace(/\bLey\s*21[.\s]?595\b/gi,          m => pill(m, BCN_LEY_21595, 'art-tag-red'))
-    .replace(/\bDS\s*662\b/gi,                   m => pill(m, BCN_DS662,     ''))
-    .replace(/\bISO\s*27001(?::2022)?\b/gi,      m => pill(m, BCN_ISO,       'art-tag-blue'))
-    .replace(/\bBCBS(?:\s*239)?\b/gi,            m => pill(m, URL_BASILEA,   'art-tag-yellow'))
-    .replace(/\bBasilea\s*(?:III|3)?\b/gi,       m => pill(m, URL_BASILEA,   'art-tag-yellow'))
-    .replace(/\bITIL\s*(?:4|v4)?\b/gi,           m => pill(m, URL_ITIL,      'art-tag-blue'))
-    .replace(/\bPMBOK\s*(?:7|v7)?\b/gi,          m => pill(m, URL_PMI,       'art-tag-pink'))
-    .replace(/\bPMI\b/g,                         m => pill(m, URL_PMI,       'art-tag-pink'))
+  text = text
+    .replace(/\bLey\s*21[\.\s]?719\b/gi,        m => pill(m, BCN_LEY_21719,  ''))
+    .replace(/\bLey\s*21[\.\s]?521\b/gi,        m => pill(m, BCN_LEY_21521,  'art-tag-blue'))
+    .replace(/\bLey\s*21[\.\s]?595\b/gi,        m => pill(m, BCN_LEY_21595,  'art-tag-red'))
+    .replace(/\bDS\s*662\b/gi,                   m => pill(m, BCN_DS662,       ''))
+    .replace(/\bISO\s*27001(?::2022)?\b/gi,      m => pill(m, BCN_ISO,         'art-tag-blue'))
+    .replace(/\bBCBS(?:\s*239)?\b/gi,            m => pill(m, URL_BASILEA,     'art-tag-yellow'))
+    .replace(/\bBasilea\s*(?:III|3)?\b/gi,       m => pill(m, URL_BASILEA,     'art-tag-yellow'))
+    .replace(/\bITIL\s*(?:4|v4)?\b/gi,          m => pill(m, URL_ITIL,        'art-tag-blue'))
+    .replace(/\bPMBOK\s*(?:7|v7)?\b/gi,         m => pill(m, URL_PMI,         'art-tag-pink'))
+    .replace(/\bPMI\b/gi,                        m => pill(m, URL_PMI,         'art-tag-pink'))
     .replace(/\b(Art\.?\s*\d+\s*(?:bis|ter)?)\b/gi, m => pill(m, BCN_LEY_21719, ''));
 
-  // 2) Escapar y aplicar énfasis en línea
-  src = escapeHtml(src)
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // El modelo suele emitir <br> literal, sobre todo dentro de tablas.
-    // Ya viene escapado, así que reconvertimos solo esta etiqueta concreta.
-    .replace(/&lt;br\s*\/?&gt;/gi, '<br/>');
+  // ── Step 2: Escape HTML ──
+  let html = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 
-  // 3) Armar bloques línea a línea (evita <ul> dentro de <p>)
-  const lines = src.split('\n');
-  let html = '', listTag = null, para = [];
+  // ── Step 3: Format text markup ──
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic (pero no dentro de bold)
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Code inline
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-  const flushPara = () => { if (para.length) { html += '<p>' + para.join('<br/>') + '</p>'; para = []; } };
-  const flushList = () => { if (listTag) { html += '</' + listTag + '>'; listTag = null; } };
-  const openList  = tag => { if (listTag !== tag) { flushList(); html += '<' + tag + '>'; listTag = tag; } };
+  // ── Step 4: Handle headers ──
+  html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
 
-  // Fila de tabla → celdas, tolerando pipes de borde ausentes
-  const cellsOf = line => line.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
-  const isRow   = line => line.includes('|') && /\|/.test(line.replace(/^\||\|$/g, '') + '|');
-  const isSep   = line => /^\|?[\s:]*-{2,}[\s:|-]*\|[\s:|-]*$/.test(line);
-
+  // ── Step 5: Handle lists (mantener simple, sin <ul>/<ol>) ──
+  const lines = html.split('\n');
+  const processedLines = [];
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) { flushPara(); flushList(); continue; }
-
-    // ── Tabla: fila de encabezado seguida de un separador |---|---| ──
-    if (isRow(line) && i + 1 < lines.length && isSep(lines[i + 1].trim())) {
-      flushPara(); flushList();
-
-      const headers = cellsOf(line);
-      const aligns  = cellsOf(lines[i + 1].trim()).map(c =>
-        /^:-+:$/.test(c) ? 'center' : /-+:$/.test(c) ? 'right' : 'left');
-
-      let table = '<div class="table-wrap"><table><thead><tr>' +
-        headers.map((h, k) => '<th style="text-align:' + (aligns[k] || 'left') + '">' + h + '</th>').join('') +
-        '</tr></thead><tbody>';
-
-      i += 2;
-      while (i < lines.length && lines[i].trim() && isRow(lines[i].trim())) {
-        const cells = cellsOf(lines[i].trim());
-        table += '<tr>' + headers.map((_, k) =>
-          '<td style="text-align:' + (aligns[k] || 'left') + '">' + (cells[k] || '') + '</td>').join('') + '</tr>';
-        i++;
-      }
-      i--; // el for vuelve a incrementar
-
-      html += table + '</tbody></table></div>';
-      continue;
+    let line = lines[i];
+    // Detectar puntos y enumerados, pero mantener formato limpio
+    if (/^\s*[-•*]\s+/.test(line)) {
+      line = line.replace(/^\s*[-•*]\s+/, '• ');
+    } else if (/^\s*\d+\.\s+/.test(line)) {
+      line = line.replace(/^\s*(\d+)\.\s+/, '$1. ');
     }
-
-    let m;
-    if ((m = line.match(/^#{1,4}\s+(.+)$/))) {
-      flushPara(); flushList(); html += '<h3>' + m[1] + '</h3>'; continue;
-    }
-    if (/^(?:[━─—=*_-]\s*){3,}$/.test(line)) {
-      flushPara(); flushList(); html += '<hr/>'; continue;
-    }
-    if ((m = line.match(/^[-•*]\s+(.+)$/))) {
-      flushPara(); openList('ul'); html += '<li>' + m[1] + '</li>'; continue;
-    }
-    if ((m = line.match(/^\d+[.)]\s+(.+)$/))) {
-      flushPara(); openList('ol'); html += '<li>' + m[1] + '</li>'; continue;
-    }
-    flushList();
-    para.push(line);
+    processedLines.push(line);
   }
-  flushPara(); flushList();
+  html = processedLines.join('\n');
 
-  // 4) Restaurar los enlaces
-  return html.replace(/\x00PILL(\d+)\x00/g, (_, i) => pills[+i]);
+  // ── Step 6: Handle paragraphs (doble salto = párrafo nuevo) ──
+  // Dividir por doble newline y envolver en <p>
+  const paragraphs = html.split(/\n\n+/).filter(p => p.trim());
+  html = paragraphs.map(p => {
+    // Reemplazar single newlines dentro de párrafos con <br>
+    return p.replace(/\n/g, '<br>');
+  }).join('</p><p>');
+
+  // ── Step 7: Restore pills ──
+  html = html.replace(/\x00PILL(\d+)\x00/g, (_, i) => pills[+i]);
+
+  return '<p>' + html + '</p>';
 }
 
-/* ═══════════════════════ SCROLL ═══════════════════════ */
-// En un contenedor column-reverse, scrollTop 0 es el fondo visual
-// y los valores se alejan de 0 al subir (signo según el navegador).
-function distanceFromBottom() {
-  const c = document.getElementById('messages');
-  return c ? Math.abs(c.scrollTop) : 0;
-}
-function isAtBottom() { return distanceFromBottom() < 60; }
 
-function scrollToBottom() {
-  const c = document.getElementById('messages');
-  if (!c) return;
-  c.scrollTop = 0;
-  updateScrollBtn();
-  const dot = document.getElementById('unreadDot');
-  if (dot) dot.classList.remove('show');
+
+
+// ── ACORDEON SIDEBAR ──────────────────────────────────────────────────────
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
 }
 
-function anchorIfAtBottom() { if (isAtBottom()) scrollToBottom(); }
-
-function updateScrollBtn() {
-  const btn = document.getElementById('scrollDownBtn');
-  if (!btn) return;
-  btn.classList.toggle('show', distanceFromBottom() > 140);
+function toggleAccParent(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
 }
 
-/* ═══════════════════════ ESCALACIÓN A CONSULTOR ═══════════════════════ */
+// ── ESCALACIÓN A CONSULTOR ───────────────────────────────────────────────
 function agendarLlamada(context) {
-  const subject = encodeURIComponent('Consulta ShellTI — compliance tecnológico');
+  const subject = encodeURIComponent('Consulta ShellTI — Ley 21.719 y compliance tecnológico');
   const body = encodeURIComponent(
     'Estimado equipo de ShellTI,\n\n' +
     'Me contacto desde el agente de compliance en shellti.com para solicitar una reunión.\n\n' +
@@ -1522,56 +1314,70 @@ function agendarLlamada(context) {
     'Quedo atento a su respuesta para coordinar una llamada.\n\n' +
     'Saludos,'
   );
-  window.location.href = 'mailto:contacto@shellti.com?subject=' + subject + '&body=' + body;
+  window.open('mailto:contacto@shellti.com?subject=' + subject + '&body=' + body, '_blank');
 }
 
-const ESCALATION_TRIGGERS = [
-  'recomendamos validar', 'abogado', 'consultor', 'asesoría especializada',
-  'caso específico', 'requiere análisis', 'shellti puede acompañar', 'contacta', 'contacte',
-  'escapa de mi ámbito', 'fuera de mi alcance', 'alto riesgo', 'crítico', 'shellti.com'
-];
-
-function maybeEscalate(answer, context) {
-  const lower = (answer || '').toLowerCase();
-  if (!ESCALATION_TRIGGERS.some(w => lower.includes(w))) return;
-
+function insertEscalationBar(context) {
   const container = document.getElementById('messages');
-  // Solo una barra a la vez: siempre bajo la respuesta más reciente
-  container.querySelectorAll('.escalation-bar').forEach(el => el.remove());
-
   const bar = document.createElement('div');
   bar.className = 'escalation-bar';
-
-  const text = document.createElement('div');
-  text.className = 'escalation-text';
-  text.innerHTML = '<strong>¿Necesitas orientación personalizada?</strong> ' +
-                   'Un consultor ShellTI puede revisar tu caso específico.';
-
-  const btn = document.createElement('button');
-  btn.type      = 'button';
-  btn.className = 'btn-agendar';
-  btn.textContent = 'Contactar consultor';
-  btn.addEventListener('click', () => agendarLlamada((context || '').slice(0, 200)));
-
-  bar.appendChild(text);
-  bar.appendChild(btn);
-  container.insertBefore(bar, container.firstChild);
-  anchorIfAtBottom();
+  const safeCtx = JSON.stringify(context || '');
+  bar.innerHTML =
+    '<div class="escalation-text">' +
+      '<strong>Necesita orientacion personalizada?</strong>' +
+      ' Un consultor ShellTI puede revisar su caso especifico.' +
+    '</div>' +
+    '<a class="btn-agendar" onclick="agendarLlamada(' + safeCtx + ')">' +
+      'Contactar consultor' +
+    '</a>';
+  container.appendChild(bar);
+  container.scrollTop = container.scrollHeight;
 }
 
-/* ═══════════════════════ DIAGNÓSTICO RÁPIDO ═══════════════════════ */
-const DIAG_INTRO = `Vamos a hacer un diagnóstico rápido de tu organización frente a la Ley 21.719 y los marcos relacionados.
+
+// ── MODO DIAGNÓSTICO RÁPIDO ──────────────────────────────────────────────
+function startDiagnostico() {
+  hideWelcome();
+  messages = [];
+
+  // Mostrar mensaje de inicio del agente
+  const intro = `Vamos a hacer un diagnóstico rápido de su organización frente a la Ley 21.719 y los marcos relacionados.
 
 Necesito 3 datos básicos:
 
-**1.** ¿En qué sector opera tu empresa? (ej: retail, salud, fintech, servicios, manufactura, educación)
+**1.** ¿En qué sector opera su empresa? (ej: retail, salud, fintech, servicios, manufactura, educación)
 **2.** ¿Cuántas personas trabajan en la organización?
 **3.** ¿Manejan datos de clientes, empleados o pacientes en sistemas digitales?
 
-Con eso te entrego las 5 obligaciones más urgentes que probablemente tienes pendientes antes del 1 de diciembre de 2026.`;
+Con eso le entrego en segundos las 5 obligaciones más urgentes que probablemente tiene pendientes antes del 1 de diciembre de 2026.`;
 
-function diagPromptFor(input) {
-  return `El usuario acaba de dar esta información sobre su empresa para un diagnóstico rápido: "${input}"
+  appendMessage('assistant', intro);
+  messages.push({ role: 'assistant', content: intro });
+
+  // Activar modo diagnóstico en system prompt
+  window._diagMode = true;
+  document.getElementById('msg-input').placeholder = 'Describa su empresa (sector, tamaño, tipo de datos)...';
+  document.getElementById('msg-input').focus();
+}
+
+// Override sendMessage para diagnóstico
+const _origSend = sendMessage;
+async function sendMessage() {
+  if (window._diagMode && messages.length <= 2) {
+    // Primera respuesta del usuario en modo diagnóstico
+    const input = document.getElementById('msg-input').value.trim();
+    if (!input) return;
+
+    document.getElementById('msg-input').value = '';
+    document.getElementById('msg-input').style.height = 'auto';
+    appendMessage('user', input);
+    messages.push({ role: 'user', content: input });
+
+    isLoading = true;
+    document.getElementById('send-btn').disabled = true;
+    appendTyping();
+
+    const diagPrompt = `El usuario acaba de dar esta información sobre su empresa para un diagnóstico rápido: "${input}"
 
 Basándote en eso, genera un diagnóstico estructurado con exactamente este formato:
 
@@ -1586,301 +1392,273 @@ Luego lista las 5 OBLIGACIONES MÁS URGENTES bajo la Ley 21.719 que esta organiz
 Al final, agrega un párrafo breve indicando que ShellTI puede acompañar el proceso y proporciona el link shellti.com
 
 Sé específico para el sector y tamaño mencionado. No generes respuestas genéricas.`;
-}
 
-function startDiagnostico() {
-  if (isLoading) return;
-  hideError();
-  closeHist();
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: [
+            ...messages.slice(0, -1),
+            { role: 'user', content: diagPrompt }
+          ]
+        })
+      });
 
-  // El diagnóstico parte siempre en una conversación nueva
-  messages  = [];
-  currentId = null;
-
-  const container = document.getElementById('messages');
-  container.innerHTML = '';
-
-  appendMessage('assistant', DIAG_INTRO);
-  messages.push({ role: 'assistant', content: DIAG_INTRO });
-  saveChat();
-
-  diagMode = true;
-  resetPlaceholder();
-  textarea.focus();
-  scrollToBottom();
-}
-
-/* ═══════════════════════ LLAMADA AL AGENTE ═══════════════════════ */
-function abortCurrent() {
-  if (currentAbort) { currentAbort.abort(); currentAbort = null; }
-}
-
-async function callAgent(payloadMessages, onDelta) {
-  currentAbort = new AbortController();
-
-  const response = await fetch('/api/chat', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ system: SYSTEM_PROMPT, messages: payloadMessages, stream: true }),
-    signal:  currentAbort.signal
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error || `Error ${response.status}`);
-  }
-
-  // Fallback: si el servidor respondió JSON en vez de SSE
-  const ctype = response.headers.get('content-type') || '';
-  if (!ctype.includes('text/event-stream') || !response.body) {
-    const data = await response.json();
-    const text = data.text || '';
-    onDelta(text);
-    return text;
-  }
-
-  const reader  = response.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '', full = '';
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-    const frames = buffer.split('\n\n');
-    buffer = frames.pop();
-
-    for (const frame of frames) {
-      const line = frame.trim();
-      if (!line.startsWith('data:')) continue;
-
-      const payload = line.slice(5).trim();
-      if (payload === '[DONE]') continue;
-
-      let chunk;
-      try { chunk = JSON.parse(payload); } catch (e) { continue; }
-
-      if (chunk.error) throw new Error(chunk.error);
-      if (chunk.delta) { full += chunk.delta; onDelta(full); }
-    }
-  }
-
-  return full;
-}
-
-/* ═══════════════════════ ENVÍO ═══════════════════════ */
-function setLoading(state) {
-  isLoading = state;
-  sendBtn.classList.toggle('stop', state);
-  sendBtn.innerHTML = state ? ICON_STOP : ICON_SEND;
-  sendBtn.setAttribute('aria-label', state ? 'Detener la respuesta' : 'Enviar consulta');
-}
-
-function onSendClick() {
-  if (isLoading) { abortCurrent(); return; }
-  sendMessage();
-}
-
-function sendQuick(text) {
-  if (isLoading) return;
-  sendMessage(text);
-}
-
-async function sendMessage(preset) {
-  const input = (preset != null ? preset : textarea.value).trim();
-  if (!input || isLoading) return;
-
-  hideError();
-  lastAttempt = input;
-
-  if (preset == null) { textarea.value = ''; textarea.style.height = 'auto'; }
-
-  const wasDiag = diagMode;
-
-  appendMessage('user', input);
-  messages.push({ role: 'user', content: input });
-
-  // En modo diagnóstico se envía el prompt estructurado, pero se muestra
-  // y se guarda lo que el usuario realmente escribió.
-  const payload = messages.map(m => ({ role: m.role, content: m.content }));
-  if (wasDiag) payload[payload.length - 1] = { role: 'user', content: diagPromptFor(input) };
-
-  setLoading(true);
-  const stream = appendStreamingMessage();
-
-  try {
-    const answer = await callAgent(payload, partial => {
-      stream.bubble.innerHTML = renderMarkdown(partial) + '<span class="stream-caret"></span>';
-      anchorIfAtBottom();
-    });
-
-    if (!answer.trim()) throw new Error('El agente no devolvió contenido.');
-
-    removeStreamingMessage();
-    const el = appendMessage('assistant', answer);
-    messages.push({ role: 'assistant', content: answer });
-
-    if (wasDiag) { diagMode = false; resetPlaceholder(); }
-
-    saveChat();
-    maybeEscalate(answer, input);
-
-    if (messages.length > MAX_CONTEXT) messages = messages.slice(-MAX_CONTEXT);
-
-    if (!isAtBottom()) {
-      const dot = document.getElementById('unreadDot');
-      if (dot) dot.classList.add('show');
-      updateScrollBtn();
-    }
-
-  } catch (err) {
-    removeStreamingMessage();
-    messages.pop();                       // el mensaje fallido no queda en el contexto
-    const lastEl = document.querySelector('#messages .msg.user');
-    if (lastEl) lastEl.remove();
-
-    if (err.name === 'AbortError') {
-      showToast('Consulta detenida');
-      textarea.value = input;             // devolver el texto para poder editarlo
-      textarea.dispatchEvent(new Event('input'));
-    } else {
-      showError('No se pudo obtener respuesta: ' + err.message, true);
-    }
-
-  } finally {
-    currentAbort = null;
-    setLoading(false);
-    document.getElementById('messages').setAttribute('aria-busy', 'false');
-    if (!messages.length) resetToWelcome();
-    textarea.focus();
-  }
-}
-
-/* ═══════════════════════ CONVERSACIONES ═══════════════════════ */
-// Archiva la conversación actual y empieza una nueva (no destruye nada)
-function newChat() {
-  abortCurrent();
-  if (messages.length) saveChat();
-
-  messages  = [];
-  currentId = null;
-  diagMode  = false;
-  lsSet(CURRENT_KEY, null);
-
-  resetPlaceholder();
-  hideError();
-  resetToWelcome();
-  closeHist();
-  renderHist();
-  textarea.focus();
-}
-
-// Borra definitivamente la conversación actual
-function clearChat() {
-  if (!messages.length) { showToast('No hay nada que borrar'); return; }
-  askConfirm(
-    'Borrar esta conversación',
-    'Se eliminará del historial de este navegador. Esta acción no se puede deshacer.',
-    'Borrar',
-    () => {
-      abortCurrent();
-      if (currentId) {
-        sessions = sessions.filter(s => s.id !== currentId);
-        lsSet(SESSIONS_KEY, sessions);
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Error al generar el diagnóstico');
       }
-      messages  = [];
-      currentId = null;
-      diagMode  = false;
-      lsSet(CURRENT_KEY, null);
-      resetPlaceholder();
-      hideError();
-      resetToWelcome();
-      renderHist();
-      showToast('Conversación borrada');
+
+      const data = await response.json();
+      removeTyping();
+
+      const text = data.text || '';
+      appendMessage('assistant', text);
+      messages.push({ role: 'assistant', content: text });
+      saveChat();
+
+      // Salir del modo diagnóstico — continuar como chat normal
+      window._diagMode = false;
+      document.getElementById('msg-input').placeholder = 'Pregunte sobre la Ley 21.719, su empresa y sus obligaciones...';
+
+    } catch(err) {
+      removeTyping();
+      showError('Error al generar el diagnóstico: ' + err.message);
+      messages.pop();
+    } finally {
+      isLoading = false;
+      document.getElementById('send-btn').disabled = false;
     }
-  );
-}
 
-/* ═══════════════════════ ACORDEONES DE LA SIDEBAR ═══════════════════════ */
-function toggleAcc(header) {
-  const body   = header.nextElementSibling;
-  const isOpen = header.classList.contains('open');
-  header.classList.toggle('open', !isOpen);
-  header.setAttribute('aria-expanded', String(!isOpen));
-  if (body) body.classList.toggle('open', !isOpen);
-}
-
-function toggleAccParent(header) { toggleAcc(header); }
-
-function toggleMobInfo() {
-  const panel = document.getElementById('mobTagsPanel');
-  const btn   = document.getElementById('mobInfoBtn');
-  if (!panel) return;
-  panel.classList.toggle('open');
-  const open = panel.classList.contains('open');
-  if (btn) { btn.classList.toggle('on', open); btn.setAttribute('aria-expanded', String(open)); }
-}
-
-/* ═══════════════════════ INPUT ═══════════════════════ */
-textarea.addEventListener('input', function () {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 160) + 'px';
-});
-
-textarea.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    if (!isLoading) sendMessage();
-  }
-});
-
-document.getElementById('messages').addEventListener('scroll', updateScrollBtn, { passive: true });
-
-// Al rotar el teléfono cambia el ancho disponible del input
-window.addEventListener('resize', resetPlaceholder, { passive: true });
-
-// Esc cierra lo que esté abierto, de más específico a más general
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Escape') return;
-  const modal = document.getElementById('confirm-modal');
-  if (modal.classList.contains('open')) { closeConfirm(); return; }
-  const drawer = document.getElementById('histDrawer');
-  if (drawer.classList.contains('open')) { closeHist(); return; }
-  if (isLoading) abortCurrent();
-});
-
-document.getElementById('confirm-ok').addEventListener('click', () => {
-  const fn = confirmHandler;
-  closeConfirm();
-  if (fn) fn();
-});
-
-document.getElementById('confirm-modal').addEventListener('click', e => {
-  if (e.target.id === 'confirm-modal') closeConfirm();
-});
-
-/* ═══════════════════════ ARRANQUE ═══════════════════════ */
-(function init() {
-  loadSessions();
-
-  const session = sessions.find(s => s.id === currentId);
-  if (session && (session.messages || []).length) {
-    messages = session.messages.slice();
-    const container = document.getElementById('messages');
-    container.innerHTML = '';
-    messages.forEach(m => appendMessage(m.role, m.content));
-    scrollToBottom();
   } else {
-    currentId = null;
-    resetToWelcome();
+    window._diagMode = false;
+    document.getElementById('msg-input').placeholder = 'Pregunte sobre la Ley 21.719, su empresa y sus obligaciones...';
+    return _origSend();
   }
+}
 
-  renderHist();
-  resetPlaceholder();
-  setLoading(false);
+// Countdown dinámico
+(function() {
+  function updateCountdown() {
+    const target = new Date('2026-12-01T00:00:00-03:00');
+    const now    = new Date();
+    const days   = Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)));
+    const el     = document.getElementById('days-counter');
+    if (el) el.textContent = days;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
 })();
 
+function clearChat() {
+ messages = [];
+ try { localStorage.removeItem(CHAT_STORAGE_KEY); } catch(e) {}
+ const container = document.getElementById('messages');
+ container.innerHTML = '';
+
+ // Crear welcome screen de forma segura
+ const welcome = document.createElement('div');
+ welcome.className = 'welcome';
+ welcome.id = 'welcome';
+
+ welcome.innerHTML = `
+  <div class="welcome-icon"><img src="imagenes/webp/lobo_shellti.webp" alt="ShellTI" style="height:220px;width:220px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,212,255,0.9)) drop-shadow(0 0 28px rgba(0,212,255,0.5)) brightness(1.3) saturate(1.5);" /></div>
+  <h2>Agente experto en <span>compliance tecnológico</span></h2>
+  <div class="welcome-chips" id="chips-container"></div>
+ `;
+
+ container.appendChild(welcome);
+
+ // Agregar chips usando createElement para evitar problemas de comillas
+ const chipsContainer = document.getElementById('chips-container');
+ const chipsData = [
+  { text: 'Diagnostico rapido de mi empresa', onclick: () => startDiagnostico(), style: 'border-color:rgba(0,212,170,0.35);color:var(--teal);' },
+  { text: '¿Qué me obliga la Ley 21.719?', onclick: () => sendQuick('¿Qué obliga la Ley 21.719 a una empresa como la mía?') },
+  { text: 'Plazos clave dic 2026', onclick: () => sendQuick('¿Cuáles son los plazos clave antes del 1 de diciembre de 2026?') },
+  { text: 'Checklist para PYMEs', onclick: () => sendQuick('Genera un checklist de cumplimiento de la Ley 21.719 para una PYME') },
+  { text: '¿Cómo implementar ISO 27001?', onclick: () => sendQuick('¿Qué es el SGSI y cómo se implementa según ISO 27001:2022?') },
+  { text: '¿Qué es el MPI?', onclick: () => sendQuick('¿Qué es el Modelo de Prevención de Infracciones del DS 662 y cuáles son sus componentes?') },
+  { text: 'ISO 27001 + Ley 21.719', onclick: () => sendQuick('¿Cómo se relaciona la ISO 27001:2022 con la Ley 21.719?') },
+  { text: 'Delitos informáticos Ley 21.595', onclick: () => sendQuick('¿Qué delitos informáticos tipifica la Ley 21.595?') },
+  { text: 'Ley Fintech 21.521', onclick: () => sendQuick('¿Qué obliga la Ley 21.521 a una empresa fintech en Chile?') }
+ ];
+
+ chipsData.forEach(data => {
+  const chip = document.createElement('div');
+  chip.className = 'chip';
+  chip.textContent = data.text;
+  if (data.style) chip.style.cssText = data.style;
+  chip.onclick = data.onclick;
+  chipsContainer.appendChild(chip);
+ });
+}
+
+// ── LOGGING SYSTEM ─────────────────────────────────────────────────
+async function enviarLogging(usuario_id, agente_name, pregunta, respuesta, tiempo_ms, tokens) {
+ try {
+   // Obtener nombre y email del usuario de la UI
+   const nombreUsuario = document.getElementById('mobNm')?.textContent || 'Compliance IA';
+   const emailUsuario = currentToken || 'sin-email';
+
+   const payload = {
+     usuario_id: usuario_id || currentToken || 'anonimo',
+     nombre_usuario: nombreUsuario,
+     email: emailUsuario,
+     agente: agente_name,
+     tipo_consulta: 'pregunta',
+     tema: pregunta.split('\n')[0].slice(0, 100),
+     pregunta: pregunta,
+     respuesta: respuesta,
+     tiempo_ms: tiempo_ms,
+     tokens: tokens,
+     user_agent: navigator.userAgent
+   };
+
+   await fetch('/api/stats/log', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify(payload)
+   }).catch(err => console.warn('[Logging] Error (no bloqueante):', err.message));
+ } catch(e) {
+   console.warn('[Logging]', e.message);
+ }
+}
+
+// Contador de tokens aproximado (simple: ~1 token cada 4 caracteres)
+function estimateTokens(text) {
+ return Math.max(50, Math.ceil(text.length / 4));
+}
+
+// Variable global para capturar tiempo de inicio
+let _queryStartTime = 0;
+
+async function sendMessage() {
+ const input = textarea.value.trim();
+ if (!input || isLoading) return;
+
+ _queryStartTime = Date.now(); // Capturar inicio
+
+ // Clear input
+ textarea.value = '';
+ textarea.style.height = 'auto';
+
+ // Add to UI and history
+ appendMessage('user', input);
+ messages.push({ role: 'user', content: input });
+
+ isLoading = true;
+ document.getElementById('send-btn').disabled = true;
+ appendTyping();
+
+ try {
+ const response = await fetch('/api/chat', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ system: SYSTEM_PROMPT,
+ messages: messages
+ })
+ });
+
+ if (!response.ok) {
+ const err = await response.json().catch(() => ({}));
+ throw new Error(err.error || `Error ${response.status}`);
+ }
+
+ const data = await response.json();
+ const assistantText = data.text || '';
+ const tiempoMs = Date.now() - _queryStartTime;
+ const tokensEstimados = estimateTokens(assistantText);
+
+ removeTyping();
+ appendMessage('assistant', assistantText);
+ messages.push({ role: 'assistant', content: assistantText });
+    saveChat();
+
+ // Registrar en logging (sin bloquear)
+ enviarLogging(
+   currentToken || 'anonimo',
+   'compliance',
+   input,
+   assistantText,
+   tiempoMs,
+   tokensEstimados
+ );
+
+    // Mostrar barra de escalación si la respuesta sugiere complejidad
+    const triggerWords = ['recomendamos validar','abogado','consultor','asesoría especializada',
+      'caso específico','requiere análisis','shellti puede acompañar','contacta','contacte',
+      'escapa de mi ámbito','fuera de mi alcance','alto riesgo','crítico','shellti.com'];
+    const lowerText = assistantText.toLowerCase();
+    if (triggerWords.some(w => lowerText.includes(w))) {
+      const lastUser = messages.filter(m => m.role === 'user').slice(-1)[0]?.content || '';
+      insertEscalationBar(lastUser.slice(0, 200));
+    }
+
+ // Keep context window manageable (last 20 messages)
+ if (messages.length > 20) {
+ messages = messages.slice(messages.length - 20);
+ }
+
+ } catch (err) {
+ removeTyping();
+ showError('Error al contactar el agente: ' + err.message);
+ // Remove last user message from history on error
+ messages.pop();
+ } finally {
+ isLoading = false;
+ document.getElementById('send-btn').disabled = false;
+ textarea.focus();
+ }
+}
+// ── Restaurar chat al cargar ──────────────────────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  restoreChat();
+});
+
+
+/* ── UI helpers ───────────────────────────────── */
+function handleKey(e) { /* handled by addEventListener above */ }
+function handleInput(el) { /* handled by addEventListener above */ }
+
+function handleMobKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMob(); }
+}
+function handleMobInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 70) + 'px';
+}
+function sendMob() {
+  var inp = document.getElementById('mobUserInput');
+  if (!inp) return;
+  var val = inp.value.trim();
+  if (!val) return;
+  inp.value = ''; inp.style.height = 'auto';
+  textarea.value = val;
+  sendMessage();
+}
+function openHist() {
+  var d = document.getElementById('histDrawer');
+  if (d) d.classList.add('open');
+}
+function closeHist() {
+  var d = document.getElementById('histDrawer');
+  if (d) d.classList.remove('open');
+}
+function newChat() { clearChat(); closeHist(); }
+function scrollToBottom() {
+  var msgs = document.getElementById('messages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+function toggleMobInfo() {
+  var panel = document.getElementById('mobTagsPanel');
+  var btn   = document.getElementById('mobInfoBtn');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (btn) btn.classList.toggle('on', panel.classList.contains('open'));
+}
 </script>
 
 </body>
